@@ -1,0 +1,89 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Font Name="Tahoma" Size="8.25" />
+  <Class Name="SDMX_ML.Framework.Generic.GroupType">
+    <Position X="0.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Generic\GroupType.cs</FileName>
+      <HashCode>AIAAAAAAAAAAAAQDAAAAAAAQQAAAAAAAAQBAAAABAAE=</HashCode>
+    </TypeIdentifier>
+    <Members>
+      <Field Name="_annotations" Hidden="true" />
+      <Field Name="_attributes" Hidden="true" />
+      <Field Name="_groupkey" Hidden="true" />
+      <Field Name="_series" Hidden="true" />
+      <Field Name="_type" Hidden="true" />
+    </Members>
+  </Class>
+  <Class Name="SDMX_ML.Framework.Generic.DataSetType">
+    <Position X="0.75" Y="2.25" Width="2.5" />
+    <TypeIdentifier>
+      <FileName>Generic\DataSetType.cs</FileName>
+      <HashCode>AIAGAECAAAAEAAICAAAACAAYQEAIAAARAABAgAAAWwU=</HashCode>
+    </TypeIdentifier>
+    <Members>
+      <Field Name="_action" Hidden="true" />
+      <Field Name="_annotations" Hidden="true" />
+      <Field Name="_attributes" Hidden="true" />
+      <Field Name="_dataflowagencyid" Hidden="true" />
+      <Field Name="_dataflowid" Hidden="true" />
+      <Field Name="_dataproviderid" Hidden="true" />
+      <Field Name="_dataproviderschemeagencyid" Hidden="true" />
+      <Field Name="_dataproviderschemeid" Hidden="true" />
+      <Field Name="_datasetid" Hidden="true" />
+      <Field Name="_group" Hidden="true" />
+      <Field Name="_keyfamilyref" Hidden="true" />
+      <Field Name="_keyfamilyuri" Hidden="true" />
+      <Field Name="_series" Hidden="true" />
+    </Members>
+  </Class>
+  <Class Name="SDMX_ML.Framework.Generic.ObsType">
+    <Position X="2.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Generic\ObsType.cs</FileName>
+      <HashCode>AIAAAQAAAAAgAAACAAAAAAAQQAAAAAAAAAAAAAAAAQg=</HashCode>
+    </TypeIdentifier>
+    <Members>
+      <Field Name="_annotations" Hidden="true" />
+      <Field Name="_attributes" Hidden="true" />
+      <Field Name="_obs" Hidden="true" />
+      <Field Name="_time" Hidden="true" />
+    </Members>
+  </Class>
+  <Class Name="SDMX_ML.Framework.Generic.ObsValueType">
+    <Position X="3.75" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Generic\ObsValueType.cs</FileName>
+      <HashCode>ABAgAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAgAAAAAAA=</HashCode>
+    </TypeIdentifier>
+    <Members>
+      <Field Name="_starttime" Hidden="true" />
+      <Field Name="_value" Hidden="true" />
+    </Members>
+  </Class>
+  <Class Name="SDMX_ML.Framework.Generic.SeriesType">
+    <Position X="4.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Generic\SeriesType.cs</FileName>
+      <HashCode>AIAACAAAAAAAAAACACAQAAAQQAAAAAAAAAAAAAAAAAg=</HashCode>
+    </TypeIdentifier>
+    <Members>
+      <Field Name="_annotations" Hidden="true" />
+      <Field Name="_attributes" Hidden="true" />
+      <Field Name="_obs" Hidden="true" />
+      <Field Name="_serieskeys" Hidden="true" />
+    </Members>
+  </Class>
+  <Class Name="SDMX_ML.Framework.Generic.ValueType">
+    <Position X="3.75" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Generic\ValueType.cs</FileName>
+      <HashCode>ABAgAAAAAACAAAAAAAAAAAAAIAAAAAAAAAAgEAAAAAA=</HashCode>
+    </TypeIdentifier>
+    <Members>
+      <Field Name="_concept" Hidden="true" />
+      <Field Name="_starttime" Hidden="true" />
+      <Field Name="_value" Hidden="true" />
+    </Members>
+  </Class>
+</ClassDiagram>

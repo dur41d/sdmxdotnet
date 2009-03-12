@@ -1,0 +1,6 @@
+C:\Projekter\SDMX_ML.Framework\obj\Debug\ResolveAssemblyReference.cache
+C:\Projekter\SDMX_ML.Framework\bin\Debug\SDMX_ML.Framework.XML
+C:\Projekter\SDMX_ML.Framework\bin\Debug\SDMX_ML.Framework.dll
+C:\Projekter\SDMX_ML.Framework\bin\Debug\SDMX_ML.Framework.pdb
+C:\Projekter\SDMX_ML.Framework\obj\Debug\SDMX_ML.Framework.dll
+C:\Projekter\SDMX_ML.Framework\obj\Debug\SDMX_ML.Framework.pdb
