@@ -1,0 +1,290 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>SDMX_ML.Framework</name>
+    </assembly>
+    <members>
+        <member name="P:SDMX_ML.Framework.Query.AttributeType.Attachmentlevel">
+            <summary>
+            Default value: Any
+            </summary>
+        </member>
+        <member name="T:SDMX_ML.Framework.Generic.GroupType">
+            <summary>
+            The key values at the group level may be stated explicitly, 
+            and all which are not wildcarded listed in GroupKey - they 
+            must also all be given a value at the series level. It is 
+            not necessary to specify the group key, however, as this may 
+            be inferred from the values repeated at the series level. If 
+            only documentation (group-level attributes) are being transmitted, 
+            however, the GroupKey cannot be omitted. The type attribute 
+            contains the name of the declared group in the key family. If 
+            any group-level attributes are specified in a delete message, 
+            then any valid value supplied for the attribute indicates that 
+            the current attribute value should be deleted for the specified 
+            attribute.
+            </summary>
+        </member>
+        <member name="F:SDMX_ML.Framework.Common.IDType._value">
+            <summary>
+            A class to restrict data to this pattern: ([A-Z]|[a-z]|\*|@|[0-9]|_|$|\-)*
+            </summary>
+        </member>
+        <member name="M:SDMX_ML.Framework.Interfaces.IMessage.ToXml">
+            <summary>
+            
+            </summary>
+            <returns>Returns a string containing a Message in SDMX_ML format</returns>
+        </member>
+        <member name="T:SDMX_ML.Framework.Generic.DataSetType">
+            <summary>
+            DataSetType defines the structure of a data set. This consists of a key 
+            family reference which contains the ID of the key family, and the attribute 
+            values attached at the data set level. A DataSet may be used to transmit 
+            documentation (that is, only attribute values), data, or a combination of 
+            both. If providing only documentation, you need not send the complete set of 
+            attributes. If transmitting only data, the Group may be omitted if desired. 
+            Uniqueness constraints are defined for the attributes of the data set. If 
+            dataset-level attributes are sent in a delete message, then any valid attribute 
+            value will indicate that the current attribute value should be deleted. The 
+            keyFamilyURI attribute is provided to allow a URI (typically a URL) to be provided, 
+            pointing to an SDMX-ML Structure message describing the key family. Attributes are 
+            provided for describing the contents of a data or metadata set, which are particularly 
+            important for interactions with the SDMX Registry: datasetID, dataProviderSchemeAgencyID, 
+            dataProviderSchemeID, dataflowAgencyID, and dataflowID all take the IDs specified by the 
+            attribute names. The action attribute indicates whether the file is appending, replacing, 
+            or deleting. Attributes reportingBeginDate, reportingEndDate, validFromDate, and 
+            validToDate are inclusive. publicationYear holds the ISO 8601 four-digit year, and 
+            publicationPeriod specifies the period of publication of the data in terms of whatever 
+            provisioning agreements might be in force (ie, "Q1 2005" if that is the time of publication 
+            for a data set published on a quarterly basis).
+            </summary>
+        </member>
+        <member name="M:SDMX_ML.Framework.Messages.CompactData.#ctor(System.String)">
+            <summary>
+            Creates objects from the xml file in the parameter
+            </summary>
+            <param name="xml">A SDMX_ML QueryMessage with the DataWhere element in a string</param>
+        </member>
+        <member name="M:SDMX_ML.Framework.Messages.CompactData.#ctor">
+            <summary>
+            Creates a SDMX_ML GenericDataMessage that can write a xml file
+            </summary>
+        </member>
+        <member name="T:SDMX_ML.Framework.Compact.ObsValueType">
+            <summary>
+            ObsValueType describes the information set for an observation value. 
+            This is associated with the primary measure concept declared in the 
+            key family. The startTime attribute is only used if the textFormat 
+            of the observation is of the Timespan type in the key family 
+            (in which case the value field takes a duration).
+            </summary>
+        </member>
+        <member name="T:SDMX_ML.Framework.Common.AnnotationType">
+            <summary>
+            AnnotationType provides for non-documentation notes and annotations to be embedded 
+            in data and structure messages. It provides optional fields for providing a title, 
+            a type description, a URI, and the text of the annotation.
+            </summary>
+        </member>
+        <member name="T:SDMX_ML.Framework.Query.DataWhereType">
+            <summary>
+            The DataWhere element representes a query for data. It contains all of the 
+            clauses in that query, represented by its child elements. Values are the 
+            IDs of the referenced object
+            </summary>
+        </member>
+        <member name="P:SDMX_ML.Framework.Query.DataWhereType.Category">
+            <summary>
+            Not yet implemented
+            </summary>
+        </member>
+        <member name="P:SDMX_ML.Framework.Query.DataWhereType.Version">
+            <summary>
+            Not yet implemented
+            </summary>
+        </member>
+        <member name="P:SDMX_ML.Framework.Query.DataWhereType.DataFlow">
+            <summary>
+            Not yet implemented
+            </summary>
+        </member>
+        <member name="P:SDMX_ML.Framework.Query.DataWhereType.DataProvider">
+            <summary>
+            Not yet implemented
+            </summary>
+        </member>
+        <member name="T:SDMX_ML.Framework.Generic.ObsValueType">
+            <summary>
+            ObsValueType describes the information set for an observation value. 
+            This is associated with the primary measure concept declared in the 
+            key family. The startTime attribute is only used if the textFormat 
+            of the observation is of the Timespan type in the key family 
+            (in which case the value field takes a duration).
+            </summary>
+        </member>
+        <member name="T:SDMX_ML.Framework.Messages.QueryMessage">
+            <summary>
+            The Query message allows standard querying of SDMX-compliant databases and web services. 
+            It is intended to be used in non-registry exchanges, and is focused on data sets and metadata 
+            sets. It allows queries to retrieve data, metadata, key families, metadata structure definitions, 
+            codelists, concepts, and other structural metadata. Note that date and time formats are structured 
+            according to the common:TimePeriodType, rather than being specified in the query. The response 
+            documents for this query mesage are data formats (for data queries), metadata formats (for metadata 
+            queries), and the SDMX Structure MEssage (for all other queries).
+            </summary>
+        </member>
+        <member name="M:SDMX_ML.Framework.Messages.QueryMessage.#ctor(System.String)">
+            <summary>
+            Creates objects from the QueryMessage parsed in the constructor
+            </summary>
+            <param name="query">Xml Element/Document in the format of a Query Message in SDMX_ML format</param>
+        </member>
+        <member name="M:SDMX_ML.Framework.Messages.QueryMessage.#ctor">
+            <summary>
+            Constructor for creating a Xml document from objects
+            </summary>
+            <remarks>Use the ToXml() method to write the document</remarks>
+        </member>
+        <member name="M:SDMX_ML.Framework.Messages.QueryMessage.ToXml">
+            <summary>
+            This will write the SDMX_ML Query Message
+            </summary>
+            <returns>Return the SDMX_ML Query Message in a string format</returns>
+        </member>
+        <member name="M:SDMX_ML.Framework.Messages.QueryMessage.GetXml">
+            <summary>
+            This will write the SDMX_ML Query Message
+            </summary>
+            <returns>Return the SDMX_ML Query Message in a XElement format</returns>
+        </member>
+        <member name="M:SDMX_ML.Framework.Messages.QueryMessage.getElement(System.String,System.String)">
+            <summary>
+            Method that create an element on a string value
+            </summary>
+            <param name="val">The value that the element contain</param>
+            <param name="name">The name of the element</param>
+            <returns></returns>
+        </member>
+        <member name="P:SDMX_ML.Framework.Messages.QueryMessage.DataWhere">
+            <summary>
+            You can add or get the DataWhere element that contain the query for datasets
+            </summary>
+        </member>
+        <member name="P:SDMX_ML.Framework.Messages.QueryMessage.CodelistWhere">
+            <summary>
+            You can add or get the CodelistWhere element that contain the query for codelists
+            </summary>
+        </member>
+        <member name="P:SDMX_ML.Framework.Messages.QueryMessage.ConceptWhere">
+            <summary>
+            You can add or get the ConceptWhere element that contain the query for concepts
+            </summary>
+        </member>
+        <member name="P:SDMX_ML.Framework.Messages.QueryMessage.Keyfamilywhere">
+            <summary>
+            You can add or get the KeyFamilyWhere element that contain the query for keyfamilies
+            </summary>
+        </member>
+        <member name="P:SDMX_ML.Framework.Messages.QueryMessage.Header">
+            <summary>
+            You can add or get the Header element that contain Information about sender and receiver
+            </summary>
+        </member>
+        <member name="T:SDMX_ML.Framework.Query.CodelistWhereType">
+            <summary>
+            The CodelistWhere element representes a query for a codelist or codelists. 
+            It contains all of the clauses in that query, represented by its child 
+            elements. Values are the IDs of the referenced object
+            </summary>
+        </member>
+        <member name="T:SDMX_ML.Framework.Messages.GenericData">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:SDMX_ML.Framework.Messages.GenericData.#ctor(System.String)">
+            <summary>
+            Creates objects from the xml file in the parameter
+            </summary>
+            <param name="xml">A SDMX_ML QueryMessage with the DataWhere element in a string</param>
+        </member>
+        <member name="M:SDMX_ML.Framework.Messages.GenericData.#ctor">
+            <summary>
+            Creates a SDMX_ML GenericDataMessage that can write a xml file
+            </summary>
+        </member>
+        <member name="M:SDMX_ML.Framework.Messages.GenericData.ToXml">
+            <summary>
+            Writing the SDMX_ML file
+            </summary>
+            <returns>A string containing the xml file in SDMX_ML format</returns>
+        </member>
+        <member name="T:SDMX_ML.Framework.Generic.SeriesType">
+            <summary>
+            SeriesType specifies the structure of a series. This includes all of 
+            the key values, values for all the attributes, and the set of observations 
+            making up the series content. Messages may transmit only attributes, only 
+            data, or both. Regardless, the series key is always required. Key values 
+            appear at the Series level in an ordered sequence which corresponds to the 
+            key sequence in the key family. A series in a delete message need not supply 
+            more than the key, indicating that the entire series identified by that key 
+            should be deleted. If series attributes are sent in a delete message, any 
+            valid value specified for an attribute indicates that the attribute should 
+            be deleted
+            </summary>
+        </member>
+        <member name="T:SDMX_ML.Framework.Query.AndType">
+            <summary>
+            For the And element, each of its immediate child elements represent 
+            clauses all of which represent conditions which must be satisfied. 
+            If children are A, B, and C, then any legitimate response will meet 
+            conditions A, B, and C. Values are the IDs of the referenced object
+            </summary>
+        </member>
+        <member name="P:SDMX_ML.Framework.Abstract.AndOR.DataProvider">
+            <summary>
+            Not yet implemented
+            </summary>
+        </member>
+        <member name="P:SDMX_ML.Framework.Abstract.AndOR.DataFlow">
+            <summary>
+            Not yet implemented
+            </summary>
+        </member>
+        <member name="P:SDMX_ML.Framework.Abstract.AndOR.MetadataFlow">
+            <summary>
+            Not yet implemented
+            </summary>
+        </member>
+        <member name="P:SDMX_ML.Framework.Abstract.AndOR.Version">
+            <summary>
+            Not yet implemented
+            </summary>
+        </member>
+        <member name="T:SDMX_ML.Framework.Query.ConceptWhereType">
+            <summary>
+            The ConceptWhere element representes a query for a concept or 
+            concepts. It contains all of the clauses in that query, represented 
+            by its child elements. Values are the IDs of the referenced object
+            </summary>
+        </member>
+        <member name="T:SDMX_ML.Framework.Query.OrType">
+            <summary>
+            The Or element's immediate children represent clauses in the query any 
+            one of which is sufficient to satisfy the query. If these children are 
+            A, B, and C, then any result which meets condition A, or condition B, 
+            or condition C is a match for that query. Values are the IDs of the 
+            referenced object
+            </summary>
+        </member>
+        <member name="T:SDMX_ML.Framework.Query.KeyFamilyWhereType">
+            <summary>
+            The KeyFamilyWhere element representes a query for a key family or 
+            key families. It contains all of the clauses in that query, 
+            represented by its child elements. Values are the IDs of the 
+            referenced object.
+            </summary>
+        </member>
+    </members>
+</doc>
