@@ -1,6 +1,0 @@
-C:\Code\dds\sdmx\src\SDMX\bin\Debug\SDMX_ML.Framework.XML
-C:\Code\dds\sdmx\src\SDMX\bin\Debug\SDMX_ML.Framework.dll
-C:\Code\dds\sdmx\src\SDMX\bin\Debug\SDMX_ML.Framework.pdb
-C:\Code\dds\sdmx\src\SDMX\obj\Debug\ResolveAssemblyReference.cache
-C:\Code\dds\sdmx\src\SDMX\obj\Debug\SDMX_ML.Framework.dll
-C:\Code\dds\sdmx\src\SDMX\obj\Debug\SDMX_ML.Framework.pdb
