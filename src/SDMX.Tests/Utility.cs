@@ -5,14 +5,14 @@ using System.Xml.Schema;
 
 namespace SDMX.Tests
 {
-    public static class Utility
+    internal static class Utility
     {
-        public static bool ValidateMessage(string xml)
+        internal static bool ValidateMessage(string xml)
         {
             var doc = XDocument.Parse(xml);
             var schemas = new XmlSchemaSet();
-            schemas.Add("http://www.SDMX.org/resources/SDMXML/schemas/v2_0/message",
-                Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..\\..\\..\\..\\lib\\SDMXMessage.xsd"));
+            //schemas.Add("http://www.SDMX.org/resources/SDMXML/schemas/v2_0/message",
+            //    Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..\\..\\..\\..\\lib\\SDMXMessage.xsd"));
 
             bool isValid = true;
 
@@ -37,6 +37,16 @@ namespace SDMX.Tests
             else
                 Console.WriteLine("\tValidation error: " + args.Message);
 
+        }
+
+        internal static string GetPathFromProjectBase(string path)
+        {
+            return "..\\..\\..\\..\\" + path;
+        }
+
+        internal static bool CompareXML(XDocument xmlDocument1, XDocument xmlDocument2)
+        {
+            return XNode.DeepEquals(xmlDocument1, xmlDocument1);
         }
     }
 }

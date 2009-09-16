@@ -1,18 +1,14 @@
-﻿using NUnit.Framework;
-using Query = SDMX_ML.Framework.Query;
-using Messages = SDMX_ML.Framework.Messages;
-using Message = SDMX_ML.Framework.Message;
-using Common = SDMX_ML.Framework.Common;
-using Structure = SDMX_ML.Framework.Structure;
-using Generic = SDMX_ML.Framework.Generic;
-using System;
-using System.Xml;
-using System.IO;
-using System.Xml.Schema;
-using System.Xml.Linq;
-using System.Linq;
-using System.Reflection;
+﻿using System;
 using System.Collections.Generic;
+using NUnit.Framework;
+using Common = SDMX_ML.Framework.Common;
+using Message = SDMX_ML.Framework.Message;
+using Messages = SDMX_ML.Framework.Messages;
+using Query = SDMX_ML.Framework.Query;
+using System.IO;
+using System.Xml.Linq;
+using System.Xml;
+
 
 namespace SDMX.Tests
 {
@@ -81,15 +77,29 @@ namespace SDMX.Tests
                                 { 
                                     StartTime = new Common.TimePeriodType() { TimePeriod = "2007-11-01" }
                                 }
-
                             }
                         }
                     }
                 }
             };
-
             Assert.IsTrue(Utility.ValidateMessage(quryMessage.ToXml()));
         }
+
+        [Test]
+        public void Can_load_QuerySample()
+        {           
+            string samplePath = Utility.GetPathFromProjectBase("lib\\QuerySample.xml");
+            XDocument loadedXml = XDocument.Load(samplePath);
+
+            Messages.QueryMessage message = new Messages.QueryMessage(loadedXml.ToString());
+
+            XDocument generatedXml = XDocument.Parse(message.ToXml());
+
+            //Assert.AreEqual(loadedXml, generatedXml);
+            Assert.IsTrue(Utility.CompareXML(loadedXml, generatedXml));
+        }
+
+       
 
         private Message.HeaderType GetHeader()
         {
