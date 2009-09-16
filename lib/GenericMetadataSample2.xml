@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<!-- Copyright (c) SDMX 2005 - www.sdmx.org -->
+<GenericMetadata xmlns="http://www.SDMX.org/resources/SDMXML/schemas/v2_0/message" xmlns:genericmetadata="http://www.SDMX.org/resources/SDMXML/schemas/v2_0/genericmetadata" xmlns:common="http://www.SDMX.org/resources/SDMXML/schemas/v2_0/common" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.SDMX.org/resources/SDMXML/schemas/v2_0/genericmetadata
+SDMXGenericMetadata.xsd http://www.SDMX.org/resources/SDMXML/schemas/v2_0/message SDMXMessage.xsd">
+	<Header>
+		<ID>JD014</ID>
+		<Test>true</Test>
+		<Truncated>false</Truncated>
+		<Name xml:lang="en">Trans46302</Name>
+		<Prepared>2001-03-11T09:30:47-05:00</Prepared>
+		<Sender id="IMF">
+			<Name xml:lang="en">International Monetary Fund</Name>
+			<Contact>
+				<Name xml:lang="en">G.B. Smith</Name>
+				<Telephone>+000.000.0000</Telephone>
+			</Contact>
+		</Sender>
+		<Receiver id="ECB">
+			<Name xml:lang="en">European Central Bank</Name>
+			<Contact>
+				<Name xml:lang="en">B.S. Featherstone</Name>
+				<Department xml:lang="en">Statistics Division</Department>
+				<Telephone>+000.000.0001</Telephone>
+			</Contact>
+		</Receiver>
+		<DataSetAgency>BIS</DataSetAgency>
+		<DataSetID>BIS_JD_237</DataSetID>
+		<DataSetAction>Append</DataSetAction>
+		<Extracted>2001-03-11T09:30:47-05:00</Extracted>
+		<ReportingBegin>2000-01-01T00:00:00</ReportingBegin>
+		<ReportingEnd>2000-12-01T00:00:00</ReportingEnd>
+	</Header>
+	<genericmetadata:MetadataSet>
+		<genericmetadata:MetadataStructureRef>SDDS_CONTACT_INFO</genericmetadata:MetadataStructureRef>
+		<genericmetadata:MetadataStructureAgencyRef>IMF</genericmetadata:MetadataStructureAgencyRef>
+		<genericmetadata:ReportRef>PRIMARY_CONTACT_REPORT_COMPONENT</genericmetadata:ReportRef>
+
+
+			<genericmetadata:AttributeValueSet>
+			<genericmetadata:TargetRef>COMPONENT</genericmetadata:TargetRef>
+			<genericmetadata:TargetValues>
+				<genericmetadata:ComponentValue object="MetadataFlow">SDDS_METADATA</genericmetadata:ComponentValue>
+				<genericmetadata:ComponentValue object="Category">REAL_SECTOR.NAC</genericmetadata:ComponentValue>
+				<genericmetadata:ComponentValue object="DataProvider">INSEE</genericmetadata:ComponentValue>
+				<genericmetadata:ComponentValue object="MetadataAttribute">SUMMARY_METHODOLOGY</genericmetadata:ComponentValue>
+			</genericmetadata:TargetValues>
+			<genericmetadata:ReportedAttribute conceptID="CONTACT">
+				<genericmetadata:ReportedAttribute conceptID="NAME">
+					<genericmetadata:Value>Marie Renaud</genericmetadata:Value>
+				</genericmetadata:ReportedAttribute>
+				<genericmetadata:ReportedAttribute conceptID="ADDRESS">
+					<genericmetadata:Value>Chief, Quarterly, ...</genericmetadata:Value>
+				</genericmetadata:ReportedAttribute>
+				<genericmetadata:ReportedAttribute conceptID="TELEPHONE">
+					<genericmetadata:Value>33 1 41176064</genericmetadata:Value>
+				</genericmetadata:ReportedAttribute>
+			</genericmetadata:ReportedAttribute>
+		</genericmetadata:AttributeValueSet>	
+	</genericmetadata:MetadataSet>
+</GenericMetadata>	

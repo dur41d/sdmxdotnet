@@ -15,7 +15,7 @@ namespace SDMX_ML.Framework.Messages
         private List<SDMX_Structure.CodelistType> _codelists = new List<SDMX_Structure.CodelistType>();
         private List<SDMX_Structure.ConceptType> _concepts = new List<SDMX_Structure.ConceptType>();
         private SDMX_Structure.KeyFamiliesType _keyfamilies = new SDMX_Structure.KeyFamiliesType();
-        private SDMX_Message.HeaderType _header = new SDMX_Message.HeaderType();
+        private SDMX_Message.HeaderType _header;
         private XDocument _xmldoc;
         private XElement _xml;
         private XNamespace _nsStructurMessage;
@@ -33,6 +33,9 @@ namespace SDMX_ML.Framework.Messages
 
             setNameSpace();
 
+            if (_header == null)
+                _header = new SDMX_Message.HeaderType(_xml);
+
             setStructur();
 
         }
@@ -45,18 +48,18 @@ namespace SDMX_ML.Framework.Messages
         }
 
         private void setStructur()
-        {
+        {            
             XElement codelists = _xml.Element(_nsDefault + "CodeLists");
             XElement keyfamilies = _xml.Element(_nsDefault + "KeyFamilies");
             XElement concepts = _xml.Element(_nsDefault + "Concepts");
 
-            if(codelists != null)
+            if (codelists != null)
                 setCodelists(codelists);
 
-            if(keyfamilies != null)
+            if (keyfamilies != null)
                 setKeyFamilies(keyfamilies);
 
-            if(concepts != null)
+            if (concepts != null)
                 setConcepts(concepts);
 
         }
@@ -66,21 +69,21 @@ namespace SDMX_ML.Framework.Messages
             SDMX_Structure.CodelistType codelist = new SDMX_Structure.CodelistType();
             XElement cl = structur.Element(_nsStructur + "CodeList");
 
-            if(cl != null)
+            if (cl != null)
             {
                 codelist.Id = cl.Attribute("id").Value;
                 codelist.Agencyid = cl.Attribute("agencyID").Value;
 
                 XElement name = cl.Element(_nsStructur + "Name");
-                codelist.Lang = name.Attribute(XNamespace.Xml + "lang").Value;;
+                codelist.Lang = name.Attribute(XNamespace.Xml + "lang").Value; ;
 
-                foreach(XElement cv in cl.Elements())
+                foreach (XElement cv in cl.Elements())
                 {
-                    if(cv.Name == _nsStructur + "Code")
+                    if (cv.Name == _nsStructur + "Code")
                     {
                         SDMX_Structure.CodeType c = new SDMX_Structure.CodeType();
 
-                        c.Codevalue =cv.Attribute("value").Value;
+                        c.Codevalue = cv.Attribute("value").Value;
                         XElement desc = cv.Element(_nsStructur + "Description");
                         c.Description = desc.Value;
                         c.Lang = desc.Attribute(XNamespace.Xml + "lang").Value;
@@ -90,7 +93,7 @@ namespace SDMX_ML.Framework.Messages
 
                 }
 
-                 _codelists.Add(codelist);
+                _codelists.Add(codelist);
             }
         }
 
@@ -101,13 +104,13 @@ namespace SDMX_ML.Framework.Messages
 
         private void setConcepts(XElement concept)
         {
-            foreach(XElement c in concept.Elements())
+            foreach (XElement c in concept.Elements())
             {
                 SDMX_Structure.ConceptType con = new SDMX_Structure.ConceptType();
                 con.AgencyID = c.Attribute("agencyID").Value;
                 con.ID = c.Attribute("id").Value;
                 con.Name = c.Element(_nsStructur + "Name").Value;
-               
+
                 _concepts.Add(con);
             }
 
@@ -121,7 +124,7 @@ namespace SDMX_ML.Framework.Messages
             keyfamily.AgencyID = kf.Attribute("agencyID").Value;
             XElement kfname = kf.Element(_nsStructur + "Name");
             keyfamily.Name = kf.Value;
-            
+
             keyfamily.Component = getComponents(kf);
 
             _keyfamilies.KeyFamily.Add(keyfamily);
@@ -132,9 +135,9 @@ namespace SDMX_ML.Framework.Messages
             SDMX_Structure.ComponentsType comp = new SDMX_Structure.ComponentsType();
             XElement Components = element.Element(_nsStructur + "Components");
 
-            foreach(XElement dim in Components.Elements())
+            foreach (XElement dim in Components.Elements())
             {
-                if(dim.Name == _nsStructur + "Dimension")
+                if (dim.Name == _nsStructur + "Dimension")
                 {
                     SDMX_Structure.DimensionType d = new SDMX_Structure.DimensionType();
                     SDMX_Common.IDType cr = new SDMX_Common.IDType(dim.Attribute("conceptRef").Value.ToString());
@@ -142,12 +145,12 @@ namespace SDMX_ML.Framework.Messages
                     SDMX_Common.IDType cl = new SDMX_Common.IDType(dim.Attribute("codelist").Value.ToString());
                     d.Codelist = cl;
 
-                    if(dim.Attribute("isFrequencyDimension") != null)
+                    if (dim.Attribute("isFrequencyDimension") != null)
                         d.IsFrequencyDimension = Convert.ToBoolean(dim.Attribute("isFrequencyDimension").Value);
 
                     comp.Dimensions.Add(d);
                 }
-                if(dim.Name == _nsStructur + "Attribute")
+                if (dim.Name == _nsStructur + "Attribute")
                 {
                     //XElement attribute = dim.Element(_nsStructur + "Attribute");
                     SDMX_Structure.AttributeType a = new SDMX_Structure.AttributeType();
@@ -158,11 +161,11 @@ namespace SDMX_ML.Framework.Messages
                     a.CrossSectionalAttachGroup = Convert.ToBoolean(dim.Attribute("crossSectionalAttachGroup").Value);
                     a.CrossSectionalAttachSection = Convert.ToBoolean(dim.Attribute("crossSectionalAttachSection").Value);
                     a.CrossSectionalAttachObservation = Convert.ToBoolean(dim.Attribute("crossSectionalAttachObservation").Value);
-                    
-                    if(dim.Attribute("isTimeFormat") != null)
+
+                    if (dim.Attribute("isTimeFormat") != null)
                         a.IsTimeFormat = Convert.ToBoolean(dim.Attribute("isTimeFormat").Value);
 
-                    if(dim.Attribute("codelist") != null)
+                    if (dim.Attribute("codelist") != null)
                         a.Codelist = new SDMX_Common.IDType(dim.Attribute("codelist").Value);
 
                     comp.Attribute.Add(a);
@@ -177,7 +180,7 @@ namespace SDMX_ML.Framework.Messages
         {
             AttachmentLevel level;
 
-            switch(element.Attribute("attachmentLevel").Value)
+            switch (element.Attribute("attachmentLevel").Value)
             {
                 case "Series":
                     level = AttachmentLevel.Series;
@@ -203,7 +206,7 @@ namespace SDMX_ML.Framework.Messages
         {
             AssignmentStatus status;
 
-            switch(element.Attribute("assignmentStatus").Value)
+            switch (element.Attribute("assignmentStatus").Value)
             {
                 case "Conditional":
                     status = AssignmentStatus.Conditional;
@@ -243,16 +246,8 @@ namespace SDMX_ML.Framework.Messages
 
         public string ToXml()
         {
-            try
-            {
-                XElement x = GetXml();
-                return _xmldoc.ToString();
-            }
-            catch(Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-                throw new Exception(ex.Message);
-            }
+            XElement x = GetXml();
+            return _xmldoc.ToString();
         }
 
         public XDocument GetXmlDocument()
@@ -266,26 +261,26 @@ namespace SDMX_ML.Framework.Messages
         {
             _xmldoc = new XDocument(
                 new XDeclaration("1.0", "UTF-8", "yes"));
-            
-             XElement structure = new XElement(Namespaces.GetAllNamespaces("Structure"));         
-           
+
+            XElement structure = new XElement(Namespaces.GetAllNamespaces("Structure"));
+
             _header.Prepared = DateTime.Now.ToString("s") + "-01:00";
             _header.Extracted = DateTime.Now.ToString("s") + "-01:00";
             _header.DataSetAction = SDMX_Message.HeaderType.EnumDataSetAction.Information;
-            
+
             structure.Add(_header.GetXml());
 
-            if(_codelists.Count > 0)
+            if (_codelists.Count > 0)
                 structure.Add(addCodelist());
 
-            if(_concepts.Count > 0)
+            if (_concepts.Count > 0)
                 structure.Add(addConcept());
 
-            if(_keyfamilies.KeyFamily.Count > 0)
+            if (_keyfamilies.KeyFamily.Count > 0)
                 structure.Add(addKeyFamilies());
 
             _xmldoc.Add(structure);
-            
+
             _xmldoc.Save(@"c:\projektxml.xml");
 
             return structure;
@@ -297,14 +292,14 @@ namespace SDMX_ML.Framework.Messages
         {
             XElement codelists = new XElement(Namespaces.GetNS("message") + "CodeLists");
 
-            foreach(SDMX_Structure.CodelistType c in _codelists)
+            foreach (SDMX_Structure.CodelistType c in _codelists)
             {
-                if(c.Agencyid != null)
+                if (c.Agencyid != null)
                 {
                     XElement codelist = new XElement(Namespaces.GetNS("structure") + "CodeList",
-                        new XAttribute("id", c.Id), new XAttribute("agencyID", c.Agencyid), 
+                        new XAttribute("id", c.Id), new XAttribute("agencyID", c.Agencyid),
                         new XAttribute("version", c.Version), new XAttribute("uri", c.Uri),
-                        new XElement(Namespaces.GetNS("structure") + "Name", 
+                        new XElement(Namespaces.GetNS("structure") + "Name",
                         new XAttribute(XNamespace.Xml + "lang", "en")));
 
                     codelist = addCodevalues(c, codelist);
@@ -318,7 +313,7 @@ namespace SDMX_ML.Framework.Messages
 
         private XElement addCodevalues(SDMX_Structure.CodelistType codelist, XElement element)
         {
-            foreach(SDMX_Structure.CodeType c in codelist.Codevalues)
+            foreach (SDMX_Structure.CodeType c in codelist.Codevalues)
             {
                 XElement code = new XElement(Namespaces.GetNS("structure") + "Code",
                     new XAttribute("value", c.Codevalue),
@@ -335,16 +330,16 @@ namespace SDMX_ML.Framework.Messages
 
         #region Concept
 
-         private XElement addConcept()
+        private XElement addConcept()
         {
             XElement concepts = new XElement(Namespaces.GetNS("message") + "Concepts");
 
-            foreach(SDMX_Structure.ConceptType c in _concepts)
+            foreach (SDMX_Structure.ConceptType c in _concepts)
             {
                 XElement concept = new XElement(Namespaces.GetNS("structure") + "Concept",
-                    new XAttribute("id", c.ID), new XAttribute("agencyID", c.AgencyID), 
+                    new XAttribute("id", c.ID), new XAttribute("agencyID", c.AgencyID),
                     new XAttribute("version", c.Version), new XAttribute("uri", "c.Uri"),
-                    new XElement(Namespaces.GetNS("structure") + "Name", c.Name, 
+                    new XElement(Namespaces.GetNS("structure") + "Name", c.Name,
                     new XAttribute(XNamespace.Xml + "lang", "en")));
 
                 concepts.Add(concept);
@@ -361,11 +356,11 @@ namespace SDMX_ML.Framework.Messages
         {
             XElement keyfamilies = new XElement(Namespaces.GetNS("message") + "KeyFamilies");
 
-            foreach(SDMX_Structure.KeyFamilyType kf in _keyfamilies.KeyFamily)
+            foreach (SDMX_Structure.KeyFamilyType kf in _keyfamilies.KeyFamily)
             {
-                XElement keyfamily = new XElement(Namespaces.GetNS("structure") + "KeyFamily", 
+                XElement keyfamily = new XElement(Namespaces.GetNS("structure") + "KeyFamily",
                     new XAttribute("id", kf.ID), new XAttribute("agencyID", kf.AgencyID),
-                    new XAttribute("version", ""), new XAttribute("uri", ""), 
+                    new XAttribute("version", ""), new XAttribute("uri", ""),
                     new XElement(Namespaces.GetNS("structure") + "Name",
                     new XAttribute(XNamespace.Xml + "lang", "en"), kf.Name));
 
@@ -382,15 +377,15 @@ namespace SDMX_ML.Framework.Messages
         {
             XElement component = new XElement(Namespaces.GetNS("structure") + "Components");
 
-            foreach(SDMX_Structure.DimensionType d in comp.Dimensions)
+            foreach (SDMX_Structure.DimensionType d in comp.Dimensions)
                 component.Add(getDimension(d));
-            
-            if(comp.Primarymeasure != null)
+
+            if (comp.Primarymeasure != null)
                 component.Add(getPrimaryMeasure(comp.Primarymeasure));
 
-            foreach(SDMX_ML.Framework.Structure.AttributeType a in comp.Attribute)
+            foreach (SDMX_ML.Framework.Structure.AttributeType a in comp.Attribute)
                 component.Add(getAttribute(a));
-            
+
 
             return component;
         }
@@ -402,14 +397,14 @@ namespace SDMX_ML.Framework.Messages
                 new XAttribute("isFrequencyDimension", d.IsFrequencyDimension.ToString().ToLower()));
 
             return dimension;
-          
+
         }
 
         private XElement getPrimaryMeasure(SDMX_Structure.PrimaryMeasureType pm)
         {
             XElement primary = new XElement(Namespaces.GetNS("structure") + "PrimaryMeasure",
-                new XAttribute("conceptRef", pm.ConceptRef.Value), 
-                new XElement(Namespaces.GetNS("structure") + "TextFormat", 
+                new XAttribute("conceptRef", pm.ConceptRef.Value),
+                new XElement(Namespaces.GetNS("structure") + "TextFormat",
                 new XAttribute("textType", pm.Textformat)));
 
             return primary;
@@ -418,21 +413,21 @@ namespace SDMX_ML.Framework.Messages
         private XElement getAttribute(SDMX_ML.Framework.Structure.AttributeType a)
         {
             XElement attribute = new XElement(Namespaces.GetNS("structure") + "Attribute",
-                new XAttribute("conceptRef", a.ConceptRef.Value), 
-                new XAttribute("attachmentLevel", a.AttachmentLevel), 
+                new XAttribute("conceptRef", a.ConceptRef.Value),
+                new XAttribute("attachmentLevel", a.AttachmentLevel),
                 new XAttribute("assignmentStatus", a.AssignmentStatus),
                 new XAttribute("crossSectionalAttachDataSet", a.CrossSectionalAttachDataset.ToString().ToLower()),
                 new XAttribute("crossSectionalAttachGroup", a.CrossSectionalAttachGroup.ToString().ToLower()),
                 new XAttribute("crossSectionalAttachSection", a.CrossSectionalAttachSection.ToString().ToLower()),
                 new XAttribute("crossSectionalAttachObservation", a.CrossSectionalAttachObservation.ToString().ToLower()));
 
-            if(a.Codelist.Value != "")
+            if (a.Codelist.Value != "")
                 attribute.Add(new XAttribute("codelist", a.Codelist.Value));
-            if(a.IsTimeFormat)
+            if (a.IsTimeFormat)
                 attribute.Add(new XAttribute("isTimeFormat", "true"));
 
             return attribute;
-          
+
         }
 
         #endregion

@@ -1,0 +1,177 @@
+<?xml version="1.0"?>
+<!-- Copyright SDMX 2005  -   www.sdmx.org -->
+
+<Structure xmlns="http://www.SDMX.org/resources/SDMXML/schemas/v2_0/message" xmlns:common="http://www.SDMX.org/resources/SDMXML/schemas/v2_0/common" xmlns:compact="http://www.SDMX.org/resources/SDMXML/schemas/v2_0/compact" xmlns:cross="http://www.SDMX.org/resources/SDMXML/schemas/v2_0/cross" xmlns:generic="http://www.SDMX.org/resources/SDMXML/schemas/v2_0/generic" xmlns:query="http://www.SDMX.org/resources/SDMXML/schemas/v2_0/query" xmlns:structure="http://www.SDMX.org/resources/SDMXML/schemas/v2_0/structure" xmlns:utility="http://www.SDMX.org/resources/SDMXML/schemas/v2_0/utility" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.SDMX.org/resources/SDMXML/schemas/v2_0/message SDMXMessage.xsd">
+	<Header>
+		<ID>BIS_01</ID>
+		<Test>true</Test>
+		<Truncated>false</Truncated>
+		<Name xml:lang="en">Trans46301</Name>
+		<Prepared>2002-03-11T09:30:47-05:00</Prepared>
+		<Sender id="IMF">
+			<Name xml:lang="en">International Monetary Fund</Name>
+			<Contact>
+				<Name xml:lang="en">G.B. Smith</Name>
+				<Telephone>+000.000.0000</Telephone>
+			</Contact>
+		</Sender>
+		<Receiver id="ECB">
+			<Name xml:lang="en">European Central Bank</Name>
+			<Contact>
+				<Name xml:lang="en">B.S. Featherstone</Name>
+				<Department xml:lang="en">Statistics Division</Department>
+				<Telephone>+000.000.0001</Telephone>
+			</Contact>
+		</Receiver>
+		<Extracted>2002-03-11T09:30:47-05:00</Extracted>
+	</Header>
+	
+<Concepts>
+<structure:ConceptScheme id="SDDS_CONTACTS" agencyID="IMF">
+	<structure:Name>Contact information</structure:Name>
+	<structure:Concept id="CONTACT" agencyID="IMF">
+		<structure:Name>Contact</structure:Name>
+		<structure:TextFormat/>
+	</structure:Concept>		
+	<structure:Concept id="NAME" agencyID="IMF">
+		<structure:Name>Name</structure:Name>
+		<structure:TextFormat/>
+	</structure:Concept>	
+	<structure:Concept id="ADDRESS" agencyID="IMF">
+		<structure:Name>Address</structure:Name>
+		<structure:TextFormat/>
+	</structure:Concept>
+	<structure:Concept id="TELEPHONE" agencyID="IMF">
+		<structure:Name>Telephone number</structure:Name>
+		<structure:TextFormat/>
+	</structure:Concept>		
+	<structure:Concept id="E-MAIL" agencyID="IMF">
+		<structure:Name>E-mail address</structure:Name>
+		<structure:TextFormat/>
+	</structure:Concept>		
+	<structure:Concept id="PRIMARY_CONTACT" agencyID="IMF" parent="CONTACT" parentAgency="IMF">
+		<structure:Name>Primary contact</structure:Name>
+		<structure:TextFormat/>
+	</structure:Concept>		
+</structure:ConceptScheme>
+</Concepts>
+<MetadataStructureDefinitions>
+
+<structure:MetadataStructureDefinition id="SDDS_CONTACT_INFO" agencyID="IMF">
+<structure:Name>SDDS Contact Info</structure:Name>
+<structure:TargetIdentifiers>
+	<structure:FullTargetIdentifier id="COMPONENT">
+		<structure:Name>Contacts</structure:Name>
+		<structure:IdentifierComponent id="METADATAFLOW">
+			<structure:Name>Metadata Flow</structure:Name>
+			<structure:TargetObjectClass>MetadataFlow</structure:TargetObjectClass>
+			<structure:RepresentationScheme representationScheme="METADATAFLOWS" representationSchemeAgency="IMF" representationSchemeType="Codelist"/>
+		</structure:IdentifierComponent>
+		<structure:IdentifierComponent id="CATEGORY">
+			<structure:Name>SDDS Categories</structure:Name>
+			<structure:TargetObjectClass>Category</structure:TargetObjectClass>
+			<structure:RepresentationScheme representationScheme="SDDS_CATEGORY_SCHEME" representationSchemeAgency="IMF" representationSchemeType="Category"/>
+		</structure:IdentifierComponent>
+		<structure:IdentifierComponent id="DATA_PROVIDER">
+			<structure:Name>Data Providers</structure:Name>
+			<structure:TargetObjectClass>DataProvider</structure:TargetObjectClass>
+			<structure:RepresentationScheme representationScheme="DATA_PROVIDER" representationSchemeAgency="IMF" representationSchemeType="Organisation"/>
+		</structure:IdentifierComponent>
+		<structure:IdentifierComponent id="COMPONENT">
+			<structure:Name>Components</structure:Name>
+			<structure:TargetObjectClass>MetadataAttribute</structure:TargetObjectClass>
+		</structure:IdentifierComponent>
+	</structure:FullTargetIdentifier>
+	<structure:PartialTargetIdentifier id="CATEGORY">
+		<structure:Name>Category</structure:Name>
+		<structure:IdentifierComponentRef>METADATAFLOW</structure:IdentifierComponentRef>		
+		<structure:IdentifierComponentRef>CATEGORY</structure:IdentifierComponentRef>
+		<structure:IdentifierComponentRef>DATA_PROVIDER</structure:IdentifierComponentRef>
+	</structure:PartialTargetIdentifier>
+	<structure:PartialTargetIdentifier id="AGENCY">
+		<structure:Name>Agency</structure:Name>
+		<structure:IdentifierComponentRef>METADATAFLOW</structure:IdentifierComponentRef>
+		<structure:IdentifierComponentRef>DATA_PROVIDER</structure:IdentifierComponentRef>
+	</structure:PartialTargetIdentifier>
+</structure:TargetIdentifiers>
+<structure:ReportStructure id="PRIMARY_CONTACT_REPORT_COMPONENT" target="COMPONENT">
+	<structure:Name>Report for Primary Contact Information</structure:Name>
+	<structure:MetadataAttribute conceptRef="PRIMARY_CONTACT" conceptAgency="IMF" conceptSchemeRef="SDDS_CONTACTS" conceptSchemeAgency="IMF" usageStatus="Conditional">
+		<structure:MetadataAttribute conceptRef="NAME" conceptAgency="IMF" conceptSchemeRef="SDDS_CONTACTS" conceptSchemeAgency="IMF" usageStatus="Conditional">
+			<structure:TextFormat/>
+		</structure:MetadataAttribute>
+		<structure:MetadataAttribute conceptRef="ADDRESS" conceptAgency="IMF" conceptSchemeRef="SDDS_CONTACTS" conceptSchemeAgency="IMF" usageStatus="Conditional">
+			<structure:TextFormat/>
+		</structure:MetadataAttribute>
+		<structure:MetadataAttribute conceptRef="TELEPHONE" conceptAgency="IMF" conceptSchemeRef="SDDS_CONTACTS" conceptSchemeAgency="IMF" usageStatus="Conditional">
+			<structure:TextFormat/>
+		</structure:MetadataAttribute>
+		<structure:MetadataAttribute conceptRef="E-MAIL" conceptAgency="IMF" conceptSchemeRef="SDDS_CONTACTS" conceptSchemeAgency="IMF" usageStatus="Conditional">
+			<structure:TextFormat/>
+		</structure:MetadataAttribute>
+	
+	</structure:MetadataAttribute>
+	
+</structure:ReportStructure>
+<structure:ReportStructure id="PRIMARY_CONTACT_REPORT_CATEGORY" target="CATEGORY">
+	<structure:Name>Report for Primary Contact Information</structure:Name>
+	<structure:MetadataAttribute conceptRef="PRIMARY_CONTACT" conceptAgency="IMF" conceptSchemeRef="SDDS_CONTACTS" conceptSchemeAgency="IMF" usageStatus="Conditional">
+		<structure:MetadataAttribute conceptRef="NAME" conceptAgency="IMF" conceptSchemeRef="SDDS_CONTACTS" conceptSchemeAgency="IMF" usageStatus="Conditional">
+			<structure:TextFormat/>
+		</structure:MetadataAttribute>
+		<structure:MetadataAttribute conceptRef="ADDRESS" conceptAgency="IMF" conceptSchemeRef="SDDS_CONTACTS" conceptSchemeAgency="IMF" usageStatus="Conditional">
+			<structure:TextFormat/>
+		</structure:MetadataAttribute>
+		<structure:MetadataAttribute conceptRef="TELEPHONE" conceptAgency="IMF" conceptSchemeRef="SDDS_CONTACTS" conceptSchemeAgency="IMF" usageStatus="Conditional">
+			<structure:TextFormat/>
+		</structure:MetadataAttribute>
+		<structure:MetadataAttribute conceptRef="E-MAIL" conceptAgency="IMF" conceptSchemeRef="SDDS_CONTACTS" conceptSchemeAgency="IMF" usageStatus="Conditional">
+			<structure:TextFormat/>
+		</structure:MetadataAttribute>
+	
+	</structure:MetadataAttribute>
+	
+</structure:ReportStructure>
+
+<structure:ReportStructure id="CONTACT_REPORT_COMPONENT" target="COMPONENT">
+	<structure:Name>Report for Primary Contact Information</structure:Name>
+	<structure:MetadataAttribute conceptRef="CONTACT" conceptAgency="IMF" conceptSchemeRef="SDDS_CONTACTS" conceptSchemeAgency="IMF" usageStatus="Conditional">
+		<structure:MetadataAttribute conceptRef="NAME" conceptAgency="IMF" conceptSchemeRef="SDDS_CONTACTS" conceptSchemeAgency="IMF" usageStatus="Conditional">
+			<structure:TextFormat/>
+		</structure:MetadataAttribute>
+		<structure:MetadataAttribute conceptRef="ADDRESS" conceptAgency="IMF" conceptSchemeRef="SDDS_CONTACTS" conceptSchemeAgency="IMF" usageStatus="Conditional">
+			<structure:TextFormat/>
+		</structure:MetadataAttribute>
+		<structure:MetadataAttribute conceptRef="TELEPHONE" conceptAgency="IMF" conceptSchemeRef="SDDS_CONTACTS" conceptSchemeAgency="IMF" usageStatus="Conditional">
+			<structure:TextFormat/>
+		</structure:MetadataAttribute>
+		<structure:MetadataAttribute conceptRef="E-MAIL" conceptAgency="IMF" conceptSchemeRef="SDDS_CONTACTS" conceptSchemeAgency="IMF" usageStatus="Conditional">
+			<structure:TextFormat/>
+		</structure:MetadataAttribute>
+	
+	</structure:MetadataAttribute>
+	
+</structure:ReportStructure>
+
+<structure:ReportStructure id="CONTACT_REPORT_CATEGORY" target="CATEGORY">
+	<structure:Name>Report for Primary Contact Information</structure:Name>
+	<structure:MetadataAttribute conceptRef="CONTACT" conceptAgency="IMF" conceptSchemeRef="SDDS_CONTACTS" conceptSchemeAgency="IMF" usageStatus="Conditional">
+		<structure:MetadataAttribute conceptRef="NAME" conceptAgency="IMF" conceptSchemeRef="SDDS_CONTACTS" conceptSchemeAgency="IMF" usageStatus="Conditional">
+			<structure:TextFormat/>
+		</structure:MetadataAttribute>
+		<structure:MetadataAttribute conceptRef="ADDRESS" conceptAgency="IMF" conceptSchemeRef="SDDS_CONTACTS" conceptSchemeAgency="IMF" usageStatus="Conditional">
+			<structure:TextFormat/>
+		</structure:MetadataAttribute>
+		<structure:MetadataAttribute conceptRef="TELEPHONE" conceptAgency="IMF" conceptSchemeRef="SDDS_CONTACTS" conceptSchemeAgency="IMF" usageStatus="Conditional">
+			<structure:TextFormat/>
+		</structure:MetadataAttribute>
+		<structure:MetadataAttribute conceptRef="E-MAIL" conceptAgency="IMF" conceptSchemeRef="SDDS_CONTACTS" conceptSchemeAgency="IMF" usageStatus="Conditional">
+			<structure:TextFormat/>
+		</structure:MetadataAttribute>
+	
+	</structure:MetadataAttribute>
+	
+</structure:ReportStructure>
+</structure:MetadataStructureDefinition>
+</MetadataStructureDefinitions>
+</Structure>

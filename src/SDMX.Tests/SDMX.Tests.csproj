@@ -33,30 +33,40 @@
   <ItemGroup>
     <Reference Include="nunit.framework, Version=2.5.1.9189, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\lib\nunit.framework.dll</HintPath>
+      <HintPath>..\..\lib\nunit.framework.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Data" />
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
-    <Reference Include="System.Data.DataSetExtensions">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Code.cs" />
+    <Compile Include="CodeList.cs" />
+    <Compile Include="Concept.cs" />
+    <Compile Include="Dimension.cs" />
+    <Compile Include="Extensions.cs" />
+    <Compile Include="GenericDataTests.cs" />
+    <Compile Include="KeyFamily.cs" />
+    <Compile Include="DataSet.cs" />
+    <Compile Include="Obs.cs" />
     <Compile Include="QueryMessageTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SDMXException.cs" />
+    <Compile Include="Series.cs" />
     <Compile Include="Utility.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SDMX\SDMX_ML.Framework.csproj">
       <Project>{B5A1E424-12DB-4B6B-96F5-C7899EDABE07}</Project>
       <Name>SDMX_ML.Framework</Name>
+      <Private>True</Private>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
