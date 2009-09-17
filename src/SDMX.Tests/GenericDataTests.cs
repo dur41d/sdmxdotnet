@@ -8,6 +8,7 @@ using Query = SDMX_ML.Framework.Query;
 using Generic = SDMX_ML.Framework.Generic;
 using System.Xml.Linq;
 using System.Linq;
+using System.Runtime.InteropServices;
 
 namespace SDMX.Tests
 {
@@ -45,6 +46,10 @@ namespace SDMX.Tests
         {
             string samplePath = Utility.GetPathFromProjectBase("lib\\CompactSample.xml");
             XDocument loadedXml = XDocument.Load(samplePath);
+
+            int bytes = Marshal.SizeOf(loadedXml);
+            int kbytes = bytes / 1024;
+            int Mbytes = kbytes / 1024;
 
             var message = new Messages.CompactData(loadedXml.ToString());
 
@@ -113,6 +118,8 @@ namespace SDMX.Tests
             frequencyList.AddCode(new Code("D"));
 
             var code = frequencyList["A"];
+
+            
         }
 
         [Test]
@@ -152,18 +159,11 @@ namespace SDMX.Tests
                 series.SetKeyValue(value.Key, value.Value);
             }
 
-            object keyValue = series.GetKeyValue("FREQ");
-
-            Observation obs = new Observation();
-            obs.SetTimePeriod(timePeriod);
-            obs.SetValue(obsValue);
+            Observation obs = Observation.Create(timePeriod, obsValue);
 
             series.AddObservation(obs);
 
         }
-
-
-
 
         private static KeyFamily CreateKeyFamily()
         {

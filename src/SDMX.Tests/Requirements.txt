@@ -1,0 +1,20 @@
+1: produce generic data message from database
+
+1. load data from database as one table
+2. create new DataSet
+3. for each row
+	1. build the serires and its attributes 
+	2. build the observation with its attributes
+	3. add the observation to the series
+	4. add the serires to the dataset
+	5. build the group with its attributes
+	6. add the group to dataset
+4. Create DataMessage
+5. Add header to data message
+6. Set the dataset to the data message
+7. Write the DataMessage to a file as GenericData sdmx message
+
+
+2: 
+
+	

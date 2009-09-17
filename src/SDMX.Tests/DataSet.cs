@@ -4,6 +4,14 @@ namespace SDMX.Tests
 {
     public class DataSet
     {
+        public IEnumerable<Series> Series
+        {
+            get
+            {
+                return series;
+            }            
+        }
+
         private List<Series> series = new List<Series>();
         public KeyFamily KeyFamily { get; private set; }
 
