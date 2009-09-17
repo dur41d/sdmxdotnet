@@ -52,8 +52,6 @@ http://www.SDMX.org/resources/SDMXML/schemas/v2_0/compact SDMXCompactData.xsd" >
 		<bisc:Series FREQ="A" COLLECTION="B" TIME_FORMAT="P1Y" VIS_CTY="MX" JD_TYPE="P" JD_CATEGORY="A">
 			<bisc:Obs TIME_PERIOD="2000-01" OBS_VALUE="3.14" OBS_STATUS="A"/>
 		</bisc:Series>
-		
-		
 		<bisc:Series FREQ="M" COLLECTION="B" TIME_FORMAT="P1M" VIS_CTY="MX" JD_TYPE="P" JD_CATEGORY="B">
 			<bisc:Obs TIME_PERIOD="2000-01" OBS_VALUE="5.14" OBS_STATUS="A"/>
 			<bisc:Obs TIME_PERIOD="2001-02" OBS_VALUE="3.29" OBS_STATUS="A"/>

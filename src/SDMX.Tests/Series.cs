@@ -9,8 +9,7 @@ namespace SDMX.Tests
     {
         //public SeriesKey Key { get; private set; }
         private Dictionary<Dimension, object> key = new Dictionary<Dimension,object>();
-
-        public Observation Obs { get; set; }
+        private Dictionary<TimePeriod, Observation> observations = new Dictionary<TimePeriod, Observation>();
         private DataSet dataSet;
 
         internal Series(DataSet dataSet)
@@ -49,9 +48,15 @@ namespace SDMX.Tests
             return value;
         }
 
-        internal void AddObservation(Observation obs)
+        internal void AddObservation(Observation observation)
         {
-            throw new NotImplementedException();
+            if (observations.Keys.Contains(observation.TimePeriod))
+            {
+                throw new SDMXException("observation with time period already exsists '{0}'".F(observation.TimePeriod));
+            }
+
+            observations.Add(observation.TimePeriod, observation);
+
         }
     }
 }

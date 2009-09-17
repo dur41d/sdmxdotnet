@@ -45,6 +45,10 @@
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Xml" />
+    <Reference Include="xmldiffpatch, Version=1.0.8.28, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\xmldiffpatch.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Code.cs" />
@@ -56,6 +60,7 @@
     <Compile Include="KeyFamily.cs" />
     <Compile Include="DataSet.cs" />
     <Compile Include="Obs.cs" />
+    <Compile Include="ParserTests.cs" />
     <Compile Include="QueryMessageTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SDMXException.cs" />
