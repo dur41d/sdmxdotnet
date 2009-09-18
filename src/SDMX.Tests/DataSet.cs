@@ -1,24 +1,26 @@
 ﻿using System.Collections.Generic;
+using System;
 
 namespace SDMX.Tests
 {
     public class DataSet
     {
-        public IEnumerable<Series> Series
+        public KeyFamily KeyFamily { get; internal set; }
+        public IList<Group> Groups { get; internal set; }
+        public IList<Series> Series { get; internal set; }
+        public IList<Attribute> Attributes { get; internal set; }
+        public IList<Annotation> Annotations { get; internal set; }
+
+        public DataSet()
         {
-            get
-            {
-                return series;
-            }            
+            Groups = new List<Group>();
+            Series = new List<Series>();
+            Attributes = new List<Attribute>();
+            Annotations = new List<Annotation>();
         }
 
-        private List<Series> series = new List<Series>();
-        public KeyFamily KeyFamily { get; private set; }
-
-
-        public DataSet(KeyFamily keyFamily)
-        {
-            // TODO: Complete member initialization
+        public DataSet(KeyFamily keyFamily) : this()
+        {            
             this.KeyFamily = keyFamily;
         }
 

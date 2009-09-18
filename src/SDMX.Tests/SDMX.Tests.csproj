@@ -51,12 +51,17 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Annotation.cs" />
+    <Compile Include="Attribute.cs" />
     <Compile Include="Code.cs" />
     <Compile Include="CodeList.cs" />
     <Compile Include="Concept.cs" />
     <Compile Include="Dimension.cs" />
+    <Compile Include="DSDParser.cs" />
     <Compile Include="Extensions.cs" />
+    <Compile Include="GenericDataSetParser.cs" />
     <Compile Include="GenericDataTests.cs" />
+    <Compile Include="Group.cs" />
     <Compile Include="KeyFamily.cs" />
     <Compile Include="DataSet.cs" />
     <Compile Include="Obs.cs" />

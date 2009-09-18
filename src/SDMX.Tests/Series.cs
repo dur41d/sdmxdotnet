@@ -12,20 +12,29 @@ namespace SDMX.Tests
         private Dictionary<TimePeriod, Observation> observations = new Dictionary<TimePeriod, Observation>();
         private DataSet dataSet;
 
-        internal Series(DataSet dataSet)
+        public IList<Attribute> Attributes { get; internal set; }
+        public IList<Annotation> Annotations { get; internal set; }
+
+        internal Series()
+        {
+            Attributes = new List<Attribute>();
+            Annotations = new List<Annotation>();
+        }
+
+        internal Series(DataSet dataSet) : this()
         {
             this.dataSet = dataSet;
         }
 
-        public void SetKeyValue(string conceptName, string dimensionValue)
+        public void AddKeyValue(string concept, string value)
         {
-            Dimension dimension = dataSet.KeyFamily.GetDimension(conceptName);
+            Dimension dimension = dataSet.KeyFamily.GetDimension(concept);
             if (dimension == null)
             { 
-                throw new SDMXException("Cannot find demension '{0}'".F(conceptName));
+                throw new SDMXException("Cannot find demension '{0}'".F(concept));
             }
 
-            object value = dimension.GetValue(dimensionValue);
+            object dimValue = dimension.GetValue(value);
 
             key[dimension] = value;
         }
@@ -58,5 +67,12 @@ namespace SDMX.Tests
             observations.Add(observation.TimePeriod, observation);
 
         }
+    }
+
+    public class DimensionValue
+    {
+        public Dimension Dimension { get; internal set; }
+        public object Value { get; internal set; }
+
     }
 }
