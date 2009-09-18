@@ -37,6 +37,8 @@ namespace SDMX.Tests
     {
         private Dictionary<string, Dimension> dimensions = new Dictionary<string, Dimension>();
 
+        public string ID { get; private set; }
+
         public IEnumerable<Dimension> Dimensions
         {
             get

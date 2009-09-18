@@ -133,7 +133,7 @@ namespace SDMX.Tests
             var series = dataSet.CreateEmptySeries();
             foreach (var value in values)
             {
-                series.SetKeyValue(value.Key, value.Value);
+                series.AddKeyValue(value.Key, value.Value);
             }            
 
             object keyValue = series.GetKeyValue("FREQ");
@@ -156,7 +156,7 @@ namespace SDMX.Tests
             var series = dataSet.CreateEmptySeries();
             foreach (var value in seriesValues)
             {
-                series.SetKeyValue(value.Key, value.Value);
+                series.AddKeyValue(value.Key, value.Value);
             }
 
             Observation obs = Observation.Create(timePeriod, obsValue);
