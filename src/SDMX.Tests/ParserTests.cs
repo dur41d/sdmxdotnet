@@ -16,7 +16,7 @@ namespace SDMX.Tests.NewModel
             string samplePath = Utility.GetPathFromProjectBase("lib\\GenericSample.xml");
             XDocument loadedXml = XDocument.Load(samplePath);
 
-            string dsdPath = Utility.GetPathFromProjectBase("lib\\Sample.xml");
+            string dsdPath = Utility.GetPathFromProjectBase("lib\\StructureSample.xml");
             XDocument dsdXml = XDocument.Load(samplePath);
 
             var datasetElement = (from e in loadedXml.Elements().First().Elements()

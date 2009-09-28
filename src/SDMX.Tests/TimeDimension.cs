@@ -5,16 +5,14 @@ using System.Text;
 
 namespace SDMX.Tests
 {
-
-    public class Dimension : Component
+    public class TimeDimension : Component
     {
-        public Dimension(Concept concept)
+        public TimeDimension(Concept concept)
             : base(concept)
         {
-
         }
 
-        public Dimension(Concept concept, CodeList codeList)
+        public TimeDimension(Concept concept, CodeList codeList)
             : base(concept, codeList)
         {
         }
