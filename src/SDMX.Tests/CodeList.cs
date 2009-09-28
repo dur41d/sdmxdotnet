@@ -28,14 +28,14 @@ namespace SDMX.Tests
             }
         }
 
-        public Code this[string value]
+        public Code this[string codeValue]
         {
             get
             {
-                Code result = null;
-                if (!codes.TryGetValue(value, out result))
+                Code result = codes.GetValueOrDefault(codeValue, null);
+                if (result == null)
                 {
-                    throw new Exception("Code does not exsist with this value");
+                    throw new Exception("Code does not exsist with this value '{0}'.".F(codeValue));
                 }
                 return result;
             }

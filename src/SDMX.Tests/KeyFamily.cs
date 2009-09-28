@@ -5,37 +5,13 @@ using System.Text;
 
 namespace SDMX.Tests
 {
-    //public class Code
-    //{
-    //    public string Value { get; private set; }
-
-    //    public Code(string value)
-    //    {
-    //        Value = value;
-    //    }
-    //}
-    //public class CodeList
-    //{
-    //    public string Name;
-    //    public List<Code> codes = new List<Code>();
-
-    //    public Code this[string codeValue]
-    //    {
-    //        get
-    //        {
-    //            var code = Codes.Where(c => c.Value == codeValue).SingleOrDefault();
-    //            if (code == null)
-    //            {
-    //                throw new Exception("Code does not exsist with this value");
-    //            }
-    //            return code;
-    //        }
-    //    }
-    //}
-
     public class KeyFamily
     {
         private Dictionary<string, Dimension> dimensions = new Dictionary<string, Dimension>();
+        private Dictionary<string, Attribute> attributes = new Dictionary<string, Attribute>();
+
+        public TimeDimension TimeDimension { get; internal set; }
+        public PrimaryMeasure PrimaryMeasure { get; internal set; }
 
         public string ID { get; private set; }
 
@@ -47,31 +23,42 @@ namespace SDMX.Tests
             }
         }
 
-        //public SeriesKey CreateSereisKey(string[,] keyValues)
-        //{
-        //    return new SeriesKey();
-        //}
-
-
-        //internal object GetDimesionValue(string concept, string dimensionValue, out int dimensionOrder)
-        //{
-        //    var dimension = this.Dimensions.Where(c => c.Concept.Id == concept).FirstOrDefault();
-        //    if (dimension == null)
-        //    {
-        //        throw new ApplicationException("no dimension existions with this concept name.");
-        //    }
-        //    dimensionOrder = dimension.Order;
-        //    return dimension.GetValue(dimensionValue);
-        //}
+        public IEnumerable<Attribute> Attributes
+        {
+            get
+            {
+                return attributes.Values.AsEnumerable();
+            }
+        }
 
         public Dimension GetDimension(string conceptName)
         {
-            return dimensions.GetValueOrDefault(conceptName, null);
+            var dimension = dimensions.GetValueOrDefault(conceptName, null);
+            if (dimension == null)
+            {
+                throw new SDMXException("Dimension not found: '{0}'".F(conceptName));
+            }
+            return dimension;
+        }
+
+        public Attribute GetAttribute(string conceptName)
+        {
+            var attribute = attributes.GetValueOrDefault(conceptName, null);
+            if (attribute == null)
+            {
+                throw new SDMXException("Attribute not found: '{0}'".F(conceptName));
+            }
+            return attribute;
         }
 
         public void AddDimension(Dimension dimension)
         {
             dimensions.Add(dimension.Concept.Id, dimension);
+        }
+
+        public void AddAttribute(Attribute attribute)
+        {
+            attributes.Add(attribute.Concept.Id, attribute);
         }
     }
 }

@@ -7,12 +7,10 @@ using System.Xml.Linq;
 
 namespace SDMX.Tests.NewModel
 {
-    public class DSDParser
+    internal class DSDParser
     {
         internal KeyFamily Parse(XDocument dsdXml)
         {
-
-
             return null;
         }
     }

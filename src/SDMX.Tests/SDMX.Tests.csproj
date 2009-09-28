@@ -52,25 +52,40 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Annotation.cs" />
+    <Compile Include="AssignmentStatus.cs" />
+    <Compile Include="AttachmentLevel.cs" />
     <Compile Include="Attribute.cs" />
+    <Compile Include="AttributeValues.cs" />
     <Compile Include="Code.cs" />
     <Compile Include="CodeList.cs" />
+    <Compile Include="ComponenetValues.cs" />
     <Compile Include="Concept.cs" />
     <Compile Include="Dimension.cs" />
+    <Compile Include="Component.cs" />
+    <Compile Include="DimensionValues.cs" />
     <Compile Include="DSDParser.cs" />
+    <Compile Include="ElementValidator.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="GenericDataSetParser.cs" />
     <Compile Include="GenericDataTests.cs" />
     <Compile Include="Group.cs" />
     <Compile Include="KeyFamily.cs" />
     <Compile Include="DataSet.cs" />
-    <Compile Include="Obs.cs" />
+    <Compile Include="Language.cs" />
+    <Compile Include="Text.cs" />
+    <Compile Include="TextFormat.cs" />
+    <Compile Include="TimePeriod.cs" />
+    <Compile Include="Observation.cs" />
     <Compile Include="ParserTests.cs" />
+    <Compile Include="PrimaryMeasure.cs" />
     <Compile Include="QueryMessageTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SDMXException.cs" />
     <Compile Include="Series.cs" />
+    <Compile Include="SeriesKey.cs" />
+    <Compile Include="TimeDimension.cs" />
     <Compile Include="Utility.cs" />
+    <Compile Include="ObservationValue.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SDMX\SDMX_ML.Framework.csproj">

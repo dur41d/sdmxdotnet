@@ -119,49 +119,6 @@ namespace SDMX.Tests
 
             var code = frequencyList["A"];
 
-            
-        }
-
-        [Test]
-        public void Create_series_key()
-        {
-            var values = new List<KeyValuePair<string, string>>();
-            values.Add(new KeyValuePair<string, string>("FREQ", "A"));
-
-            var keyFamily = CreateKeyFamily();
-            var dataSet = new DataSet(keyFamily);
-            var series = dataSet.CreateEmptySeries();
-            foreach (var value in values)
-            {
-                series.AddKeyValue(value.Key, value.Value);
-            }            
-
-            object keyValue = series.GetKeyValue("FREQ");
-
-            Assert.IsTrue(keyValue is Code);
-            Assert.IsTrue(((Code)keyValue).Value == "A");
-
-        }
-
-        [Test]
-        public void Add_observateion()
-        {
-            var seriesValues = new List<KeyValuePair<string, string>>();
-            seriesValues.Add(new KeyValuePair<string, string>("FREQ", "A"));
-            string timePeriod = "1998";
-            string obsValue = "9.993489";
-
-            var keyFamily = CreateKeyFamily();
-            var dataSet = new DataSet(keyFamily);
-            var series = dataSet.CreateEmptySeries();
-            foreach (var value in seriesValues)
-            {
-                series.AddKeyValue(value.Key, value.Value);
-            }
-
-            Observation obs = Observation.Create(timePeriod, obsValue);
-
-            series.AddObservation(obs);
 
         }
 
@@ -181,6 +138,6 @@ namespace SDMX.Tests
             return keyFamily;
         }
 
-    
+
     }
 }
