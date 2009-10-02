@@ -5,7 +5,7 @@ using System.Text;
 using NUnit.Framework;
 using System.Xml.Linq;
 
-namespace SDMX.Tests.NewModel
+namespace SDMX.Tests
 {
     [TestFixture]
     public class ParserTests
@@ -23,11 +23,8 @@ namespace SDMX.Tests.NewModel
                                   where e.Name.LocalName == "DataSet"
                                   select e).Single();
 
-            var dsdParser = new DSDParser();
-            KeyFamily keyFamiliy = dsdParser.Parse(dsdXml);
-
-            var parser = new GenericDataSetParser(keyFamiliy);
-            var dataSet = parser.Parse(datasetElement);
+            KeyFamily keyFamiliy = KeyFamily.Parse(dsdXml);
+            DataSet dataSet = DataSet.Parse(datasetElement, keyFamiliy);
 
         }
      

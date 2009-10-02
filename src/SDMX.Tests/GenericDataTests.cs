@@ -1,143 +1,143 @@
-﻿using System;
-using System.Collections.Generic;
-using NUnit.Framework;
-using Common = SDMX_ML.Framework.Common;
-using Message = SDMX_ML.Framework.Message;
-using Messages = SDMX_ML.Framework.Messages;
-using Query = SDMX_ML.Framework.Query;
-using Generic = SDMX_ML.Framework.Generic;
-using System.Xml.Linq;
-using System.Linq;
-using System.Runtime.InteropServices;
+﻿//using System;
+//using System.Collections.Generic;
+//using NUnit.Framework;
+//using Common = SDMX_ML.Framework.Common;
+//using Message = SDMX_ML.Framework.Message;
+//using Messages = SDMX_ML.Framework.Messages;
+//using Query = SDMX_ML.Framework.Query;
+//using Generic = SDMX_ML.Framework.Generic;
+//using System.Xml.Linq;
+//using System.Linq;
+//using System.Runtime.InteropServices;
 
-namespace SDMX.Tests
-{
-    [TestFixture]
-    public class GenericDataTests
-    {
-        [Test]
-        public void Create_GenericData_from_xml()
-        {
-            string samplePath = Utility.GetPathFromProjectBase("lib\\GenericSample.xml");
-            XDocument loadedXml = XDocument.Load(samplePath);
+//namespace SDMX.Tests
+//{
+//    [TestFixture]
+//    public class GenericDataTests
+//    {
+//        [Test]
+//        public void Create_GenericData_from_xml()
+//        {
+//            string samplePath = Utility.GetPathFromProjectBase("lib\\GenericSample.xml");
+//            XDocument loadedXml = XDocument.Load(samplePath);
 
-            var message = new Messages.GenericData(loadedXml.ToString());
+//            var message = new Messages.GenericData(loadedXml.ToString());
 
-            XDocument generatedXml = XDocument.Parse(message.ToXml());
+//            XDocument generatedXml = XDocument.Parse(message.ToXml());
 
-            Assert.IsTrue(Utility.CompareXML(loadedXml, generatedXml));
-        }
+//            Assert.IsTrue(Utility.CompareXML(loadedXml, generatedXml));
+//        }
 
-        [Test]
-        public void Create_Structure_from_xml()
-        {
-            string samplePath = Utility.GetPathFromProjectBase("lib\\StructureSample.xml");
-            XDocument loadedXml = XDocument.Load(samplePath);
+//        [Test]
+//        public void Create_Structure_from_xml()
+//        {
+//            string samplePath = Utility.GetPathFromProjectBase("lib\\StructureSample.xml");
+//            XDocument loadedXml = XDocument.Load(samplePath);
 
-            var message = new Messages.Structure(loadedXml.ToString());
+//            var message = new Messages.Structure(loadedXml.ToString());
 
-            XDocument generatedXml = XDocument.Parse(message.ToXml());
+//            XDocument generatedXml = XDocument.Parse(message.ToXml());
 
-            Assert.IsTrue(Utility.CompareXML(loadedXml, generatedXml));
-        }
+//            Assert.IsTrue(Utility.CompareXML(loadedXml, generatedXml));
+//        }
 
-        [Test]
-        public void Create_Copmpact_from_xml()
-        {
-            string samplePath = Utility.GetPathFromProjectBase("lib\\CompactSample.xml");
-            XDocument loadedXml = XDocument.Load(samplePath);
+//        [Test]
+//        public void Create_Copmpact_from_xml()
+//        {
+//            string samplePath = Utility.GetPathFromProjectBase("lib\\CompactSample.xml");
+//            XDocument loadedXml = XDocument.Load(samplePath);
 
-            int bytes = Marshal.SizeOf(loadedXml);
-            int kbytes = bytes / 1024;
-            int Mbytes = kbytes / 1024;
+//            int bytes = Marshal.SizeOf(loadedXml);
+//            int kbytes = bytes / 1024;
+//            int Mbytes = kbytes / 1024;
 
-            var message = new Messages.CompactData(loadedXml.ToString());
+//            var message = new Messages.CompactData(loadedXml.ToString());
 
-            XDocument generatedXml = XDocument.Parse(message.ToXml());
+//            XDocument generatedXml = XDocument.Parse(message.ToXml());
 
-            Assert.IsTrue(Utility.CompareXML(loadedXml, generatedXml));
-        }
+//            Assert.IsTrue(Utility.CompareXML(loadedXml, generatedXml));
+//        }
 
-        [Test, Ignore("TODO: To be implemented")]
-        public void Create_Utility_from_xml()
-        {
-            string samplePath = Utility.GetPathFromProjectBase("lib\\GenericSample.xml");
-            XDocument loadedXml = XDocument.Load(samplePath);
+//        [Test, Ignore("TODO: To be implemented")]
+//        public void Create_Utility_from_xml()
+//        {
+//            string samplePath = Utility.GetPathFromProjectBase("lib\\GenericSample.xml");
+//            XDocument loadedXml = XDocument.Load(samplePath);
 
-            var message = new Messages.UtilityData();
+//            var message = new Messages.UtilityData();
 
-            XDocument generatedXml = XDocument.Parse(message.ToXml());
+//            XDocument generatedXml = XDocument.Parse(message.ToXml());
 
-            Assert.IsTrue(Utility.CompareXML(loadedXml, generatedXml));
-        }
+//            Assert.IsTrue(Utility.CompareXML(loadedXml, generatedXml));
+//        }
 
-        [Test]
-        public void Create_GenericDataSet()
-        {
-            var dataset = new Generic.DataSetType();
+//        [Test]
+//        public void Create_GenericDataSet()
+//        {
+//            var dataset = new Generic.DataSetType();
 
-            var series = new Generic.SeriesType()
-            {
-                Serieskey = new List<Generic.ValueType>()
-                {
-                    new Generic.ValueType() { Concept = new Common.IDType("FREQ"), Value = "A" },
-                    new Generic.ValueType() { Concept = new Common.IDType("SEX"), Value = "M" },
-                    new Generic.ValueType() { Concept = new Common.IDType("AGE"), Value = "15" }
-                },
-                Obs = new List<Generic.ObsType>()
-                {
-                    new Generic.ObsType() 
-                    { 
-                        Time = new Common.TimePeriodType() { TimePeriod = "2007" },
-                        ObsValue = new Generic.ObsValueType() { Value = 1 }
-                    },
-                    new Generic.ObsType() 
-                    { 
-                        Time = new Common.TimePeriodType() { TimePeriod = "2008" },
-                        ObsValue = new Generic.ObsValueType() { Value = 2 }
-                    },
-                    new Generic.ObsType() 
-                    { 
-                        Time = new Common.TimePeriodType() { TimePeriod = "2009" },
-                        ObsValue = new Generic.ObsValueType() { Value = 3 }
-                    }
-                }
-            };
+//            var series = new Generic.SeriesType()
+//            {
+//                Serieskey = new List<Generic.ValueType>()
+//                {
+//                    new Generic.ValueType() { Concept = new Common.IDType("FREQ"), Value = "A" },
+//                    new Generic.ValueType() { Concept = new Common.IDType("SEX"), Value = "M" },
+//                    new Generic.ValueType() { Concept = new Common.IDType("AGE"), Value = "15" }
+//                },
+//                Obs = new List<Generic.ObsType>()
+//                {
+//                    new Generic.ObsType() 
+//                    { 
+//                        Time = new Common.TimePeriodType() { TimePeriod = "2007" },
+//                        ObsValue = new Generic.ObsValueType() { Value = 1 }
+//                    },
+//                    new Generic.ObsType() 
+//                    { 
+//                        Time = new Common.TimePeriodType() { TimePeriod = "2008" },
+//                        ObsValue = new Generic.ObsValueType() { Value = 2 }
+//                    },
+//                    new Generic.ObsType() 
+//                    { 
+//                        Time = new Common.TimePeriodType() { TimePeriod = "2009" },
+//                        ObsValue = new Generic.ObsValueType() { Value = 3 }
+//                    }
+//                }
+//            };
 
-            dataset.Series.Add(series);
-        }
+//            dataset.Series.Add(series);
+//        }
 
-        [Test]
-        public void Create_CodeList()
-        {
-            // create code list 
-            var frequencyList = new CodeList("FREQ");
-            frequencyList.AddCode(new Code("A"));
-            frequencyList.AddCode(new Code("B"));
-            frequencyList.AddCode(new Code("C"));
-            frequencyList.AddCode(new Code("D"));
+//        [Test]
+//        public void Create_CodeList()
+//        {
+//            // create code list 
+//            var frequencyList = new CodeList("FREQ");
+//            frequencyList.AddCode(new Code("A"));
+//            frequencyList.AddCode(new Code("B"));
+//            frequencyList.AddCode(new Code("C"));
+//            frequencyList.AddCode(new Code("D"));
 
-            var code = frequencyList["A"];
-
-
-        }
-
-        private static KeyFamily CreateKeyFamily()
-        {
-            var frequencyList = new CodeList("FREQ");
-            frequencyList.AddCode(new Code("A"));
-            frequencyList.AddCode(new Code("B"));
-            frequencyList.AddCode(new Code("C"));
-            frequencyList.AddCode(new Code("D"));
-
-            var keyFamily = new KeyFamily();
-
-            Concept freqConcept = new Concept("FREQ");
-
-            keyFamily.AddDimension(new Dimension(freqConcept, frequencyList));
-            return keyFamily;
-        }
+//            var code = frequencyList["A"];
 
 
-    }
-}
+//        }
+
+//        private static KeyFamily CreateKeyFamily()
+//        {
+//            var frequencyList = new CodeList("FREQ");
+//            frequencyList.AddCode(new Code("A"));
+//            frequencyList.AddCode(new Code("B"));
+//            frequencyList.AddCode(new Code("C"));
+//            frequencyList.AddCode(new Code("D"));
+
+//            var keyFamily = new KeyFamily();
+
+//            Concept freqConcept = new Concept("FREQ");
+
+//            keyFamily.AddDimension(new Dimension(freqConcept, frequencyList));
+//            return keyFamily;
+//        }
+
+
+//    }
+//}
