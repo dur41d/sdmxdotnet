@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{31750F4E-5778-433D-9C2A-98971C45B051}</ProjectGuid>
+    <ProjectGuid>{8729DEDD-51EA-41DB-BF49-89297BB56D54}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SDMX.Tests</RootNamespace>
-    <AssemblyName>SDMX.Tests</AssemblyName>
+    <RootNamespace>SDMX</RootNamespace>
+    <AssemblyName>SDMX</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -31,40 +31,57 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="nunit.framework, Version=2.5.1.9189, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\lib\nunit.framework.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
-    <Reference Include="System.Data" />
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
-    <Reference Include="System.Xml" />
-    <Reference Include="xmldiffpatch, Version=1.0.8.28, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\lib\xmldiffpatch.dll</HintPath>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="GenericDataTests.cs" />
-    <Compile Include="IDTests.cs" />
-    <Compile Include="OXM.cs" />
-    <Compile Include="OXMTests.cs" />
-    <Compile Include="ParserTests.cs" />
-    <Compile Include="QueryMessageTests.cs" />
+    <Compile Include="AnnotableArtefact.cs" />
+    <Compile Include="Annotation.cs" />
+    <Compile Include="ID.cs" />
+    <Compile Include="IdentifiableArtefact.cs" />
+    <Compile Include="Item.cs" />
+    <Compile Include="ItemScheme.cs" />
+    <Compile Include="MaintainableArtefact.cs" />
+    <Compile Include="Structure\AssignmentStatus.cs" />
+    <Compile Include="Structure\AttachmentLevel.cs" />
+    <Compile Include="Structure\Attribute.cs" />
+    <Compile Include="Data\AttributeValues.cs" />
+    <Compile Include="Structure\Code.cs" />
+    <Compile Include="Structure\CodeList.cs" />
+    <Compile Include="Data\ComponenetValues.cs" />
+    <Compile Include="Structure\Component.cs" />
+    <Compile Include="Structure\Concept.cs" />
+    <Compile Include="Data\DataSet.cs" />
+    <Compile Include="Structure\Dimension.cs" />
+    <Compile Include="Data\DimensionValues.cs" />
+    <Compile Include="Parsers\KeyFamilyParser.cs" />
+    <Compile Include="Extensions.cs" />
+    <Compile Include="Parsers\GenericDataSetParser.cs" />
+    <Compile Include="Structure\Group.cs" />
+    <Compile Include="Structure\KeyFamily.cs" />
+    <Compile Include="Language.cs" />
+    <Compile Include="Data\Observation.cs" />
+    <Compile Include="Data\ObservationValue.cs" />
+    <Compile Include="Structure\PrimaryMeasure.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Utility.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\SDMX\SDMX.csproj">
-      <Project>{8729DEDD-51EA-41DB-BF49-89297BB56D54}</Project>
-      <Name>SDMX</Name>
-    </ProjectReference>
+    <Compile Include="Exceptions.cs" />
+    <Compile Include="Data\Series.cs" />
+    <Compile Include="Data\SeriesKey.cs" />
+    <Compile Include="Text.cs" />
+    <Compile Include="TextFormat.cs" />
+    <Compile Include="Structure\TimeDimension.cs" />
+    <Compile Include="Data\TimePeriod.cs" />
+    <Compile Include="VersionableArtefact.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
