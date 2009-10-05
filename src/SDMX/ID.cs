@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using Common;
 
 namespace SDMX
 {
@@ -46,6 +47,10 @@ namespace SDMX
 
         public static implicit operator string(ID id)
         {
+            if (id == null)
+            {
+                return null;
+            }
             return id.value;
         }
 
