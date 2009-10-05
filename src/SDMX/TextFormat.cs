@@ -8,7 +8,7 @@ namespace SDMX
 {
     public class TextFormat
     {
-        public TextType TextType { get; internal set; }
+        public TextType TextType { get; set; }
         public bool IsSequence { get; internal set; }
         public int MinLength { get; internal set; }
         public int MaxLenght { get; internal set; }

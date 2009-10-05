@@ -9,6 +9,7 @@ namespace SDMX.Tests
 {
     public class DimensionTest
     {
+        public Concept Concept { get; set; }
         public bool IsMeasureDimension { get; set; }
     }
     [TestFixture]
@@ -18,10 +19,11 @@ namespace SDMX.Tests
         public void ToXml()
         {
             var map = new DimensionMap(new DSD());
-            var dimension = new DimensionTest();
+            var concept = new Concept("conceptID");
+            var dimension = new Dimension(concept);
             dimension.IsMeasureDimension = true;
-            var element = new XElement("Dimension");
-            map.ToXml(element, dimension);
+            
+            XElement element = map.ToXml(dimension);
 
             Assert.IsNotNull(element);
             Assert.IsNotNull(element.Attribute("isMeasureDimension"));
@@ -32,13 +34,26 @@ namespace SDMX.Tests
         [Test]
         public void ToObj()
         {
-            var element = new XElement("Dimension", new XAttribute("isMeasureDimension", true));
+            var element = new XElement("Dimension", 
+                new XAttribute("conceptRef", "FREQ"),
+                new XAttribute("isMeasureDimension", true)
+                );
             var map = new DimensionMap(new DSD());            
-            var dimension = new DimensionTest();
-            map.ToObj(element, dimension);
+            var dimension = map.ToObj(element);
 
             Assert.IsNotNull(dimension);
+            Assert.IsNotNull(dimension.Concept);
+            Assert.AreEqual("FREQ", dimension.Concept.Id);
             Assert.AreEqual(true, dimension.IsMeasureDimension);
+        }
+    }
+
+
+    public class DSD
+    {
+        public Concept GetConcept(ID concept, ID conceptAgency)
+        {
+            return new Concept(concept);
         }
     }
 }
