@@ -7,9 +7,9 @@ namespace SDMX
 {
     public abstract class Component
     {
-        public Concept Concept { get; private set; }
-        public CodeList CodeList { get; private set; }
-        public TextFormat TextFormat { get; private set; }
+        public Concept Concept { get; set; }
+        public CodeList CodeList { get; set; }
+        public TextFormat TextFormat { get; set; }
 
         public int Order { get; set; }
 

@@ -6,23 +6,15 @@ using System.Xml.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using Common;
+using OXM;
 
-namespace SDMX.Tests
-{
-  
+namespace SDMX.Parsers
+{ 
     public class DimensionMap : ClassMap<Dimension>
     {
         private DSD dsd;
         private AttributeMap<Dimension, ID> conceptRef;
         private AttributeMap<Dimension, ID> conceptAgency;
-
-        public override string ElementName
-        {
-            get
-            {
-                return "Dimension";
-            }
-        }
 
         public DimensionMap(DSD dsd)
         {   
@@ -41,8 +33,10 @@ namespace SDMX.Tests
                 .Setter((d, b) => d.IsMeasureDimension = b)
                 .Parser(s => bool.Parse(s));
 
-            MapElement<TextFormat>("TextFormat", 0, 1)
-                .Using(new TextFormatMap());
+            MapElement<TextFormat>("TextFormat", false)
+                .Parser(new TextFormatMap())
+                .Getter(o => o.TextFormat)
+                .Setter((o, p) => o.TextFormat = p);
         }
 
         protected override Dimension CreateObject()
@@ -51,6 +45,14 @@ namespace SDMX.Tests
             var dimension = new Dimension(concept);
             return dimension;
 
+        }
+    }
+
+    public class DSD
+    {
+        public Concept GetConcept(ID concept, ID conceptAgency)
+        {
+            return new Concept(concept);
         }
     }
 }

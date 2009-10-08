@@ -9,6 +9,11 @@ namespace SDMX
 {
     public class KeyFamily : MaintainableArtefact
     {
+        public KeyFamily(ID id, ID agencyID)
+            : base(id, agencyID)
+        {   
+        }
+
         private Dictionary<string, Dimension> dimensions = new Dictionary<string, Dimension>();
         private Dictionary<string, Attribute> attributes = new Dictionary<string, Attribute>();
 

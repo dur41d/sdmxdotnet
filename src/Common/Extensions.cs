@@ -7,30 +7,38 @@ namespace Common
 {
     public static class Extensions
     {
-        public static string F(this string @this, params object[] args)
+        public static string F(this string source, params object[] args)
         {
-            return string.Format(@this, args);
+            return string.Format(source, args);
         }
 
-        public static TValue GetValueOrDefault<TKey,TValue>(this Dictionary<TKey, TValue> @this, TKey key, TValue defaultValue)
+        public static TValue GetValueOrDefault<TKey, TValue>(this Dictionary<TKey, TValue> source, TKey key, TValue defaultValue)
         {
             TValue result = defaultValue;
-            @this.TryGetValue(key, out result);
+            source.TryGetValue(key, out result);
             return result;
         }
-    }
 
-    internal class Equality<T> where T : class
-    { 
-        public static bool Equal(T x, T y)
+        public static void ForEach<T>(this IEnumerable<T> source, Action<T> action)
         {
-            if (object.ReferenceEquals(x, y))
-                return true;
-
-            if ((object)x == null || (object)y == null)
-                return false;
-
-            return x.Equals(y);
+            foreach (T element in source)
+                action(element);
         }
     }
+
+    //internal class Equality<T> where T : class
+    //{ 
+    //    public static bool Equal(T x, T y)
+    //    {
+    //        if (object.ReferenceEquals(x, y))
+    //            return true;
+
+    //        if ((object)x == null || (object)y == null)
+    //            return false;
+
+    //        return x.Equals(y);
+    //    }
+    //}
+
+
 }

@@ -7,7 +7,13 @@ namespace SDMX
 {
     public abstract class MaintainableArtefact : VersionableArtefact
     {
-        public ID AgencyID { get; protected set; }
-        public bool Final { get; set; }
+        public MaintainableArtefact(ID id, ID agencyID)
+            : base(id)
+        {
+            AgencyID = agencyID;
+        }
+        
+        public ID AgencyID { get; private set; }
+        public bool IsFinal { get; set; }
     }
 }

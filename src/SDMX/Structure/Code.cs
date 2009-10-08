@@ -7,6 +7,10 @@ namespace SDMX
 {
     public class Code : Item
     {
+        public Code(ID id)
+            : base(id)
+        { }
+        
         public CodeList CodeList 
         {
             get 
