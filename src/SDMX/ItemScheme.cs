@@ -10,6 +10,11 @@ namespace SDMX
 
     public abstract class ItemScheme<T> : MaintainableArtefact, IItemScheme where T : Item
     {
+        public ItemScheme(ID id, ID agencyID)
+            : base(id, agencyID)
+        {             
+        }
+
         protected Dictionary<string, T> items = new Dictionary<string, T>();        
 
         public void Add(T item)

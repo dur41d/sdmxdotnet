@@ -8,6 +8,22 @@ namespace SDMX
     public class InternationalString
     {
         private Dictionary<Language, string> localizedStrings = new Dictionary<Language, string>();
+
+        public IEnumerable<Language> Languages
+        {
+            get
+            {
+                return localizedStrings.Keys.AsEnumerable();
+            }
+        }
+
+        public IEnumerable<string> LocalizedStrings
+        {
+            get
+            {
+                return localizedStrings.Values.AsEnumerable();
+            }
+        }
         
         public string this[Language language]
         {

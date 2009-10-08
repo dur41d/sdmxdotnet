@@ -133,7 +133,7 @@ namespace SDMX.Parsers
                             }
                             else if (element.Name.LocalName == "AnnotationURL")
                             {
-                                annotation.Url = element.Value;
+                                annotation.Url = new Uri(element.Value);
                             }
                             else if (element.Name.LocalName == "AnnotationText")
                             {

@@ -7,6 +7,10 @@ namespace SDMX
 {
     public abstract class Item : VersionableArtefact
     {
+        public Item(ID id)
+            : base(id)
+        { }
+        
         public Item Parent { get; protected set; }
         internal IItemScheme ItemScheme { get; set; }
 

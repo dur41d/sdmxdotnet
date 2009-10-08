@@ -6,7 +6,11 @@ using System.Text;
 namespace SDMX
 {
     public class CodeList : ItemScheme<Code>
-    {   
+    {
+        public CodeList(ID id, ID agencyID)
+            : base(id, agencyID)
+        { }
+        
         public override Uri Urn
         {
             get 
