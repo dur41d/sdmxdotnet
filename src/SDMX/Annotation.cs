@@ -10,11 +10,11 @@ namespace SDMX
         public string Title { get; set; }
         public string Type { get; set; }
         public Uri Url { get; set; }
-        public InternationalString Text { get; private set; }
+        public InternationalText Text { get; private set; }
 
         public Annotation()
         {
-            Text = new InternationalString();
+            Text = new InternationalText();
         }
     }
 }

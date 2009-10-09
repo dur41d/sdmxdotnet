@@ -5,7 +5,7 @@ using System.Text;
 
 namespace SDMX
 {
-    public class InternationalString
+    public class InternationalText
     {
         private Dictionary<Language, string> localizedStrings = new Dictionary<Language, string>();
 

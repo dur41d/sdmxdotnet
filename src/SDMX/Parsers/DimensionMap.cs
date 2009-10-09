@@ -9,50 +9,58 @@ using Common;
 using OXM;
 
 namespace SDMX.Parsers
-{ 
-    public class DimensionMap : ClassMap<Dimension>
+{
+    
+    public class DimensionMap : CompoenentMap<Dimension>
     {
-        private DSD dsd;
-        private AttributeMap<Dimension, ID> conceptRef;
-        private AttributeMap<Dimension, ID> conceptAgency;
+        private DSD _dsd;
+        
 
         public DimensionMap(DSD dsd)
+            : base(dsd)
         {   
-            this.dsd = dsd;
-
-            conceptRef = MapAttribute<ID>("conceptRef", true)
-                .Getter(d => d.Concept.Id)
-                .Parser(s => s);
-
-            conceptAgency = MapAttribute<ID>("conceptAgency", false)
-               .Getter(d => d.Concept.Id)
-               .Parser(s => s);
+            _dsd = dsd;
 
             MapAttribute<bool>("isMeasureDimension", false, false)
-                .Getter(d => d.IsMeasureDimension)
-                .Setter((d, b) => d.IsMeasureDimension = b)
-                .Parser(s => bool.Parse(s));
+              .Getter(o => o.IsMeasureDimension)
+              .Setter((d, b) => d.IsMeasureDimension = b)
+              .Parser(s => bool.Parse(s));
 
-            MapElement<TextFormat>("TextFormat", false)
-                .Parser(new TextFormatMap())
-                .Getter(o => o.TextFormat)
-                .Setter((o, p) => o.TextFormat = p);
+            MapAttribute<bool>("isFrequencyDimension", false, false)
+              .Getter(o => o.IsFrequencyDimension)
+              .Setter((d, b) => d.IsFrequencyDimension = b)
+              .Parser(s => bool.Parse(s));
+
+            MapAttribute<bool>("isEntityDimension", false, false)
+              .Getter(o => o.IsEntityDimension)
+              .Setter((d, b) => d.IsEntityDimension = b)
+              .Parser(s => bool.Parse(s));
+
+            MapAttribute<bool>("isCountDimension", false, false)
+              .Getter(o => o.IsCountDimension)
+              .Setter((d, b) => d.IsCountDimension = b)
+              .Parser(s => bool.Parse(s));
+
+            MapAttribute<bool>("isNonObservationTimeDimension", false, false)
+              .Getter(o => o.IsNonObservationTimeDimension)
+              .Setter((d, b) => d.IsNonObservationTimeDimension = b)
+              .Parser(s => bool.Parse(s));
+
+            MapAttribute<bool>("isIdentityDimension", false, false)
+              .Getter(o => o.IsIdentityDimension)
+              .Setter((d, b) => d.IsIdentityDimension = b)
+              .Parser(s => bool.Parse(s));
         }
 
         protected override Dimension CreateObject()
         {
-            var concept = dsd.GetConcept(conceptRef.Value, conceptAgency.Value);
+            var concept = _dsd.GetConcept(conceptRef.Value, conceptAgency.Value, conceptVersion.Value, conceptSchemeRef.Value, conceptSchemeAgency.Value);
+
             var dimension = new Dimension(concept);
+
+            SetComponentProperties(dimension);
+
             return dimension;
-
-        }
-    }
-
-    public class DSD
-    {
-        public Concept GetConcept(ID concept, ID conceptAgency)
-        {
-            return new Concept(concept);
-        }
+        }       
     }
 }

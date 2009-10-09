@@ -5,15 +5,10 @@ using System.Text;
 
 namespace SDMX
 {
-    public abstract class Item : VersionableArtefact
+    public interface Item
     {
-        public Item(ID id)
-            : base(id)
-        { }
-        
-        public Item Parent { get; protected set; }
-        internal IItemScheme ItemScheme { get; set; }
-
-        internal abstract string Key { get; }
-    }
+        Item Parent { get; set; }
+        IItemScheme ItemScheme { get; set; }
+        string Key { get; }
+    }     
 }

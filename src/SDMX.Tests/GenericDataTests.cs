@@ -1,32 +1,32 @@
-﻿//using System;
-//using System.Collections.Generic;
-//using NUnit.Framework;
-//using Common = SDMX_ML.Framework.Common;
-//using Message = SDMX_ML.Framework.Message;
-//using Messages = SDMX_ML.Framework.Messages;
-//using Query = SDMX_ML.Framework.Query;
-//using Generic = SDMX_ML.Framework.Generic;
-//using System.Xml.Linq;
-//using System.Linq;
-//using System.Runtime.InteropServices;
+﻿using System;
+using System.Collections.Generic;
+using NUnit.Framework;
+using Common = SDMX_ML.Framework.Common;
+using Message = SDMX_ML.Framework.Message;
+using Messages = SDMX_ML.Framework.Messages;
+using Query = SDMX_ML.Framework.Query;
+using Generic = SDMX_ML.Framework.Generic;
+using System.Xml.Linq;
+using System.Linq;
+using System.Runtime.InteropServices;
 
-//namespace SDMX.Tests
-//{
-//    [TestFixture]
-//    public class GenericDataTests
-//    {
-//        [Test]
-//        public void Create_GenericData_from_xml()
-//        {
-//            string samplePath = Utility.GetPathFromProjectBase("lib\\GenericSample.xml");
-//            XDocument loadedXml = XDocument.Load(samplePath);
+namespace SDMX.Tests
+{
+    [TestFixture]
+    public class GenericDataTests
+    {
+        [Test]
+        public void Create_GenericData_from_xml()
+        {
+            string samplePath = Utility.GetPathFromProjectBase("lib\\GenericSample.xml");
+            XDocument loadedXml = XDocument.Load(samplePath);
 
-//            var message = new Messages.GenericData(loadedXml.ToString());
+            var message = new Messages.GenericData(loadedXml.ToString());
 
-//            XDocument generatedXml = XDocument.Parse(message.ToXml());
+            XDocument generatedXml = XDocument.Parse(message.ToXml());
 
-//            Assert.IsTrue(Utility.CompareXML(loadedXml, generatedXml));
-//        }
+            Assert.IsTrue(Utility.CompareXML(loadedXml, generatedXml));
+        }
 
 //        [Test]
 //        public void Create_Structure_from_xml()
@@ -139,5 +139,5 @@
 //        }
 
 
-//    }
-//}
+    }
+}

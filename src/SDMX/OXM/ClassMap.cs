@@ -11,6 +11,7 @@ namespace OXM
 {
     public abstract class ClassMap<T>
     {
+        private T Object { get; set; }
         private Dictionary<string, IAttributeMap<T>> _attributeMaps = new Dictionary<string, IAttributeMap<T>>();
         private Dictionary<string, IElementMap<T>> _elementMaps = new Dictionary<string, IElementMap<T>>();        
         private IValueMap<T> _valueMap;
@@ -71,24 +72,24 @@ namespace OXM
                 _valueMap.SetValue(element);
             }
 
-            T obj = CreateObject();
+            Object = CreateObject();
 
             foreach (var map in _attributeMaps.Values)
             {
-                map.SetProperty(obj);
+                map.SetProperty(Object);
             }
 
             foreach (var elementMap in _elementMaps.Values)
             {
-                elementMap.SetProperty(obj);
+                elementMap.SetProperty(Object);
             }
 
             if (_valueMap != null)
             {
-                _valueMap.SetProperty(obj);
+                _valueMap.SetProperty(Object);
             }
 
-            return obj;
+            return Object;
         }
 
         public AttributeMap<T, TProperty> MapAttribute<TProperty>(string name, bool required)
@@ -103,13 +104,17 @@ namespace OXM
 
         private AttributeMap<T, TProperty> MapAttribute<TProperty>(string name, bool required, TProperty defaultValue, bool hasDefault)
         {
+            if (_attributeMaps.GetValueOrDefault(name, null) != null)
+            {
+                throw new OXMException("Attribute with name '{0}' already has been mapped.", name);
+            }
             var attributeMap = new AttributeMap<T, TProperty>(name, required, defaultValue, hasDefault);
             _attributeMaps.Add(name, attributeMap);
             return attributeMap;
         }
 
         public ElementMap<T, TProperty> MapElement<TProperty>(string name, bool required)
-        {
+        {            
             var elementMap = new ElementMap<T, TProperty>(name, required);
             _elementMaps.Add(name, elementMap);
             return elementMap;
@@ -118,9 +123,18 @@ namespace OXM
         public ElementCollectionMap<T, TProperty> MapElementCollection<TProperty>(string name, bool required)
         {
             var elementMap = new ElementCollectionMap<T, TProperty>(name, required);
-            _elementMaps.Add(name, elementMap);
+            AddElementMap(name, elementMap);
             return elementMap;
-        } 
+        }
+
+        private void AddElementMap(string name, IElementMap<T> elementMap)
+        {
+            if (_elementMaps.GetValueOrDefault(name, null) != null)
+            {
+                throw new OXMException("Element with name '{0}' already has been mapped.", name);
+            }
+            _elementMaps.Add(name, elementMap);
+        }
 
         public ValueMap<T, TProperty> MapValue<TProperty>()
         {

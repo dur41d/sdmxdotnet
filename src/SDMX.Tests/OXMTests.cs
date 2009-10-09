@@ -15,7 +15,7 @@ namespace SDMX.Tests
         public void ToXml()
         {
             var map = new DimensionMap(new DSD());
-            var concept = new Concept("conceptID");
+            var concept = new Concept("conceptID", "agencyID");
             var dimension = new Dimension(concept);
             dimension.IsMeasureDimension = true;
             dimension.TextFormat = new TextFormat();
@@ -50,7 +50,7 @@ namespace SDMX.Tests
 
             Assert.IsNotNull(dimension);
             Assert.IsNotNull(dimension.Concept);
-            Assert.AreEqual("FREQ", dimension.Concept.Id);
+            Assert.AreEqual("FREQ", dimension.Concept.ID);
             Assert.AreEqual(true, dimension.IsMeasureDimension);
             Assert.IsNotNull(dimension.TextFormat);
             Assert.IsTrue(dimension.TextFormat.TextType == TextType.Double);
@@ -75,7 +75,7 @@ namespace SDMX.Tests
             Assert.AreEqual(2, keyFamily.Dimensions.Count());
             var dimension = keyFamily.GetDimension("FREQ");
             Assert.IsNotNull(dimension);
-            Assert.AreEqual("FREQ", dimension.Concept.Id);
+            Assert.AreEqual("FREQ", dimension.Concept.ID);
             Assert.AreEqual(true, dimension.IsMeasureDimension);
             Assert.IsNotNull(dimension.TextFormat);
             Assert.IsTrue(dimension.TextFormat.TextType == TextType.Double);
@@ -87,11 +87,11 @@ namespace SDMX.Tests
         public void KeyFamily_ToXml()
         {
             var keyFamily = new KeyFamily("KeyID", "agencyID");
-            var dimension = new Dimension(new Concept("FREQ"));
+            var dimension = new Dimension(new Concept("FREQ", "agencyID"));
             dimension.TextFormat = new TextFormat();
             dimension.TextFormat.TextType = TextType.Double;
             keyFamily.AddDimension(dimension);
-            dimension = new Dimension(new Concept("REF_AREA"));
+            dimension = new Dimension(new Concept("REF_AREA", "agencyID"));
             keyFamily.AddDimension(dimension);
 
             var annotation = new Annotation();
@@ -109,6 +109,24 @@ namespace SDMX.Tests
             Assert.NotNull(element.Element("Components"));
             Assert.AreEqual(2, element.Element("Components").Elements("Dimension").Count());
             
+        }
+
+        [Test]
+        public void GenericSampleKeyFamily_ToObj()
+        {
+            string dsdPath = Utility.GetPathFromProjectBase("lib\\StructureSample.xml");
+            XDocument dsdXml = XDocument.Load(dsdPath);
+
+            var keyFamilyElement = (from e in dsdXml.Descendants()
+                                  where e.Name.LocalName == "KeyFamily"
+                                  select e).Single();
+
+            var map = new KeyFamilyMap(new DSD(dsdXml));
+
+            var keyFamily = map.ToObj(keyFamilyElement);
+
+            var keyFamilyElement2 = new XElement("KeyFamily");
+            map.ToXml(keyFamily, keyFamilyElement2);
         }
 
 
