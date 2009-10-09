@@ -5,19 +5,14 @@ using System.Text;
 
 namespace SDMX
 {
-    public class Code : Item
+    public class Code : IdentifiableArtefact, Item
     {
         public Code(ID id)
             : base(id)
         { }
-        
-        public CodeList CodeList 
-        {
-            get 
-            { 
-                return (CodeList)ItemScheme; 
-            }
-        }
+
+        public CodeList CodeList { get; private set; }
+        public Code Parent { get; set; }
        
         public override Uri Urn
         {
@@ -25,14 +20,42 @@ namespace SDMX
             {
                 return new Uri(string.Format("{0}.codelist.Code={1}:{2}.{3}[{4}]".F(UrnPrefix, CodeList.AgencyID, CodeList.ID, ID, CodeList.Version)));
             }
+        }     
+
+        #region Item Members
+
+        Item Item.Parent 
+        {
+            get
+            {
+                return Parent;
+            }
+            set
+            {
+                Parent = (Code)value;
+            }
+        }
+     
+        IItemScheme Item.ItemScheme
+        {
+            get
+            {
+                return CodeList;
+            }
+            set
+            {
+                CodeList = (CodeList)value;
+            }
         }
 
-        internal override string Key
+        string Item.Key
         {
             get 
             { 
-                return ID; 
+               return ID; 
             }
         }
+
+        #endregion
     }
 }

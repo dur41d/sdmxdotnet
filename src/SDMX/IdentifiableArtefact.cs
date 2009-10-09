@@ -10,14 +10,14 @@ namespace SDMX
         public IdentifiableArtefact(ID id)
         {
             ID = id;
-            Name = new InternationalString();
-            Description = new InternationalString();
+            Name = new InternationalText();
+            Description = new InternationalText();
         }
         
         public ID ID { get; private set; }
         public Uri Uri { get; set; }        
-        public InternationalString Name { get; set; }
-        public InternationalString Description { get; set; }
+        public InternationalText Name { get; set; }
+        public InternationalText Description { get; set; }
         public abstract Uri Urn { get; }
 
         protected readonly string UrnPrefix = "urn:sdmx:org.sdmx.infomodel.";

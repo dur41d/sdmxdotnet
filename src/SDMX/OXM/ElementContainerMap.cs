@@ -26,15 +26,24 @@ namespace OXM
         public ElementMap<T, TProperty> MapElement<TProperty>(string name, bool required)
         {
             var elementMap = new ElementMap<T, TProperty>(name, required);
-            _elementMaps.Add(name, elementMap);
+            AddElementMap(name, elementMap);
             return elementMap;
         }
 
         public ElementCollectionMap<T, TProperty> MapElementCollection<TProperty>(string name, bool required)
         {
             var elementMap = new ElementCollectionMap<T, TProperty>(name, required);
-            _elementMaps.Add(name, elementMap);
+            AddElementMap(name, elementMap);
             return elementMap;
+        }
+
+        private void AddElementMap(string name, IElementMap<T> elementMap)
+        {
+            if (_elementMaps.GetValueOrDefault(name, null) != null)
+            {
+                throw new OXMException("Element with name '{0}' already has been mapped.", name);
+            }
+            _elementMaps.Add(name, elementMap);
         }
 
         public void SetValue(XElement element)
@@ -71,9 +80,13 @@ namespace OXM
                 throw new OXMException("Container Element {0}' is supposed to occure only once but occured '{1}' times. Use MapElementCollections instead.", _name, _occurances);
             }
 
-            foreach (var elementMap in _elementMaps.Values)
+            // if the container element exists then check its children
+            if (_occurances > 0)
             {
-                elementMap.AssertValid();
+                foreach (var elementMap in _elementMaps.Values)
+                {
+                    elementMap.AssertValid();
+                }
             }
         }
 

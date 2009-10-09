@@ -5,21 +5,18 @@ using System.Text;
 
 namespace SDMX
 {
-    public abstract class Component : AnnotableArtefact
+    public abstract class Measure : AnnotableArtefact
     {
         public Concept Concept { get; set; }
         public CodeList CodeList { get; set; }
         public TextFormat TextFormat { get; set; }
-        public CrossSectionalAttachmentLevel CrossSectionalAttachmentLevel { get; set; }
 
-        public int Order { get; set; }
-
-        public Component(Concept concept)
+        public Measure(Concept concept)
         {
             this.Concept = concept;
         }
 
-        public Component(Concept concept, CodeList codeList)
+        public Measure(Concept concept, CodeList codeList)
         {
             this.Concept = concept;
             this.CodeList = codeList;
@@ -35,7 +32,7 @@ namespace SDMX
 
         public virtual object GetValue(string value)
         {
-            return GetValue(value, null);    
+            return GetValue(value, null);
         }
 
         public virtual object GetValue(string value, string startTime)

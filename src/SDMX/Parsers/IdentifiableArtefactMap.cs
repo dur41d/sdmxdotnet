@@ -9,11 +9,11 @@ namespace SDMX.Parsers
 {
     public abstract class IdentifiableArtefactMap<T> : AnnotableArtefactMap<T> where T : IdentifiableArtefact
     {
-        protected AttributeMap<T, ID> _IdMap;
+        protected AttributeMap<T, ID> _id;
         
         public IdentifiableArtefactMap()
         {
-            _IdMap = MapAttribute<ID>("id", true)
+            _id = MapAttribute<ID>("id", true)
                 .Getter(o => o.ID)                
                 .Parser(s => new ID(s));
 

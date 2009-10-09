@@ -5,7 +5,7 @@ using System.Text;
 
 namespace SDMX
 {
-    public class PrimaryMeasure : Component
+    public class PrimaryMeasure : Measure
     {  
         public PrimaryMeasure(Concept concept)
             : base(concept)
