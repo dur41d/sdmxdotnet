@@ -53,7 +53,9 @@
   <ItemGroup>
     <Compile Include="GenericDataTests.cs" />
     <Compile Include="IDTests.cs" />
-    <Compile Include="OXMTests.cs" />
+    <Compile Include="OXMTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="ParserTests.cs" />
     <Compile Include="QueryMessageTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -63,6 +65,10 @@
     <ProjectReference Include="..\Common\Common.csproj">
       <Project>{EB9211B5-E5FB-4467-B60E-6E84C3D9810C}</Project>
       <Name>Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OXM\OXM.csproj">
+      <Project>{8441ED91-9F2B-4E43-8023-73883DA1FEA2}</Project>
+      <Name>OXM</Name>
     </ProjectReference>
     <ProjectReference Include="..\SDMX\SDMX.csproj">
       <Project>{8729DEDD-51EA-41DB-BF49-89297BB56D54}</Project>

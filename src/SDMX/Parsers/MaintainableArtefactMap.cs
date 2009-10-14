@@ -19,7 +19,7 @@ namespace SDMX.Parsers
             
             MapAttribute<bool>("isFinal", false)
                 .Getter(o => o.IsFinal)
-                .Setter((o, p) => o.IsFinal = p)
+                .Setter(p => Instance.IsFinal = p)
                 .Parser(s => bool.Parse(s));        
         }
     }

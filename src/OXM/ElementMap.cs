@@ -14,7 +14,7 @@ namespace OXM
         private string _name;
         private bool _required;
         private ClassMap<TProperty> _classMap;
-        private Action<T, TProperty> _setter;
+        private Action<TProperty> _setter;
         private Func<T, TProperty> _getter;
         int _occurances;
 
@@ -38,17 +38,18 @@ namespace OXM
             return this;
         }
 
-        public ElementMap<T, TProperty> Setter(Action<T, TProperty> setter)
+        public ElementMap<T, TProperty> Setter(Action<TProperty> setter)
         {
             _setter = setter;
             return this;
         }
 
         public void SetValue(XElement element)
-        {
-            _occurances++;
+        {            
             Contract.AssertNotNull(() => _classMap);
-            Value = _classMap.ToObj(element);
+            Contract.AssertNotNull(() => _setter);
+            _setter(_classMap.ToObj(element));
+            _occurances++;
         }
 
         public void AssertValid()
@@ -60,14 +61,6 @@ namespace OXM
             if (_required && _occurances > 1)
             {
                 throw new OXMException("Element '{0}' is supposed to occure only once but occured '{1}' times. Use MapElementCollections instead.", _name, _occurances);
-            }
-        }
-
-        public void SetProperty(T obj)
-        {
-            if (_setter != null)
-            {
-                _setter(obj, Value);
             }
         }
 

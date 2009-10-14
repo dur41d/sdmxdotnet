@@ -13,17 +13,17 @@ namespace SDMX.Parsers
         {
             MapElement<string>("AnnotationTitle", false)
                 .Getter(o => o.Title)
-                .Setter((o, p) => o.Title = p)
+                .Setter(p => Instance.Title = p)
                 .Parser(new StringValueElementMap());
 
             MapElement<string>("AnnotationType", false)
                 .Getter(o => o.Type)
-                .Setter((o, p) => o.Title = p)
+                .Setter(p => Instance.Type = p)
                 .Parser(new StringValueElementMap());
 
             MapElement<Uri>("AnnotationURL", false)
                 .Getter(o => o.Url)
-                .Setter((o, p) => o.Url = p)
+                .Setter(p => Instance.Url = p)
                 .Parser(new ValueElementMap<Uri>(s => new Uri(s)));
 
             MapElementCollection<KeyValuePair<Language, string>>("AnnotationText", false)
@@ -37,13 +37,13 @@ namespace SDMX.Parsers
                             }
                             return list;
                         })
-                .Setter((o, list) => list.ForEach(item => o.Text[item.Key] = item.Value))
-                .Parser(new InternationalStringMap());
+                .Setter(p => Instance.Text[p.Key] = p.Value)
+                .Parser(() => new InternationalStringMap());
         }
 
-        protected override Annotation CreateObject()
-        {
-            return new Annotation();
-        }
+        //protected override Annotation CreateObject()
+        //{
+        //    return new Annotation();
+        //}
     }
 }

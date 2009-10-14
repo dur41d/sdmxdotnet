@@ -14,9 +14,8 @@ namespace SDMX.Parsers
             MapElementContainer("Annotations", false)
                 .MapElementCollection<Annotation>("Annotation", true)
                 .Getter(o => o.Annotations)
-                .Setter((o, list) => 
-                    list.ForEach(item => o.Annotations.Add(item)))
-                .Parser(new AnnotationMap());
+                .Setter(p => Instance.Annotations.Add(p))
+                .Parser(() => new AnnotationMap());
         }
     }
 }

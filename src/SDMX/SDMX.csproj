@@ -52,24 +52,11 @@
     <Compile Include="Item.cs" />
     <Compile Include="ItemScheme.cs" />
     <Compile Include="MaintainableArtefact.cs" />
-    <Compile Include="OXM\AttributeMap.cs" />
-    <Compile Include="OXM\ClassMap.cs" />
-    <Compile Include="OXM\ElementCollectionMap.cs" />
-    <Compile Include="OXM\ElementContainerMap.cs" />
-    <Compile Include="OXM\ElementMap.cs" />
-    <Compile Include="OXM\IAttributeMap.cs" />
-    <Compile Include="OXM\IElementMap.cs" />
-    <Compile Include="OXM\IMap.cs" />
-    <Compile Include="OXM\Exceptions.cs" />
-    <Compile Include="OXM\IValueMap.cs" />
-    <Compile Include="OXM\ObjectMap.cs" />
-    <Compile Include="OXM\StringValueElementMap.cs" />
-    <Compile Include="OXM\ValueElementMap.cs" />
-    <Compile Include="OXM\ValueMap.cs" />
     <Compile Include="Parsers\AnnotableArtefactMap.cs" />
     <Compile Include="Parsers\AnnotationMap.cs" />
     <Compile Include="Parsers\AttributeMap.cs" />
     <Compile Include="Parsers\CompoenentMap.cs" />
+    <Compile Include="Parsers\CrossSectionalMeasureMap.cs" />
     <Compile Include="Parsers\DimensionMap.cs" />
     <Compile Include="Parsers\DSD.cs" />
     <Compile Include="Parsers\GroupMap.cs" />
@@ -80,9 +67,11 @@
     <Compile Include="Parsers\MaintainableArtefactMap.cs" />
     <Compile Include="Parsers\MeasureMap.cs" />
     <Compile Include="Parsers\PrimaryMeasureMap.cs" />
+    <Compile Include="Parsers\StructureMessageMap.cs" />
     <Compile Include="Parsers\TextFormatMap.cs" />
     <Compile Include="Parsers\TimeDimensionMap.cs" />
     <Compile Include="Parsers\VersionableArtefactMap.cs" />
+    <Compile Include="StructureMessage.cs" />
     <Compile Include="Structure\AssignmentStatus.cs" />
     <Compile Include="Structure\AttachmentLevel.cs" />
     <Compile Include="Structure\Attribute.cs" />
@@ -122,6 +111,10 @@
     <ProjectReference Include="..\Common\Common.csproj">
       <Project>{EB9211B5-E5FB-4467-B60E-6E84C3D9810C}</Project>
       <Name>Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OXM\OXM.csproj">
+      <Project>{8441ED91-9F2B-4E43-8023-73883DA1FEA2}</Project>
+      <Name>OXM</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

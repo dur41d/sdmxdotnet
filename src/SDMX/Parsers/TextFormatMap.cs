@@ -11,15 +11,12 @@ namespace SDMX.Parsers
     {
         public TextFormatMap()
         {
+            Instance = new TextFormat();
+            
             MapAttribute<TextType>("textType", false)
                 .Parser(s => (TextType)Enum.Parse(typeof(TextType), s))
                 .Getter(o => o.TextType)
-                .Setter((o, v) => o.TextType = v);
-        }
-
-        protected override TextFormat CreateObject()
-        {
-            return new TextFormat();
-        }
+                .Setter(p => Instance.TextType = p);
+        }    
     }
 }

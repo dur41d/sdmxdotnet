@@ -29,17 +29,17 @@ namespace SDMX.Parsers
         {
             _id = MapAttribute<ID>("id", true)
                 .Getter(o => o.ID)
-                .Setter((o,p) => o.ID = p)
+                .Setter(p => Instance.ID = p)
                 .Parser(s => new ID(s));
 
             MapElementCollection<ID>("DimensionRef", true)
                 .Getter(o => o.DimensionRefs)
-                .Parser(new ValueElementMap<ID>(s => new ID(s)))
-                .Setter((o, list) => list.ForEach(item => o.DimensionRefs.Add(item)));
+                .Parser(() => new ValueElementMap<ID>(s => new ID(s)))
+                .Setter(p => Instance.DimensionRefs.Add(p));
 
             MapElement<ID>("AttachmentConstraintRef", false)
                 .Getter(o => o.AttachmentConstraintRef)
-                .Setter((o, p) => o.AttachmentConstraintRef = p)
+                .Setter(p => Instance.AttachmentConstraintRef = p)
                 .Parser(new ValueElementMap<ID>(s => new ID(s)));
 
             MapElementCollection<KeyValuePair<Language, string>>("Description", false)
@@ -53,14 +53,14 @@ namespace SDMX.Parsers
                     }
                     return list;
                 })
-                .Setter((o, list) => list.ForEach(item => o.Description[item.Key] = item.Value))
-                .Parser(new InternationalStringMap());    
+                .Setter(p => Instance.Description[p.Key] = p.Value)
+                .Parser(() => new InternationalStringMap());    
         }
 
-        protected override GroupValuesHolder CreateObject()
-        {
-            return new GroupValuesHolder();
+        //protected override GroupValuesHolder CreateObject()
+        //{
+        //    return new GroupValuesHolder();
             
-        }
+        //}
     }
 }

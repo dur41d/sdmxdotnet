@@ -11,7 +11,6 @@ namespace OXM
 {
     public interface IAttributeMap<T> : IMap<T>
     {
-        void SetValue(XAttribute attribute);
-        void AssertValid();
+        void SetValue(XElement element);
     }
 }

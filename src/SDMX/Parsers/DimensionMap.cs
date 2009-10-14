@@ -23,44 +23,49 @@ namespace SDMX.Parsers
 
             MapAttribute<bool>("isMeasureDimension", false, false)
               .Getter(o => o.IsMeasureDimension)
-              .Setter((d, b) => d.IsMeasureDimension = b)
+              .Setter(p => Instance.IsMeasureDimension = p)
               .Parser(s => bool.Parse(s));
 
             MapAttribute<bool>("isFrequencyDimension", false, false)
               .Getter(o => o.IsFrequencyDimension)
-              .Setter((d, b) => d.IsFrequencyDimension = b)
+              .Setter(p => Instance.IsFrequencyDimension = p)
               .Parser(s => bool.Parse(s));
 
             MapAttribute<bool>("isEntityDimension", false, false)
               .Getter(o => o.IsEntityDimension)
-              .Setter((d, b) => d.IsEntityDimension = b)
+              .Setter(p => Instance.IsEntityDimension = p)
               .Parser(s => bool.Parse(s));
 
             MapAttribute<bool>("isCountDimension", false, false)
               .Getter(o => o.IsCountDimension)
-              .Setter((d, b) => d.IsCountDimension = b)
+              .Setter(p => Instance.IsCountDimension = p)
               .Parser(s => bool.Parse(s));
 
             MapAttribute<bool>("isNonObservationTimeDimension", false, false)
               .Getter(o => o.IsNonObservationTimeDimension)
-              .Setter((d, b) => d.IsNonObservationTimeDimension = b)
+              .Setter(p => Instance.IsNonObservationTimeDimension = p)
               .Parser(s => bool.Parse(s));
 
             MapAttribute<bool>("isIdentityDimension", false, false)
               .Getter(o => o.IsIdentityDimension)
-              .Setter((d, b) => d.IsIdentityDimension = b)
+              .Setter(p => Instance.IsIdentityDimension = p)
               .Parser(s => bool.Parse(s));
         }
 
-        protected override Dimension CreateObject()
+        //protected override Dimension CreateObject()
+        //{
+        //    var concept = _dsd.GetConcept(conceptRef.Value, conceptAgency.Value, conceptVersion.Value, conceptSchemeRef.Value, conceptSchemeAgency.Value);
+
+        //    var dimension = new Dimension(concept);
+
+        //    SetComponentProperties(dimension);
+
+        //    return dimension;
+        //}       
+
+        protected override Dimension Create(Concept conecpt)
         {
-            var concept = _dsd.GetConcept(conceptRef.Value, conceptAgency.Value, conceptVersion.Value, conceptSchemeRef.Value, conceptSchemeAgency.Value);
-
-            var dimension = new Dimension(concept);
-
-            SetComponentProperties(dimension);
-
-            return dimension;
-        }       
+            throw new NotImplementedException();
+        }
     }
 }

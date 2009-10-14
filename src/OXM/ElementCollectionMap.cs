@@ -12,23 +12,21 @@ namespace OXM
     public class ElementCollectionMap<T, TProperty> : IElementMap<T>
     {
         private string _name;
-        public List<TProperty> Values { get; private set; }
-
-        private ClassMap<TProperty> _classMap;
-        private Action<T, IList<TProperty>> _setter;
+        private int _occurances;
+        private Func<ClassMap<TProperty>> _classMapConstructor;
+        private Action<TProperty> _setter;
         private Func<T, IEnumerable<TProperty>> _getter;
         private bool _required;
 
         public ElementCollectionMap(string name, bool required)
         {
             _name = name;
-            _required = required;
-            Values = new List<TProperty>();
+            _required = required;            
         }
 
-        public ElementCollectionMap<T, TProperty> Parser(ClassMap<TProperty> classMap)
+        public ElementCollectionMap<T, TProperty> Parser(Func<ClassMap<TProperty>> constructor)
         {
-            _classMap = classMap;
+            _classMapConstructor = constructor;
             return this;
         }
 
@@ -38,7 +36,7 @@ namespace OXM
             return this;
         }
 
-        public ElementCollectionMap<T, TProperty> Setter(Action<T, IList<TProperty>> setter)
+        public ElementCollectionMap<T, TProperty> Setter(Action<TProperty> setter)
         {
             _setter = setter;
             return this;
@@ -46,29 +44,24 @@ namespace OXM
 
         public void SetValue(XElement element)
         {            
-            Contract.AssertNotNull(() => _classMap);
-            Values.Add(_classMap.ToObj(element));
+            Contract.AssertNotNull(() => _classMapConstructor);
+            Contract.AssertNotNull(() => _setter);
+            var classMap = _classMapConstructor();
+            _setter((classMap.ToObj(element)));
+            _occurances++;
         }
 
         public void AssertValid()
         {
-            if (_required && Values.Count == 0)
+            if (_required && _occurances == 0)
             {
                 throw new OXMException("MinOccures for element '{0}' is 1 but found 0", _name);
             }
         }
-
-        public void SetProperty(T obj)
-        {
-            if (_setter != null)
-            {
-                _setter(obj, Values);
-            }
-        }
-
+   
         public void ToXml(XElement element, T parent)
         {
-            Contract.AssertNotNull(() => _classMap);
+            Contract.AssertNotNull(() => _classMapConstructor);
             Contract.AssertNotNull(() => _getter);
 
             var values = _getter(parent);
@@ -77,7 +70,8 @@ namespace OXM
                 foreach (TProperty value in values)
                 {
                     XElement child = new XElement(_name);
-                    _classMap.ToXml(value, child);
+                    var classMap = _classMapConstructor();
+                    classMap.ToXml(value, child);
                     element.Add(child);
                 }
             }

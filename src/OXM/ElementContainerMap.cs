@@ -61,14 +61,6 @@ namespace OXM
             }
         }
 
-        public void SetProperty(T obj)
-        {
-            foreach (var elementMap in _elementMaps.Values)
-            {
-                elementMap.SetProperty(obj);
-            }
-        }
-
         public void AssertValid()
         {            
             if (_required && _occurances == 0)
