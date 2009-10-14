@@ -61,12 +61,12 @@ namespace SDMX.Parsers
             MapElement<TextFormat>("TextFormat", false)
                 .Parser(new TextFormatMap())
                 .Getter(o => o.TextFormat)
-                .Setter((o, p) => o.TextFormat = p);
+                .Setter(p => Instance.TextFormat = p);
         }
 
         protected void SetMeasureProperties(T component)
         {
-            component.CodeList = _dsd.GetCodeList(codelist.Value, codelistAgency.Value, codelistVersion.Value);
+            //component.CodeList = _dsd.GetCodeList(codelist.Value, codelistAgency.Value, codelistVersion.Value);
         }
     }
 }

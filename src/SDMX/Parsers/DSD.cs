@@ -41,5 +41,13 @@ namespace SDMX.Parsers
             conceptScheme.Add(concept);
             return concept;
         }
+
+        internal Concept GetConcept(ConceptRef conceptRef)
+        {
+            var conceptScheme = new ConceptScheme(conceptRef.SchemeRef.ID, conceptRef.SchemeRef.Agency);
+            var concept = new Concept(conceptRef.ID, conceptRef.Agency);
+            conceptScheme.Add(concept);
+            return concept;
+        }
     }
 }

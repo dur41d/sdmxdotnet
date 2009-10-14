@@ -18,10 +18,5 @@ namespace OXM
                         .Getter(o => o)
                         .Parser(s => parser(s));
         }
-
-        protected override T CreateObject()
-        {
-            return _valueMap.Value;
-        }
     }
 }

@@ -7,6 +7,7 @@ using Common;
 
 namespace SDMX.Parsers
 {
+    
     public class KeyFamilyMap : MaintainableArtefactMap<KeyFamily>
     {
         private DSD _dsd;
@@ -18,39 +19,39 @@ namespace SDMX.Parsers
 
             MapAttribute<bool>("isExternalReference", false)
                 .Getter(o => o.IsExternalReference)
-                .Setter((o, p) => o.IsExternalReference = p)
+                .Setter(p => Instance.IsExternalReference = p)
                 .Parser(s => bool.Parse(s));
 
             var components = MapElementContainer("Components", false);
 
             _dimensions = components.MapElementCollection<Dimension>("Dimension", false)
-                .Parser(new DimensionMap(dsd))
+                .Parser(() => new DimensionMap(dsd))
                 .Getter(o => o.Dimensions);                
             
             components.MapElement<TimeDimension>("TimeDimension", false)
                     .Parser(new TimeDimensionMap(dsd))
                     .Getter(o => o.TimeDimension)
-                    .Setter((o, p) => o.TimeDimension = p);
+                    .Setter(p => Instance.TimeDimension = p);
 
             components.MapElementCollection<GroupValuesHolder>("Group", false)
-                    .Parser(new GroupMap())
-                    .Getter(o => GetGroupHolders(o))
-                    .Setter((o, p) => BuildGroups(p, o));
+                    .Parser(() => new GroupMap())
+                    .Getter(o => GetGroupHolders(o));
+                   // .Setter(p => BuildGroups(p, Instance));
 
             components.MapElement<PrimaryMeasure>("PrimaryMeasure", true)
                    .Parser(new PrimaryMeasureMap(dsd))
                    .Getter(o => o.PrimaryMeasure)
-                   .Setter((o, p) => o.PrimaryMeasure = p);
+                   .Setter(p => Instance.PrimaryMeasure = p);
 
             components.MapElementCollection<CrossSectionalMeasure>("CrossSectionalMeasure", false)
-                   .Parser(new CrossSectionalMeasureMap(dsd))
+                   .Parser(() => new CrossSectionalMeasureMap(dsd))
                    .Getter(o => o.CrossSectionalMeasures)
-                   .Setter((o, list) => list.ForEach(i => o.AddMeasure(i)));
+                   .Setter(p => Instance.AddMeasure(p));
 
             components.MapElementCollection<Attribute>("Attribute", false)
-                   .Parser(new AttributeMap(dsd))
+                   .Parser(() => new AttributeMap(dsd))
                    .Getter(o => o.Attributes)
-                   .Setter((o,list) => list.ForEach(i => o.AddAttribute(i)));
+                   .Setter(p => Instance.AddAttribute(p));
         }
 
         private IEnumerable<GroupValuesHolder> GetGroupHolders(KeyFamily keyFamily)
@@ -82,13 +83,13 @@ namespace SDMX.Parsers
             }
         }
 
-        protected override KeyFamily CreateObject()
-        {
-            var keyFamily = new KeyFamily(_id.Value, _agencyIDMap.Value);
-            _dimensions.Values.ForEach(item => keyFamily.AddDimension(item));
+        //protected override KeyFamily CreateObject()
+        //{
+        //    var keyFamily = new KeyFamily(_id.Value, _agencyIDMap.Value);
+        //    _dimensions.Values.ForEach(item => keyFamily.AddDimension(item));
 
 
-            return keyFamily;    
-        }
+        //    return keyFamily;    
+        //}
     }
 }

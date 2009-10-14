@@ -12,6 +12,5 @@ namespace OXM
     public interface IMap<T>
     {
         void ToXml(XElement element, T parent);
-        void SetProperty(T parent);        
     }
 }

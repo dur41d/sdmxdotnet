@@ -23,9 +23,9 @@ namespace SDMX.Parsers
                            .Parser(s => s);
         }
 
-        protected override KeyValuePair<Language, string> CreateObject()
-        {
-            return new KeyValuePair<Language, string>(_langMap.Value, _stringMap.Value);
-        }
+        //protected override KeyValuePair<Language, string> CreateObject()
+        //{
+        //    return new KeyValuePair<Language, string>(_langMap.Value, _stringMap.Value);
+        //}
     }
 }

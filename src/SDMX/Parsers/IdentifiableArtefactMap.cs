@@ -19,7 +19,7 @@ namespace SDMX.Parsers
 
             MapAttribute<Uri>("uri", false)
                 .Getter(o => o.Uri)
-                .Setter((o, p) => o.Uri = p)
+                .Setter(p => Instance.Uri = p)
                 .Parser(s => new Uri(s));
 
             MapElementCollection<KeyValuePair<Language, string>>("Name", true)
@@ -33,8 +33,8 @@ namespace SDMX.Parsers
                          }
                          return list;
                      })
-                .Setter((o, list) => list.ForEach(item => o.Name[item.Key] = item.Value))
-                .Parser(new InternationalStringMap());
+                .Setter(p => Instance.Name[p.Key] = p.Value)
+                .Parser(() => new InternationalStringMap());
 
             MapElementCollection<KeyValuePair<Language, string>>("Description", false)
                 .Getter(o =>
@@ -47,8 +47,8 @@ namespace SDMX.Parsers
                         }        
                         return list;
                     })
-                .Setter((o, list) => list.ForEach(item => o.Description[item.Key] = item.Value))
-                .Parser(new InternationalStringMap());
+                .Setter(p => Instance.Description[p.Key] = p.Value)
+                .Parser(() => new InternationalStringMap());
 
 
         }

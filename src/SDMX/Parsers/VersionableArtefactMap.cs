@@ -12,17 +12,17 @@ namespace SDMX.Parsers
         {
             MapAttribute<string>("version", false)
                 .Getter(o => o.Version)
-                .Setter((o, p) => o.Version = p)
+                .Setter(p => Instance.Version = p)
                 .Parser(s => s);
 
             MapAttribute<TimePeriod>("validFrom", false)
                 .Getter(o => o.ValidFrom)
-                .Setter((o, p) => o.ValidFrom = p)
+                .Setter(p => Instance.ValidFrom = p)
                 .Parser(s => new TimePeriod(DateTime.Parse(s)));
 
             MapAttribute<TimePeriod>("validTo", false)
                 .Getter(o => o.ValidTo)
-                .Setter((o, p) => o.ValidTo = p)
+                .Setter(p => Instance.ValidTo = p)
                 .Parser(s => new TimePeriod(DateTime.Parse(s)));
         }
     }

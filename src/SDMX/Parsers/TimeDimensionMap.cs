@@ -12,24 +12,20 @@ namespace SDMX.Parsers
 {
     public class TimeDimensionMap : CompoenentMap<TimeDimension>
     {
-        DSD _dsd;
-
         public TimeDimensionMap(DSD dsd)
             : base(dsd)
         {
-            _dsd = dsd;
+            //var concept = dsd.GetConcept(conceptRef.Value, conceptAgency.Value,
+            //   conceptVersion.Value, conceptSchemeRef.Value, conceptSchemeAgency.Value);
+
+            //var timeDimension = new TimeDimension(concept);
+
+            //SetComponentProperties(timeDimension);
         }
 
-        protected override TimeDimension CreateObject()
+        protected override TimeDimension Create(Concept conecpt)
         {
-            var concept = _dsd.GetConcept(conceptRef.Value, conceptAgency.Value,
-                conceptVersion.Value, conceptSchemeRef.Value, conceptSchemeAgency.Value);
-
-            var timeDimension = new TimeDimension(concept);
-
-            SetComponentProperties(timeDimension);
-
-            return timeDimension;
+            return new TimeDimension(conecpt);
         }
     }
 }
