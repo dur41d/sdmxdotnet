@@ -9,87 +9,48 @@ using Common;
 
 namespace OXM
 {
-    public class ElementContainerMap<T> : IElementMap<T>
+    internal class ElementContainerMap<T> : ElementMapBase<T>, IElementMapContainer<T>
     {
-        string _name;
-        bool _required;
-        int _occurances;
-
-        public ElementContainerMap(string name, bool required)
+        private List<IMapBuilder<T>> builders = new List<IMapBuilder<T>>();        
+        private MapList<T> _elementMaps = new MapList<T>();
+        
+        public ElementContainerMap(XName name, bool required)
+            : base(name, required, false)
         {
-            _name = name;
-            _required = required;
         }
 
-        private Dictionary<string, IElementMap<T>> _elementMaps = new Dictionary<string, IElementMap<T>>();
-
-        public ElementMap<T, TProperty> MapElement<TProperty>(string name, bool required)
+        protected PropertyMap<T, TProperty> Map<TProperty>(Expression<Func<T, TProperty>> property)
         {
-            var elementMap = new ElementMap<T, TProperty>(name, required);
-            AddElementMap(name, elementMap);
-            return elementMap;
+            var builder = new PropertyMap<T, TProperty>(property);
+            builders.Add(builder);
+            return builder;
         }
 
-        public ElementCollectionMap<T, TProperty> MapElementCollection<TProperty>(string name, bool required)
+        protected CollectionMap<T, TProperty> Map<TProperty>(Expression<Func<T, IEnumerable<TProperty>>> collection)
         {
-            var elementMap = new ElementCollectionMap<T, TProperty>(name, required);
-            AddElementMap(name, elementMap);
-            return elementMap;
+            var builder =  new CollectionMap<T, TProperty>(collection);
+            builders.Add(builder);
+            return builder;
         }
 
-        private void AddElementMap(string name, IElementMap<T> elementMap)
-        {
-            if (_elementMaps.GetValueOrDefault(name, null) != null)
-            {
-                throw new OXMException("Element with name '{0}' already has been mapped.", name);
-            }
-            _elementMaps.Add(name, elementMap);
-        }
-
-        public void SetValue(XElement element)
+        public override void ReadXml(XElement element)
         {
             _occurances++;
 
             foreach (var childElement in element.Elements())
             {
-                var elementMap = _elementMaps.GetValueOrDefault(childElement.Name.LocalName, null);
-                if (elementMap == null)
-                {
-                    throw new OXMException("Element not mapped '{0}'", childElement.Name.LocalName);
-                }
-                elementMap.SetValue(childElement);
+                var elementMap = _elementMaps.Get(childElement.Name);
+                elementMap.ReadXml(childElement);
             }
         }
 
-        public void AssertValid()
-        {            
-            if (_required && _occurances == 0)
-            {
-                throw new OXMException("Container Element '{0}' is required but was not found'", _name);
-            }
-            if (_required && _occurances > 1)
-            {
-                throw new OXMException("Container Element {0}' is supposed to occure only once but occured '{1}' times. Use MapElementCollections instead.", _name, _occurances);
-            }
-
-            // if the container element exists then check its children
-            if (_occurances > 0)
-            {
-                foreach (var elementMap in _elementMaps.Values)
-                {
-                    elementMap.AssertValid();
-                }
-            }
-        }
-
-        public void ToXml(XElement element, T parent)
+        public override void WriteXml(XElement element, T obj)
         {
-            XElement container = new XElement(_name);
-            
+            XElement container = new XElement(Name);
 
-            foreach (var map in _elementMaps.Values)
+            foreach (var map in _elementMaps)
             {
-                map.ToXml(container, parent);
+                map.WriteXml(container, obj);
             }
 
             // don't add empty container elements
@@ -98,5 +59,28 @@ namespace OXM
                 element.Add(container);
             }
         }
+
+        public override void AssertValid()
+        {
+            base.AssertValid();
+
+            // if the container element exists then check its children
+            if (_occurances > 0)
+            {
+                foreach (var elementMap in _elementMaps)
+                {
+                    ((IElementMap<T>)elementMap).AssertValid();
+                }
+            }
+        }
+
+        #region IElementMapContainer<T> Members
+
+        void IElementMapContainer<T>.AddElementMap(XName name, IMemberMap<T> map)
+        {
+            _elementMaps.Add(name, map);
+        }
+
+        #endregion
     }
 }

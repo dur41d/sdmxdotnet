@@ -9,9 +9,8 @@ using Common;
 
 namespace OXM
 {
-    public interface IElementMap<T> : IMap<T>
+    internal interface IElementMap<T> : IMemberMap<T>
     {
         void AssertValid();
-        void SetValue(XElement element);
     }
 }

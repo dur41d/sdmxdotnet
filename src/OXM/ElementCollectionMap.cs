@@ -6,72 +6,46 @@ using System.Xml.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using Common;
+using System.Xml;
 
 namespace OXM
 {
-    public class ElementCollectionMap<T, TProperty> : IElementMap<T>
+    internal class ElementCollectionMap<T, TProperty> : ElementMapBase<T>
     {
-        private string _name;
-        private int _occurances;
-        private Func<ClassMap<TProperty>> _classMapConstructor;
-        private Action<TProperty> _setter;
-        private Func<T, IEnumerable<TProperty>> _getter;
-        private bool _required;
+        internal Collection<T, TProperty> Collection { get; set; }
+        internal ClassMap<TProperty> ClassMap { get; set; }
 
-        public ElementCollectionMap(string name, bool required)
+        public ElementCollectionMap(XName name, bool required)
+            : base(name, required, true)
+        {}
+      
+        public override void ReadXml(XElement element)
         {
-            _name = name;
-            _required = required;            
-        }
-
-        public ElementCollectionMap<T, TProperty> Parser(Func<ClassMap<TProperty>> constructor)
-        {
-            _classMapConstructor = constructor;
-            return this;
-        }
-
-        public ElementCollectionMap<T, TProperty> Getter(Func<T, IEnumerable<TProperty>> getter)
-        {
-            _getter = getter;
-            return this;
-        }
-
-        public ElementCollectionMap<T, TProperty> Setter(Action<TProperty> setter)
-        {
-            _setter = setter;
-            return this;
-        }
-
-        public void SetValue(XElement element)
-        {            
-            Contract.AssertNotNull(() => _classMapConstructor);
-            Contract.AssertNotNull(() => _setter);
-            var classMap = _classMapConstructor();
-            _setter((classMap.ToObj(element)));
+            var list = new List<TProperty>();
+            list.Add(ClassMap.ReadXml(element));
+            var next = element.NextNode;
             _occurances++;
-        }
 
-        public void AssertValid()
-        {
-            if (_required && _occurances == 0)
+            while (next.NodeType == XmlNodeType.Element
+                    && ((XElement)next).Name == Name)
             {
-                throw new OXMException("MinOccures for element '{0}' is 1 but found 0", _name);
-            }
+                list.Add(ClassMap.ReadXml((XElement)next));
+                next = next.NextNode;
+                _occurances++;
+            }                
+            
+            Collection.Set(list);            
         }
-   
-        public void ToXml(XElement element, T parent)
-        {
-            Contract.AssertNotNull(() => _classMapConstructor);
-            Contract.AssertNotNull(() => _getter);
 
-            var values = _getter(parent);
+        public override void WriteXml(XElement element, T obj)
+        {
+            var values = Collection.Get(obj);
             if ((object)values != null)
             {
                 foreach (TProperty value in values)
                 {
-                    XElement child = new XElement(_name);
-                    var classMap = _classMapConstructor();
-                    classMap.ToXml(value, child);
+                    XElement child = new XElement(Name);
+                    ClassMap.WriteXml(child, value);
                     element.Add(child);
                 }
             }
