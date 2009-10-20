@@ -6,11 +6,12 @@ using System.Xml.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using Common;
+using System.Runtime.Serialization;
 
 namespace OXM
 {
-    public interface IMap<T>
+    interface IMapBuilder<T>
     {
-        void ToXml(XElement element, T parent);
+        void BuildMaps(IMapContainer<T> map);
     }
 }

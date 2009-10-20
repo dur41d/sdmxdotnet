@@ -9,70 +9,29 @@ using Common;
 
 namespace OXM
 {
-    public class ElementMap<T, TProperty> : IElementMap<T>
+    internal class ElementMap<T, TProperty> : ElementMapBase<T>
     {
-        private string _name;
-        private bool _required;
-        private ClassMap<TProperty> _classMap;
-        private Action<TProperty> _setter;
-        private Func<T, TProperty> _getter;
-        int _occurances;
+        internal Property<T, TProperty> Property { get; set; }
+        internal ClassMap<TProperty> ClassMap { get; set; }
 
-        public TProperty Value { get; set; }
-
-        public ElementMap(string name, bool required)
+        public ElementMap(XName name, bool required)
+            : base(name, required, false)
         {
-            _name = name;
-            _required = required;
         }
 
-        public ElementMap<T, TProperty> Parser(ClassMap<TProperty> classMap)
-        {
-            _classMap = classMap;
-            return this;
-        }
-
-        public ElementMap<T, TProperty> Getter(Func<T, TProperty> getter)
-        {
-            _getter = getter;
-            return this;
-        }
-
-        public ElementMap<T, TProperty> Setter(Action<TProperty> setter)
-        {
-            _setter = setter;
-            return this;
-        }
-
-        public void SetValue(XElement element)
-        {            
-            Contract.AssertNotNull(() => _classMap);
-            Contract.AssertNotNull(() => _setter);
-            _setter(_classMap.ToObj(element));
+        public override void ReadXml(XElement element)
+        {  
+            Property.Set(ClassMap.ReadXml(element));
             _occurances++;
         }
 
-        public void AssertValid()
+        public override void WriteXml(XElement element, T obj)
         {
-            if (_required && _occurances == 0)
-            {
-                throw new OXMException("Element '{0}' is required but was not found'", _name);
-            }
-            if (_required && _occurances > 1)
-            {
-                throw new OXMException("Element '{0}' is supposed to occure only once but occured '{1}' times. Use MapElementCollections instead.", _name, _occurances);
-            }
-        }
-
-        public void ToXml(XElement element, T parent)
-        {
-            Contract.AssertNotNull(() => _classMap);
-            Contract.AssertNotNull(() => _getter);
-            var value = _getter(parent);
+            var value = Property.Get(obj);
             if ((object)value != null)
             {
-                XElement child = new XElement(_name);
-                _classMap.ToXml(value, child);
+                XElement child = new XElement(Name);
+                ClassMap.WriteXml(child, value);
                 element.Add(child);
             }
         }

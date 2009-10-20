@@ -9,8 +9,9 @@ using Common;
 
 namespace OXM
 {
-    public interface IValueMap<T> : IMap<T>
+    public interface ISimpleTypeConverter<T>
     {
-        void SetValue(XElement element);
+        string ToXml(T value);
+        T ToObj(string value);
     }
 }

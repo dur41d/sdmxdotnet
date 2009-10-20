@@ -1,113 +1,128 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
-  <Class Name="OXM.AttributeMap&lt;T, TProperty&gt;" BaseTypeListCollapsed="true">
-    <Position X="8.5" Y="2.5" Width="1.5" />
+  <Class Name="OXM.AttributeMap&lt;T, TProperty&gt;" Collapsed="true">
+    <Position X="5.5" Y="6" Width="2.25" />
     <TypeIdentifier>
-      <HashCode>ABAgIAAAAgAAAgAECICAABAAAAEAAAAEAAAACAAIQAA=</HashCode>
+      <HashCode>ABAAIAAAAgAAAAAAAAAAABAAAAAAAAQAAAAAAQAAAAA=</HashCode>
       <FileName>AttributeMap.cs</FileName>
     </TypeIdentifier>
-    <Lollipop Position="0.2" />
   </Class>
-  <Class Name="OXM.ClassMap&lt;T&gt;">
-    <Position X="2.75" Y="5.5" Width="1.5" />
+  <Class Name="OXM.ClassMap&lt;T&gt;" Collapsed="true">
+    <Position X="3" Y="4.5" Width="1.75" />
     <TypeIdentifier>
-      <HashCode>IAAAAAAAACAABACAAAACAAAAAAAAIDAEQAAgAAAAAEA=</HashCode>
-      <FileName>ClassMap.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="OXM.ValueMap&lt;T, TProperty&gt;" BaseTypeListCollapsed="true">
-    <Position X="10.25" Y="2.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAgAAAAAAAAAgAEAICAAAAAAAEAAAAEAAAgCAAAQAA=</HashCode>
-      <FileName>ValueMap.cs</FileName>
+      <HashCode>AAAAQABBADAABAQQAAAAAAAiAAARIAAAgAAAkEAAAEA=</HashCode>
+      <FileName>ComplexTypeMap.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
-  <Class Name="OXM.ElementCollectionMap&lt;T, TProperty&gt;" BaseTypeListCollapsed="true">
-    <Position X="13.75" Y="2.5" Width="2" />
+  <Class Name="OXM.Collection&lt;TObj, TProperty&gt;" Collapsed="true">
+    <Position X="20.75" Y="3.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAkIAAAAAAAAgAECIAAABAAAAAAAAAEAAAACIAAQAA=</HashCode>
+      <HashCode>AAAAAAAAAAAABABEAAAAAAAAAAAAAAAAAAAAAAAAQAA=</HashCode>
+      <FileName>Collection.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OXM.ElementCollectionMap&lt;T, TProperty&gt;" Collapsed="true">
+    <Position X="11.25" Y="6" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAAAAAAQAAAAAAAAAACAAAAAAAAAAAAgAAAAAA=</HashCode>
       <FileName>ElementCollectionMap.cs</FileName>
     </TypeIdentifier>
-    <Lollipop Position="0.2" />
   </Class>
-  <Class Name="OXM.ElementContainerMap&lt;T&gt;" BaseTypeListCollapsed="true">
-    <Position X="16" Y="2.5" Width="2" />
+  <Class Name="OXM.ElementContainerMap&lt;T&gt;" Collapsed="true">
+    <Position X="14.75" Y="6" Width="2" />
     <TypeIdentifier>
-      <HashCode>AAAAIAAAACAAAgCACAAAABAAAAAAADAEAAAAAIAAAAA=</HashCode>
+      <HashCode>AAAAQAAAADAAAAAQCAAAAAACAAAAAAAAAAAAgAAAAAA=</HashCode>
       <FileName>ElementContainerMap.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
-  <Class Name="OXM.ElementMap&lt;T, TProperty&gt;" BaseTypeListCollapsed="true">
-    <Position X="12" Y="2.5" Width="1.5" />
+  <Class Name="OXM.ElementMap&lt;T, TProperty&gt;" Collapsed="true">
+    <Position X="17.5" Y="6" Width="2.25" />
     <TypeIdentifier>
-      <HashCode>AAAgIAAAAAQAAgAECIAAABAAAAAAAAAEAAAgCIAAQAA=</HashCode>
+      <HashCode>AAAAAEAAAAAAAAAAAAAAAAACAAAAAAAAAAAAgQAAAAA=</HashCode>
       <FileName>ElementMap.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OXM.ElementMapBase&lt;T&gt;" Collapsed="true">
+    <Position X="14.5" Y="4.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAACAAAABQCAAAAAAAAAAAAgMAAAAA=</HashCode>
+      <FileName>ElementMapBase.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="OXM.OXMException" Collapsed="true">
-    <Position X="9.75" Y="9" Width="1.5" />
+    <Position X="24.25" Y="3.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Exceptions.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="OXM.ObjectMap&lt;T1, T2&gt;" Collapsed="true">
-    <Position X="7.25" Y="9" Width="1.5" />
+  <Class Name="OXM.Property&lt;TObj, TProperty&gt;" Collapsed="true">
+    <Position X="20.75" Y="4.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAABAAYAAACAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>ObjectMap.cs</FileName>
+      <HashCode>AAAAAAAAAAAABABEAAAAAAAAAAAAAAAAAAAAAAAAQAA=</HashCode>
+      <FileName>Property.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="OXM.RoolElementMap&lt;T&gt;">
-    <Position X="1.25" Y="6.75" Width="1.75" />
+  <Class Name="OXM.RoolElementMap&lt;T&gt;" Collapsed="true">
+    <Position X="3" Y="6" Width="1.75" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQCAAAAAAAEAAAAgAAAAAA=</HashCode>
+      <HashCode>AQAAAAAAAAAAAAAAAAAAAAQCAAAAAAAAAAAAgAAAAAA=</HashCode>
       <FileName>RoolElementMap.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="OXM.StringValueElementMap" Collapsed="true">
-    <Position X="4.25" Y="8.5" Width="2" />
+  <Class Name="OXM.SimpleTypeConverterBase&lt;T&gt;" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="22.5" Y="4.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>StringValueElementMap.cs</FileName>
+      <HashCode>AAAAAAAAABAAAAAAAAAAAAAAAAAAIAAEAAgAAAAIAAA=</HashCode>
+      <FileName>SimpleTypeConverterBase.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="OXM.SimpleTypeMap&lt;TObj, TProperty&gt;" Collapsed="true">
+    <Position X="6.75" Y="4.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAQAAAAAAABAAAAAACAAEAAAQAAAAAgQAAAAA=</HashCode>
+      <FileName>SimpleTypeMap.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="OXM.ValueMap&lt;T, TProperty&gt;" Collapsed="true">
+    <Position X="8.5" Y="6" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAQAAAAA=</HashCode>
+      <FileName>ValueMap.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="OXM.ValueElementMap&lt;T&gt;" Collapsed="true">
-    <Position X="4.5" Y="7.25" Width="1.75" />
+  <Class Name="OXM.MapList&lt;T&gt;" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="22.5" Y="3.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEA=</HashCode>
-      <FileName>ValueElementMap.cs</FileName>
+      <HashCode>ACKAAAAAAAAAABBAAAAAAAAAAAAAAAAAQAAAAAAAAAA=</HashCode>
+      <FileName>MapList.cs</FileName>
     </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
   </Class>
-  <Interface Name="OXM.IAttributeMap&lt;T&gt;">
-    <Position X="6" Y="3.75" Width="1.5" />
+  <Interface Name="OXM.IElementMap&lt;T&gt;" Collapsed="true">
+    <Position X="2.25" Y="8.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAgAACAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>IAttributeMap.cs</FileName>
-    </TypeIdentifier>
-  </Interface>
-  <Interface Name="OXM.IElementMap&lt;T&gt;">
-    <Position X="1.5" Y="3.75" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAgAACAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>IElementMap.cs</FileName>
     </TypeIdentifier>
   </Interface>
-  <Interface Name="OXM.IMap&lt;T&gt;">
-    <Position X="3.75" Y="2.5" Width="1.5" />
+  <Interface Name="OXM.IMemberMap&lt;T&gt;" Collapsed="true">
+    <Position X="2.25" Y="7.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
-      <FileName>IMap.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAgAAAAAA=</HashCode>
+      <FileName>IMemberMap.cs</FileName>
     </TypeIdentifier>
   </Interface>
-  <Interface Name="OXM.IValueMap&lt;T&gt;">
-    <Position X="3.75" Y="3.75" Width="1.5" />
+  <Interface Name="OXM.ISimpleTypeConverter&lt;T&gt;" Collapsed="true">
+    <Position X="20.75" Y="5.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>IValueMap.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAEAAAAAAAAAAA=</HashCode>
+      <FileName>SimpleTypeConverter.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Font Name="Tahoma" Size="8.25" />

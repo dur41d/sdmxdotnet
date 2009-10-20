@@ -9,11 +9,11 @@ using Common;
 
 namespace OXM
 {
-    public class StringValueElementMap : ValueElementMap<String>
-    {
-        public StringValueElementMap()
-            : base(s => s)
-        {
-        }
-    }
+    //public class StringValueElementMap : ValueElementMap<String>
+    //{
+    //    public StringValueElementMap()
+    //        : base(s => s)
+    //    {
+    //    }
+    //}
 }

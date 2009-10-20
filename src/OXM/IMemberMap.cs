@@ -9,8 +9,9 @@ using Common;
 
 namespace OXM
 {
-    public interface IAttributeMap<T> : IMap<T>
+    internal interface IMemberMap<T>
     {
-        void SetValue(XElement element);
+        void ReadXml(XElement element);
+        void WriteXml(XElement element, T obj);
     }
 }
