@@ -6,23 +6,11 @@ using OXM;
 
 namespace SDMX.Parsers
 {
-    public static class LanguageMap
+    public class LanguageConverter : SimpleTypeConverterBase<Language>
     {
-        static ObjectMap<Language, string> map = new ObjectMap<Language, string>();
-
-        static LanguageMap()
+        public LanguageConverter()
         {
-            map.Map(Language.English, "en");
-        }
-
-        public static Language Get(string lang)
-        {
-            return map[lang];
-        }
-
-        public static string Get(Language lang)
-        {
-            return map[lang];
+            Map(Language.English, "en");
         }
     }
 }

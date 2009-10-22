@@ -9,41 +9,40 @@ namespace SDMX.Parsers
 {
     public class AnnotationMap : ClassMap<Annotation>
     {
+        Annotation annotation = new Annotation();
+
         public AnnotationMap()
         {
-            MapElement<string>("AnnotationTitle", false)
-                .Getter(o => o.Title)
-                .Setter(p => Instance.Title = p)
-                .Parser(new StringValueElementMap());
+            ElementsOrder("AnnotationTitle", "AnnotationType", "AnnotationURL", "AnnotationText");
 
-            MapElement<string>("AnnotationType", false)
-                .Getter(o => o.Type)
-                .Setter(p => Instance.Type = p)
-                .Parser(new StringValueElementMap());
+            Map(o => o.Title).ToSimpleElement("AnnotationTitle", false)
+                .Set(p => annotation.Title = p)
+                .Converter(new StringConverter());
 
-            MapElement<Uri>("AnnotationURL", false)
-                .Getter(o => o.Url)
-                .Setter(p => Instance.Url = p)
-                .Parser(new ValueElementMap<Uri>(s => new Uri(s)));
+            Map(o => o.Type).ToSimpleElement("AnnotationType", false)
+               .Set(p => annotation.Type = p)
+               .Converter(new StringConverter());
 
-            MapElementCollection<KeyValuePair<Language, string>>("AnnotationText", false)
-                .Getter(o =>
-                        {
-                            var list = new List<KeyValuePair<Language, string>>();
-                            foreach (var lang in o.Text.Languages)
-                            {
-                                var item = new KeyValuePair<Language, string>(lang, o.Text[lang]);
-                                list.Add(item);
-                            }
-                            return list;
-                        })
-                .Setter(p => Instance.Text[p.Key] = p.Value)
-                .Parser(() => new InternationalStringMap());
+            Map(o => o.Url).ToSimpleElement("AnnotationURL", false)
+               .Set(p => annotation.Url = p)
+               .Converter(new UriConverter());
+
+            MapCollection(o => GetTextList(o)).ToElement("AnnotationText", false)
+                .Set(v => v.ForEach(i => annotation.Text[i.Key] = i.Value))
+                .ClassMap(new InternationalStringMap());
         }
 
-        //protected override Annotation CreateObject()
-        //{
-        //    return new Annotation();
-        //}
+        IEnumerable<KeyValuePair<Language, string>> GetTextList(Annotation annotation)
+        {
+            foreach (var lang in annotation.Text.Languages)
+            {
+                yield return new KeyValuePair<Language, string>(lang, annotation.Text[lang]);
+            }
+        }
+
+        protected override Annotation Return()
+        {
+            return annotation;
+        }
     }
 }

@@ -10,62 +10,65 @@ using OXM;
 
 namespace SDMX.Parsers
 {
-    
+
     public class DimensionMap : CompoenentMap<Dimension>
     {
-        private DSD _dsd;
+        Dimension _dimension;
         
-
         public DimensionMap(DSD dsd)
             : base(dsd)
-        {   
-            _dsd = dsd;
+        {
+            AttributesOrder("conceptRef",
+                            "codelist",
+                            "isMeasureDimension",
+                            "isFrequencyDimension",
+                            "isEntityDimension",
+                            "isCountDimension",
+                            "isNonObservationTimeDimension",
+                            "isIdentityDimension",
+                            "crossSectionalAttachmentLevel");
 
-            MapAttribute<bool>("isMeasureDimension", false, false)
-              .Getter(o => o.IsMeasureDimension)
-              .Setter(p => Instance.IsMeasureDimension = p)
-              .Parser(s => bool.Parse(s));
+            ElementsOrder("TextFormat", "Annotations");
 
-            MapAttribute<bool>("isFrequencyDimension", false, false)
-              .Getter(o => o.IsFrequencyDimension)
-              .Setter(p => Instance.IsFrequencyDimension = p)
-              .Parser(s => bool.Parse(s));
+            Map(o => o.IsMeasureDimension).ToAttribute("isMeasureDimension", false, "false")
+                .Set(v => _dimension.IsMeasureDimension = v)
+                .Converter(new BooleanConverter());
 
-            MapAttribute<bool>("isEntityDimension", false, false)
-              .Getter(o => o.IsEntityDimension)
-              .Setter(p => Instance.IsEntityDimension = p)
-              .Parser(s => bool.Parse(s));
+            Map(o => o.IsFrequencyDimension).ToAttribute("isFrequencyDimension", false, "false")
+                .Set(v => _dimension.IsFrequencyDimension = v)
+                .Converter(new BooleanConverter());
 
-            MapAttribute<bool>("isCountDimension", false, false)
-              .Getter(o => o.IsCountDimension)
-              .Setter(p => Instance.IsCountDimension = p)
-              .Parser(s => bool.Parse(s));
+            Map(o => o.IsEntityDimension).ToAttribute("isEntityDimension", false, "false")
+                .Set(v => _dimension.IsEntityDimension = v)
+                .Converter(new BooleanConverter());
 
-            MapAttribute<bool>("isNonObservationTimeDimension", false, false)
-              .Getter(o => o.IsNonObservationTimeDimension)
-              .Setter(p => Instance.IsNonObservationTimeDimension = p)
-              .Parser(s => bool.Parse(s));
+            Map(o => o.IsCountDimension).ToAttribute("isCountDimension", false, "false")
+                .Set(v => _dimension.IsCountDimension = v)
+                .Converter(new BooleanConverter());
 
-            MapAttribute<bool>("isIdentityDimension", false, false)
-              .Getter(o => o.IsIdentityDimension)
-              .Setter(p => Instance.IsIdentityDimension = p)
-              .Parser(s => bool.Parse(s));
+            Map(o => o.IsNonObservationTimeDimension).ToAttribute("isNonObservationTimeDimension", false, "false")
+                .Set(v => _dimension.IsNonObservationTimeDimension = v)
+                .Converter(new BooleanConverter());
+
+            Map(o => o.IsIdentityDimension).ToAttribute("isIdentityDimension", false, "false")
+                .Set(v => _dimension.IsIdentityDimension = v)
+                .Converter(new BooleanConverter());
         }
-
-        //protected override Dimension CreateObject()
-        //{
-        //    var concept = _dsd.GetConcept(conceptRef.Value, conceptAgency.Value, conceptVersion.Value, conceptSchemeRef.Value, conceptSchemeAgency.Value);
-
-        //    var dimension = new Dimension(concept);
-
-        //    SetComponentProperties(dimension);
-
-        //    return dimension;
-        //}       
 
         protected override Dimension Create(Concept conecpt)
         {
-            throw new NotImplementedException();
+            _dimension = new Dimension(conecpt);
+            return _dimension;
+        }
+
+        protected override void SetAnnotations(IEnumerable<Annotation> annotations)
+        {
+            annotations.ForEach(i => _dimension.Annotations.Add(i));
+        }
+
+        protected override Dimension Return()
+        {
+            return _dimension;
         }
     }
 }

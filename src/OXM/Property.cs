@@ -27,7 +27,10 @@ namespace OXM
 
         public void Set(TProperty value)
         {
-            _setter(value);
+            if (_setter != null)
+            {
+                _setter(value);
+            }
         }
     }
 }

@@ -12,7 +12,20 @@ namespace OXM
     internal class ElementMap<T, TProperty> : ElementMapBase<T>
     {
         internal Property<T, TProperty> Property { get; set; }
-        internal ClassMap<TProperty> ClassMap { get; set; }
+        
+        private ClassMap<TProperty> _classMap;
+        internal ClassMap<TProperty> ClassMap
+        {
+            get
+            {
+                return _classMap;
+            }
+            set
+            {
+                _classMap = value;
+                _classMap.Namespace = Name.Namespace;
+            }
+        }
 
         public ElementMap(XName name, bool required)
             : base(name, required, false)

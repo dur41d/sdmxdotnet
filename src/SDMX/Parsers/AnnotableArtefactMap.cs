@@ -9,13 +9,15 @@ namespace SDMX.Parsers
 {
     public abstract class AnnotableArtefactMap<T> : ClassMap<T> where T : AnnotableArtefact
     {
+        protected abstract void SetAnnotations(IEnumerable<Annotation> annotations);
+        
         public AnnotableArtefactMap()
         {
-            MapElementContainer("Annotations", false)
-                .MapElementCollection<Annotation>("Annotation", true)
-                .Getter(o => o.Annotations)
-                .Setter(p => Instance.Annotations.Add(p))
-                .Parser(() => new AnnotationMap());
+            MapContainer("Annotations", false)
+                .MapCollection(o => o.Annotations).ToElement("Annotation", true)
+                .Set(v => SetAnnotations(v))
+                .ClassMap(new AnnotationMap());
         }
+        
     }
 }

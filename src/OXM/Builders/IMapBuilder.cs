@@ -6,14 +6,12 @@ using System.Xml.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using Common;
+using System.Runtime.Serialization;
 
 namespace OXM
-{
-    //public class StringValueElementMap : ValueElementMap<String>
-    //{
-    //    public StringValueElementMap()
-    //        : base(s => s)
-    //    {
-    //    }
-    //}
+{  
+    interface IMapBuilder<T>
+    {
+        void BuildMaps(IMapContainer<T> map);
+    }
 }

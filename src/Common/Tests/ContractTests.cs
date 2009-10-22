@@ -71,6 +71,23 @@ namespace SDMX.Tests
             o = "some string";
 
             Contract.AssertNotNullOrEmpty(() => o);
-        }    
+        }
+
+        [Test]
+        public void order()
+        {
+            var dic = new Dictionary<string, DateTime>();
+            
+            dic.Add("Feb", new DateTime(1,2,1));
+            dic.Add("January", new DateTime(1, 1, 1));
+            dic.Add("April", new DateTime(1, 3, 1));
+
+            string[] order = new[] {"January", "Feb", "March", "April"};
+
+            foreach (var value in order.Join(dic, s => s, d => d.Key, (s,d) => d.Key))
+            {
+                Console.WriteLine(value);
+            }
+        }
     }
 }

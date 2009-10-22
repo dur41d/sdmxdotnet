@@ -8,50 +8,39 @@ using OXM;
 namespace SDMX.Parsers
 {
     public abstract class IdentifiableArtefactMap<T> : AnnotableArtefactMap<T> where T : IdentifiableArtefact
-    {
-        protected AttributeMap<T, ID> _id;
-        
+    {   
+        protected abstract void SetID(ID id);
+        protected abstract void SetUri(Uri uri);
+        protected abstract void SetName(IEnumerable<KeyValuePair<Language,string>> name);
+        protected abstract void SetDescription(IEnumerable<KeyValuePair<Language,string>> description);
+
         public IdentifiableArtefactMap()
         {
-            _id = MapAttribute<ID>("id", true)
-                .Getter(o => o.ID)                
-                .Parser(s => new ID(s));
+            Map(o => o.ID).ToAttribute("id", true)
+                .Set(v => SetID(v))
+                .Converter(new IDConverter());
 
-            MapAttribute<Uri>("uri", false)
-                .Getter(o => o.Uri)
-                .Setter(p => Instance.Uri = p)
-                .Parser(s => new Uri(s));
+            Map(o => o.Uri).ToAttribute("uri", false)
+                .Set(v => SetUri(v))
+                .Converter(new UriConverter());
 
-            MapElementCollection<KeyValuePair<Language, string>>("Name", true)
-                .Getter(o =>
-                     {
-                         var list = new List<KeyValuePair<Language, string>>();
-                         foreach (var lang in o.Name.Languages)
-                         {
-                             var item = new KeyValuePair<Language, string>(lang, o.Name[lang]);
-                             list.Add(item);
-                         }
-                         return list;
-                     })
-                .Setter(p => Instance.Name[p.Key] = p.Value)
-                .Parser(() => new InternationalStringMap());
+            MapCollection(o => GetTextList(o.Description)).ToElement("Name", true)
+                .Set(v => SetName(v))
+                .ClassMap(new InternationalStringMap());
 
-            MapElementCollection<KeyValuePair<Language, string>>("Description", false)
-                .Getter(o =>
-                    {
-                        var list = new List<KeyValuePair<Language, string>>();
-                        foreach (var lang in o.Description.Languages)
-                        {
-                            var item = new KeyValuePair<Language, string>(lang, o.Description[lang]);
-                            list.Add(item);
-                        }        
-                        return list;
-                    })
-                .Setter(p => Instance.Description[p.Key] = p.Value)
-                .Parser(() => new InternationalStringMap());
-
-
+            MapCollection(o => GetTextList(o.Description)).ToElement("Description", false)
+               .Set(v => SetDescription(v))
+               .ClassMap(new InternationalStringMap());
         }
+
+        IEnumerable<KeyValuePair<Language, string>> GetTextList(InternationalText text)
+        {
+            foreach (var lang in text.Languages)
+            {
+                yield return new KeyValuePair<Language, string>(lang, text[lang]);
+            }
+        }
+
 
     }
 }

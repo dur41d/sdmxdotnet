@@ -8,7 +8,7 @@ using System.Reflection;
 using Common;
 
 namespace OXM
-{
+{   
     internal class ElementContainerMap<T> : ElementMapBase<T>, IElementMapContainer<T>
     {
         private List<IMapBuilder<T>> builders = new List<IMapBuilder<T>>();        
@@ -79,6 +79,15 @@ namespace OXM
         void IElementMapContainer<T>.AddElementMap(XName name, IMemberMap<T> map)
         {
             _elementMaps.Add(name, map);
+        }
+
+        #endregion
+
+        #region IMapContainer<T> Members
+
+        XNamespace IMapContainer<T>.Namespace
+        {
+            get { return Name.Namespace; }
         }
 
         #endregion

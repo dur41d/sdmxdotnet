@@ -9,20 +9,30 @@ namespace SDMX.Parsers
 {
     internal class PrimaryMeasureMap : MeasureMap<PrimaryMeasure>
     {
-        DSD _dsd;
+        PrimaryMeasure _measure;
 
         internal PrimaryMeasureMap(DSD dsd)
             : base(dsd)
         {
-            _dsd = dsd;
+            AttributesOrder("conceptRef", "codelist");
+
+            ElementsOrder("TextFormat", "Annotations");
         }
 
-        //protected override PrimaryMeasure CreateObject()
-        //{
-        //    var concept = _dsd.GetConcept(conceptRef.Value, conceptAgency.Value, conceptVersion.Value, conceptSchemeRef.Value, conceptSchemeAgency.Value);
-        //    var primaryMeasure = new PrimaryMeasure(concept);
-        //    SetMeasureProperties(primaryMeasure);
-        //    return primaryMeasure;
-        //}
+        protected override PrimaryMeasure Create(Concept conecpt)
+        {
+            _measure = new PrimaryMeasure(conecpt);
+            return _measure;
+        }
+
+        protected override void SetAnnotations(IEnumerable<Annotation> annotations)
+        {
+            annotations.ForEach(i => _measure.Annotations.Add(i));
+        }
+
+        protected override PrimaryMeasure Return()
+        {
+            return _measure;
+        }
     }
 }

@@ -10,63 +10,23 @@ namespace SDMX.Parsers
     internal abstract class MeasureMap<T> : AnnotableArtefactMap<T>
             where T : Measure
     {
-        DSD _dsd;
+        protected abstract T Create(Concept conecpt);
 
-        protected AttributeMap<T, ID> conceptRef;
-        protected AttributeMap<T, string> conceptVersion;
-        protected AttributeMap<T, ID> conceptAgency;
-        protected AttributeMap<T, ID> conceptSchemeRef;
-        protected AttributeMap<T, ID> conceptSchemeAgency;
-
-        private AttributeMap<T, ID> codelist;
-        private AttributeMap<T, string> codelistVersion;
-        private AttributeMap<T, ID> codelistAgency;
-
+        T _measure;
+        
         internal MeasureMap(DSD dsd)
         {
-            _dsd = dsd;
+            Map(o => new ConceptRef(o.Concept)).ToAttributeGroup("conceptRef")
+               .Set(v => _measure = Create(dsd.GetConcept(v)))
+               .GroupTypeMap(new ConceptRefMap());
 
-            conceptRef = MapAttribute<ID>("conceptRef", true)
-               .Getter(d => d.Concept.ID)
-               .Parser(s => s);
+            Map(o => new CodelistRef(o.CodeList)).ToAttributeGroup("codelist")
+                .Set(v => _measure.CodeList = dsd.GetCodeList(v))
+                .GroupTypeMap(new CodelistRefMap());
 
-            conceptVersion = MapAttribute<string>("conceptVersion", false)
-               .Getter(d => d.Concept.Version)
-               .Parser(s => s);
-
-            conceptAgency = MapAttribute<ID>("conceptAgency", false)
-               .Getter(d => d.Concept.AgencyID)
-               .Parser(s => s);
-
-            conceptSchemeRef = MapAttribute<ID>("conceptSchemeRef", false)
-              .Getter(d => d.Concept.ConceptScheme.ID)
-              .Parser(s => s);
-
-            conceptSchemeAgency = MapAttribute<ID>("conceptSchemeAgency", false)
-              .Getter(d => d.Concept.ConceptScheme.AgencyID)
-              .Parser(s => s);
-
-            codelist = MapAttribute<ID>("codelist", false)
-            .Getter(d => d.CodeList.ID)
-            .Parser(s => s);
-
-            codelistVersion = MapAttribute<string>("codelistVersion", false)
-              .Getter(d => d.CodeList.Version)
-              .Parser(s => s);
-
-            codelistAgency = MapAttribute<ID>("codelistAgency", false)
-              .Getter(d => d.CodeList.AgencyID)
-              .Parser(s => s);
-
-            MapElement<TextFormat>("TextFormat", false)
-                .Parser(new TextFormatMap())
-                .Getter(o => o.TextFormat)
-                .Setter(p => Instance.TextFormat = p);
-        }
-
-        protected void SetMeasureProperties(T component)
-        {
-            //component.CodeList = _dsd.GetCodeList(codelist.Value, codelistAgency.Value, codelistVersion.Value);
-        }
+            Map(o => o.TextFormat).ToElement("TextFormat", false)
+                 .Set(v => _measure.TextFormat = v)
+                 .ClassMap(new TextFormatMap());
+        }     
     }
 }

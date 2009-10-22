@@ -4,30 +4,41 @@ using System.Linq;
 using System.Text;
 using OXM;
 using Common;
+using System.Xml.Linq;
 
 namespace SDMX.Parsers
 {
+    internal static class Namespaces
+    {
+        public static readonly XNamespace Message = "http://www.SDMX.org/resources/SDMXML/schemas/v2_0/message";
+        public static readonly XNamespace Common = "http://www.SDMX.org/resources/SDMXML/schemas/v2_0/common";
+        public static readonly XNamespace Generic = "";
+        public static readonly XNamespace Structure = "http://www.SDMX.org/resources/SDMXML/schemas/v2_0/structure";
+         
+    }
+    
     public class StructureMessageMap : RoolElementMap<StructureMessage>
     {
-        public override string Name
+        public override XName Name
         {
-            get { return "Structure"; }
+            get { return Namespaces.Message + "Structure"; }
         }
+
+        StructureMessage _message = new StructureMessage();
 
         public StructureMessageMap()
         {
             DSD dsd = new DSD();
 
-            MapElementContainer("KeyFamilies", false)
-                .MapElementCollection<KeyFamily>("KeyFamily", true)
-                    .Getter(o => o.KeyFamilies)
-                    .Setter(p => Instance.KeyFamilies.Add(p))
-                    .Parser(() => new KeyFamilyMap(dsd));
+            MapContainer("KeyFamilies", false)
+                .MapCollection(o => o.KeyFamilies).ToElement(Namespaces.Structure + "KeyFamily", true)
+                    .Set(v => v.ForEach(i => _message.KeyFamilies.Add(i)))
+                    .ClassMap(new KeyFamilyMap(dsd));
         }
 
-        //protected override StructureMessage CreateObject()
-        //{
-        //    return new StructureMessage();
-        //}
+        protected override StructureMessage Return()
+        {
+            return _message;
+        }
     }
 }
