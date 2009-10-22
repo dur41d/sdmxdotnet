@@ -11,7 +11,9 @@ using System.Runtime.Serialization;
 namespace OXM
 {
     interface IMapContainer<T>
-    {}
+    {
+        XNamespace Namespace { get; }
+    }
 
     interface IElementMapContainer<T> : IMapContainer<T>
     {

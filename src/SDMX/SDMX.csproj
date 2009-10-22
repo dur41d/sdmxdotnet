@@ -55,11 +55,15 @@
     <Compile Include="Parsers\AnnotableArtefactMap.cs" />
     <Compile Include="Parsers\AnnotationMap.cs" />
     <Compile Include="Parsers\AttributeMap.cs" />
+    <Compile Include="Parsers\CodelistRefMap.cs" />
     <Compile Include="Parsers\CompoenentMap.cs" />
+    <Compile Include="Parsers\ConceptRefMap.cs" />
+    <Compile Include="Parsers\CrossSectionalAttachmentLevelMap.cs" />
     <Compile Include="Parsers\CrossSectionalMeasureMap.cs" />
     <Compile Include="Parsers\DimensionMap.cs" />
     <Compile Include="Parsers\DSD.cs" />
     <Compile Include="Parsers\GroupMap.cs" />
+    <Compile Include="Parsers\IDConverter.cs" />
     <Compile Include="Parsers\IdentifiableArtefactMap.cs" />
     <Compile Include="Parsers\InternationalStringMap.cs" />
     <Compile Include="Parsers\KeyFamilyMap.cs" />

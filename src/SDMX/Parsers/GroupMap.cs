@@ -7,60 +7,47 @@ using Common;
 
 namespace SDMX.Parsers
 {
-    internal class GroupValuesHolder : AnnotableArtefact
+    internal class GroupMap : AnnotableArtefactMap<Group>
     {
-        public ID ID { get; set; }
-        public List<ID> DimensionRefs { get; set; }
-        public ID AttachmentConstraintRef { get; set; }
-        public InternationalText Description { get; private set; }
-
-        public GroupValuesHolder()
+        Group _group;
+        
+        public GroupMap(KeyFamily keyFamily)
         {
-            DimensionRefs = new List<ID>();
-            Description = new InternationalText();
-        }
-    }
+            ElementsOrder("DimensionRef", "AttachmentConstraintRef", "Description", "Annotations");
 
-    internal class GroupMap : AnnotableArtefactMap<GroupValuesHolder>
-    {
-        AttributeMap<GroupValuesHolder, ID> _id;        
+            Map(o => o.ID).ToAttribute("id", true)
+                .Set(v => _group = keyFamily.CreateNewGroup(v))
+                .Converter(new IDConverter());
 
-        public GroupMap()
-        {
-            _id = MapAttribute<ID>("id", true)
-                .Getter(o => o.ID)
-                .Setter(p => Instance.ID = p)
-                .Parser(s => new ID(s));
+            MapCollection(o => o.Dimensions.Select(d => d.Concept.ID)).ToSimpleElement("DimensionRef", true)
+                .Set(v => v.ForEach(i => _group.AddDimension(i)))
+                .Converter(new IDConverter());
 
-            MapElementCollection<ID>("DimensionRef", true)
-                .Getter(o => o.DimensionRefs)
-                .Parser(() => new ValueElementMap<ID>(s => new ID(s)))
-                .Setter(p => Instance.DimensionRefs.Add(p));
+            Map(o => o.AttachmentConstraintRef).ToSimpleElement("AttachmentConstraintRef", false)
+                .Set(v => _group.AttachmentConstraintRef = v)
+                .Converter(new IDConverter());
 
-            MapElement<ID>("AttachmentConstraintRef", false)
-                .Getter(o => o.AttachmentConstraintRef)
-                .Setter(p => Instance.AttachmentConstraintRef = p)
-                .Parser(new ValueElementMap<ID>(s => new ID(s)));
-
-            MapElementCollection<KeyValuePair<Language, string>>("Description", false)
-                .Getter(o =>
-                {
-                    var list = new List<KeyValuePair<Language, string>>();
-                    foreach (var lang in o.Description.Languages)
-                    {
-                        var item = new KeyValuePair<Language, string>(lang, o.Description[lang]);
-                        list.Add(item);
-                    }
-                    return list;
-                })
-                .Setter(p => Instance.Description[p.Key] = p.Value)
-                .Parser(() => new InternationalStringMap());    
+            MapCollection(o => GetTextList(o.Description)).ToElement("Description", false)
+                .Set(v => v.ForEach(i => _group.Description[i.Key] = i.Value))
+                .ClassMap(new InternationalStringMap());
         }
 
-        //protected override GroupValuesHolder CreateObject()
-        //{
-        //    return new GroupValuesHolder();
-            
-        //}
+        IEnumerable<KeyValuePair<Language, string>> GetTextList(InternationalText text)
+        {
+            foreach (var lang in text.Languages)
+            {
+                yield return new KeyValuePair<Language, string>(lang, text[lang]);
+            }
+        }
+
+        protected override void SetAnnotations(IEnumerable<Annotation> annotations)
+        {
+            annotations.ForEach(i => _group.Annotations.Add(i));
+        }
+
+        protected override Group Return()
+        {
+            return _group;
+        }
     }
 }

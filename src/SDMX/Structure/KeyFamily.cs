@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Xml.Linq;
 using SDMX.Parsers;
+using Common;
 
 namespace SDMX
 {
@@ -78,6 +79,7 @@ namespace SDMX
 
         public Dimension GetDimension(string conceptName)
         {
+            Contract.AssertNotNull(() => conceptName);
             var dimension = dimensions.GetValueOrDefault(conceptName, null);
             if (dimension == null)
             {

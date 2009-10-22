@@ -9,30 +9,41 @@ namespace SDMX.Parsers
 {
     internal class CrossSectionalMeasureMap : MeasureMap<CrossSectionalMeasure>
     {
-        DSD _dsd;
-
+        CrossSectionalMeasure _measure;
+        
         internal CrossSectionalMeasureMap(DSD dsd)
             : base(dsd)
         {
-            _dsd = dsd;
+            AttributesOrder("conceptRef",
+                            "codelist",
+                            "measureDimension",
+                            "code");
 
-            MapAttribute<ID>("measureDimension", true)
-                .Getter(o => o.Dimension)
-                .Setter(p => Instance.Dimension = p)
-                .Parser(s => new ID(s));
+            ElementsOrder("TextFormat", "Annotations");
 
-            MapAttribute<ID>("code", true)
-                .Getter(o => o.Code)
-                .Setter(p => Instance.Code = p)
-                .Parser(s => new ID(s));
+            Map(o => o.Dimension).ToAttribute("measureDimension", true)
+                .Set(v => _measure.Dimension = v)
+                .Converter(new IDConverter());
+
+            Map(o => o.Code).ToAttribute("code", true)
+                .Set(v => _measure.Code = v)
+                .Converter(new IDConverter());
+        }      
+
+        protected override CrossSectionalMeasure Create(Concept conecpt)
+        {
+            _measure = new CrossSectionalMeasure(conecpt);
+            return _measure;
         }
 
-        // protected override CrossSectionalMeasure CreateObject()
-        //{
-        //    var concept = _dsd.GetConcept(conceptRef.Value, conceptAgency.Value, conceptVersion.Value, conceptSchemeRef.Value, conceptSchemeAgency.Value);
-        //    var xMeasure = new CrossSectionalMeasure(concept);
-        //    SetMeasureProperties(xMeasure);
-        //    return xMeasure;
-        //}
+        protected override void SetAnnotations(IEnumerable<Annotation> annotations)
+        {
+            annotations.ForEach(i => _measure.Annotations.Add(i));
+        }
+
+        protected override CrossSectionalMeasure Return()
+        {
+            return _measure;
+        }
     }
 }

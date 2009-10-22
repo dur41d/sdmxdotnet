@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "Common\Common.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OXM", "OXM\OXM.csproj", "{8441ED91-9F2B-4E43-8023-73883DA1FEA2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OXM.Tests", "OXM.Tests\OXM.Tests.csproj", "{1FAA4703-F89B-4C01-8066-AB8E4123723E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -37,6 +39,10 @@ Global
 		{8441ED91-9F2B-4E43-8023-73883DA1FEA2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8441ED91-9F2B-4E43-8023-73883DA1FEA2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8441ED91-9F2B-4E43-8023-73883DA1FEA2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1FAA4703-F89B-4C01-8066-AB8E4123723E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1FAA4703-F89B-4C01-8066-AB8E4123723E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1FAA4703-F89B-4C01-8066-AB8E4123723E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1FAA4703-F89B-4C01-8066-AB8E4123723E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

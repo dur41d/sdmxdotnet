@@ -34,6 +34,12 @@ namespace SDMX.Parsers
             return codeList;
         }
 
+        internal CodeList GetCodeList(CodelistRef codelistRef)
+        {
+            var codeList = new CodeList(codelistRef.ID, codelistRef.AgencyID);
+            return codeList;
+        }
+
         internal Concept GetConcept(ID id, ID agencyID, string version, ID schemeID, ID schemeAgencyID)
         {
             var conceptScheme = new ConceptScheme(schemeID, schemeAgencyID);
@@ -44,8 +50,8 @@ namespace SDMX.Parsers
 
         internal Concept GetConcept(ConceptRef conceptRef)
         {
-            var conceptScheme = new ConceptScheme(conceptRef.SchemeRef.ID, conceptRef.SchemeRef.Agency);
-            var concept = new Concept(conceptRef.ID, conceptRef.Agency);
+            var conceptScheme = new ConceptScheme(conceptRef.SchemeRef.ID, conceptRef.SchemeRef.AgencyID);
+            var concept = new Concept(conceptRef.ID, conceptRef.AgencyID);
             conceptScheme.Add(concept);
             return concept;
         }

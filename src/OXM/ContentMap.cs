@@ -9,7 +9,7 @@ using Common;
 
 namespace OXM
 {    
-    internal class ValueMap<T, TProperty> : SimpleTypeMap<T, TProperty>
+    internal class ContentMap<T, TProperty> : SimpleTypeMap<T, TProperty>
     {
         protected override void WriteValue(XElement element, string value)
         {

@@ -9,18 +9,18 @@ namespace SDMX.Parsers
     public abstract class MaintainableArtefactMap<T> : VersionableArtefactMap<T>
         where T : MaintainableArtefact
     {
-        protected AttributeMap<T, ID> _agencyIDMap;
+        protected abstract void SetAgencyID(ID  agencyId);
+        protected abstract void SetIsFinal(bool isFinal);
 
         public MaintainableArtefactMap()
         {
-            _agencyIDMap = MapAttribute<ID>("agencyID", true)
-                .Getter(o => o.AgencyID)
-                .Parser(s => new ID(s));
-            
-            MapAttribute<bool>("isFinal", false)
-                .Getter(o => o.IsFinal)
-                .Setter(p => Instance.IsFinal = p)
-                .Parser(s => bool.Parse(s));        
+            Map(o => o.AgencyID).ToAttribute("agencyID", true)
+                .Set(v => SetAgencyID(v))
+                .Converter(new IDConverter());
+
+            Map(o => o.IsFinal).ToAttribute("isFinal", false)
+                .Set(v => SetIsFinal(v))
+                .Converter(new BooleanConverter());  
         }
     }
 }

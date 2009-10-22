@@ -16,21 +16,32 @@ namespace OXM
         protected RoolElementMap<T> _rootMap;
         private MapList<T> _attributeMaps = new MapList<T>();
         private MapList<T> _elementMaps = new MapList<T>();
-        private IMemberMap<T> _valueMap;
+        private IMemberMap<T> _contentMap;
         private string[] _attributesOrder;
         private string[] _elementsOrder;
         private List<IMapBuilder<T>> builders = new List<IMapBuilder<T>>();
 
         protected abstract T Return();
 
-        private void BuidMaps()
+        bool isBuilt = false;
+        private void BuildAndVerifyMaps()
         {
-            builders.ForEach(b => b.BuildMaps(this));
+            if (!isBuilt)
+            {
+                builders.ForEach(b => b.BuildMaps(this));
+
+                if (_contentMap != null && _elementMaps.Count() > 0)
+                {
+                    throw new OXMException("Class map for '{0}' has both elements and content. This is not possible.", typeof(T).ToString());
+                }
+                isBuilt = true;
+            }
         }
 
         internal void WriteXml(XElement element, T obj)
         {
-            BuidMaps();
+            BuildAndVerifyMaps();
+
             foreach (var map in _attributeMaps.GetOrderedList(_attributesOrder))
             {
                 map.WriteXml(element, obj);
@@ -41,15 +52,16 @@ namespace OXM
                 map.WriteXml(element, obj);
             }
 
-            if (_valueMap != null)
+            if (_contentMap != null)
             {
-                _valueMap.WriteXml(element, obj);
+                _contentMap.WriteXml(element, obj);
             }
         }
 
         internal T ReadXml(XElement element)
         {
-            BuidMaps();
+            BuildAndVerifyMaps();
+
             foreach (var attributeMap in _attributeMaps.GetOrderedList(_attributesOrder))
             {
                 attributeMap.ReadXml(element);
@@ -66,9 +78,9 @@ namespace OXM
                 ((IElementMap<T>)e).AssertValid();
             }
 
-            if (_valueMap != null)
+            if (_contentMap != null)
             {
-                _valueMap.ReadXml(element);
+                _contentMap.ReadXml(element);
             }
 
             return Return();
@@ -81,12 +93,26 @@ namespace OXM
             return builder;
         }
 
-        protected CollectionMap<T, TProperty> Map<TProperty>(Expression<Func<T, IEnumerable<TProperty>>> collection)
+        protected CollectionMap<T, TProperty> MapCollection<TProperty>(Expression<Func<T, IEnumerable<TProperty>>> collection)
         {
             var builder = new CollectionMap<T, TProperty>(collection);
             builders.Add(builder);
             return builder;
         }
+
+        //protected PropertyMap<T, TProperty> MapTemp<TProperty>()
+        //{
+        //    var builder = new PropertyMap<T, TProperty>(o => o);
+        //    builders.Add(builder);
+        //    return builder;
+        //}
+
+        //protected CollectionMap<T, TProperty> MapTempCollection<TProperty>()
+        //{
+        //    var builder = new CollectionMap<T, TProperty>(collection);
+        //    builders.Add(builder);
+        //    return builder;
+        //}
 
         protected void AttributesOrder(params string[] order)
         {
@@ -127,11 +153,20 @@ namespace OXM
 
         void IElementContentContainer<T>.SetElementContentMap(IMemberMap<T> map)
         {
-            if (_valueMap != null)
+            if (_contentMap != null)
             {
                 throw new OXMException("Element content has already been mapped.");
             }
-            _valueMap = map;
+            _contentMap = map;
+        }
+
+        #endregion
+
+        #region IMapContainer<T> Members
+
+        XNamespace IMapContainer<T>.Namespace
+        {
+            get { return Namespace; }
         }
 
         #endregion

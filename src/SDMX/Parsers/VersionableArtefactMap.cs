@@ -2,28 +2,31 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using OXM;
 
 namespace SDMX.Parsers
 {
     public abstract class VersionableArtefactMap<T> : IdentifiableArtefactMap<T> 
         where T : VersionableArtefact
     {
+        protected abstract void SetVersion(string version);
+        protected abstract void SetValidTo(TimePeriod validTo);
+        protected abstract void SetValidFrom(TimePeriod validFrom);
+
+        
         public VersionableArtefactMap()
         {
-            MapAttribute<string>("version", false)
-                .Getter(o => o.Version)
-                .Setter(p => Instance.Version = p)
-                .Parser(s => s);
+            Map(o => o.Version).ToAttribute("version", false)
+                .Set(v => SetVersion(v))
+                .Converter(new StringConverter());
 
-            MapAttribute<TimePeriod>("validFrom", false)
-                .Getter(o => o.ValidFrom)
-                .Setter(p => Instance.ValidFrom = p)
-                .Parser(s => new TimePeriod(DateTime.Parse(s)));
+            Map(o => o.ValidFrom).ToAttribute("validFrom", false)
+                .Set(v => SetValidFrom(v))
+                .Converter(new TimePeriodConverter());
 
-            MapAttribute<TimePeriod>("validTo", false)
-                .Getter(o => o.ValidTo)
-                .Setter(p => Instance.ValidTo = p)
-                .Parser(s => new TimePeriod(DateTime.Parse(s)));
+            Map(o => o.ValidTo).ToAttribute("validTo", false)
+                .Set(v => SetValidTo(v))
+                .Converter(new TimePeriodConverter());
         }
     }
 }

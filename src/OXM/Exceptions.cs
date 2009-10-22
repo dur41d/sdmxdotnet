@@ -9,7 +9,7 @@ using Common;
 
 namespace OXM
 {
-    [global::System.Serializable]
+    [Serializable]
     public class OXMException : Exception
     {
         public OXMException() { }

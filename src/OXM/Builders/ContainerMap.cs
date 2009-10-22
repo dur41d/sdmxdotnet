@@ -22,15 +22,15 @@ namespace OXM
             _required = required;
         }
 
-        protected PropertyMap<T, TProperty> Map<TProperty>(Expression<Func<T, TProperty>> property)
+        public PropertyMap<T, TProperty> Map<TProperty>(Expression<Func<T, TProperty>> property)
         {
             var builder = new PropertyMap<T, TProperty>(property);
             builders.Add(builder);
             return builder;
         }
 
-        protected CollectionMap<T, TProperty> Map<TProperty>(Expression<Func<T, IEnumerable<TProperty>>> collection)
-        {
+        public CollectionMap<T, TProperty> MapCollection<TProperty>(Expression<Func<T, IEnumerable<TProperty>>> collection)
+        {            
             var builder = new CollectionMap<T, TProperty>(collection);
             builders.Add(builder);
             return builder;
@@ -40,11 +40,13 @@ namespace OXM
 
         void IMapBuilder<T>.BuildMaps(IMapContainer<T> map)
         {
+            MapBuilderUtility.QualifyName(ref _name, map.Namespace);
+            
             var elementMap = new ElementContainerMap<T>(_name, _required);
             ((IElementMapContainer<T>)map).AddElementMap(_name, elementMap);
 
             // build children
-            builders.ForEach(b => b.BuildMaps(map));
+            builders.ForEach(b => b.BuildMaps(elementMap));
         }
 
         #endregion

@@ -10,86 +10,97 @@ namespace SDMX.Parsers
     
     public class KeyFamilyMap : MaintainableArtefactMap<KeyFamily>
     {
-        private DSD _dsd;
-        private ElementCollectionMap<KeyFamily, Dimension> _dimensions;
-
+        KeyFamily _keyFamily;
+        
         public KeyFamilyMap(DSD dsd)
-        {
-            _dsd = dsd;
+        {          
+            AttributesOrder("id" ,"agencyID", "version", "uri","isFinal","isExternalReference","validFrom","validTo");
+            ElementsOrder("Name", "Description", "Components", "Annotations");
 
-            MapAttribute<bool>("isExternalReference", false)
-                .Getter(o => o.IsExternalReference)
-                .Setter(p => Instance.IsExternalReference = p)
-                .Parser(s => bool.Parse(s));
-
-            var components = MapElementContainer("Components", false);
-
-            _dimensions = components.MapElementCollection<Dimension>("Dimension", false)
-                .Parser(() => new DimensionMap(dsd))
-                .Getter(o => o.Dimensions);                
+            Map(o => o.IsExternalReference).ToAttribute("isExternalReference", false)
+                .Set(v => _keyFamily.IsExternalReference = v)
+                .Converter(new BooleanConverter());            
             
-            components.MapElement<TimeDimension>("TimeDimension", false)
-                    .Parser(new TimeDimensionMap(dsd))
-                    .Getter(o => o.TimeDimension)
-                    .Setter(p => Instance.TimeDimension = p);
+            var components = MapContainer("Components", false);
 
-            components.MapElementCollection<GroupValuesHolder>("Group", false)
-                    .Parser(() => new GroupMap())
-                    .Getter(o => GetGroupHolders(o));
-                   // .Setter(p => BuildGroups(p, Instance));
+            components.MapCollection(o => o.Dimensions).ToElement("Dimension", false)
+                .Set(v => v.ForEach(d => _keyFamily.AddDimension(d)))
+                .ClassMap(new DimensionMap(dsd));
 
-            components.MapElement<PrimaryMeasure>("PrimaryMeasure", true)
-                   .Parser(new PrimaryMeasureMap(dsd))
-                   .Getter(o => o.PrimaryMeasure)
-                   .Setter(p => Instance.PrimaryMeasure = p);
+            components.Map(o => o.TimeDimension).ToElement("TimeDimension", false)
+                .Set(v => _keyFamily.TimeDimension = v)
+                .ClassMap(new TimeDimensionMap(dsd));
 
-            components.MapElementCollection<CrossSectionalMeasure>("CrossSectionalMeasure", false)
-                   .Parser(() => new CrossSectionalMeasureMap(dsd))
-                   .Getter(o => o.CrossSectionalMeasures)
-                   .Setter(p => Instance.AddMeasure(p));
+            components.MapCollection(o => o.Groups).ToElement("Group", false)
+               .ClassMap(new GroupMap(_keyFamily));
 
-            components.MapElementCollection<Attribute>("Attribute", false)
-                   .Parser(() => new AttributeMap(dsd))
-                   .Getter(o => o.Attributes)
-                   .Setter(p => Instance.AddAttribute(p));
+            components.Map(o => o.PrimaryMeasure).ToElement("PrimaryMeasure", true)
+                .Set(v => _keyFamily.PrimaryMeasure = v)
+                .ClassMap(new PrimaryMeasureMap(dsd));
+
+            components.MapCollection(o => o.CrossSectionalMeasures).ToElement("CrossSectionalMeasure", false)
+                .Set(v => v.ForEach(d => _keyFamily.AddMeasure(d)))
+                .ClassMap(new CrossSectionalMeasureMap(dsd));
+
+            components.MapCollection(o => o.Attributes).ToElement("Attribute", false)
+                .Set(v => v.ForEach(d => _keyFamily.AddAttribute(d)))
+                .ClassMap(new AttributeMap(dsd));
         }
 
-        private IEnumerable<GroupValuesHolder> GetGroupHolders(KeyFamily keyFamily)
+        ID _id;
+        protected override void SetAgencyID(ID agencyId)
         {
-            List<GroupValuesHolder> groupHolders = new List<GroupValuesHolder>();
-            foreach (var group in keyFamily.Groups)
-            {
-                var groupHolder = new GroupValuesHolder();
-                groupHolder.ID = group.ID;
-                group.Annotations.ForEach(item => groupHolder.Annotations.Add(item));
-                groupHolder.AttachmentConstraintRef = group.AttachmentConstraintRef;
-                group.Description.Languages.ForEach(lang => groupHolder.Description[lang] = group.Description[lang]);
-                groupHolder.DimensionRefs = group.Dimensions.Select(d => d.Concept.ID).ToList();
-                groupHolders.Add(groupHolder);
-            }
-
-            return groupHolders;
+            _keyFamily = new KeyFamily(_id, agencyId);
         }
 
-        private void BuildGroups(IList<GroupValuesHolder> groupHolders, KeyFamily keyFamily)
+        protected override void SetID(ID id)
         {
-            foreach (var holder in groupHolders)
-            {
-                var group = keyFamily.CreateNewGroup(holder.ID);
-                holder.DimensionRefs.ForEach(item => group.AddDimension(item));
-                group.Annotations.ForEach(Item => group.Annotations.Add(Item));
-                holder.Description.Languages.ForEach(lang => group.Description[lang] = holder.Description[lang]);
-                group.AttachmentConstraintRef = holder.AttachmentConstraintRef;
-            }
+            _id = id;
         }
 
-        //protected override KeyFamily CreateObject()
-        //{
-        //    var keyFamily = new KeyFamily(_id.Value, _agencyIDMap.Value);
-        //    _dimensions.Values.ForEach(item => keyFamily.AddDimension(item));
+        protected override void SetIsFinal(bool isFinal)
+        {
+            _keyFamily.IsFinal = isFinal;
+        }
 
+        protected override void SetVersion(string version)
+        {
+            _keyFamily.Version = version;
+        }
 
-        //    return keyFamily;    
-        //}
+        protected override void SetValidTo(TimePeriod validTo)
+        {
+            _keyFamily.ValidTo = validTo;
+        }
+
+        protected override void SetValidFrom(TimePeriod validFrom)
+        {
+            _keyFamily.ValidFrom = validFrom;
+        }
+
+        protected override void SetUri(Uri uri)
+        {
+            _keyFamily.Uri = uri;
+        }
+
+        protected override void SetName(IEnumerable<KeyValuePair<Language, string>> name)
+        {
+            name.ForEach(i => _keyFamily.Name[i.Key] = i.Value);
+        }
+
+        protected override void SetDescription(IEnumerable<KeyValuePair<Language, string>> description)
+        {
+            description.ForEach(i => _keyFamily.Description[i.Key] = i.Value);
+        }
+
+        protected override void SetAnnotations(IEnumerable<Annotation> annotations)
+        {
+            annotations.ForEach(i => _keyFamily.Annotations.Add(i));
+        }
+
+        protected override KeyFamily Return()
+        {
+            return _keyFamily;
+        }
     }
 }

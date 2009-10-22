@@ -15,7 +15,7 @@ namespace OXM
 
         public RoolElementMap()
         {
-            if (Name.NamespaceName == "")
+            if (Name.Namespace == XNamespace.None)
             {
                 throw new OXMException("Root element is not qualified '{0}'. Please set the name space", Name);
             }

@@ -12,79 +12,81 @@ namespace SDMX.Parsers
 {
     internal class AttributeMap : CompoenentMap<Attribute>
     {
-        private DSD _dsd;
-        private ElementCollectionMap<Attribute, ID> _attachmentGroupIDs;
+        Attribute _attribute;
 
         public AttributeMap(DSD dsd)
             : base(dsd)
         {
-            _dsd = dsd;
+            AttributesOrder("conceptRef",
+                            "codelist",
+                            "attachmentLevel",
+                            "assignmentStatus",
+                            "isTimeFormat",
+                            "crossSectionalAttachmentLevel",
+                            "isEntityAttribute",
+                            "isNonObservationalTim",
+                            "isCountAttribute",
+                            "isFrequencyAttribute",
+                            "isIdentityAttribute");
 
-            MapAttribute<AttachmentLevel>("attachmentLevel", true)
-              .Getter(o => o.AttachementLevel)
-              .Setter(p => Instance.AttachementLevel = p)
-              .Parser(s => (AttachmentLevel)Enum.Parse(typeof(AttachmentLevel), s));
+            ElementsOrder("TextFormat", "AttachmentGroup", "AttachmentMeasure", "Annotations");
 
-            MapAttribute<AssignmentStatus>("assignmentStatus", true)
-             .Getter(o => o.AssignmentStatus)
-             .Setter((p => Instance.AssignmentStatus = p))
-             .Parser(s => (AssignmentStatus)Enum.Parse(typeof(AssignmentStatus), s));
+            Map(o => o.AttachementLevel).ToAttribute("attachmentLevel", true)
+                .Set(v => _attribute.AttachementLevel = v)
+                .Converter(new EnumConverter<AttachmentLevel>());
 
-            MapAttribute<bool>("isTimeFormat", false, false)
-              .Getter(o => o.IsTimeFormat)
-              .Setter(p => Instance.IsTimeFormat = p)
-              .Parser(s => bool.Parse(s));
+            Map(o => o.AssignmentStatus).ToAttribute("assignmentStatus", true)
+                .Set(v => _attribute.AssignmentStatus = v)
+                .Converter(new EnumConverter<AssignmentStatus>());
 
-            MapAttribute<bool>("isEntityAttribute", false, false)
-              .Getter(o => o.IsEntityAttribute)
-              .Setter(p => Instance.IsEntityAttribute = p)
-              .Parser(s => bool.Parse(s));
+            Map(o => o.IsTimeFormat).ToAttribute("isTimeFormat", false, "false")
+                .Set(v => _attribute.IsTimeFormat = v)
+                .Converter(new BooleanConverter());
 
-            MapAttribute<bool>("isNonObservationalTimeAttribute", false, false)
-              .Getter(o => o.IsNonObservationalTimeAttribute)
-              .Setter(p => Instance.IsNonObservationalTimeAttribute = p)
-              .Parser(s => bool.Parse(s));
+            Map(o => o.IsEntityAttribute).ToAttribute("isEntityAttribute", false, "false")
+                .Set(v => _attribute.IsEntityAttribute = v)
+                .Converter(new BooleanConverter());
 
-            MapAttribute<bool>("isCountAttribute", false, false)
-              .Getter(o => o.IsCountAttribute)
-              .Setter(p => Instance.IsCountAttribute = p)
-              .Parser(s => bool.Parse(s));
+            Map(o => o.IsNonObservationalTimeAttribute).ToAttribute("isNonObservationalTimeAttribute", false, "false")
+                .Set(v => _attribute.IsNonObservationalTimeAttribute = v)
+                .Converter(new BooleanConverter());
 
-            MapAttribute<bool>("IsFrequencyAttribute", false, false)
-              .Getter(o => o.IsFrequencyAttribute)
-              .Setter(p => Instance.IsFrequencyAttribute = p)
-              .Parser(s => bool.Parse(s));
+            Map(o => o.IsCountAttribute).ToAttribute("isCountAttribute", false, "false")
+                .Set(v => _attribute.IsCountAttribute = v)
+                .Converter(new BooleanConverter());
 
-            MapAttribute<bool>("isIdentityAttribute", false, false)
-             .Getter(o => o.IsIdentityAttribute)
-             .Setter(p => Instance.IsIdentityAttribute = p)
-             .Parser(s => bool.Parse(s));
+            Map(o => o.IsFrequencyAttribute).ToAttribute("IsFrequencyAttribute", false, "false")
+                .Set(v => _attribute.IsFrequencyAttribute = v)
+                .Converter(new BooleanConverter());
 
-            MapElementCollection<ID>("AttachmentGroup", false)
-                .Getter(o => o.AttachmentGroups)
-                .Setter(p => Instance.AttachmentGroups.Add(p))
-                .Parser(() => new ValueElementMap<ID>(s => new ID(s)));
+            Map(o => o.IsIdentityAttribute).ToAttribute("isIdentityAttribute", false, "false")
+               .Set(v => _attribute.IsIdentityAttribute = v)
+               .Converter(new BooleanConverter());
 
-            MapElementCollection<ID>("AttachmentMeasure", false)
-                .Getter(o => o.AttachmentMeasures)
-                .Setter(p => Instance.AttachmentMeasures.Add(p))
-                .Parser(() => new ValueElementMap<ID>(s => new ID(s)));
-        }
+            MapCollection(o => o.AttachmentGroups).ToSimpleElement("AttachmentGroup", false)
+                .Set(v => v.ForEach(i => _attribute.AttachmentGroups.Add(i)))
+                .Converter(new IDConverter());
 
-        //protected override Attribute CreateObject()
-        //{
-        //    var concept = _dsd.GetConcept(conceptRef.Value, conceptAgency.Value, conceptVersion.Value, conceptSchemeRef.Value, conceptSchemeAgency.Value);
+            MapCollection(o => o.AttachmentMeasures).ToSimpleElement("AttachmentMeasure", false)
+                .Set(v => v.ForEach(i => _attribute.AttachmentMeasures.Add(i)))
+                .Converter(new IDConverter());
+        }      
 
-        //    var attribute = new Attribute(concept);
-
-        //    SetComponentProperties(attribute);
-
-        //    return attribute;
-        //}
 
         protected override Attribute Create(Concept conecpt)
         {
-            throw new NotImplementedException();
+            _attribute = new Attribute(conecpt);
+            return _attribute;
+        }
+
+        protected override void SetAnnotations(IEnumerable<Annotation> annotations)
+        {
+            annotations.ForEach(i => _attribute.Annotations.Add(i));
+        }
+
+        protected override Attribute Return()
+        {
+            return _attribute;
         }
     }
 }

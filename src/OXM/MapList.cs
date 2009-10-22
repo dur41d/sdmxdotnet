@@ -32,7 +32,24 @@ namespace OXM
             }
             else
             {
-                return order.Join(_list, o => o, e => e.Key, (o, e) => e.Value);
+                if (order.Length != _list.Count)
+                {
+                    string listTypeName = _list.ElementAt(0).Value.GetType().ToString();                    
+                    string mappedList = _list.Aggregate("", (m, l) => m = m + l.Key.LocalName + ",");
+                    string orderList = order.Aggregate((item, next) => item = item + "," + next);
+                    if (listTypeName.Contains("Attribute"))
+                    {
+                        throw new OXMException("There are '{0}' attributes mapped but '{1}' have been ordered\r\nMapped: {2}\r\nOrdered: {3}"
+                            , _list.Count, order.Length, mappedList, orderList);
+                    }
+                    else
+                    {
+                        throw new OXMException("There are '{0}' elements mapped but '{1}' have been ordered\r\nMapped: {2}\r\nOrdered: {3}"
+                            , _list.Count, order.Length, mappedList, orderList);
+                    }
+                }
+                var orderedList = order.Join(_list, o => o, e => e.Key.LocalName, (o, e) => e.Value).ToList();
+                return orderedList;
             }
         }
 

@@ -9,14 +9,18 @@ namespace SDMX.Parsers
 {
     public class TextFormatMap : ClassMap<TextFormat>
     {
+        TextFormat _textFormat = new TextFormat();
+
         public TextFormatMap()
         {
-            Instance = new TextFormat();
-            
-            MapAttribute<TextType>("textType", false)
-                .Parser(s => (TextType)Enum.Parse(typeof(TextType), s))
-                .Getter(o => o.TextType)
-                .Setter(p => Instance.TextType = p);
-        }    
+            Map(o => o.TextType).ToAttribute("textType", false)
+                .Set(v => _textFormat.TextType = v)
+                .Converter(new EnumConverter<TextType>());
+        }
+
+        protected override TextFormat Return()
+        {
+            return _textFormat;
+        }
     }
 }
