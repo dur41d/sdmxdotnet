@@ -25,9 +25,9 @@ namespace OXM
 
         public void WriteXml(XmlWriter writer, T obj)
         {
-            XElement element = new XElement(_name);
-            _classMap.WriteXml(element, obj);
-            element.WriteTo(writer);
+            writer.WriteStartElement(_name.LocalName, _name.NamespaceName);
+            _classMap.WriteXml(writer, obj);
+            writer.WriteEndElement();
         }
 
         public T ReadXml(XmlReader reader)
@@ -38,8 +38,8 @@ namespace OXM
             }
             while (reader.NodeType != XmlNodeType.Element);
 
-            var element = XNode.ReadFrom(reader);
-            return _classMap.ReadXml((XElement)element);
+
+            return _classMap.ReadXml(reader);
         }
     }
 }

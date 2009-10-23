@@ -7,10 +7,11 @@ using System.Linq.Expressions;
 using System.Reflection;
 using Common;
 using System.Runtime.Serialization;
+using System.Xml;
 
 namespace OXM
 {
-    public abstract class AttributeGroupTypeMap<T> : IAttributeMapContainer<T>
+    public abstract class AttributeGroupTypeMap<T> : IAttributeMapContainer<T>, IAttributeMap
     {
         internal XNamespace Namespace { get; set; }
 
@@ -42,26 +43,26 @@ namespace OXM
             return builder.ToAttribute(attributeName, required);
         }
 
-        public T ReadXml(XElement element)
+        public T ReadXml(XmlReader reader)
         {
             BuildAndVerifyMaps();
 
             foreach (var attributeMap in _attributeMaps.GetOrderedList(_attributesOrder))
             {
-                attributeMap.ReadXml(element);
+                attributeMap.ReadXml(reader);
             }
 
             return Return();
         }
 
-        public void WriteXml(XElement element, T obj)
+        public void WriteXml(XmlWriter writer, T obj)
         {
             BuildAndVerifyMaps();
 
 
             foreach (var map in _attributeMaps.GetOrderedList(_attributesOrder))
             {
-                map.WriteXml(element, obj);
+                map.WriteXml(writer, obj);
             }
         }
 
@@ -74,5 +75,17 @@ namespace OXM
         {
             _attributeMaps.Add(name, map);
         }
+
+        #region IAttributeMap Members
+
+        public bool Required
+        {
+            get 
+            {
+                return _attributeMaps.Any(i => ((IAttributeMap)i).Required == true);
+            }
+        }
+
+        #endregion
     }
 }

@@ -6,57 +6,61 @@ using System.Xml.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using Common;
+using System.Xml;
 
 namespace OXM
-{   
+{
     internal class ElementContainerMap<T> : ElementMapBase<T>, IElementMapContainer<T>
     {
-        private List<IMapBuilder<T>> builders = new List<IMapBuilder<T>>();        
         private MapList<T> _elementMaps = new MapList<T>();
-        
+
         public ElementContainerMap(XName name, bool required)
             : base(name, required, false)
         {
         }
 
-        protected PropertyMap<T, TProperty> Map<TProperty>(Expression<Func<T, TProperty>> property)
-        {
-            var builder = new PropertyMap<T, TProperty>(property);
-            builders.Add(builder);
-            return builder;
-        }
-
-        protected CollectionMap<T, TProperty> Map<TProperty>(Expression<Func<T, IEnumerable<TProperty>>> collection)
-        {
-            var builder =  new CollectionMap<T, TProperty>(collection);
-            builders.Add(builder);
-            return builder;
-        }
-
-        public override void ReadXml(XElement element)
+        public override void ReadXml(XmlReader reader)
         {
             _occurances++;
 
-            foreach (var childElement in element.Elements())
+            reader.ReadStartElement();
+
+            while (reader.NodeType == XmlNodeType.Element)
             {
-                var elementMap = _elementMaps.Get(childElement.Name);
-                elementMap.ReadXml(childElement);
+                XNamespace ns = reader.NamespaceURI;
+                XName name = ns + reader.Name;
+                var elementMap = _elementMaps.Get(name);
+                elementMap.ReadXml(reader);
+                reader.ReadStartElement();
             }
         }
 
-        public override void WriteXml(XElement element, T obj)
+        bool isWritten = false;
+        private void ElementWriting(XmlWriter writer)
         {
-            XElement container = new XElement(Name);
+            if (!isWritten)
+            {
+                writer.WriteStartElement(Name.LocalName, Name.NamespaceName);
+                isWritten = true;
+            }
+        }
 
+        public override void WriteXml(XmlWriter writer, T obj)
+        {
             foreach (var map in _elementMaps)
             {
-                map.WriteXml(container, obj);
+                // before a child element start writing write the start element of the container
+                // this is necessary to avoid writing and empty container element we we only 
+                // write the container element if a child element starts writing
+                ((IElementMap<T>)map).Writing = () => ElementWriting(writer);
+                
+                map.WriteXml(writer, obj);
             }
-
+            
             // don't add empty container elements
-            if (container.HasElements)
+            if (isWritten)
             {
-                element.Add(container);
+                writer.WriteEndElement();
             }
         }
 

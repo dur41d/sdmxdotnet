@@ -27,18 +27,10 @@ namespace SDMX.Parsers
                .Set(p => annotation.Url = p)
                .Converter(new UriConverter());
 
-            MapCollection(o => GetTextList(o)).ToElement("AnnotationText", false)
-                .Set(v => v.ForEach(i => annotation.Text[i.Key] = i.Value))
+            MapCollection(o => o.Text).ToElement("AnnotationText", false)
+                .Set(v => v.ForEach(i => annotation.Text.Add(i)))
                 .ClassMap(new InternationalStringMap());
-        }
-
-        IEnumerable<KeyValuePair<Language, string>> GetTextList(Annotation annotation)
-        {
-            foreach (var lang in annotation.Text.Languages)
-            {
-                yield return new KeyValuePair<Language, string>(lang, annotation.Text[lang]);
-            }
-        }
+        }     
 
         protected override Annotation Return()
         {

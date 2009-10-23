@@ -6,27 +6,30 @@ using System.Xml.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using Common;
+using System.Xml;
 
 namespace OXM
 {
     internal abstract class ElementMapBase<T> : IElementMap<T>
     {
         protected XName Name { get; set; }
+        protected bool Required { get; set; }
+
+        public Action Writing { protected get; set; }
 
         protected int _occurances;
-        private bool _isCollection;
-        private bool _required;        
+        private bool _isCollection;                
 
         public ElementMapBase(XName name, bool required, bool isCollection)
         {
             Name = name;
-            _required = required;
+            Required = required;
             _isCollection = isCollection;
         }
 
         public virtual void AssertValid()
         {
-            if (_required && _occurances == 0)
+            if (Required && _occurances == 0)
             {
                 throw new OXMException("Element '{0}' is required but was not found'", Name);
             }
@@ -36,8 +39,8 @@ namespace OXM
             }
         }
 
-        public abstract void ReadXml(XElement element);
+        public abstract void ReadXml(XmlReader reader);
 
-        public abstract void WriteXml(XElement element, T obj);
+        public abstract void WriteXml(XmlWriter writer, T obj);
     }
 }

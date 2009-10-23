@@ -10,7 +10,7 @@ namespace SDMX.Parsers
     {   
         internal KeyFamily Parse(DSDDocument dsd)
         {
-            KeyFamily keyFamily = new KeyFamily("lsdkfj", "agnencyID");
+            KeyFamily keyFamily = new KeyFamily("keyFamilyName","lsdkfj", "agnencyID");
 
             XElement kfElement = dsd.GetKeyFamilyElement();
 

@@ -27,17 +27,9 @@ namespace SDMX.Parsers
                 .Set(v => _group.AttachmentConstraintRef = v)
                 .Converter(new IDConverter());
 
-            MapCollection(o => GetTextList(o.Description)).ToElement("Description", false)
-                .Set(v => v.ForEach(i => _group.Description[i.Key] = i.Value))
+            MapCollection(o => o.Description).ToElement("Description", false)
+                .Set(v => v.ForEach(i => _group.Description.Add(i)))
                 .ClassMap(new InternationalStringMap());
-        }
-
-        IEnumerable<KeyValuePair<Language, string>> GetTextList(InternationalText text)
-        {
-            foreach (var lang in text.Languages)
-            {
-                yield return new KeyValuePair<Language, string>(lang, text[lang]);
-            }
         }
 
         protected override void SetAnnotations(IEnumerable<Annotation> annotations)

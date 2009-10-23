@@ -7,7 +7,7 @@ using System.Xml.Linq;
 
 namespace SDMX.Parsers
 {
-    public class InternationalStringMap : ClassMap<KeyValuePair<Language, string>>
+    public class InternationalStringMap : ClassMap<InternationalString>
     {
         KeyValuePair<Language, string> item;
         Language lang;
@@ -15,7 +15,7 @@ namespace SDMX.Parsers
 
         public InternationalStringMap()
         {
-            Map(o => o.Key).ToAttribute(XNamespace.Xml + "lang", true, "en")
+            Map(o => o.Language).ToAttribute(XNamespace.Xml + "lang", true, "en")
                 .Set(v => lang = v)
                 .Converter(new LanguageConverter());
 
@@ -25,9 +25,9 @@ namespace SDMX.Parsers
         }
 
 
-        protected override KeyValuePair<Language, string> Return()
+        protected override InternationalString Return()
         {
-            return new KeyValuePair<Language, string>(lang, value);
+            return new InternationalString(lang, value);
         }
     }
 }

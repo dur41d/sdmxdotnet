@@ -11,8 +11,8 @@ namespace SDMX.Parsers
     {   
         protected abstract void SetID(ID id);
         protected abstract void SetUri(Uri uri);
-        protected abstract void SetName(IEnumerable<KeyValuePair<Language,string>> name);
-        protected abstract void SetDescription(IEnumerable<KeyValuePair<Language,string>> description);
+        protected abstract void SetName(IEnumerable<InternationalString> name);
+        protected abstract void SetDescription(IEnumerable<InternationalString> description);
 
         public IdentifiableArtefactMap()
         {
@@ -24,23 +24,13 @@ namespace SDMX.Parsers
                 .Set(v => SetUri(v))
                 .Converter(new UriConverter());
 
-            MapCollection(o => GetTextList(o.Description)).ToElement("Name", true)
+            MapCollection(o => o.Name).ToElement("Name", true)
                 .Set(v => SetName(v))
                 .ClassMap(new InternationalStringMap());
 
-            MapCollection(o => GetTextList(o.Description)).ToElement("Description", false)
+            MapCollection(o => o.Description).ToElement("Description", false)
                .Set(v => SetDescription(v))
                .ClassMap(new InternationalStringMap());
         }
-
-        IEnumerable<KeyValuePair<Language, string>> GetTextList(InternationalText text)
-        {
-            foreach (var lang in text.Languages)
-            {
-                yield return new KeyValuePair<Language, string>(lang, text[lang]);
-            }
-        }
-
-
     }
 }

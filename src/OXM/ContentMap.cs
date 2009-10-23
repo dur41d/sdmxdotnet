@@ -6,19 +6,20 @@ using System.Xml.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using Common;
+using System.Xml;
 
 namespace OXM
 {    
     internal class ContentMap<T, TProperty> : SimpleTypeMap<T, TProperty>
     {
-        protected override void WriteValue(XElement element, string value)
+        protected override void WriteValue(XmlWriter writer, string value)
         {
-            element.Value = value;
+            writer.WriteString(value);
         }
 
-        protected override string ReadValue(XElement element)
+        protected override string ReadValue(XmlReader reader)
         {
-            return element.Value;
+            return reader.ReadContentAsString();
         }
     }
 }

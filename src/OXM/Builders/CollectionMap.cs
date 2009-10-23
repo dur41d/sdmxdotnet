@@ -67,9 +67,8 @@ namespace OXM
             }
             else
             {
-                string className, propertyName;
-                MapBuilderUtility.GetTypeAndProperty(_collection, out className, out propertyName);
-                throw new OXMException("Error mapping ({0}).{1}: a collection must be mapped to either an an element or simple element.", className, propertyName);
+                var coll = new Collection<TObj, TProperty>(_collection, null);
+                throw new OXMException("Error mapping ({0}).{1}: a collection must be mapped to either an an element or simple element.", coll.GetTypeName(), coll.GetName());
             }
         }
     }

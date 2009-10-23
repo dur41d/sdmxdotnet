@@ -6,10 +6,16 @@ using System.Xml.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using Common;
+using System.Xml;
 
 namespace OXM
 {
-    internal class AttributeMap<T, TProperty> : SimpleTypeMap<T, TProperty>
+    interface IAttributeMap
+    {
+        bool Required { get; }
+    }
+    
+    internal class AttributeMap<T, TProperty> : SimpleTypeMap<T, TProperty>, IAttributeMap
     {
         private XName _name;
         private bool _required;
@@ -24,7 +30,7 @@ namespace OXM
             _hasDefault = hasDefault;            
         }  
         
-        protected override void WriteValue(XElement element, string value)
+        protected override void WriteValue(XmlWriter writer, string value)
         {
             if (value == null)
             {
@@ -41,16 +47,16 @@ namespace OXM
                 if (!_required && _hasDefault && _default.Equals(value))
                     return;
 
-                element.SetAttributeValue(_name, value);
+                writer.WriteAttributeString(_name.LocalName, _name.NamespaceName, value);
             }
         }
 
-        protected override string ReadValue(XElement element)
+        protected override string ReadValue(XmlReader reader)
         {
-            var attribute = element.Attribute(_name);
-            if (attribute != null)
+            string value = reader.GetAttribute(_name.LocalName, _name.NamespaceName);
+            if (value != null)
             {
-                return attribute.Value;
+                return value;
             }
             else
             {
@@ -68,5 +74,17 @@ namespace OXM
                 }
             }
         }
+
+        #region IAttributeMap Members
+
+        public bool Required
+        {
+            get 
+            {
+                return _required;
+            }
+        }
+
+        #endregion
     }
 }

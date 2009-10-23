@@ -14,13 +14,11 @@ namespace OXM
     {
         Expression<Func<TObj, TProperty>> _property;  
         
-        Action<TProperty> _setter;
-        Func<TObj, TProperty> _getter;
+        Action<TProperty> _setter;        
 
         public MemberMap(Expression<Func<TObj, TProperty>> property)
         {
             _property = property;
-            _getter = property.Compile();
         }
 
         public virtual void Set(Action<TProperty> set)
@@ -30,7 +28,7 @@ namespace OXM
 
         internal Property<TObj, TProperty> GetProperty()
         {
-            return new Property<TObj, TProperty>(_getter, _setter);
+            return new Property<TObj, TProperty>(_property, _setter);
         }
     }
 }

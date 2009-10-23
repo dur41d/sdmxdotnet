@@ -7,6 +7,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using Common;
 using System.Runtime.Serialization;
+using System.Xml;
 
 namespace OXM
 {
@@ -41,20 +42,31 @@ namespace OXM
 
         #region IMemberMap<TObj> Members
 
-        public void ReadXml(XElement element)
+        public void ReadXml(XmlReader reader)
         {
-            TProperty property = GroupTypeMap.ReadXml(element);
+            TProperty property = GroupTypeMap.ReadXml(reader);
             Property.Set(property);
         }
 
-        public void WriteXml(XElement element, TObj obj)
+        public void WriteXml(XmlWriter writer, TObj obj)
         {
             TProperty property = Property.Get(obj);
 
-            if (_hasDefault && _default.Equals(property))
-                return;
+            if ((object)property == null)
+            {
+                if (((IAttributeMap)GroupTypeMap).Required)
+                {
+                    throw new OXMException("Attribute group '{0}' contains required attributes but its property is null. Property: ({1}).{2}"
+                        , _groupName, Property.GetTypeName(), Property.GetName());
+                }
+            }
+            else
+            {
+                if (_hasDefault && _default.Equals(property))
+                    return;
 
-            GroupTypeMap.WriteXml(element, property);
+                GroupTypeMap.WriteXml(writer, property);
+            }
         }
 
         #endregion
