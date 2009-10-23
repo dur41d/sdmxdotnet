@@ -14,7 +14,7 @@ namespace SDMX.Parsers
         public AnnotableArtefactMap()
         {
             MapContainer("Annotations", false)
-                .MapCollection(o => o.Annotations).ToElement("Annotation", true)
+                .MapCollection(o => o.Annotations).ToElement("Annotation", false)
                 .Set(v => SetAnnotations(v))
                 .ClassMap(new AnnotationMap());
         }

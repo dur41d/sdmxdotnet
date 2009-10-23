@@ -10,9 +10,10 @@ namespace SDMX
 {
     public class KeyFamily : MaintainableArtefact
     {
-        public KeyFamily(ID id, ID agencyID)
+        public KeyFamily(InternationalString name, ID id, ID agencyID)
             : base(id, agencyID)
-        {   
+        {
+            Name.Add(name);
         }
 
         private Dictionary<string, Dimension> dimensions = new Dictionary<string, Dimension>();

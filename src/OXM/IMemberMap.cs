@@ -6,12 +6,13 @@ using System.Xml.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using Common;
+using System.Xml;
 
 namespace OXM
 {
     internal interface IMemberMap<T>
     {
-        void ReadXml(XElement element);
-        void WriteXml(XElement element, T obj);
+        void ReadXml(XmlReader reader);
+        void WriteXml(XmlWriter writer, T obj);
     }
 }

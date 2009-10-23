@@ -166,9 +166,8 @@ namespace OXM
             }
             else
             {
-                string className, propertyName;
-                MapBuilderUtility.GetTypeAndProperty(_property, out className, out propertyName);
-                throw new OXMException("Error mapping ({0}).{1}: a property must be mapped to either an attribute, an element, or element conent.", className, propertyName);
+                var prop = new Property<TObj, TProperty>(_property, null);                
+                throw new OXMException("Error mapping ({0}).{1}: a property must be mapped to either an attribute, an element, or element conent.", prop.GetTypeName(), prop.GetName());
             }
         }
     }

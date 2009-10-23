@@ -15,13 +15,23 @@ namespace SDMX.Parsers
         public CodelistRef()
         { }
 
-        public CodelistRef(CodeList codelist)
+        public static CodelistRef Create(CodeList codelist)
         {
-            ID = codelist.ID;
-            Version = codelist.Version;
-            AgencyID = codelist.AgencyID;
-        }
-        
+            if (codelist == null)
+            {
+                return null;
+            }
+            else
+            {
+                var codelistRef = new CodelistRef();
+                codelistRef.ID = codelist.ID;
+                codelistRef.Version = codelist.Version;
+                codelistRef.AgencyID = codelist.AgencyID;
+
+                return codelistRef;
+            }          
+        }      
+
         public ID ID { get; set; }
         public string Version { get; set; }
         public ID AgencyID { get; set; }

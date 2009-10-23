@@ -14,11 +14,7 @@ namespace OXM
         private Dictionary<string, XNamespace> namespaces = new Dictionary<string, XNamespace>();
 
         public RoolElementMap()
-        {
-            if (Name.Namespace == XNamespace.None)
-            {
-                throw new OXMException("Root element is not qualified '{0}'. Please set the name space", Name);
-            }
+        {            
             Namespace = Name.Namespace;
             _rootMap = this;
         }
@@ -38,9 +34,9 @@ namespace OXM
 
         public void WriteXml(XmlWriter writer, T obj)
         {
-            XElement element = new XElement(Name);            
-            base.WriteXml(element, obj);
-            element.WriteTo(writer);
+            writer.WriteStartElement(Name.LocalName, Name.NamespaceName);
+            base.WriteXml(writer, obj);
+            writer.WriteEndElement();
         }
 
         public T ReadXml(XmlReader reader)
@@ -51,8 +47,7 @@ namespace OXM
             }
             while (reader.NodeType != XmlNodeType.Element);
 
-            var element = XNode.ReadFrom(reader);
-            return base.ReadXml((XElement)element);
+            return base.ReadXml(reader);
         }
     }
 }

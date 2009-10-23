@@ -14,32 +14,44 @@ namespace SDMX.Parsers
     {
         public ConceptRef()
         {             
-        }
-
-        public ConceptRef(Concept concept)
-        {
-            ID = concept.ID;
-            Version = concept.Version;
-            AgencyID = concept.AgencyID;
-            SchemeRef = new ConceptSchemeRef(concept.ConceptScheme);
-        }
+        }     
         
         public ID ID { get; set; }
         public string Version { get; set; }
         public ID AgencyID { get; set; }
         public ConceptSchemeRef SchemeRef { get; set; }
+
+        internal static ConceptRef Create(Concept concept)
+        {
+            if (concept == null)
+                return null;
+
+            ConceptRef conceptRef = new ConceptRef();
+            conceptRef.ID = concept.ID;
+            conceptRef.Version = concept.Version;
+            conceptRef.AgencyID = concept.AgencyID;
+            conceptRef.SchemeRef = ConceptSchemeRef.Create(concept.ConceptScheme);
+
+            return conceptRef;
+        }
     }
 
     public class ConceptSchemeRef
     {
         public ConceptSchemeRef()
-        { }
+        { }     
 
-        public ConceptSchemeRef(ConceptScheme schemeRef)
+        internal static ConceptSchemeRef Create(ConceptScheme scheme)
         {
-            ID = schemeRef.ID;
-            Version = schemeRef.Version;
-            AgencyID = schemeRef.AgencyID;
+            if (scheme == null)
+                return null;
+
+            ConceptSchemeRef schemeRef = new ConceptSchemeRef();
+            schemeRef.ID = scheme.ID;
+            schemeRef.Version = scheme.Version;
+            schemeRef.AgencyID = scheme.AgencyID;
+
+            return schemeRef;
         }
         
         public ID ID { get; set; }

@@ -16,11 +16,11 @@ namespace SDMX.Parsers
         
         internal MeasureMap(DSD dsd)
         {
-            Map(o => new ConceptRef(o.Concept)).ToAttributeGroup("conceptRef")
+            Map(o => ConceptRef.Create(o.Concept)).ToAttributeGroup("conceptRef")
                .Set(v => _measure = Create(dsd.GetConcept(v)))
                .GroupTypeMap(new ConceptRefMap());
 
-            Map(o => new CodelistRef(o.CodeList)).ToAttributeGroup("codelist")
+            Map(o => CodelistRef.Create(o.CodeList)).ToAttributeGroup("codelist")
                 .Set(v => _measure.CodeList = dsd.GetCodeList(v))
                 .GroupTypeMap(new CodelistRefMap());
 

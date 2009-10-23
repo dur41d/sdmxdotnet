@@ -6,6 +6,7 @@ using System.Xml.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using Common;
+using System.Xml;
 
 namespace OXM
 {
@@ -32,20 +33,29 @@ namespace OXM
         {
         }
 
-        public override void ReadXml(XElement element)
-        {  
-            Property.Set(ClassMap.ReadXml(element));
+        public override void ReadXml(XmlReader reader)
+        {
+            Property.Set(ClassMap.ReadXml(reader));
             _occurances++;
         }
 
-        public override void WriteXml(XElement element, T obj)
+        public override void WriteXml(XmlWriter writer, T obj)
         {
             var value = Property.Get(obj);
-            if ((object)value != null)
+            if ((object)value == null)
             {
-                XElement child = new XElement(Name);
-                ClassMap.WriteXml(child, value);
-                element.Add(child);
+                if (Required)
+                {
+                    throw new OXMException("Element '{0}' is required but its property value is null. Property: ({1}).{2}"
+                        , Name, Property.GetTypeName(), Property.GetName());
+                }
+            }
+            else
+            {
+                if (Writing != null) Writing();
+                writer.WriteStartElement(Name.LocalName, Name.NamespaceName);                
+                ClassMap.WriteXml(writer, value);
+                writer.WriteEndElement();
             }
         }
     }

@@ -6,6 +6,7 @@ using System.Xml.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using Common;
+using System.Xml;
 
 namespace OXM
 {
@@ -14,21 +15,25 @@ namespace OXM
         internal Property<TObj, TProperty> Property { get; set; }
         internal ISimpleTypeConverter<TProperty> Converter { get; set; }
 
-        protected abstract void WriteValue(XElement element, string value);
-        protected abstract string ReadValue(XElement element);
+        protected abstract void WriteValue(XmlWriter writer, string value);
+        protected abstract string ReadValue(XmlReader reader);
 
-        public void WriteXml(XElement element, TObj obj)
+        public void WriteXml(XmlWriter writer, TObj obj)
         {
             TProperty property = Property.Get(obj);
             string xmlValue = Converter.ToXml(property);
-            WriteValue(element, xmlValue);
+            WriteValue(writer, xmlValue);
         }
 
-        public void ReadXml(XElement element)
+        public void ReadXml(XmlReader reader)
         {
-            string xmlValue = ReadValue(element);
-            TProperty property = Converter.ToObj(xmlValue);
-            Property.Set(property);
+            string xmlValue = ReadValue(reader);
+
+            if (xmlValue != null)
+            {
+                TProperty property = Converter.ToObj(xmlValue);
+                Property.Set(property);
+            }
         }
     }
 }

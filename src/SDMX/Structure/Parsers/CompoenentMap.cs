@@ -19,11 +19,11 @@ namespace SDMX.Parsers
 
         public CompoenentMap(DSD dsd)
         {
-            Map(o => new ConceptRef(o.Concept)).ToAttributeGroup("conceptRef")
+            Map(o => ConceptRef.Create(o.Concept)).ToAttributeGroup("conceptRef")
                 .Set(v => _component = Create(dsd.GetConcept(v)))
                 .GroupTypeMap(new ConceptRefMap());
 
-            Map(o => new CodelistRef(o.CodeList)).ToAttributeGroup("codelistRef")
+            Map(o => CodelistRef.Create(o.CodeList)).ToAttributeGroup("codelistRef")
                 .Set(v => _component.CodeList = dsd.GetCodeList(v))
                 .GroupTypeMap(new CodelistRefMap());
 

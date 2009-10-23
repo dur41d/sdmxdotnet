@@ -7,7 +7,7 @@ namespace SDMX
 {
     public class Code : IdentifiableArtefact, Item
     {
-        public Code(ID id)
+        public Code(ID id, InternationalString name)
             : base(id)
         { }
 

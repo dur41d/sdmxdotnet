@@ -32,34 +32,48 @@ namespace OXM
             : base(name, required, true)
         {}
       
-        public override void ReadXml(XElement element)
+        public override void ReadXml(XmlReader reader)
         {
             var list = new List<TProperty>();
-            list.Add(ClassMap.ReadXml(element));
-            var next = element.NextNode;
-            _occurances++;
 
-            while (next.NodeType == XmlNodeType.Element
-                    && ((XElement)next).Name == Name)
+            do
             {
-                list.Add(ClassMap.ReadXml((XElement)next));
-                next = next.NextNode;
+                list.Add(ClassMap.ReadXml(reader));
                 _occurances++;
-            }                
-            
+                reader.ReadStartElement();                
+            }
+            while (reader.NodeType == XmlNodeType.Element);
+
+         
             Collection.Set(list);            
         }
 
-        public override void WriteXml(XElement element, T obj)
+        public override void WriteXml(XmlWriter writer, T obj)
         {
             var values = Collection.Get(obj);
-            if ((object)values != null)
+
+            if ((object)values == null)
             {
+                if (Required)
+                {
+                    throw new OXMException("Element Collection '{0}' is required but its value is null. Collection: ({1}).{2}"
+                        , Name, Collection.GetTypeName(), Collection.GetName());
+                }
+            }          
+            else
+            {
+                if (Required && values.Count() == 0)
+                {
+                    throw new OXMException("Element Collection '{0}' is required but the collection is empty. Collection: ({1}).{2}"
+                        , Name, Collection.GetTypeName(), Collection.GetName());
+                }
+
                 foreach (TProperty value in values)
                 {
-                    XElement child = new XElement(Name);
-                    ClassMap.WriteXml(child, value);
-                    element.Add(child);
+                    if (Writing != null) Writing();
+                    writer.WriteStartElement(Name.LocalName, Name.NamespaceName);
+                    ClassMap.WriteXml(writer, value);
+                    writer.WriteEndElement();
                 }
             }
         }

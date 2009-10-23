@@ -14,10 +14,12 @@ namespace SDMX.Tests
     [TestFixture]
     public class OXMTests
     {
+        public static StringBuilder sb;
+        
         [Test]
         public void KeyFamily_ToXml()
         {
-            var keyFamily = new KeyFamily("KeyID", "agencyID");
+            var keyFamily = new KeyFamily("KeyFamilyName", "KeyID", "agencyID");
 
             var concept = new Concept("FREQ", "agencyID");
             var conceptScheme = new ConceptScheme("SDMX", "SDMX");
@@ -31,6 +33,11 @@ namespace SDMX.Tests
             dimension = new Dimension(ref_area);
             keyFamily.AddDimension(dimension);
 
+            var obsValue = new Concept("OBS_VALUE", "SDMX");
+            conceptScheme.Add(obsValue);
+            keyFamily.PrimaryMeasure = new PrimaryMeasure(obsValue);
+            
+
             var annotation = new Annotation();
             annotation.Title = "Anno Title";
             annotation.Type = "Internal";
@@ -39,22 +46,28 @@ namespace SDMX.Tests
             keyFamily.Annotations.Add(annotation);
 
             XNamespace structure = Namespaces.Structure;
-            var map = new FragmentMap<KeyFamily>(structure + "KeyFamily", new KeyFamilyMap(new DSD()));
+            var map = new FragmentMap<KeyFamily>("KeyFamily", new KeyFamilyMap(new DSD()));
 
-            var sb = new StringBuilder();
+            OXMTests.sb = new StringBuilder();
+            
 
-
-            var settings = new XmlWriterSettings() { Indent = true };
-            using (var writer = XmlWriter.Create(sb))
-            {
+            var settings = new XmlWriterSettings() { Indent = true, ConformanceLevel = ConformanceLevel.Auto };
+            using (var writer = XmlWriter.Create(OXMTests.sb, settings))
+            {                
                 map.WriteXml(writer, keyFamily);
+            }
+
+            KeyFamily keyFamily2;
+            using (var reader = XmlReader.Create(new StringReader(sb.ToString())))
+            {
+                keyFamily2 = map.ReadXml(reader);
             }
            
             XElement element = XElement.Parse(sb.ToString());
             Console.Write(sb);
 
-            Assert.NotNull(element.Element(structure + "Components"));
-            Assert.AreEqual(2, element.Element(structure + "Components").Elements(structure + "Dimension").Count());
+            Assert.NotNull(element.Element("Components"));
+            Assert.AreEqual(2, element.Element("Components").Elements("Dimension").Count());
             
         }
      

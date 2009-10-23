@@ -12,13 +12,14 @@ namespace SDMX.Parsers
     {
         KeyFamily _keyFamily;
         
+        
         public KeyFamilyMap(DSD dsd)
         {          
             AttributesOrder("id" ,"agencyID", "version", "uri","isFinal","isExternalReference","validFrom","validTo");
             ElementsOrder("Name", "Description", "Components", "Annotations");
 
             Map(o => o.IsExternalReference).ToAttribute("isExternalReference", false)
-                .Set(v => _keyFamily.IsExternalReference = v)
+                .Set(v => _isExternalReference = v)
                 .Converter(new BooleanConverter());            
             
             var components = MapContainer("Components", false);
@@ -48,9 +49,17 @@ namespace SDMX.Parsers
         }
 
         ID _id;
+        ID _agencyID;
+        bool _isFinal;
+        string _version;
+        TimePeriod _validTo;
+        TimePeriod _validFrom;
+        Uri _uri;
+        bool _isExternalReference;
+
         protected override void SetAgencyID(ID agencyId)
         {
-            _keyFamily = new KeyFamily(_id, agencyId);
+            _agencyID = agencyId;
         }
 
         protected override void SetID(ID id)
@@ -60,37 +69,45 @@ namespace SDMX.Parsers
 
         protected override void SetIsFinal(bool isFinal)
         {
-            _keyFamily.IsFinal = isFinal;
+            _isFinal = isFinal;
         }
 
         protected override void SetVersion(string version)
         {
-            _keyFamily.Version = version;
+            _version = version;
         }
 
         protected override void SetValidTo(TimePeriod validTo)
         {
-            _keyFamily.ValidTo = validTo;
+            _validTo = validTo;
         }
 
         protected override void SetValidFrom(TimePeriod validFrom)
         {
-            _keyFamily.ValidFrom = validFrom;
+            _validFrom = validFrom;
         }
 
         protected override void SetUri(Uri uri)
         {
-            _keyFamily.Uri = uri;
+            _uri = uri;
         }
 
-        protected override void SetName(IEnumerable<KeyValuePair<Language, string>> name)
+        protected override void SetName(IEnumerable<InternationalString> name)
         {
-            name.ForEach(i => _keyFamily.Name[i.Key] = i.Value);
+            _keyFamily = new KeyFamily(name.First(), _id, _agencyID);
+            _keyFamily.IsFinal = _isFinal;
+            _keyFamily.Version = _version;
+            _keyFamily.ValidFrom = _validFrom;
+            _keyFamily.ValidTo = _validTo;
+            _keyFamily.Uri = _uri;
+            _keyFamily.IsExternalReference = _isExternalReference;
+
+            name.Skip(1).ForEach(i => _keyFamily.Name.Add(i));
         }
 
-        protected override void SetDescription(IEnumerable<KeyValuePair<Language, string>> description)
+        protected override void SetDescription(IEnumerable<InternationalString> description)
         {
-            description.ForEach(i => _keyFamily.Description[i.Key] = i.Value);
+            description.ForEach(i => _keyFamily.Description.Add(i));
         }
 
         protected override void SetAnnotations(IEnumerable<Annotation> annotations)

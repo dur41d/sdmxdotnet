@@ -7,6 +7,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using Common;
 using System.Runtime.Serialization;
+using System.Xml;
 
 namespace OXM
 {
@@ -38,49 +39,56 @@ namespace OXM
             }
         }
 
-        internal void WriteXml(XElement element, T obj)
+        internal void WriteXml(XmlWriter writer, T obj)
         {
             BuildAndVerifyMaps();
 
             foreach (var map in _attributeMaps.GetOrderedList(_attributesOrder))
             {
-                map.WriteXml(element, obj);
+                map.WriteXml(writer, obj);
             }
 
             foreach (var map in _elementMaps.GetOrderedList(_elementsOrder))
             {
-                map.WriteXml(element, obj);
+                map.WriteXml(writer, obj);
             }
 
             if (_contentMap != null)
             {
-                _contentMap.WriteXml(element, obj);
+                _contentMap.WriteXml(writer, obj);
             }
         }
 
-        internal T ReadXml(XElement element)
+        internal T ReadXml(XmlReader reader)
         {
             BuildAndVerifyMaps();
 
             foreach (var attributeMap in _attributeMaps.GetOrderedList(_attributesOrder))
             {
-                attributeMap.ReadXml(element);
-            }
-
-            foreach (var childElement in element.Elements())
-            {
-                var elementMap = _elementMaps.Get(childElement.Name);
-                elementMap.ReadXml(childElement);
-            }
-
-            foreach (var e in _elementMaps)
-            {
-                ((IElementMap<T>)e).AssertValid();
+                attributeMap.ReadXml(reader);
             }
 
             if (_contentMap != null)
             {
-                _contentMap.ReadXml(element);
+                _contentMap.ReadXml(reader);
+            }
+            else
+            {
+                reader.ReadStartElement();
+
+                while (reader.NodeType == XmlNodeType.Element)
+                {
+                    XNamespace ns = reader.NamespaceURI;
+                    XName name = ns + reader.Name;
+                    var elementMap = _elementMaps.Get(name);
+                    elementMap.ReadXml(reader);
+                    reader.ReadStartElement();
+                }
+
+                foreach (var e in _elementMaps)
+                {
+                    ((IElementMap<T>)e).AssertValid();
+                }
             }
 
             return Return();

@@ -11,12 +11,14 @@ namespace OXM
 {
     internal class Collection<TObj, TProperty>
     {
+        private Expression<Func<TObj, IEnumerable<TProperty>>> _collection;
         private Func<TObj, IEnumerable<TProperty>> _getter;
         private Action<IEnumerable<TProperty>> _setter;
 
-        public Collection(Func<TObj, IEnumerable<TProperty>> getter, Action<IEnumerable<TProperty>> setter)
+        public Collection(Expression<Func<TObj, IEnumerable<TProperty>>> collection, Action<IEnumerable<TProperty>> setter)
         {
-            _getter = getter;
+            _collection = collection;
+            _getter = collection.Compile();
             _setter = setter;
         }
 
@@ -31,6 +33,16 @@ namespace OXM
             {
                 _setter(value);
             }
+        }
+
+        public string GetTypeName()
+        {
+            return _collection.Parameters[0].Type.ToString();
+        }
+
+        public string GetName()
+        {
+            return _collection.Body.ToString();
         }
     }
 }
