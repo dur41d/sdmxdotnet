@@ -64,11 +64,11 @@ namespace SDMX.Parsers
                .Converter(new BooleanConverter());
 
             MapCollection(o => o.AttachmentGroups).ToSimpleElement("AttachmentGroup", false)
-                .Set(v => v.ForEach(i => _attribute.AttachmentGroups.Add(i)))
+                .Set(v => _attribute.AttachmentGroups.Add(v))
                 .Converter(new IDConverter());
 
             MapCollection(o => o.AttachmentMeasures).ToSimpleElement("AttachmentMeasure", false)
-                .Set(v => v.ForEach(i => _attribute.AttachmentMeasures.Add(i)))
+                .Set(v => _attribute.AttachmentMeasures.Add(v))
                 .Converter(new IDConverter());
         }      
 
@@ -79,9 +79,9 @@ namespace SDMX.Parsers
             return _attribute;
         }
 
-        protected override void SetAnnotations(IEnumerable<Annotation> annotations)
+        protected override void AddAnnotation(Annotation annotation)
         {
-            annotations.ForEach(i => _attribute.Annotations.Add(i));
+            _attribute.Annotations.Add(annotation);
         }
 
         protected override Attribute Return()

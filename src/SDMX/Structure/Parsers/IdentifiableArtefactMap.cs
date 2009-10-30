@@ -11,8 +11,8 @@ namespace SDMX.Parsers
     {   
         protected abstract void SetID(ID id);
         protected abstract void SetUri(Uri uri);
-        protected abstract void SetName(IEnumerable<InternationalString> name);
-        protected abstract void SetDescription(IEnumerable<InternationalString> description);
+        protected abstract void SetName(InternationalString name);
+        protected abstract void SetDescription(InternationalString description);
 
         public IdentifiableArtefactMap()
         {

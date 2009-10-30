@@ -58,7 +58,7 @@ namespace OXM
             var map = _list.GetValueOrDefault(name, null);
             if (map == null)
             {
-                throw new OXMException("Map not found '{0}'.", name);
+                throw new OXMException("'{0}' is not Mapped.", name);
             }
             return map;
         }

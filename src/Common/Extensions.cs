@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Xml;
+using System.Xml.Linq;
 
 namespace Common
 {
@@ -23,6 +25,31 @@ namespace Common
         {
             foreach (T element in source)
                 action(element);
+        }
+
+        public static bool AdvanceToElement(this XmlReader reader)
+        {
+            while (reader.Read() && reader.NodeType != XmlNodeType.Element)
+            {
+                string s = "lsdkfj";
+            }
+
+            if (reader.ReadState == ReadState.Interactive && reader.NodeType == XmlNodeType.Element)
+                return true;
+            else
+                return false;
+        }
+
+        public static bool NameEquals(this XmlReader reader, XName name)
+        {
+            return reader.Name == name.LocalName && reader.NamespaceURI == name.NamespaceName;
+        }
+
+        public static XName GetXName(this XmlReader reader)
+        {
+            XNamespace ns = reader.NamespaceURI;
+            XName name = ns + reader.Name;
+            return name;
         }
     }
 

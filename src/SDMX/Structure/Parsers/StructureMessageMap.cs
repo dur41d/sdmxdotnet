@@ -30,9 +30,13 @@ namespace SDMX.Parsers
         {
             DSD dsd = new DSD();
 
+            Map(o => o.Header).ToElement("Header", true)
+                .Set(v => _message.Header = v)
+                .ClassMap(new HeaderMap());
+
             MapContainer("KeyFamilies", false)
                 .MapCollection(o => o.KeyFamilies).ToElement(Namespaces.Structure + "KeyFamily", true)
-                    .Set(v => v.ForEach(i => _message.KeyFamilies.Add(i)))
+                    .Set(v => _message.KeyFamilies.Add(v))
                     .ClassMap(new KeyFamilyMap(dsd));
         }
 

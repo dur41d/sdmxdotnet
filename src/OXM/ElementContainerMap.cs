@@ -23,16 +23,29 @@ namespace OXM
         {
             _occurances++;
 
-            reader.ReadStartElement();
-
-            while (reader.NodeType == XmlNodeType.Element)
+            if (reader.IsEmptyElement)
             {
-                XNamespace ns = reader.NamespaceURI;
-                XName name = ns + reader.Name;
-                var elementMap = _elementMaps.Get(name);
-                elementMap.ReadXml(reader);
-                reader.ReadStartElement();
+                reader.Read();
             }
+            else
+            {
+                using (var subReader = reader.ReadSubtree())
+                {
+                    subReader.ReadStartElement();
+
+                    while (subReader.AdvanceToElement())
+                    {
+                        XName name = subReader.GetXName();
+                        var elementMap = _elementMaps.Get(name);
+                        elementMap.ReadXml(subReader);
+                    }
+                }
+            }
+
+            foreach (var e in _elementMaps)
+            {
+                ((IElementMap<T>)e).AssertValid();
+            }          
         }
 
         bool isWritten = false;
@@ -67,15 +80,6 @@ namespace OXM
         public override void AssertValid()
         {
             base.AssertValid();
-
-            // if the container element exists then check its children
-            if (_occurances > 0)
-            {
-                foreach (var elementMap in _elementMaps)
-                {
-                    ((IElementMap<T>)elementMap).AssertValid();
-                }
-            }
         }
 
         #region IElementMapContainer<T> Members

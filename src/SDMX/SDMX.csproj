@@ -47,12 +47,19 @@
   <ItemGroup>
     <Compile Include="AnnotableArtefact.cs" />
     <Compile Include="Annotation.cs" />
+    <Compile Include="Contact.cs" />
+    <Compile Include="DataSetAction.cs" />
+    <Compile Include="Header.cs" />
     <Compile Include="ID.cs" />
     <Compile Include="IdentifiableArtefact.cs" />
     <Compile Include="InternationalString.cs" />
     <Compile Include="Item.cs" />
     <Compile Include="ItemScheme.cs" />
     <Compile Include="MaintainableArtefact.cs" />
+    <Compile Include="OXMMaps\ContactMap.cs" />
+    <Compile Include="OXMMaps\HeaderMap.cs" />
+    <Compile Include="OXMMaps\PartyMap.cs" />
+    <Compile Include="Party.cs" />
     <Compile Include="Structure\Parsers\AnnotableArtefactMap.cs" />
     <Compile Include="Structure\Parsers\AnnotationMap.cs" />
     <Compile Include="Structure\Parsers\AttributeMap.cs" />

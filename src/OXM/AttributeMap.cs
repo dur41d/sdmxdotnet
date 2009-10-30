@@ -53,7 +53,13 @@ namespace OXM
 
         protected override string ReadValue(XmlReader reader)
         {
-            string value = reader.GetAttribute(_name.LocalName, _name.NamespaceName);
+            string value = reader.GetAttribute(_name.LocalName);
+
+            if (value == null)
+            {
+                value = reader.GetAttribute(_name.LocalName, _name.NamespaceName);
+            }
+
             if (value != null)
             {
                 return value;
@@ -62,7 +68,7 @@ namespace OXM
             {
                 if (_required)
                 {
-                    throw new OXMException("Attribute '{0}' is required but was not found.", _name);
+                    throw new OXMException("Attribute '{0}' for element '{1}' is required but was not found.", _name, reader.GetXName());
                 }
                 else if (_hasDefault)
                 {

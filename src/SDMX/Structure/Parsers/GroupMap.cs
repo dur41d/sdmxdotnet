@@ -20,7 +20,7 @@ namespace SDMX.Parsers
                 .Converter(new IDConverter());
 
             MapCollection(o => o.Dimensions.Select(d => d.Concept.ID)).ToSimpleElement("DimensionRef", true)
-                .Set(v => v.ForEach(i => _group.AddDimension(i)))
+                .Set(v => _group.AddDimension(v))
                 .Converter(new IDConverter());
 
             Map(o => o.AttachmentConstraintRef).ToSimpleElement("AttachmentConstraintRef", false)
@@ -28,13 +28,13 @@ namespace SDMX.Parsers
                 .Converter(new IDConverter());
 
             MapCollection(o => o.Description).ToElement("Description", false)
-                .Set(v => v.ForEach(i => _group.Description.Add(i)))
+                .Set(v => _group.Description.Add(v))
                 .ClassMap(new InternationalStringMap());
         }
 
-        protected override void SetAnnotations(IEnumerable<Annotation> annotations)
+        protected override void AddAnnotation(Annotation annotation)
         {
-            annotations.ForEach(i => _group.Annotations.Add(i));
+            _group.Annotations.Add(annotation);
         }
 
         protected override Group Return()

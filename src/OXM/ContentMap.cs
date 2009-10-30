@@ -19,7 +19,7 @@ namespace OXM
 
         protected override string ReadValue(XmlReader reader)
         {
-            return reader.ReadContentAsString();
+            return reader.ReadElementContentAsString();
         }
     }
 }

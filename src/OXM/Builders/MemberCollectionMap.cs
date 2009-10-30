@@ -13,7 +13,7 @@ namespace OXM
     public class MemberCollectionMap<TObj, TProperty>
     {
         Expression<Func<TObj, IEnumerable<TProperty>>> _collection;        
-        Action<IEnumerable<TProperty>> _setter;
+        Action<TProperty> _setter;
 
 
         public MemberCollectionMap(Expression<Func<TObj, IEnumerable<TProperty>>> collection)
@@ -21,7 +21,7 @@ namespace OXM
             _collection = collection;
         }
 
-        public void Set(Action<IEnumerable<TProperty>> set)
+        public void Set(Action<TProperty> set)
         {
             _setter = set;
         }      

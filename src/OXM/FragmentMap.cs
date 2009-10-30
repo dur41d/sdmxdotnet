@@ -32,12 +32,21 @@ namespace OXM
 
         public T ReadXml(XmlReader reader)
         {
-            do
+            if (reader.ReadState == ReadState.Initial)
             {
                 reader.Read();
             }
-            while (reader.NodeType != XmlNodeType.Element);
 
+            if (reader.NodeType != XmlNodeType.Element)
+            {
+                reader.AdvanceToElement();
+            }
+
+            if (!reader.NameEquals(_name))
+            {
+                throw new OXMException("The first element name is '{0}:{1}' and the expected name is '{2}'."
+                    , reader.NamespaceURI, reader.Name, _name);
+            }
 
             return _classMap.ReadXml(reader);
         }

@@ -74,17 +74,26 @@ namespace OXM
             }
             else
             {
-                reader.ReadStartElement();
-
-                while (reader.NodeType == XmlNodeType.Element)
+                if (reader.IsEmptyElement)
                 {
-                    XNamespace ns = reader.NamespaceURI;
-                    XName name = ns + reader.Name;
-                    var elementMap = _elementMaps.Get(name);
-                    elementMap.ReadXml(reader);
-                    reader.ReadStartElement();
+                    reader.Read();
                 }
+                else 
+                {
+                    using (var subReader = reader.ReadSubtree())
+                    {
+                        subReader.ReadStartElement();
 
+                        while (subReader.AdvanceToElement())
+                        {
+                            XName name = subReader.GetXName();
+                            var elementMap = _elementMaps.Get(name);
+                            elementMap.ReadXml(subReader);
+                        }
+                    }
+                }
+               
+                
                 foreach (var e in _elementMaps)
                 {
                     ((IElementMap<T>)e).AssertValid();
@@ -131,7 +140,7 @@ namespace OXM
         {
             _elementsOrder = order;
         }
-      
+
         protected ContainerMap<T> MapContainer(XName name, bool required)
         {
             var builder = new ContainerMap<T>(name, required);

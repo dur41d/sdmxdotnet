@@ -34,18 +34,8 @@ namespace OXM
       
         public override void ReadXml(XmlReader reader)
         {
-            var list = new List<TProperty>();
-
-            do
-            {
-                list.Add(ClassMap.ReadXml(reader));
-                _occurances++;
-                reader.ReadStartElement();                
-            }
-            while (reader.NodeType == XmlNodeType.Element);
-
-         
-            Collection.Set(list);            
+           Collection.Set(ClassMap.ReadXml(reader));
+           _occurances++;
         }
 
         public override void WriteXml(XmlWriter writer, T obj)

@@ -28,7 +28,7 @@ namespace SDMX.Parsers
                .Converter(new UriConverter());
 
             MapCollection(o => o.Text).ToElement("AnnotationText", false)
-                .Set(v => v.ForEach(i => annotation.Text.Add(i)))
+                .Set(v =>  annotation.Text.Add(v))
                 .ClassMap(new InternationalStringMap());
         }     
 

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Xml.Linq;
 using System.Xml;
+using Common;
 
 namespace OXM
 {
@@ -41,11 +42,21 @@ namespace OXM
 
         public T ReadXml(XmlReader reader)
         {
-            do
+            if (reader.ReadState == ReadState.Initial)
             {
                 reader.Read();
             }
-            while (reader.NodeType != XmlNodeType.Element);
+
+            if (reader.NodeType != XmlNodeType.Element)
+            {
+                reader.AdvanceToElement();
+            }
+
+            if (!reader.NameEquals(Name))
+            {
+                throw new OXMException("The first element name is '{0}:{1}' and the expected name is '{2}'."
+                    , reader.NamespaceURI, reader.Name, Name);
+            }
 
             return base.ReadXml(reader);
         }

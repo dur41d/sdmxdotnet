@@ -15,8 +15,11 @@ namespace OXM
         ISimpleTypeConverter<TProperty> _converter;
         MemberMap<TObj, TProperty> _memberMap;
 
+        Expression<Func<TObj, TProperty>> _prop;
+
         public SimpleMemberMap(Expression<Func<TObj, TProperty>> property)
         {
+            _prop = property;
             _memberMap = new MemberMap<TObj, TProperty>(property);
         }
 
@@ -40,7 +43,8 @@ namespace OXM
         {
             if (_converter == null)
             {
-                throw new OXMException("Converter is not set for property.");
+                var prop = new Property<TObj, TProperty>(_prop, null);
+                throw new OXMException("Converter is not set for property ({0}).{1}.", prop.GetTypeName(), prop.GetName());
             }
 
             return _converter;

@@ -61,9 +61,9 @@ namespace SDMX.Parsers
             return _dimension;
         }
 
-        protected override void SetAnnotations(IEnumerable<Annotation> annotations)
+        protected override void AddAnnotation(Annotation annotation)
         {
-            annotations.ForEach(i => _dimension.Annotations.Add(i));
+            _dimension.Annotations.Add(annotation);
         }
 
         protected override Dimension Return()
