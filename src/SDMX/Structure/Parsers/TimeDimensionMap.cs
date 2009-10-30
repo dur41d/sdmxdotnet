@@ -30,9 +30,9 @@ namespace SDMX.Parsers
             return _timeDimension;
         }
 
-        protected override void SetAnnotations(IEnumerable<Annotation> annotations)
+        protected override void AddAnnotation(Annotation annotation)
         {
-            annotations.ForEach(i => _timeDimension.Annotations.Add(i));
+            _timeDimension.Annotations.Add(annotation);
         }
 
         protected override TimeDimension Return()

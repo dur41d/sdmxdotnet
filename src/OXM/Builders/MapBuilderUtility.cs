@@ -19,11 +19,5 @@ namespace OXM
                 name = ns + name.LocalName;
             }
         }
-
-        internal static void GetTypeAndProperty(LambdaExpression exp, out string typeName, out string propertyName)
-        {
-            typeName = exp.Parameters[0].Type.ToString();
-            propertyName = ((MemberExpression)exp.Body).Member.Name;
-        }
     }
 }

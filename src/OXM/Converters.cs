@@ -70,4 +70,17 @@ namespace OXM
             return (T)Enum.Parse(typeof(T), value);
         }
     }
+
+    public class DateTimeConverter : ISimpleTypeConverter<DateTime>
+    {
+        public string ToXml(DateTime value)
+        {
+            return value.ToString();
+        }
+
+        public DateTime ToObj(string value)
+        {
+            return XmlConvert.ToDateTime(value, XmlDateTimeSerializationMode.RoundtripKind);
+        }
+    }
 }

@@ -13,9 +13,9 @@ namespace OXM
     {
         private Expression<Func<TObj, IEnumerable<TProperty>>> _collection;
         private Func<TObj, IEnumerable<TProperty>> _getter;
-        private Action<IEnumerable<TProperty>> _setter;
+        private Action<TProperty> _setter;
 
-        public Collection(Expression<Func<TObj, IEnumerable<TProperty>>> collection, Action<IEnumerable<TProperty>> setter)
+        public Collection(Expression<Func<TObj, IEnumerable<TProperty>>> collection, Action<TProperty> setter)
         {
             _collection = collection;
             _getter = collection.Compile();
@@ -27,7 +27,7 @@ namespace OXM
             return _getter(obj);
         }
 
-        public void Set(IEnumerable<TProperty> value)
+        public void Set(TProperty value)
         {
             if (_setter != null)
             {

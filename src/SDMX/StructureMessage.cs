@@ -12,6 +12,7 @@ namespace SDMX
     
     public class StructureMessage : Message
     {
+        public Header Header { get; set; }
         public IList<KeyFamily> KeyFamilies { get; private set; }
 
         public StructureMessage()

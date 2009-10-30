@@ -28,6 +28,8 @@ namespace SDMX.Tests
             dimension.TextFormat = new TextFormat();
             dimension.TextFormat.TextType = TextType.Double;
             keyFamily.AddDimension(dimension);
+            
+            
             var ref_area = new Concept("REF_AREA", "agencyID");
             conceptScheme.Add(ref_area);
             dimension = new Dimension(ref_area);
@@ -68,6 +70,21 @@ namespace SDMX.Tests
 
             Assert.NotNull(element.Element("Components"));
             Assert.AreEqual(2, element.Element("Components").Elements("Dimension").Count());
+
+            Assert.AreEqual(keyFamily.Name, keyFamily2.Name);
+            Assert.AreEqual(keyFamily.ID, keyFamily2.ID);
+            Assert.AreEqual(keyFamily.AgencyID, keyFamily2.AgencyID);
+
+            Assert.AreEqual(1, keyFamily2.Annotations.Count);
+            Assert.AreEqual("Anno Title", keyFamily2.Annotations[0].Title);
+            Assert.AreEqual("Internal", keyFamily2.Annotations[0].Type);
+            Assert.AreEqual("English Text", keyFamily2.Annotations[0].Text[Language.English]);
+
+            Assert.AreEqual(2, keyFamily2.Dimensions.Count());
+            Assert.AreEqual(new ID("FREQ"), keyFamily2.Dimensions.ElementAt(0).Concept.ID);
+            Assert.AreEqual(new ID("REF_AREA"), keyFamily2.Dimensions.ElementAt(1).Concept.ID);
+            Assert.IsNotNull(keyFamily2.Dimensions.ElementAt(0).TextFormat);
+            Assert.AreEqual(TextType.Double, keyFamily2.Dimensions.ElementAt(0).TextFormat.TextType);
             
         }
      
@@ -77,10 +94,9 @@ namespace SDMX.Tests
             string dsdPath = Utility.GetPathFromProjectBase("lib\\StructureSample.xml");
 
             StructureMessageMap map = new StructureMessageMap();
-            StructureMessage message;
-
-            var settings = new XmlReaderSettings() { IgnoreWhitespace = true };
-            using (var reader = XmlReader.Create(dsdPath, settings))
+            
+            StructureMessage message;            
+            using (var reader = XmlReader.Create(dsdPath))
             {               
                 message = map.ReadXml(reader);
             }
@@ -92,10 +108,6 @@ namespace SDMX.Tests
                 map.WriteXml(writer, message);
             }
         }
-
-        
-
-
     }
 
 

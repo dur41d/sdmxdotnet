@@ -25,7 +25,7 @@ namespace SDMX.Parsers
             var components = MapContainer("Components", false);
 
             components.MapCollection(o => o.Dimensions).ToElement("Dimension", false)
-                .Set(v => v.ForEach(d => _keyFamily.AddDimension(d)))
+                .Set(v => _keyFamily.AddDimension(v))
                 .ClassMap(new DimensionMap(dsd));
 
             components.Map(o => o.TimeDimension).ToElement("TimeDimension", false)
@@ -40,11 +40,11 @@ namespace SDMX.Parsers
                 .ClassMap(new PrimaryMeasureMap(dsd));
 
             components.MapCollection(o => o.CrossSectionalMeasures).ToElement("CrossSectionalMeasure", false)
-                .Set(v => v.ForEach(d => _keyFamily.AddMeasure(d)))
+                .Set(v => _keyFamily.AddMeasure(v))
                 .ClassMap(new CrossSectionalMeasureMap(dsd));
 
             components.MapCollection(o => o.Attributes).ToElement("Attribute", false)
-                .Set(v => v.ForEach(d => _keyFamily.AddAttribute(d)))
+                .Set(v => _keyFamily.AddAttribute(v))
                 .ClassMap(new AttributeMap(dsd));
         }
 
@@ -56,6 +56,8 @@ namespace SDMX.Parsers
         TimePeriod _validFrom;
         Uri _uri;
         bool _isExternalReference;
+
+        
 
         protected override void SetAgencyID(ID agencyId)
         {
@@ -92,27 +94,32 @@ namespace SDMX.Parsers
             _uri = uri;
         }
 
-        protected override void SetName(IEnumerable<InternationalString> name)
+        protected override void SetName(InternationalString name)
         {
-            _keyFamily = new KeyFamily(name.First(), _id, _agencyID);
-            _keyFamily.IsFinal = _isFinal;
-            _keyFamily.Version = _version;
-            _keyFamily.ValidFrom = _validFrom;
-            _keyFamily.ValidTo = _validTo;
-            _keyFamily.Uri = _uri;
-            _keyFamily.IsExternalReference = _isExternalReference;
-
-            name.Skip(1).ForEach(i => _keyFamily.Name.Add(i));
+            if (_keyFamily == null)
+            {
+                _keyFamily = new KeyFamily(name, _id, _agencyID);
+                _keyFamily.IsFinal = _isFinal;
+                _keyFamily.Version = _version;
+                _keyFamily.ValidFrom = _validFrom;
+                _keyFamily.ValidTo = _validTo;
+                _keyFamily.Uri = _uri;
+                _keyFamily.IsExternalReference = _isExternalReference;
+            }
+            else
+            {
+                _keyFamily.Name.Add(name);
+            }
         }
 
-        protected override void SetDescription(IEnumerable<InternationalString> description)
+        protected override void SetDescription(InternationalString description)
         {
-            description.ForEach(i => _keyFamily.Description.Add(i));
+            _keyFamily.Description.Add(description);
         }
 
-        protected override void SetAnnotations(IEnumerable<Annotation> annotations)
+        protected override void AddAnnotation(Annotation annotation)
         {
-            annotations.ForEach(i => _keyFamily.Annotations.Add(i));
+            _keyFamily.Annotations.Add(annotation);
         }
 
         protected override KeyFamily Return()

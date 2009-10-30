@@ -20,7 +20,7 @@ namespace OXM
             _memberCollectionMap = new MemberCollectionMap<TObj, TProperty>(collection);
         }
 
-        public ClassMemberCollectionMap<TObj, TProperty> Set(Action<IEnumerable<TProperty>> set)
+        public ClassMemberCollectionMap<TObj, TProperty> Set(Action<TProperty> set)
         {
             _memberCollectionMap.Set(set);
             return this;

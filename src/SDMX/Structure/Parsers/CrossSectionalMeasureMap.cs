@@ -36,9 +36,9 @@ namespace SDMX.Parsers
             return _measure;
         }
 
-        protected override void SetAnnotations(IEnumerable<Annotation> annotations)
+        protected override void AddAnnotation(Annotation annotation)
         {
-            annotations.ForEach(i => _measure.Annotations.Add(i));
+            _measure.Annotations.Add(annotation);
         }
 
         protected override CrossSectionalMeasure Return()

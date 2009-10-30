@@ -8,7 +8,7 @@ namespace SDMX
     public class InternationalText : IEnumerable<InternationalString>
     {
         private Dictionary<Language, string> localizedStrings = new Dictionary<Language, string>();
-
+        
         public void Add(InternationalString iString)
         {
             localizedStrings.Add(iString.Language, iString.Value);
@@ -29,6 +29,22 @@ namespace SDMX
             set
             {
                 localizedStrings[language] = value;
+            }
+        }
+
+        public override string ToString()
+        {
+            if (localizedStrings.Where(i => i.Key == Language.English).Any())
+            {
+                return this[Language.English];
+            }
+            else if (localizedStrings.Count > 0)
+            {
+                return localizedStrings[0];
+            }
+            else
+            {
+                return "";
             }
         }
 
