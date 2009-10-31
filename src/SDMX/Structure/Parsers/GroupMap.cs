@@ -29,7 +29,7 @@ namespace SDMX.Parsers
 
             MapCollection(o => o.Description).ToElement("Description", false)
                 .Set(v => _group.Description.Add(v))
-                .ClassMap(new InternationalStringMap());
+                .ClassMap(() => new InternationalStringMap());
         }
 
         protected override void AddAnnotation(Annotation annotation)

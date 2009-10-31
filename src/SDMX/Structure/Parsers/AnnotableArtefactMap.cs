@@ -16,7 +16,7 @@ namespace SDMX.Parsers
             MapContainer("Annotations", false)
                 .MapCollection(o => o.Annotations).ToElement("Annotation", false)
                 .Set(v => AddAnnotation(v))
-                .ClassMap(new AnnotationMap());
+                .ClassMap(() => new AnnotationMap());
         }
         
     }

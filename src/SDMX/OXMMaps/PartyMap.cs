@@ -19,11 +19,11 @@ namespace SDMX.Parsers
 
             MapCollection(o => o.Name).ToElement("Name", false)
                 .Set(v => party.Name.Add(v))
-                .ClassMap(new InternationalStringMap());
+                .ClassMap(() => new InternationalStringMap());
 
             MapCollection(o => o.Contacts).ToElement("Contact", false)
                 .Set(v => party.Contacts.Add(v))
-                .ClassMap(new ContactMap());
+                .ClassMap(() => new ContactMap());
         }
 
         protected override Party Return()

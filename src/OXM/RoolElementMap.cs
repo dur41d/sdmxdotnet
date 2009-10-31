@@ -20,10 +20,10 @@ namespace OXM
             _rootMap = this;
         }
 
-        //public void RegisterNamespace(string prefix, XNamespace ns)
-        //{               
-        //    namespaces.Add(prefix, ns);
-        //}
+        protected void RegisterNamespace(string prefix, XNamespace ns)
+        {
+            namespaces.Add(prefix, ns);
+        }
 
         //internal void VerifyNamespace(XNamespace ns)
         //{
@@ -36,6 +36,11 @@ namespace OXM
         public void WriteXml(XmlWriter writer, T obj)
         {
             writer.WriteStartElement(Name.LocalName, Name.NamespaceName);
+            foreach (var item in namespaces)
+            {
+                writer.WriteAttributeString("xmlns", item.Key, null, item.Value.NamespaceName);
+
+            }
             base.WriteXml(writer, obj);
             writer.WriteEndElement();
         }

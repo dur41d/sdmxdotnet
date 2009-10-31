@@ -27,7 +27,7 @@ namespace SDMX.Parsers
 
             MapCollection(o => o.Name).ToElement("Name", false)
                 .Set(v => header.Name.Add(v))
-                .ClassMap(new InternationalStringMap());
+                .ClassMap(() => new InternationalStringMap());
 
             Map(o => o.Prepared).ToSimpleElement("Prepared", true)
                 .Set(v => header.Prepared = v)
@@ -35,11 +35,11 @@ namespace SDMX.Parsers
 
             MapCollection(o => o.Senders).ToElement("Sender", true)
                 .Set(v => header.Senders.Add(v))
-                .ClassMap(new PartyMap());
+                .ClassMap(() => new PartyMap());
 
             MapCollection(o => o.Receivers).ToElement("Receiver", false)
                 .Set(v => header.Receivers.Add(v))
-                .ClassMap(new PartyMap());
+                .ClassMap(() => new PartyMap());
 
             Map(o => o.KeyFamilyID).ToSimpleElement("KeyFamilyRef", false)
                 .Set(v => header.KeyFamilyID = v)
@@ -75,7 +75,7 @@ namespace SDMX.Parsers
 
             MapCollection(o => o.Source).ToElement("Source", false)
                 .Set(v => header.Source.Add(v))
-                .ClassMap(new InternationalStringMap());
+                .ClassMap(() => new InternationalStringMap());
         }
 
         protected override Header Return()
