@@ -75,7 +75,7 @@ namespace OXM
     {
         public string ToXml(DateTime value)
         {
-            return value.ToString();
+            return value.ToString("s");
         }
 
         public DateTime ToObj(string value)

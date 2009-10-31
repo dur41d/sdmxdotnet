@@ -21,7 +21,7 @@ namespace SDMX.Tests
         {
             var keyFamily = new KeyFamily("KeyFamilyName", "KeyID", "agencyID");
 
-            var concept = new Concept("FREQ", "agencyID");
+            var concept = new Concept("name", "FREQ", "agencyID");
             var conceptScheme = new ConceptScheme("SDMX", "SDMX");
             conceptScheme.Add(concept);
             var dimension = new Dimension(concept);
@@ -30,12 +30,12 @@ namespace SDMX.Tests
             keyFamily.AddDimension(dimension);
             
             
-            var ref_area = new Concept("REF_AREA", "agencyID");
+            var ref_area = new Concept("name", "REF_AREA", "agencyID");
             conceptScheme.Add(ref_area);
             dimension = new Dimension(ref_area);
             keyFamily.AddDimension(dimension);
 
-            var obsValue = new Concept("OBS_VALUE", "SDMX");
+            var obsValue = new Concept("name", "OBS_VALUE", "SDMX");
             conceptScheme.Add(obsValue);
             keyFamily.PrimaryMeasure = new PrimaryMeasure(obsValue);
             
@@ -102,11 +102,14 @@ namespace SDMX.Tests
             }
 
             var output = new StringBuilder();
-
-            using (var writer = XmlWriter.Create(output))
+            var settings = new XmlWriterSettings() { Indent = true };
+            using (var writer = XmlWriter.Create(output, settings))
             {
                 map.WriteXml(writer, message);
             }
+
+            Assert.IsTrue(Utility.ValidateMessage(output.ToString()));
+            Console.Write(output);
         }
     }
 

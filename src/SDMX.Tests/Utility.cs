@@ -13,8 +13,9 @@ namespace SDMX.Tests
         {
             var doc = XDocument.Parse(xml);
             var schemas = new XmlSchemaSet();
-            //schemas.Add("http://www.SDMX.org/resources/SDMXML/schemas/v2_0/message",
-            //    Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..\\..\\..\\..\\lib\\SDMXMessage.xsd"));
+
+            schemas.Add("http://www.SDMX.org/resources/SDMXML/schemas/v2_0/message",
+                GetPathFromProjectBase("lib\\SDMXMessage.xsd"));
 
             bool isValid = true;
 
@@ -23,9 +24,9 @@ namespace SDMX.Tests
                 isValid = false;
                 if (args.Severity == XmlSeverityType.Warning)
 
-                    Console.WriteLine("\tWarning: Matching schema not found.  No validation occurred." + args.Message);
+                    Console.WriteLine("\tWarning: " + args.Message);
                 else
-                    Console.WriteLine("\tValidation error: " + args.Message);
+                    Console.WriteLine("\tError: " + args.Message);
             });
 
             return isValid;

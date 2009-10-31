@@ -7,13 +7,16 @@ namespace SDMX
 {
     public class Concept : MaintainableArtefact, Item
     {        
-        public Concept(ID id, ID agencyID)
+        public Concept(InternationalString name, ID id, ID agencyID)
             : base(id, agencyID)
         {
+            Name.Add(name);
         }
 
         public ConceptScheme ConceptScheme { get; private set; }
         public Concept Parent { get; set; }
+        public TextFormat TextFormat { get; set; }
+        public bool IsExternalReference { get; set; }
 
         public override Uri Urn
         {

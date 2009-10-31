@@ -115,11 +115,6 @@ namespace OXM
 
         void IMapBuilder<TObj>.BuildMaps(IMapContainer<TObj> map)
         {
-            if (_name != null)
-            { 
-                MapBuilderUtility.QualifyName(ref _name, map.Namespace);
-            }
-
             if (map is IAttributeMapContainer<TObj> && isAttribute)
             {
                 AttributeMap<TObj, TProperty> attributeMap;
@@ -145,6 +140,7 @@ namespace OXM
             }
             else if (map is IElementMapContainer<TObj> && isElement)
             {
+                MapBuilderUtility.QualifyName(ref _name, map.Namespace);
                 var elementMap = new ElementMap<TObj, TProperty>(_name, _required);
                 ((IElementMapContainer<TObj>)map).AddElementMap(_name, elementMap);
                 elementMap.Property = _classMemberMap.GetProperty();
@@ -152,6 +148,7 @@ namespace OXM
             }
             else if (map is IElementMapContainer<TObj> && isSimpleElement)
             {
+                MapBuilderUtility.QualifyName(ref _name, map.Namespace);
                 var simpleElementMap = new SimpleElementMap<TObj, TProperty>(_name, _required);
                 ((IElementMapContainer<TObj>)map).AddElementMap(_name, simpleElementMap);
                 simpleElementMap.Property = _simpleMemberMap.GetProperty();

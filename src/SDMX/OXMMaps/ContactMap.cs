@@ -15,15 +15,15 @@ namespace SDMX.Parsers
         {
             MapCollection(o => o.Name).ToElement("Name", false)
                 .Set(v => contact.Name.Add(v))
-                .ClassMap(new InternationalStringMap());
+                .ClassMap(() => new InternationalStringMap());
 
             MapCollection(o => o.Department).ToElement("Department", false)
                 .Set(v => contact.Department.Add(v))
-                .ClassMap(new InternationalStringMap());
+                .ClassMap(() => new InternationalStringMap());
 
             MapCollection(o => o.Role).ToElement("Role", false)
                 .Set(v => contact.Role.Add(v))
-                .ClassMap(new InternationalStringMap());
+                .ClassMap(() => new InternationalStringMap());
 
             MapCollection(o => o.TelephoneList).ToSimpleElement("Telephone", false)
                 .Set(v => contact.TelephoneList.Add(v))

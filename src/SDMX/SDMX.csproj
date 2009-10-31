@@ -63,8 +63,11 @@
     <Compile Include="Structure\Parsers\AnnotableArtefactMap.cs" />
     <Compile Include="Structure\Parsers\AnnotationMap.cs" />
     <Compile Include="Structure\Parsers\AttributeMap.cs" />
+    <Compile Include="Structure\Parsers\CodelistMap.cs" />
     <Compile Include="Structure\Parsers\CodelistRefMap.cs" />
+    <Compile Include="Structure\Parsers\CodeMap.cs" />
     <Compile Include="Structure\Parsers\CompoenentMap.cs" />
+    <Compile Include="Structure\Parsers\ConceptMap.cs" />
     <Compile Include="Structure\Parsers\ConceptRefMap.cs" />
     <Compile Include="Structure\Parsers\CrossSectionalAttachmentLevelMap.cs" />
     <Compile Include="Structure\Parsers\CrossSectionalMeasureMap.cs" />

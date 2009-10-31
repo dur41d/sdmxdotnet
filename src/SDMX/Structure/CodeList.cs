@@ -7,9 +7,13 @@ namespace SDMX
 {
     public class CodeList : ItemScheme<Code>
     {
-        public CodeList(ID id, ID agencyID)
+        public bool IsExternalReference { get; set; }
+        
+        public CodeList(InternationalString name, ID id, ID agencyID)
             : base(id, agencyID)
-        { }
+        {
+            Name.Add(name);
+        }
         
         public override Uri Urn
         {

@@ -48,7 +48,10 @@ namespace Common
         public static XName GetXName(this XmlReader reader)
         {
             XNamespace ns = reader.NamespaceURI;
-            XName name = ns + reader.Name;
+            string localName = reader.Name.Contains(':') ?
+                reader.Name.Split(new[] {':'}, 2)[1] : reader.Name;
+
+            XName name = ns + localName;
             return name;
         }
     }

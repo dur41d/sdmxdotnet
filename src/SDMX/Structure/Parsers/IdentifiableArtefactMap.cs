@@ -26,11 +26,11 @@ namespace SDMX.Parsers
 
             MapCollection(o => o.Name).ToElement("Name", true)
                 .Set(v => SetName(v))
-                .ClassMap(new InternationalStringMap());
+                .ClassMap(() => new InternationalStringMap());
 
             MapCollection(o => o.Description).ToElement("Description", false)
                .Set(v => SetDescription(v))
-               .ClassMap(new InternationalStringMap());
+               .ClassMap(() => new InternationalStringMap());
         }
     }
 }

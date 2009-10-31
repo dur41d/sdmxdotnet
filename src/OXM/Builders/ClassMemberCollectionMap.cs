@@ -12,7 +12,7 @@ namespace OXM
 {
     public class ClassMemberCollectionMap<TObj, TProperty>
     {
-        ClassMap<TProperty> _classMap;
+        Func<ClassMap<TProperty>> _classMapConstructor;
         MemberCollectionMap<TObj, TProperty> _memberCollectionMap;
 
         public ClassMemberCollectionMap(Expression<Func<TObj, IEnumerable<TProperty>>> collection)
@@ -26,9 +26,9 @@ namespace OXM
             return this;
         }
 
-        public ClassMemberCollectionMap<TObj, TProperty> ClassMap(ClassMap<TProperty> classMap)
+        public ClassMemberCollectionMap<TObj, TProperty> ClassMap(Func<ClassMap<TProperty>> classMapConstructor)
         {
-            _classMap = classMap;
+            _classMapConstructor = classMapConstructor;
             return this;
         }
 
@@ -37,14 +37,14 @@ namespace OXM
             return _memberCollectionMap.GetCollection();
         }
 
-        internal ClassMap<TProperty> GetClassMap()
+        internal Func<ClassMap<TProperty>> GetClassMapConstructor()
         {
-            if (_classMap == null)
+            if (_classMapConstructor == null)
             {
                 throw new OXMException("Class map is not set for property.");
             }
 
-            return _classMap;
+            return _classMapConstructor;
         }
     }
 }

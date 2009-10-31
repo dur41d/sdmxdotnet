@@ -26,14 +26,14 @@ namespace SDMX.Parsers
 
             components.MapCollection(o => o.Dimensions).ToElement("Dimension", false)
                 .Set(v => _keyFamily.AddDimension(v))
-                .ClassMap(new DimensionMap(dsd));
+                .ClassMap(() => new DimensionMap(dsd));
 
             components.Map(o => o.TimeDimension).ToElement("TimeDimension", false)
                 .Set(v => _keyFamily.TimeDimension = v)
                 .ClassMap(new TimeDimensionMap(dsd));
 
             components.MapCollection(o => o.Groups).ToElement("Group", false)
-               .ClassMap(new GroupMap(_keyFamily));
+               .ClassMap(() => new GroupMap(_keyFamily));
 
             components.Map(o => o.PrimaryMeasure).ToElement("PrimaryMeasure", true)
                 .Set(v => _keyFamily.PrimaryMeasure = v)
@@ -41,11 +41,11 @@ namespace SDMX.Parsers
 
             components.MapCollection(o => o.CrossSectionalMeasures).ToElement("CrossSectionalMeasure", false)
                 .Set(v => _keyFamily.AddMeasure(v))
-                .ClassMap(new CrossSectionalMeasureMap(dsd));
+                .ClassMap(() => new CrossSectionalMeasureMap(dsd));
 
             components.MapCollection(o => o.Attributes).ToElement("Attribute", false)
                 .Set(v => _keyFamily.AddAttribute(v))
-                .ClassMap(new AttributeMap(dsd));
+                .ClassMap(() => new AttributeMap(dsd));
         }
 
         ID _id;
