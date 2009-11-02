@@ -18,9 +18,9 @@ namespace SDMX.Parsers
                 .Set(v => SetAgencyID(v))
                 .Converter(new IDConverter());
 
-            Map(o => o.IsFinal).ToAttribute("isFinal", false)
-                .Set(v => SetIsFinal(v))
-                .Converter(new BooleanConverter());  
+            Map<bool?>(o => o.IsFinal ? o.IsFinal : (bool?)null).ToAttribute("isFinal", false)
+                .Set(v => SetIsFinal(v.Value))
+                .Converter(new NullableBooleanConverter());  
         }
     }
 }

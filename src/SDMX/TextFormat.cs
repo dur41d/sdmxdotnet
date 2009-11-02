@@ -22,6 +22,7 @@ namespace SDMX
 
     public enum TextType
     { 
+        None,
         String,
         BigInteger,
         Integer,

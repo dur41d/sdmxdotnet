@@ -15,9 +15,14 @@ namespace OXM
     {
         internal XNamespace Namespace { get; set; }
 
-        MapList<T> _attributeMaps = new MapList<T>();
+        MapList<T> _attributeMaps;
         List<IMapBuilder<T>> builders = new List<IMapBuilder<T>>();
         private string[] _attributesOrder;
+
+        public AttributeGroupTypeMap()
+        {
+            _attributeMaps = new MapList<T>(this.GetType().Name);
+        }
 
         protected abstract T Return();
 
@@ -58,7 +63,6 @@ namespace OXM
         public void WriteXml(XmlWriter writer, T obj)
         {
             BuildAndVerifyMaps();
-
 
             foreach (var map in _attributeMaps.GetOrderedList(_attributesOrder))
             {

@@ -32,6 +32,28 @@ namespace OXM
         }
     }
 
+    public class NullableBooleanConverter : ISimpleTypeConverter<bool?>
+    {
+        BooleanConverter converter = new BooleanConverter();
+        
+        public string ToXml(bool? value)
+        {
+            if (!value.HasValue)
+                return null;
+
+            return converter.ToXml(value.Value);
+        }
+
+        public bool? ToObj(string value)
+        {
+            if (value == null)
+                return null;
+
+            return converter.ToObj(value);
+        }
+    }
+
+
     public class Int32Converter : ISimpleTypeConverter<int>
     {
         public string ToXml(int value)
@@ -62,12 +84,24 @@ namespace OXM
     {
         public string ToXml(T value)
         {
+            if ((object)value == null)
+                return null;
+
             return value.ToString();
         }
 
-        public T ToObj(string value)
+        public T ToObj(string value)        
         {
-            return (T)Enum.Parse(typeof(T), value);
+            Type enumType = typeof(T);
+            if (enumType.IsGenericType && enumType.GetGenericTypeDefinition().Equals(typeof(Nullable<>)))
+            {
+                var nonNullableType = Nullable.GetUnderlyingType(enumType);
+                return (T)Enum.Parse(nonNullableType, value);
+            }
+            else
+            {
+                return (T)Enum.Parse(typeof(T), value);
+            }
         }
     }
 
@@ -75,7 +109,7 @@ namespace OXM
     {
         public string ToXml(DateTime value)
         {
-            return value.ToString("s");
+            return value.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ssK");
         }
 
         public DateTime ToObj(string value)
@@ -83,4 +117,26 @@ namespace OXM
             return XmlConvert.ToDateTime(value, XmlDateTimeSerializationMode.RoundtripKind);
         }
     }
+
+    public class NullableDateTimeConverter : ISimpleTypeConverter<DateTime?>
+    {
+        public string ToXml(DateTime? value)
+        {
+            if (!value.HasValue)
+                return null;
+
+            return value.Value.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ssK");
+        }
+
+        public DateTime? ToObj(string value)
+        {
+            if (value == null)
+                return null;
+
+            return XmlConvert.ToDateTime(value, XmlDateTimeSerializationMode.RoundtripKind);
+        }
+    }
+
+
+ 
 }

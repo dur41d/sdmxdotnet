@@ -15,8 +15,8 @@ namespace SDMX.Parsers
     {
         Dimension _dimension;
         
-        public DimensionMap(DSD dsd)
-            : base(dsd)
+        public DimensionMap(StructureMessage message)
+            : base(message)
         {
             AttributesOrder("conceptRef",
                             "codelist",

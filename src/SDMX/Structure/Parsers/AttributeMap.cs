@@ -14,8 +14,8 @@ namespace SDMX.Parsers
     {
         Attribute _attribute;
 
-        public AttributeMap(DSD dsd)
-            : base(dsd)
+        public AttributeMap(StructureMessage message)
+            : base(message)
         {
             AttributesOrder("conceptRef",
                             "codelist",
@@ -24,7 +24,7 @@ namespace SDMX.Parsers
                             "isTimeFormat",
                             "crossSectionalAttachmentLevel",
                             "isEntityAttribute",
-                            "isNonObservationalTim",
+                            "isNonObservationalTimeAttribute",
                             "isCountAttribute",
                             "isFrequencyAttribute",
                             "isIdentityAttribute");
@@ -55,7 +55,7 @@ namespace SDMX.Parsers
                 .Set(v => _attribute.IsCountAttribute = v)
                 .Converter(new BooleanConverter());
 
-            Map(o => o.IsFrequencyAttribute).ToAttribute("IsFrequencyAttribute", false, "false")
+            Map(o => o.IsFrequencyAttribute).ToAttribute("isFrequencyAttribute", false, "false")
                 .Set(v => _attribute.IsFrequencyAttribute = v)
                 .Converter(new BooleanConverter());
 

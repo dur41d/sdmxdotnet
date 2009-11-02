@@ -15,6 +15,8 @@ namespace OXM
     {
         XName _name;
         ClassMap<T> _classMap;
+
+        bool alreadybeenRead = false;
         
         public FragmentMap(XName fragmentName, ClassMap<T> classMap)
         {
@@ -32,6 +34,15 @@ namespace OXM
 
         public T ReadXml(XmlReader reader)
         {
+            if (alreadybeenRead)
+            {
+                throw new OXMException("Read operation has already been performed using this object map. Create a new map object to read again.");
+            }
+            else
+            {
+                alreadybeenRead = true;
+            }
+            
             if (reader.ReadState == ReadState.Initial)
             {
                 reader.Read();
@@ -39,7 +50,7 @@ namespace OXM
 
             if (reader.NodeType != XmlNodeType.Element)
             {
-                reader.AdvanceToElement();
+                reader.ReadNextElement();
             }
 
             if (!reader.NameEquals(_name))

@@ -17,14 +17,14 @@ namespace SDMX.Parsers
 
         T _component;
 
-        public CompoenentMap(DSD dsd)
+        public CompoenentMap(StructureMessage message)
         {
             Map(o => ConceptRef.Create(o.Concept)).ToAttributeGroup("conceptRef")
-                .Set(v => _component = Create(dsd.GetConcept(v)))
+                .Set(v => _component = Create(message.GetConcept(v.ID, v.AgencyID, v.Version)))
                 .GroupTypeMap(new ConceptRefMap());
 
-            Map(o => CodelistRef.Create(o.CodeList)).ToAttributeGroup("codelistRef")
-                .Set(v => _component.CodeList = dsd.GetCodeList(v))
+            Map(o => CodelistRef.Create(o.CodeList)).ToAttributeGroup("codelist")
+                .Set(v => _component.CodeList = message.GetCodeList(v.ID, v.AgencyID, v.Version))
                 .GroupTypeMap(new CodelistRefMap());
 
             Map(o => o.CrossSectionalAttachmentLevel).ToAttributeGroup("crossSectionalAttachmentLevel", CrossSectionalAttachmentLevel.None)

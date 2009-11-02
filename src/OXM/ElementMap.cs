@@ -29,13 +29,22 @@ namespace OXM
         }
 
         public ElementMap(XName name, bool required)
-            : base(name, required, false)
+            : base(name, required)
         {
         }
 
         public override void ReadXml(XmlReader reader)
         {
-            Property.Set(ClassMap.ReadXml(reader));
+            if (_occurances == 1)
+            {
+                throw new OXMException("Element '{0}' has already occured and it is not supposed to occure more than once.", Name);
+            }
+            
+            TProperty property = ClassMap.ReadXml(reader);
+
+            if ((object)property != null)
+                Property.Set(property);
+
             _occurances++;
         }
 

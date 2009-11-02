@@ -27,17 +27,15 @@ namespace Common
                 action(element);
         }
 
-        public static bool AdvanceToElement(this XmlReader reader)
+        public static bool ReadNextElement(this XmlReader reader)
         {
-            while (reader.Read() && reader.NodeType != XmlNodeType.Element)
+            while (reader.Read())
             {
-                string s = "lsdkfj";
+                if (reader.NodeType == XmlNodeType.Element)
+                    return true;                
             }
 
-            if (reader.ReadState == ReadState.Interactive && reader.NodeType == XmlNodeType.Element)
-                return true;
-            else
-                return false;
+            return false;
         }
 
         public static bool NameEquals(this XmlReader reader, XName name)

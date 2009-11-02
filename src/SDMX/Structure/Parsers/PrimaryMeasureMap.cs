@@ -11,8 +11,8 @@ namespace SDMX.Parsers
     {
         PrimaryMeasure _measure;
 
-        internal PrimaryMeasureMap(DSD dsd)
-            : base(dsd)
+        internal PrimaryMeasureMap(StructureMessage message)
+            : base(message)
         {
             AttributesOrder("conceptRef", "codelist");
 

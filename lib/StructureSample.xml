@@ -35,7 +35,6 @@
     <Extracted>2002-03-11T09:30:47-05:00</Extracted>
   </Header>
   <CodeLists>
-
     <structure:CodeList id="CL_OBS_STATUS" agencyID="BIS" version="1.0" uri="http://www.bis.org/structure/codelists/cl_obs_status.xml">
       <structure:Name xml:lang="en">Observation Status</structure:Name>
       <structure:Code value="A">
@@ -44,7 +43,6 @@
       <structure:Code value="M">
         <structure:Description xml:lang="en">Missing</structure:Description>
       </structure:Code>
-
     </structure:CodeList>
     <structure:CodeList id="CL_FREQ" agencyID="BIS" version="1.0" uri="http://www.bis.org/structure/codelists/cl_freq.htm">
       <structure:Name xml:lang="en">Frequency code list (BIS, ECB)</structure:Name>
@@ -326,7 +324,6 @@
     </structure:Concept>
     <structure:Concept id="OBS_VALUE" agencyID="BIS" version="1.0" uri="http://www.bis.org/structure/concepts/OBS_VALUE.xml">
       <structure:Name xml:lang="en">Observation value</structure:Name>
-
     </structure:Concept>
     <structure:Concept id="STOCKS" agencyID="BIS" version="1.0" uri="http://www.bis.org/structure/concepts/STOCKS.xml">
       <structure:Name xml:lang="en">Stocks as measure</structure:Name>
@@ -339,58 +336,48 @@
     <structure:KeyFamily id="BIS_JOINT_DEBT" agencyID="BIS" version="1.0" uri="http://www.bis.org/structure/key_families/JOINT_DEBT.xml">
       <structure:Name xml:lang="en">Joint BIS-IMF-OECD-World Bank stats - external debt</structure:Name>
       <structure:Components>
-        <structure:Dimension conceptRef="FREQ" codelist="CL_FREQ" isFrequencyDimension="true"/>
-        <structure:Dimension conceptRef="JD_TYPE" codelist="CL_JD_TYPE" isMeasureDimension="true"/>
-        <structure:Dimension conceptRef="JD_CATEGORY" codelist="CL_JD_CATEGORY" crossSectionalAttachDataSet="false" crossSectionalAttachGroup="false" crossSectionalAttachSection="false" crossSectionalAttachObservation="true"/>
-        <structure:Dimension conceptRef="VIS_CTY" codelist="CL_BIS_IF_REF_AREA" crossSectionalAttachGroup="false" crossSectionalAttachSection="false" crossSectionalAttachObservation="true"/>
-        <structure:TimeDimension conceptRef="TIME" crossSectionalAttachGroup="true"/>
+        <structure:Dimension conceptRef="FREQ" codelist="CL_FREQ" isFrequencyDimension="true" />
+        <structure:Dimension conceptRef="JD_TYPE" codelist="CL_JD_TYPE" isMeasureDimension="true" />
+        <structure:Dimension conceptRef="JD_CATEGORY" codelist="CL_JD_CATEGORY" crossSectionalAttachDataSet="false" crossSectionalAttachGroup="false" crossSectionalAttachSection="false" crossSectionalAttachObservation="true" />
+        <structure:Dimension conceptRef="VIS_CTY" codelist="CL_BIS_IF_REF_AREA" crossSectionalAttachGroup="false" crossSectionalAttachSection="false" crossSectionalAttachObservation="true" />
+        <structure:TimeDimension conceptRef="TIME" crossSectionalAttachGroup="true" />
         <structure:Group id="SiblingGroup">
           <structure:DimensionRef>JD_TYPE</structure:DimensionRef>
           <structure:DimensionRef>JD_CATEGORY</structure:DimensionRef>
           <structure:DimensionRef>VIS_CTY</structure:DimensionRef>
         </structure:Group>
         <structure:PrimaryMeasure conceptRef="OBS_VALUE">
-          <structure:TextFormat textType="Double"/>
+          <structure:TextFormat textType="Double" />
         </structure:PrimaryMeasure>
-        <structure:CrossSectionalMeasure conceptRef="STOCKS" measureDimension="JD_TYPE" code="P"/>
-        <structure:CrossSectionalMeasure conceptRef="FLOWS" measureDimension="JD_TYPE" code="Q"/>
+        <structure:CrossSectionalMeasure conceptRef="STOCKS" measureDimension="JD_TYPE" code="P" />
+        <structure:CrossSectionalMeasure conceptRef="FLOWS" measureDimension="JD_TYPE" code="Q" />
         <structure:Attribute conceptRef="AVAILABILITY" codelist="CL_AVAILABILITY" attachmentLevel="Group" assignmentStatus="Mandatory" crossSectionalAttachDataSet="false" crossSectionalAttachGroup="true" crossSectionalAttachSection="false" crossSectionalAttachObservation="false">
           <structure:AttachmentGroup>SiblingGroup</structure:AttachmentGroup>
         </structure:Attribute>
-
-        <structure:Attribute conceptRef="TIME_FORMAT" codelist="CL_TIME_FORMAT" attachmentLevel="Series" assignmentStatus="Mandatory" isTimeFormat="true" crossSectionalAttachDataSet="false" crossSectionalAttachGroup="false" crossSectionalAttachSection="true" crossSectionalAttachObservation="false"/>
-
-        <structure:Attribute conceptRef="COLLECTION" codelist="CL_COLLECTION" attachmentLevel="Series" assignmentStatus="Mandatory" crossSectionalAttachDataSet="false" crossSectionalAttachGroup="false" crossSectionalAttachSection="true" crossSectionalAttachObservation="false"/>
-
+        <structure:Attribute conceptRef="TIME_FORMAT" codelist="CL_TIME_FORMAT" attachmentLevel="Series" assignmentStatus="Mandatory" isTimeFormat="true" crossSectionalAttachDataSet="false" crossSectionalAttachGroup="false" crossSectionalAttachSection="true" crossSectionalAttachObservation="false" />
+        <structure:Attribute conceptRef="COLLECTION" codelist="CL_COLLECTION" attachmentLevel="Series" assignmentStatus="Mandatory" crossSectionalAttachDataSet="false" crossSectionalAttachGroup="false" crossSectionalAttachSection="true" crossSectionalAttachObservation="false" />
         <structure:Attribute conceptRef="DECIMALS" codelist="CL_DECIMALS" attachmentLevel="Group" assignmentStatus="Mandatory" crossSectionalAttachDataSet="false" crossSectionalAttachGroup="true" crossSectionalAttachSection="false" crossSectionalAttachObservation="false">
           <structure:AttachmentGroup>SiblingGroup</structure:AttachmentGroup>
         </structure:Attribute>
-
         <structure:Attribute conceptRef="OBS_CONF" codelist="CL_BIS_OBS_CONF" attachmentLevel="Observation" assignmentStatus="Conditional" crossSectionalAttachDataSet="false" crossSectionalAttachGroup="false" crossSectionalAttachSection="false" crossSectionalAttachObservation="true">
           <structure:AttachmentMeasure>P</structure:AttachmentMeasure>
           <structure:AttachmentMeasure>Q</structure:AttachmentMeasure>
         </structure:Attribute>
-
         <structure:Attribute conceptRef="OBS_STATUS" codelist="CL_OBS_STATUS" attachmentLevel="Observation" assignmentStatus="Mandatory" crossSectionalAttachDataSet="false" crossSectionalAttachGroup="false" crossSectionalAttachSection="false" crossSectionalAttachObservation="true">
           <structure:AttachmentMeasure>P</structure:AttachmentMeasure>
           <structure:AttachmentMeasure>Q</structure:AttachmentMeasure>
         </structure:Attribute>
-
         <structure:Attribute conceptRef="OBS_PRE_BREAK" attachmentLevel="Observation" assignmentStatus="Conditional" crossSectionalAttachDataSet="false" crossSectionalAttachGroup="false" crossSectionalAttachSection="false" crossSectionalAttachObservation="true">
-          <structure:TextFormat/>
+          <structure:TextFormat />
           <structure:AttachmentMeasure>P</structure:AttachmentMeasure>
           <structure:AttachmentMeasure>Q</structure:AttachmentMeasure>
         </structure:Attribute>
-
         <structure:Attribute conceptRef="BIS_UNIT" codelist="CL_BIS_UNIT" attachmentLevel="Group" assignmentStatus="Mandatory" crossSectionalAttachDataSet="false" crossSectionalAttachGroup="true" crossSectionalAttachSection="false" crossSectionalAttachObservation="false">
           <structure:AttachmentGroup>SiblingGroup</structure:AttachmentGroup>
         </structure:Attribute>
-
         <structure:Attribute conceptRef="UNIT_MULT" codelist="CL_UNIT_MULT" attachmentLevel="Group" assignmentStatus="Mandatory" crossSectionalAttachDataSet="false" crossSectionalAttachGroup="true" crossSectionalAttachSection="false" crossSectionalAttachObservation="false">
           <structure:AttachmentGroup>SiblingGroup</structure:AttachmentGroup>
         </structure:Attribute>
-
-
       </structure:Components>
     </structure:KeyFamily>
   </KeyFamilies>

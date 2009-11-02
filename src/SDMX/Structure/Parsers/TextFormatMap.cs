@@ -13,13 +13,16 @@ namespace SDMX.Parsers
 
         public TextFormatMap()
         {
-            Map(o => o.TextType).ToAttribute("textType", false)
-                .Set(v => _textFormat.TextType = v)
-                .Converter(new EnumConverter<TextType>());
+            Map<TextType?>(o => o.TextType == TextType.None ? (TextType?)null : o.TextType).ToAttribute("textType", false)
+                .Set(v => _textFormat.TextType = v.Value)
+                .Converter(new EnumConverter<TextType?>());
         }
 
         protected override TextFormat Return()
         {
+            if (_textFormat.TextType == TextType.None)
+                return null;
+
             return _textFormat;
         }
     }

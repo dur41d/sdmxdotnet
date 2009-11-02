@@ -16,14 +16,19 @@ namespace OXM
         internal Func<ClassMap<TProperty>> ClassMapConstructor { get; set;}
 
         public ElementCollectionMap(XName name, bool required)
-            : base(name, required, true)
+            : base(name, required)
         {}
       
         public override void ReadXml(XmlReader reader)
         {
             var classMap = ClassMapConstructor();
             classMap.Namespace = Name.Namespace;
-            Collection.Set(classMap.ReadXml(reader));
+
+            TProperty property = classMap.ReadXml(reader);
+            
+            if ((object)property != null)
+                Collection.Set(property);
+
            _occurances++;
         }
 

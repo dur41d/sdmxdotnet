@@ -57,21 +57,22 @@ namespace SDMX.Parsers
                 .Set(v => header.DataSetID = v)
                 .Converter(new IDConverter());
 
-            Map(o => o.DataSetAction).ToSimpleElement("DataSetAction", false)
-                .Set(v => header.DataSetAction = v)
-                .Converter(new EnumConverter<DataSetAction>());
+            Map<DataSetAction?>(o => o.DataSetAction == DataSetAction.None ? (DataSetAction?)null : o.DataSetAction)
+                .ToSimpleElement("DataSetAction", false)
+                .Set(v => header.DataSetAction = v.Value)
+                .Converter(new EnumConverter<DataSetAction?>());
 
             Map(o => o.Extracted).ToSimpleElement("Extracted", false)
                 .Set(v => header.Extracted = v)
-                .Converter(new DateTimeConverter());
+                .Converter(new NullableDateTimeConverter());
 
             Map(o => o.ReportingBegin).ToSimpleElement("ReportingBegin", false)
                .Set(v => header.ReportingBegin = v)
-               .Converter(new DateTimeConverter());
+               .Converter(new NullableDateTimeConverter());
 
             Map(o => o.ReportingEnd).ToSimpleElement("ReportingEnd", false)
                .Set(v => header.ReportingEnd = v)
-               .Converter(new DateTimeConverter());
+               .Converter(new NullableDateTimeConverter());
 
             MapCollection(o => o.Source).ToElement("Source", false)
                 .Set(v => header.Source.Add(v))
