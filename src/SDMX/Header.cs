@@ -19,9 +19,9 @@ namespace SDMX
         public ID DataSetAgencyID { get; set; }
         public ID DataSetID { get; set; }
         public DataSetAction DataSetAction { get; set; }
-        public DateTime Extracted { get; set; }
-        public DateTime ReportingBegin { get; set; }
-        public DateTime ReportingEnd { get; set; }
+        public DateTime? Extracted { get; set; }
+        public DateTime? ReportingBegin { get; set; }
+        public DateTime? ReportingEnd { get; set; }
         public InternationalText Source { get; private set; }
 
         public Header(ID id)

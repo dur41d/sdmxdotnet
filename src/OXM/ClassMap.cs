@@ -15,12 +15,20 @@ namespace OXM
     {
         internal XNamespace Namespace { get; set; }
         protected RoolElementMap<T> _rootMap;
-        private MapList<T> _attributeMaps = new MapList<T>();
-        private MapList<T> _elementMaps = new MapList<T>();
+        private MapList<T> _attributeMaps;
+        private MapList<T> _elementMaps;
         private IMemberMap<T> _contentMap;
         private string[] _attributesOrder;
         private string[] _elementsOrder;
         private List<IMapBuilder<T>> builders = new List<IMapBuilder<T>>();
+
+        public ClassMap()
+        {
+            string name = this.GetType().Name;
+
+            _attributeMaps = new MapList<T>(name);
+            _elementMaps = new MapList<T>(name);
+        }
 
         protected abstract T Return();
 
@@ -78,16 +86,16 @@ namespace OXM
                 {
                     reader.Read();
                 }
-                else 
+                else
                 {
                     using (var subReader = reader.ReadSubtree())
                     {
                         subReader.ReadStartElement();
 
-                        while (subReader.AdvanceToElement())
+                        while (subReader.ReadNextElement())
                         {
                             XName name = subReader.GetXName();
-                            var elementMap = _elementMaps.Get(name);
+                            var elementMap = _elementMaps.Get(name);                            
                             elementMap.ReadXml(subReader);
                         }
                     }
@@ -116,20 +124,6 @@ namespace OXM
             builders.Add(builder);
             return builder;
         }
-
-        //protected PropertyMap<T, TProperty> MapTemp<TProperty>()
-        //{
-        //    var builder = new PropertyMap<T, TProperty>(o => o);
-        //    builders.Add(builder);
-        //    return builder;
-        //}
-
-        //protected CollectionMap<T, TProperty> MapTempCollection<TProperty>()
-        //{
-        //    var builder = new CollectionMap<T, TProperty>(collection);
-        //    builders.Add(builder);
-        //    return builder;
-        //}
 
         protected void AttributesOrder(params string[] order)
         {

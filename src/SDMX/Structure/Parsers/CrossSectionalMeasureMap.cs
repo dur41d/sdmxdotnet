@@ -11,8 +11,8 @@ namespace SDMX.Parsers
     {
         CrossSectionalMeasure _measure;
         
-        internal CrossSectionalMeasureMap(DSD dsd)
-            : base(dsd)
+        internal CrossSectionalMeasureMap(StructureMessage message)
+            : base(message)
         {
             AttributesOrder("conceptRef",
                             "codelist",

@@ -14,8 +14,8 @@ namespace SDMX.Parsers
     {
         TimeDimension _timeDimension;
 
-        public TimeDimensionMap(DSD dsd)
-            : base(dsd)
+        public TimeDimensionMap(StructureMessage message)
+            : base(message)
         {
             AttributesOrder("conceptRef",
                             "codelist",

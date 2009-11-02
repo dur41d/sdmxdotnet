@@ -17,9 +17,9 @@ namespace SDMX.Parsers
             AttributesOrder("id", "agencyID", "version", "uri", "isExternalReference", "isFinal", "validFrom", "validTo");
             ElementsOrder("Name", "Description", "Code", "Annotations");
 
-            Map(o => o.IsExternalReference).ToAttribute("isExternalReference", false)
-                .Set(v => _isExternalReference = v)
-                .Converter(new BooleanConverter());
+            Map<bool?>(o => o.IsExternalReference == false ? (bool?)null : true).ToAttribute("isExternalReference", false)
+                .Set(v => _isExternalReference = v.Value)
+                .Converter(new NullableBooleanConverter());
 
             MapCollection(o => o.Items).ToElement("Code", false)
                 .Set(v => _codeList.Add(v))

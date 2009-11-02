@@ -54,7 +54,7 @@ namespace SDMX.Parsers
             MapContainer("KeyFamilies", false)
                 .MapCollection(o => o.KeyFamilies).ToElement(Namespaces.Structure + "KeyFamily", true)
                     .Set(v => _message.KeyFamilies.Add(v))
-                    .ClassMap(() => new KeyFamilyMap(dsd));
+                    .ClassMap(() => new KeyFamilyMap(_message));
         }
 
         protected override StructureMessage Return()

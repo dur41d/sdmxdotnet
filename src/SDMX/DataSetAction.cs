@@ -7,6 +7,7 @@ namespace SDMX
 {
     public enum DataSetAction
     {
+        None,
         Append,
         Replace,
         Delete,

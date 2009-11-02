@@ -59,6 +59,9 @@ namespace SDMX.Parsers
 
         protected override CodelistRef Return()
         {
+            if (codelistRef.ID == null)
+                return null;
+
             return codelistRef;
         }
     }

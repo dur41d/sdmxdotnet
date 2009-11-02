@@ -12,7 +12,7 @@ namespace SDMX.Parsers
     {
         Code code;
 
-        public CodeMap(CodeList codelist)
+        public CodeMap(CodeList codeList)
         {
             AttributesOrder("value", "parentCode");
             ElementsOrder("Description", "Annotations");
@@ -21,13 +21,24 @@ namespace SDMX.Parsers
                .Set(v => code = new Code(v))
                .Converter(new IDConverter());
 
-            Map(o => o.ID).ToAttribute("parentCode", false)
-               .Set(v => code.Parent = codelist[v])
+            Map(o => GetParentID(o)).ToAttribute("parentCode", false)
+               .Set(v => SetParentID(v, codeList))
                .Converter(new IDConverter());
 
             MapCollection(o => o.Description).ToElement("Description", false)
                .Set(v => code.Description.Add(v))
                .ClassMap(() => new InternationalStringMap());
+        }
+
+        private ID GetParentID(Code code)
+        {
+            return code.Parent == null ? null : code.Parent.ID;
+        }
+
+        private void SetParentID(ID parentID, CodeList codeList)
+        {
+            if (parentID != null)
+                code.Parent = codeList[parentID];
         }
 
         protected override void AddAnnotation(Annotation annotation)

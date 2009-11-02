@@ -12,15 +12,21 @@ namespace OXM
 {
     internal class ElementContainerMap<T> : ElementMapBase<T>, IElementMapContainer<T>
     {
-        private MapList<T> _elementMaps = new MapList<T>();
+        private MapList<T> _elementMaps;
 
-        public ElementContainerMap(XName name, bool required)
-            : base(name, required, false)
+        public ElementContainerMap(XName name, bool required, string classMapName)
+            : base(name, required)
         {
+            _elementMaps = new MapList<T>(classMapName + "." + name.LocalName);
         }
 
         public override void ReadXml(XmlReader reader)
         {
+            if (_occurances == 1)
+            {
+                throw new OXMException("Container element '{0}' has already occured and it is not supposed to occure more than once.", Name);
+            }
+            
             _occurances++;
 
             if (reader.IsEmptyElement)
@@ -33,7 +39,7 @@ namespace OXM
                 {
                     subReader.ReadStartElement();
 
-                    while (subReader.AdvanceToElement())
+                    while (subReader.ReadNextElement())
                     {
                         XName name = subReader.GetXName();
                         var elementMap = _elementMaps.Get(name);
@@ -48,24 +54,23 @@ namespace OXM
             }          
         }
 
-        bool isWritten = false;
-        private void ElementWriting(XmlWriter writer)
-        {
-            if (!isWritten)
-            {
-                writer.WriteStartElement(Name.LocalName, Name.NamespaceName);
-                isWritten = true;
-            }
-        }
-
         public override void WriteXml(XmlWriter writer, T obj)
         {
+            bool isWritten = false;
+            
             foreach (var map in _elementMaps)
             {
                 // before a child element start writing write the start element of the container
                 // this is necessary to avoid writing and empty container element we we only 
                 // write the container element if a child element starts writing
-                ((IElementMap<T>)map).Writing = () => ElementWriting(writer);
+                ((IElementMap<T>)map).Writing = () =>
+                    {
+                        if (!isWritten)
+                        {
+                            writer.WriteStartElement(Name.LocalName, Name.NamespaceName);
+                            isWritten = true;
+                        }
+                    };
                 
                 map.WriteXml(writer, obj);
             }
@@ -75,12 +80,7 @@ namespace OXM
             {
                 writer.WriteEndElement();
             }
-        }
-
-        public override void AssertValid()
-        {
-            base.AssertValid();
-        }
+        }   
 
         #region IElementMapContainer<T> Members
 

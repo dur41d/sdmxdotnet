@@ -48,7 +48,7 @@ namespace SDMX.Tests
             keyFamily.Annotations.Add(annotation);
 
             XNamespace structure = Namespaces.Structure;
-            var map = new FragmentMap<KeyFamily>("KeyFamily", new KeyFamilyMap(new DSD()));
+            var map = new FragmentMap<KeyFamily>("KeyFamily", new KeyFamilyMap(new StructureMessage()));
 
             OXMTests.sb = new StringBuilder();
             
@@ -109,7 +109,26 @@ namespace SDMX.Tests
             }
 
             Assert.IsTrue(Utility.ValidateMessage(output.ToString()));
-            Console.Write(output);
+
+            
+            using (var writer2 = XmlWriter.Create(Utility.GetPathFromProjectBase("lib\\StructureSample2.xml"), settings))
+            {
+                map.WriteXml(writer2, message);
+            }
+
+            using (var writer2 = XmlWriter.Create(Utility.GetPathFromProjectBase("lib\\StructureSample3.xml"), settings))
+            {
+                map.WriteXml(writer2, message);
+            }
+
+            using (var writer2 = XmlWriter.Create(Utility.GetPathFromProjectBase("lib\\StructureSample4.xml"), settings))
+            {
+                map.WriteXml(writer2, message);
+            }
+
+            var doc = XDocument.Load(Utility.GetPathFromProjectBase("lib\\StructureSample4.xml"));            
+            
+            Assert.IsTrue(Utility.ValidateMessage(doc.ToString()));
         }
     }
 

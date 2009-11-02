@@ -21,9 +21,9 @@ namespace SDMX.Parsers
                 .Set(v => _agencyID = v)
                 .Converter(new IDConverter());
 
-            Map(o => o.IsExternalReference).ToAttribute("isExternalReference", false)
-               .Set(v => _isExternalReference = v)
-               .Converter(new BooleanConverter());
+            Map<bool?>(o => o.IsExternalReference ? true : (bool?)null).ToAttribute("isExternalReference", false)
+               .Set(v => _isExternalReference = v.Value)
+               .Converter(new NullableBooleanConverter());
 
             Map(o => o.TextFormat).ToElement("TextFormat", false)
                 .Set(v => _concept.TextFormat = v)

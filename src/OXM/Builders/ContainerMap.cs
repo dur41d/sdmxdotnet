@@ -42,7 +42,7 @@ namespace OXM
         {
             MapBuilderUtility.QualifyName(ref _name, map.Namespace);
             
-            var elementMap = new ElementContainerMap<T>(_name, _required);
+            var elementMap = new ElementContainerMap<T>(_name, _required, map.GetType().Name);
             ((IElementMapContainer<T>)map).AddElementMap(_name, elementMap);
 
             // build children

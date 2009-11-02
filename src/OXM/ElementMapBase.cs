@@ -18,24 +18,18 @@ namespace OXM
         public Action Writing { protected get; set; }
 
         protected int _occurances;
-        private bool _isCollection;                
 
-        public ElementMapBase(XName name, bool required, bool isCollection)
+        public ElementMapBase(XName name, bool required)
         {
             Name = name;
             Required = required;
-            _isCollection = isCollection;
         }
 
-        public virtual void AssertValid()
+        public void AssertValid()
         {
             if (Required && _occurances == 0)
             {
                 throw new OXMException("Element '{0}' is required but was not found'", Name);
-            }
-            else if (_isCollection == false && _occurances > 1)
-            {
-                throw new OXMException("Element '{0}' is supposed to occure only once but occured '{1}' times. Use MapElementCollections instead.", Name, _occurances);
             }
         }
 

@@ -14,14 +14,14 @@ namespace SDMX.Parsers
 
         T _measure;
         
-        internal MeasureMap(DSD dsd)
+        internal MeasureMap(StructureMessage message)
         {
             Map(o => ConceptRef.Create(o.Concept)).ToAttributeGroup("conceptRef")
-               .Set(v => _measure = Create(dsd.GetConcept(v)))
+               .Set(v => _measure = Create(message.GetConcept(v.ID, v.AgencyID, v.Version)))
                .GroupTypeMap(new ConceptRefMap());
 
             Map(o => CodelistRef.Create(o.CodeList)).ToAttributeGroup("codelist")
-                .Set(v => _measure.CodeList = dsd.GetCodeList(v))
+                .Set(v => _measure.CodeList = message.GetCodeList(v.ID, v.AgencyID, v.Version))
                 .GroupTypeMap(new CodelistRefMap());
 
             Map(o => o.TextFormat).ToElement("TextFormat", false)

@@ -45,7 +45,9 @@ namespace OXM
         public void ReadXml(XmlReader reader)
         {
             TProperty property = GroupTypeMap.ReadXml(reader);
-            Property.Set(property);
+
+            if ((object)property != null)
+                Property.Set(property);
         }
 
         public void WriteXml(XmlWriter writer, TObj obj)
