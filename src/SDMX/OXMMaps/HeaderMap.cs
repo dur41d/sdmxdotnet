@@ -21,9 +21,9 @@ namespace SDMX.Parsers
                 .Set(v => header.Test = v)
                 .Converter(new BooleanConverter());
 
-            Map(o => o.Truncated).ToSimpleElement("Truncated", false)
-                .Set(v => header.Truncated = v)
-                .Converter(new BooleanConverter());
+            Map<bool?>(o => o.Truncated ? true : (bool?)null).ToSimpleElement("Truncated", false)
+                .Set(v => header.Truncated = v.Value)
+                .Converter(new NullableBooleanConverter());
 
             MapCollection(o => o.Name).ToElement("Name", false)
                 .Set(v => header.Name.Add(v))

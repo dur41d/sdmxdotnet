@@ -2,17 +2,37 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Common;
 
 namespace SDMX
 {
-    public class CodeList : ItemScheme<Code>
+    public class CodeList : MaintainableArtefact, IEnumerable<Code>
     {
-        public bool IsExternalReference { get; set; }
+        List<Code> codes = new List<Code>();
         
         public CodeList(InternationalString name, ID id, ID agencyID)
             : base(id, agencyID)
         {
             Name.Add(name);
+        }
+
+        public void Add(Code code)
+        {
+            Contract.AssertNotNull(() => code);
+            code.CodeList = this;
+            codes.Add(code);
+        }
+
+        public void Remove(Code code)
+        {
+            Contract.AssertNotNull(() => code);
+            codes.Remove(code);
+        }
+
+        public Code Get(ID codeID)
+        {
+            Contract.AssertNotNull(() => codeID);
+            return codes.Where(c => c.ID == codeID).Single();
         }
         
         public override Uri Urn
@@ -23,12 +43,25 @@ namespace SDMX
             }
         }
 
-        public Code this[ID codeID]
+        #region IEnumerable<Code> Members
+
+        public IEnumerator<Code> GetEnumerator()
         {
-            get
+            foreach (var code in codes)
             {
-                return items[codeID];
+                yield return code;
             }
         }
+
+        #endregion
+
+        #region IEnumerable Members
+
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+
+        #endregion
     }
 }

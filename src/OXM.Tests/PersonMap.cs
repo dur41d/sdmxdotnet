@@ -31,7 +31,7 @@ namespace OXM.Tests
 
             Map(o => o.Address).ToElement(addressNS + "Address", true)
                 .Set(v => person.Address = v)
-                .ClassMap(new AddressMap());
+                .ClassMap(() => new AddressMap());
         }
 
         protected override Person Return()

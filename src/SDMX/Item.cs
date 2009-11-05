@@ -5,10 +5,9 @@ using System.Text;
 
 namespace SDMX
 {
-    public interface Item
-    {
-        Item Parent { get; set; }
-        IItemScheme ItemScheme { get; set; }
-        string Key { get; }
-    }     
+    //public interface Item
+    //{   
+    //    IItemScheme ItemScheme { get; set; }
+    //    string Key { get; }
+    //}     
 }

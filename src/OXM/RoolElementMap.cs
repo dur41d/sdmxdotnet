@@ -11,7 +11,6 @@ namespace OXM
     public abstract class RoolElementMap<T> : ClassMap<T>
     {
         public abstract XName Name { get; }
-        bool alreadybeenRead = false;
 
         private Dictionary<string, XNamespace> namespaces = new Dictionary<string, XNamespace>();
 
@@ -47,16 +46,7 @@ namespace OXM
         }
 
         public T ReadXml(XmlReader reader)
-        {
-            if (alreadybeenRead)
-            {
-                throw new OXMException("Read operation has already been performed using this object map. Create a new map object to read again.");
-            }
-            else
-            {
-                alreadybeenRead = true;
-            }
-            
+        {   
             if (reader.ReadState == ReadState.Initial)
             {
                 reader.Read();

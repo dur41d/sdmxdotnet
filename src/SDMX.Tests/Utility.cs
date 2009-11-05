@@ -9,9 +9,8 @@ namespace SDMX.Tests
 {
     internal static class Utility
     {
-        internal static bool ValidateMessage(string xml)
-        {
-            var doc = XDocument.Parse(xml);
+        internal static bool ValidateMessage(XDocument doc)
+        {            
             var schemas = new XmlSchemaSet();
 
             schemas.Add("http://www.SDMX.org/resources/SDMXML/schemas/v2_0/message",

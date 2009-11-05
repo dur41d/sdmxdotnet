@@ -17,10 +17,6 @@ namespace SDMX.Parsers
         {          
             AttributesOrder("id" ,"agencyID", "version", "uri","isFinal","isExternalReference","validFrom","validTo");
             ElementsOrder("Name", "Description", "Components", "Annotations");
-
-            Map<bool?>(o => o.IsExternalReference ? true : (bool?)null).ToAttribute("isExternalReference", false)
-               .Set(v => _isExternalReference = v.Value)
-               .Converter(new NullableBooleanConverter());         
             
             var components = MapContainer("Components", false);
 
@@ -30,14 +26,14 @@ namespace SDMX.Parsers
 
             components.Map(o => o.TimeDimension).ToElement("TimeDimension", false)
                 .Set(v => _keyFamily.TimeDimension = v)
-                .ClassMap(new TimeDimensionMap(message));
+                .ClassMap(() => new TimeDimensionMap(message));
 
             components.MapCollection(o => o.Groups).ToElement("Group", false)
                .ClassMap(() => new GroupMap(_keyFamily));
 
             components.Map(o => o.PrimaryMeasure).ToElement("PrimaryMeasure", true)
                 .Set(v => _keyFamily.PrimaryMeasure = v)
-                .ClassMap(new PrimaryMeasureMap(message));
+                .ClassMap(() => new PrimaryMeasureMap(message));
 
             components.MapCollection(o => o.CrossSectionalMeasures).ToElement("CrossSectionalMeasure", false)
                 .Set(v => _keyFamily.AddMeasure(v))
@@ -57,8 +53,6 @@ namespace SDMX.Parsers
         Uri _uri;
         bool _isExternalReference;
 
-        
-
         protected override void SetAgencyID(ID agencyId)
         {
             _agencyID = agencyId;
@@ -72,6 +66,11 @@ namespace SDMX.Parsers
         protected override void SetIsFinal(bool isFinal)
         {
             _isFinal = isFinal;
+        }
+
+        protected override void SetIsExternalReference(bool isExternalReference)
+        {
+            _isExternalReference = isExternalReference;
         }
 
         protected override void SetVersion(string version)

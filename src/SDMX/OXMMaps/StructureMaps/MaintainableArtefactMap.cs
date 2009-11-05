@@ -11,6 +11,7 @@ namespace SDMX.Parsers
     {
         protected abstract void SetAgencyID(ID  agencyId);
         protected abstract void SetIsFinal(bool isFinal);
+        protected abstract void SetIsExternalReference(bool isExternalReference);
 
         public MaintainableArtefactMap()
         {
@@ -20,7 +21,11 @@ namespace SDMX.Parsers
 
             Map<bool?>(o => o.IsFinal ? o.IsFinal : (bool?)null).ToAttribute("isFinal", false)
                 .Set(v => SetIsFinal(v.Value))
-                .Converter(new NullableBooleanConverter());  
+                .Converter(new NullableBooleanConverter());
+
+            Map<bool?>(o => o.IsExternalReference ? true : (bool?)null).ToAttribute("isExternalReference", false)
+               .Set(v => SetIsExternalReference(v.Value))
+               .Converter(new NullableBooleanConverter());
         }
     }
 }

@@ -19,13 +19,13 @@ namespace SDMX.Parsers
 
         public CompoenentMap(StructureMessage message)
         {
-            Map(o => ConceptRef.Create(o.Concept)).ToAttributeGroup("conceptRef")
+            Map(o => TempConceptRef.Create(o.Concept)).ToAttributeGroup("conceptRef")
                 .Set(v => _component = Create(message.GetConcept(v.ID, v.AgencyID, v.Version)))
-                .GroupTypeMap(new ConceptRefMap());
+                .GroupTypeMap(new TempConceptRefMap());
 
-            Map(o => CodelistRef.Create(o.CodeList)).ToAttributeGroup("codelist")
+            Map(o => TempCodelistRef.Create(o.CodeList)).ToAttributeGroup("codelist")
                 .Set(v => _component.CodeList = message.GetCodeList(v.ID, v.AgencyID, v.Version))
-                .GroupTypeMap(new CodelistRefMap());
+                .GroupTypeMap(new TempCodelistRefMap());
 
             Map(o => o.CrossSectionalAttachmentLevel).ToAttributeGroup("crossSectionalAttachmentLevel", CrossSectionalAttachmentLevel.None)
                 .Set(v => _component.CrossSectionalAttachmentLevel = v)
@@ -33,7 +33,7 @@ namespace SDMX.Parsers
 
             Map(o => o.TextFormat).ToElement("TextFormat", false)
                 .Set(v => _component.TextFormat = v)
-                .ClassMap(new TextFormatMap());
+                .ClassMap(() => new TextFormatMap());
         }
     }
 }

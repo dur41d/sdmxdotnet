@@ -27,7 +27,7 @@ namespace SDMX.Parsers
 
             Map(o => o.TextFormat).ToElement("TextFormat", false)
                 .Set(v => _concept.TextFormat = v)
-                .ClassMap(new TextFormatMap());
+                .ClassMap(() => new TextFormatMap());
         }
 
         ID _id;

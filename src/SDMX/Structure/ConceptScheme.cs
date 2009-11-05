@@ -2,14 +2,36 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Common;
 
 namespace SDMX
 {
-    public class ConceptScheme : ItemScheme<Concept>
+    public class ConceptScheme : MaintainableArtefact, IEnumerable<Concept>
     {
+        private List<Concept> concepts = new List<Concept>();        
+      
         public ConceptScheme(ID id, ID agencyID)
             : base(id, agencyID)
         {
+        }
+
+        public void Add(Concept concept)
+        {
+            Contract.AssertNotNull(() => concept);
+            concept.ConceptScheme = this;
+            concepts.Add(concept);
+        }
+
+        public void Remove(Concept concept)
+        {
+            Contract.AssertNotNull(() => concept);
+            concepts.Remove(concept);
+        }
+
+        public Concept Get(ID conceptID)
+        {
+            Contract.AssertNotNull(() => conceptID);
+            return concepts.Where(c => c.ID == conceptID).Single();
         }
 
         public override Uri Urn
@@ -19,13 +41,27 @@ namespace SDMX
                 return new Uri(string.Format("{0}.conceptScheme={1}:{2}[{3}]".F(UrnPrefix, AgencyID, ID, Version)));
             }
         }
+       
 
-        public Concept this[ID conceptID]
+        #region IEnumerable<Concept> Members
+
+        public IEnumerator<Concept> GetEnumerator()
         {
-            get
+            foreach (var concept in concepts)
             {
-                return items[conceptID];
+                yield return concept;
             }
         }
+
+        #endregion
+
+        #region IEnumerable Members
+
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+
+        #endregion
     }
 }

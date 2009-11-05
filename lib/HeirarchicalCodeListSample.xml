@@ -1,0 +1,160 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Structure xmlns="http://www.SDMX.org/resources/SDMXML/schemas/v2_0/message" xmlns:common="http://www.SDMX.org/resources/SDMXML/schemas/v2_0/common" xmlns:structure="http://www.SDMX.org/resources/SDMXML/schemas/v2_0/structure" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Header>
+    <ID>BIS_01</ID>
+    <Test>true</Test>
+    <Name xml:lang="en">70</Name>
+    <Prepared>2007-04-19T12:50:05Z</Prepared>
+    <Sender id="DB">
+      <Name xml:lang="en">ExportFromDB</Name>
+    </Sender>
+    <Receiver id="Metatech">
+      <Name xml:lang="en">M-technology</Name>
+    </Receiver>
+  </Header>
+  <!--<OrganisationSchemes>
+    <structure:OrganisationScheme id="SDMX" agencyID="SDMX">
+      <structure:Name>SDMX</structure:Name>
+      <structure:Agencies>
+        <structure:Agency id="MY_AGENCY">
+          <structure:Name xml:lang="en">My Agency</structure:Name>
+        </structure:Agency>
+      </structure:Agencies>
+    </structure:OrganisationScheme>
+  </OrganisationSchemes>-->
+  <CodeLists>
+    <structure:CodeList id="CL_REF_AREA" agencyID="MY_AGENCY">
+      <structure:Name xml:lang="en">Reference Area</structure:Name>
+      <structure:Code value = "EU">
+        <structure:Description xml:lang="en">European Union</structure:Description>
+      </structure:Code>
+      <structure:Code value = "AT">
+        <structure:Description xml:lang="en">Austria</structure:Description>
+      </structure:Code>
+      <structure:Code value = "BE">
+        <structure:Description xml:lang="en">Belgium</structure:Description>
+      </structure:Code>
+      <structure:Code value = "DE">
+        <structure:Description xml:lang="en">Germany</structure:Description>
+      </structure:Code>
+      <structure:Code value = "DK">
+        <structure:Description xml:lang="en">Denmark</structure:Description>
+      </structure:Code>
+      <structure:Code value = "EE">
+        <structure:Description xml:lang="en">Estonia</structure:Description>
+      </structure:Code>
+      <structure:Code value = "ES">
+        <structure:Description xml:lang="en">Spain</structure:Description>
+      </structure:Code>
+      <structure:Code value = "FI">
+        <structure:Description xml:lang="en">Finland</structure:Description>
+      </structure:Code>
+      <structure:Code value = "FR">
+        <structure:Description xml:lang="en">France</structure:Description>
+      </structure:Code>
+      <structure:Code value = "GB">
+        <structure:Description xml:lang="en">United Kingdom</structure:Description>
+      </structure:Code>
+      <structure:Code value = "NATO">
+        <structure:Description xml:lang="en">North Atlantic Treaty Organization</structure:Description>
+      </structure:Code>
+      <structure:Code value = "US">
+        <structure:Description xml:lang="en">United States of America</structure:Description>
+      </structure:Code>
+      <!-- Not a complete list. -->
+    </structure:CodeList>
+  </CodeLists>
+  <HierarchicalCodelists>
+    <!-- A simple, incomplete example: note that CodeRefs can endlessly contain other CodeRefs to build deeper hierarchies. -->
+    <structure:HierarchicalCodelist id="HARCH_EUROPE_INTL" agencyID="MY_AGENCY">
+      <structure:Name>European/International Organizations</structure:Name>
+      <structure:CodelistRef>
+        <structure:AgencyID>MY_AGENCY</structure:AgencyID>
+        <structure:CodelistID>CL_REF_AREA</structure:CodelistID>
+        <structure:Alias>EUR_INTL</structure:Alias>
+      </structure:CodelistRef>
+      <structure:Hierarchy id="NATO">
+        <structure:Name>North Atlantic Treaty Organization</structure:Name>
+        <structure:CodeRef>
+          <structure:CodelistAliasRef>EUR_INTL</structure:CodelistAliasRef>
+          <structure:CodeID>NATO</structure:CodeID>
+          <structure:CodeRef>
+            <structure:CodelistAliasRef>EUR_INTL</structure:CodelistAliasRef>
+            <structure:CodeID>AT</structure:CodeID>
+          </structure:CodeRef>
+          <structure:CodeRef>
+            <structure:CodelistAliasRef>EUR_INTL</structure:CodelistAliasRef>
+            <structure:CodeID>BE</structure:CodeID>
+          </structure:CodeRef>
+          <structure:CodeRef>
+            <structure:CodelistAliasRef>EUR_INTL</structure:CodelistAliasRef>
+            <structure:CodeID>DE</structure:CodeID>
+          </structure:CodeRef>
+          <structure:CodeRef>
+            <structure:CodelistAliasRef>EUR_INTL</structure:CodelistAliasRef>
+            <structure:CodeID>DK</structure:CodeID>
+          </structure:CodeRef>
+          <structure:CodeRef>
+            <structure:CodelistAliasRef>EUR_INTL</structure:CodelistAliasRef>
+            <structure:CodeID>ES</structure:CodeID>
+          </structure:CodeRef>
+          <structure:CodeRef>
+            <structure:CodelistAliasRef>EUR_INTL</structure:CodelistAliasRef>
+            <structure:CodeID>FR</structure:CodeID>
+          </structure:CodeRef>
+          <structure:CodeRef>
+            <structure:CodelistAliasRef>EUR_INTL</structure:CodelistAliasRef>
+            <structure:CodeID>GB</structure:CodeID>
+          </structure:CodeRef>
+          <structure:CodeRef>
+            <structure:CodelistAliasRef>EUR_INTL</structure:CodelistAliasRef>
+            <structure:CodeID>US</structure:CodeID>
+          </structure:CodeRef>
+        </structure:CodeRef>
+      </structure:Hierarchy>
+      <structure:Hierarchy id="EU">
+        <structure:Name>European Union</structure:Name>
+        <structure:CodeRef>
+          <structure:CodelistAliasRef>EUR_INTL</structure:CodelistAliasRef>
+          <structure:CodeID>EU</structure:CodeID>
+          <structure:CodeRef>
+            <structure:CodelistAliasRef>EUR_INTL</structure:CodelistAliasRef>
+            <structure:CodeID>AT</structure:CodeID>
+          </structure:CodeRef>
+          <structure:CodeRef>
+            <structure:CodelistAliasRef>EUR_INTL</structure:CodelistAliasRef>
+            <structure:CodeID>BE</structure:CodeID>
+          </structure:CodeRef>
+          <structure:CodeRef>
+            <structure:CodelistAliasRef>EUR_INTL</structure:CodelistAliasRef>
+            <structure:CodeID>DE</structure:CodeID>
+          </structure:CodeRef>
+          <structure:CodeRef>
+            <structure:CodelistAliasRef>EUR_INTL</structure:CodelistAliasRef>
+            <structure:CodeID>DK</structure:CodeID>
+          </structure:CodeRef>
+          <structure:CodeRef>
+            <structure:CodelistAliasRef>EUR_INTL</structure:CodelistAliasRef>
+            <structure:CodeID>EE</structure:CodeID>
+          </structure:CodeRef>
+          <structure:CodeRef>
+            <structure:CodelistAliasRef>EUR_INTL</structure:CodelistAliasRef>
+            <structure:CodeID>ES</structure:CodeID>
+          </structure:CodeRef>
+          <structure:CodeRef>
+            <structure:CodelistAliasRef>EUR_INTL</structure:CodelistAliasRef>
+            <structure:CodeID>FI</structure:CodeID>
+          </structure:CodeRef>
+          <structure:CodeRef>
+            <structure:CodelistAliasRef>EUR_INTL</structure:CodelistAliasRef>
+            <structure:CodeID>FR</structure:CodeID>
+          </structure:CodeRef>
+          <structure:CodeRef>
+            <structure:CodelistAliasRef>EUR_INTL</structure:CodelistAliasRef>
+            <structure:CodeID>GB</structure:CodeID>
+          </structure:CodeRef>
+        </structure:CodeRef>
+      </structure:Hierarchy>
+    </structure:HierarchicalCodelist>
+  </HierarchicalCodelists>
+</Structure>

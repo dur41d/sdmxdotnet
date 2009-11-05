@@ -1,0 +1,2316 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<Structure xmlns="http://www.SDMX.org/resources/SDMXML/schemas/v2_0/message"
+	xmlns:common="http://www.SDMX.org/resources/SDMXML/schemas/v2_0/common"
+	xmlns:compact="http://www.SDMX.org/resources/SDMXML/schemas/v2_0/compact"
+	xmlns:cross="http://www.SDMX.org/resources/SDMXML/schemas/v2_0/cross"
+	xmlns:generic="http://www.SDMX.org/resources/SDMXML/schemas/v2_0/generic"
+	xmlns:query="http://www.SDMX.org/resources/SDMXML/schemas/v2_0/query"
+	xmlns:structure="http://www.SDMX.org/resources/SDMXML/schemas/v2_0/structure"
+	xmlns:utility="http://www.SDMX.org/resources/SDMXML/schemas/v2_0/utility"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.SDMX.org/resources/SDMXML/schemas/v2_0/message SDMXMessage.xsd">
+
+	<Header>
+		<ID>WB_DSD_1_1</ID>
+		<Test>true</Test>
+		<Name xml:lang="en">Data Structure Definition for World Bank</Name>
+		<Prepared>2009-03-03T15:15:15Z</Prepared>
+		<Sender id="UIS">
+			<Name xml:lang="en">UNESCO Institute for Statistics</Name>
+			<Contact>
+				<Name xml:lang="en">Adriano Miele</Name>
+				<Department xml:lang="en">UIS - DPSS</Department>
+				<Role xml:lang="en">I.T. Technical Officer</Role>
+				<Telephone>+1 514 343 7764</Telephone>
+				<Fax>+1 514 343 5740</Fax>
+				<Email>a.miele@uis.unesco.org</Email>
+			</Contact>
+		</Sender>
+		<Receiver id="WB">
+			<Name xml:lang="en">World Bank</Name>
+			<Contact>
+				<Name xml:lang="en">Ibrahim Levent</Name>
+				<Department xml:lang="en">World Bank - DECDG</Department>
+				<Role xml:lang="en">E</Role>
+				<Telephone>+1 202 473-3843</Telephone>
+				<Fax>+1 202 522-1785</Fax>
+				<Email>Ilevent@worldbank.org</Email>
+			</Contact>
+		</Receiver>
+	</Header>
+
+	<CodeLists>
+
+		<structure:CodeList id="CL_AGE_GROUP_MDG" agencyID="IAEG" version="1.0">
+			<structure:Name xml:lang="en">Age group code list</structure:Name>
+			<structure:Code value="NA">
+				<structure:Description xml:lang="en">Not applicable</structure:Description>
+			</structure:Code>
+			<structure:Code value="000_099_Y">
+				<structure:Description xml:lang="en">All age ranges</structure:Description>
+			</structure:Code>
+			<structure:Code value="000_005_Y">
+				<structure:Description xml:lang="en">under 5 year olds</structure:Description>
+			</structure:Code>
+			<structure:Code value="000_001_Y">
+				<structure:Description xml:lang="en">under 1 year olds</structure:Description>
+			</structure:Code>
+			<structure:Code value="010_005_Y">
+				<structure:Description xml:lang="en">10-14 year olds</structure:Description>
+			</structure:Code>
+			<structure:Code value="015_005_Y">
+				<structure:Description xml:lang="en">15-19 year olds</structure:Description>
+			</structure:Code>
+			<structure:Code value="015_010_Y">
+				<structure:Description xml:lang="en">15-24 year olds</structure:Description>
+			</structure:Code>
+			<structure:Code value="015_035_Y">
+				<structure:Description xml:lang="en">15-49 year olds</structure:Description>
+			</structure:Code>
+		</structure:CodeList>
+
+		<structure:CodeList id="CL_FREQ_MDG" agencyID="IAEG" version="1.0">
+			<structure:Name xml:lang="en">Frequency code list</structure:Name>
+			<structure:Code value="A">
+				<structure:Description xml:lang="en">Annual</structure:Description>
+			</structure:Code>
+			<structure:Code value="2A">
+				<structure:Description xml:lang="en">Two-year average</structure:Description>
+			</structure:Code>
+			<structure:Code value="3A">
+				<structure:Description xml:lang="en">Three-year average</structure:Description>
+			</structure:Code>
+			<structure:Code value="S">
+				<structure:Description xml:lang="en">Half-yearly, semester</structure:Description>
+			</structure:Code>
+			<structure:Code value="Q">
+				<structure:Description xml:lang="en">Quarterly</structure:Description>
+			</structure:Code>
+			<structure:Code value="M">
+				<structure:Description xml:lang="en">Monthly</structure:Description>
+			</structure:Code>
+		</structure:CodeList>
+
+		<structure:CodeList id="CL_LOCATION_MDG" agencyID="IAEG" version="1.0">
+			<structure:Name xml:lang="en">Location code list</structure:Name>
+			<structure:Code value="T">
+				<structure:Description xml:lang="en">Total (national level)</structure:Description>
+			</structure:Code>
+			<structure:Code value="U">
+				<structure:Description xml:lang="en">Urban</structure:Description>
+			</structure:Code>
+			<structure:Code value="R">
+				<structure:Description xml:lang="en">Rural</structure:Description>
+			</structure:Code>
+		</structure:CodeList>
+
+		<structure:CodeList id="CL_NATURE_MDG" agencyID="IAEG" version="1.0">
+			<structure:Name xml:lang="en">Nature code list</structure:Name>
+			<structure:Code value="C">
+				<structure:Description xml:lang="en">Country Data</structure:Description>
+			</structure:Code>
+			<structure:Code value="CA">
+				<structure:Description xml:lang="en">Country Adjusted</structure:Description>
+			</structure:Code>
+			<structure:Code value="E">
+				<structure:Description xml:lang="en">Estimated</structure:Description>
+			</structure:Code>
+			<structure:Code value="M">
+				<structure:Description xml:lang="en">Modeled</structure:Description>
+			</structure:Code>
+			<structure:Code value="G">
+				<structure:Description xml:lang="en">Global monitoring data</structure:Description>
+			</structure:Code>
+			<structure:Code value="N">
+				<structure:Description xml:lang="en">Non-relevant</structure:Description>
+			</structure:Code>
+			<structure:Code value="NA">
+				<structure:Description xml:lang="en">Not Available</structure:Description>
+			</structure:Code>
+		</structure:CodeList>
+
+		<structure:CodeList id="CL_REF_AREA_MDG" agencyID="IAEG" version="1.0">
+			<structure:Name xml:lang="en">Reference area code list</structure:Name>
+			<structure:Code value="PRK">
+				<structure:Description xml:lang="en">Democratic People's Republic of
+					Korea</structure:Description>
+			</structure:Code>
+			<structure:Code value="COD">
+				<structure:Description xml:lang="en">Democratic Republic of the
+					Congo</structure:Description>
+			</structure:Code>
+			<structure:Code value="DNK">
+				<structure:Description xml:lang="en">Denmark</structure:Description>
+			</structure:Code>
+			<structure:Code value="DJI">
+				<structure:Description xml:lang="en">Djibouti</structure:Description>
+			</structure:Code>
+			<structure:Code value="DMA">
+				<structure:Description xml:lang="en">Dominica</structure:Description>
+			</structure:Code>
+			<structure:Code value="DOM">
+				<structure:Description xml:lang="en">Dominican Republic</structure:Description>
+			</structure:Code>
+			<structure:Code value="ECU">
+				<structure:Description xml:lang="en">Ecuador</structure:Description>
+			</structure:Code>
+			<structure:Code value="EGY">
+				<structure:Description xml:lang="en">Egypt</structure:Description>
+			</structure:Code>
+			<structure:Code value="SLV">
+				<structure:Description xml:lang="en">El Salvador</structure:Description>
+			</structure:Code>
+			<structure:Code value="GNQ">
+				<structure:Description xml:lang="en">Equatorial Guinea</structure:Description>
+			</structure:Code>
+			<structure:Code value="ERI">
+				<structure:Description xml:lang="en">Eritrea</structure:Description>
+			</structure:Code>
+			<structure:Code value="EST">
+				<structure:Description xml:lang="en">Estonia</structure:Description>
+			</structure:Code>
+			<structure:Code value="ETH">
+				<structure:Description xml:lang="en">Ethiopia</structure:Description>
+			</structure:Code>
+			<structure:Code value="FRO">
+				<structure:Description xml:lang="en">Faeroe Islands</structure:Description>
+			</structure:Code>
+			<structure:Code value="FLK">
+				<structure:Description xml:lang="en">Falkland Islands
+					(Malvinas)</structure:Description>
+			</structure:Code>
+			<structure:Code value="FJI">
+				<structure:Description xml:lang="en">Fiji</structure:Description>
+			</structure:Code>
+			<structure:Code value="FIN">
+				<structure:Description xml:lang="en">Finland</structure:Description>
+			</structure:Code>
+			<structure:Code value="FRA">
+				<structure:Description xml:lang="en">France</structure:Description>
+			</structure:Code>
+			<structure:Code value="GUF">
+				<structure:Description xml:lang="en">French Guiana</structure:Description>
+			</structure:Code>
+			<structure:Code value="PYF">
+				<structure:Description xml:lang="en">French Polynesia</structure:Description>
+			</structure:Code>
+			<structure:Code value="GAB">
+				<structure:Description xml:lang="en">Gabon</structure:Description>
+			</structure:Code>
+			<structure:Code value="GMB">
+				<structure:Description xml:lang="en">Gambia</structure:Description>
+			</structure:Code>
+			<structure:Code value="GEO">
+				<structure:Description xml:lang="en">Georgia</structure:Description>
+			</structure:Code>
+			<structure:Code value="DEU">
+				<structure:Description xml:lang="en">Germany</structure:Description>
+			</structure:Code>
+			<structure:Code value="GHA">
+				<structure:Description xml:lang="en">Ghana</structure:Description>
+			</structure:Code>
+			<structure:Code value="GIB">
+				<structure:Description xml:lang="en">Gibraltar</structure:Description>
+			</structure:Code>
+			<structure:Code value="GRC">
+				<structure:Description xml:lang="en">Greece</structure:Description>
+			</structure:Code>
+			<structure:Code value="GRL">
+				<structure:Description xml:lang="en">Greenland</structure:Description>
+			</structure:Code>
+			<structure:Code value="GRD">
+				<structure:Description xml:lang="en">Grenada</structure:Description>
+			</structure:Code>
+			<structure:Code value="GLP">
+				<structure:Description xml:lang="en">Guadeloupe</structure:Description>
+			</structure:Code>
+			<structure:Code value="GUM">
+				<structure:Description xml:lang="en">Guam</structure:Description>
+			</structure:Code>
+			<structure:Code value="GTM">
+				<structure:Description xml:lang="en">Guatemala</structure:Description>
+			</structure:Code>
+			<structure:Code value="GGY">
+				<structure:Description xml:lang="en">Guernsey</structure:Description>
+			</structure:Code>
+			<structure:Code value="GIN">
+				<structure:Description xml:lang="en">Guinea</structure:Description>
+			</structure:Code>
+			<structure:Code value="GNB">
+				<structure:Description xml:lang="en">Guinea-Bissau</structure:Description>
+			</structure:Code>
+			<structure:Code value="GUY">
+				<structure:Description xml:lang="en">Guyana</structure:Description>
+			</structure:Code>
+			<structure:Code value="HTI">
+				<structure:Description xml:lang="en">Haiti</structure:Description>
+			</structure:Code>
+			<structure:Code value="VAT">
+				<structure:Description xml:lang="en">Holy See</structure:Description>
+			</structure:Code>
+			<structure:Code value="HND">
+				<structure:Description xml:lang="en">Honduras</structure:Description>
+			</structure:Code>
+			<structure:Code value="HUN">
+				<structure:Description xml:lang="en">Hungary</structure:Description>
+			</structure:Code>
+			<structure:Code value="ISL">
+				<structure:Description xml:lang="en">Iceland</structure:Description>
+			</structure:Code>
+			<structure:Code value="IND">
+				<structure:Description xml:lang="en">India</structure:Description>
+			</structure:Code>
+			<structure:Code value="IDN">
+				<structure:Description xml:lang="en">Indonesia</structure:Description>
+			</structure:Code>
+			<structure:Code value="IRN">
+				<structure:Description xml:lang="en">Iran, Islamic Republic
+					of</structure:Description>
+			</structure:Code>
+			<structure:Code value="IRQ">
+				<structure:Description xml:lang="en">Iraq</structure:Description>
+			</structure:Code>
+			<structure:Code value="IRL">
+				<structure:Description xml:lang="en">Ireland</structure:Description>
+			</structure:Code>
+			<structure:Code value="IMN">
+				<structure:Description xml:lang="en">Isle of Man</structure:Description>
+			</structure:Code>
+			<structure:Code value="ISR">
+				<structure:Description xml:lang="en">Israel</structure:Description>
+			</structure:Code>
+			<structure:Code value="ITA">
+				<structure:Description xml:lang="en">Italy</structure:Description>
+			</structure:Code>
+			<structure:Code value="JAM">
+				<structure:Description xml:lang="en">Jamaica</structure:Description>
+			</structure:Code>
+			<structure:Code value="JPN">
+				<structure:Description xml:lang="en">Japan</structure:Description>
+			</structure:Code>
+			<structure:Code value="JEY">
+				<structure:Description xml:lang="en">Jersey</structure:Description>
+			</structure:Code>
+			<structure:Code value="JOR">
+				<structure:Description xml:lang="en">Jordan</structure:Description>
+			</structure:Code>
+			<structure:Code value="KAZ">
+				<structure:Description xml:lang="en">Kazakhstan</structure:Description>
+			</structure:Code>
+			<structure:Code value="KEN">
+				<structure:Description xml:lang="en">Kenya</structure:Description>
+			</structure:Code>
+			<structure:Code value="KIR">
+				<structure:Description xml:lang="en">Kiribati</structure:Description>
+			</structure:Code>
+			<structure:Code value="KWT">
+				<structure:Description xml:lang="en">Kuwait</structure:Description>
+			</structure:Code>
+			<structure:Code value="KGZ">
+				<structure:Description xml:lang="en">Kyrgyzstan</structure:Description>
+			</structure:Code>
+			<structure:Code value="LAO">
+				<structure:Description xml:lang="en">Lao People's Democratic
+					Republic</structure:Description>
+			</structure:Code>
+			<structure:Code value="LVA">
+				<structure:Description xml:lang="en">Latvia</structure:Description>
+			</structure:Code>
+			<structure:Code value="LBN">
+				<structure:Description xml:lang="en">Lebanon</structure:Description>
+			</structure:Code>
+			<structure:Code value="LSO">
+				<structure:Description xml:lang="en">Lesotho</structure:Description>
+			</structure:Code>
+			<structure:Code value="LBR">
+				<structure:Description xml:lang="en">Liberia</structure:Description>
+			</structure:Code>
+			<structure:Code value="LBY">
+				<structure:Description xml:lang="en">Libyan Arab Jamahiriya</structure:Description>
+			</structure:Code>
+			<structure:Code value="LIE">
+				<structure:Description xml:lang="en">Liechtenstein</structure:Description>
+			</structure:Code>
+			<structure:Code value="LTU">
+				<structure:Description xml:lang="en">Lithuania</structure:Description>
+			</structure:Code>
+			<structure:Code value="LUX">
+				<structure:Description xml:lang="en">Luxembourg</structure:Description>
+			</structure:Code>
+			<structure:Code value="MDG">
+				<structure:Description xml:lang="en">Madagascar</structure:Description>
+			</structure:Code>
+			<structure:Code value="MWI">
+				<structure:Description xml:lang="en">Malawi</structure:Description>
+			</structure:Code>
+			<structure:Code value="MYS">
+				<structure:Description xml:lang="en">Malaysia</structure:Description>
+			</structure:Code>
+			<structure:Code value="MDV">
+				<structure:Description xml:lang="en">Maldives</structure:Description>
+			</structure:Code>
+			<structure:Code value="MLI">
+				<structure:Description xml:lang="en">Mali</structure:Description>
+			</structure:Code>
+			<structure:Code value="MLT">
+				<structure:Description xml:lang="en">Malta</structure:Description>
+			</structure:Code>
+			<structure:Code value="MHL">
+				<structure:Description xml:lang="en">Marshall Islands</structure:Description>
+			</structure:Code>
+			<structure:Code value="MTQ">
+				<structure:Description xml:lang="en">Martinique</structure:Description>
+			</structure:Code>
+			<structure:Code value="MRT">
+				<structure:Description xml:lang="en">Mauritania</structure:Description>
+			</structure:Code>
+			<structure:Code value="MUS">
+				<structure:Description xml:lang="en">Mauritius</structure:Description>
+			</structure:Code>
+			<structure:Code value="MYT">
+				<structure:Description xml:lang="en">Mayotte</structure:Description>
+			</structure:Code>
+			<structure:Code value="MEX">
+				<structure:Description xml:lang="en">Mexico</structure:Description>
+			</structure:Code>
+			<structure:Code value="FSM">
+				<structure:Description xml:lang="en">Micronesia, Federated States
+					of</structure:Description>
+			</structure:Code>
+			<structure:Code value="MDA">
+				<structure:Description xml:lang="en">Moldova</structure:Description>
+			</structure:Code>
+			<structure:Code value="MCO">
+				<structure:Description xml:lang="en">Monaco</structure:Description>
+			</structure:Code>
+			<structure:Code value="MNG">
+				<structure:Description xml:lang="en">Mongolia</structure:Description>
+			</structure:Code>
+			<structure:Code value="MNE">
+				<structure:Description xml:lang="en">Montenegro</structure:Description>
+			</structure:Code>
+			<structure:Code value="MSR">
+				<structure:Description xml:lang="en">Montserrat</structure:Description>
+			</structure:Code>
+			<structure:Code value="MAR">
+				<structure:Description xml:lang="en">Morocco</structure:Description>
+			</structure:Code>
+			<structure:Code value="MOZ">
+				<structure:Description xml:lang="en">Mozambique</structure:Description>
+			</structure:Code>
+			<structure:Code value="MMR">
+				<structure:Description xml:lang="en">Myanmar</structure:Description>
+			</structure:Code>
+			<structure:Code value="NAM">
+				<structure:Description xml:lang="en">Namibia</structure:Description>
+			</structure:Code>
+			<structure:Code value="NRU">
+				<structure:Description xml:lang="en">Nauru</structure:Description>
+			</structure:Code>
+			<structure:Code value="NPL">
+				<structure:Description xml:lang="en">Nepal</structure:Description>
+			</structure:Code>
+			<structure:Code value="NLD">
+				<structure:Description xml:lang="en">Netherlands</structure:Description>
+			</structure:Code>
+			<structure:Code value="ANT">
+				<structure:Description xml:lang="en">Netherlands Antilles</structure:Description>
+			</structure:Code>
+			<structure:Code value="NCL">
+				<structure:Description xml:lang="en">New Caledonia</structure:Description>
+			</structure:Code>
+			<structure:Code value="NZL">
+				<structure:Description xml:lang="en">New Zealand</structure:Description>
+			</structure:Code>
+			<structure:Code value="NIC">
+				<structure:Description xml:lang="en">Nicaragua</structure:Description>
+			</structure:Code>
+			<structure:Code value="NER">
+				<structure:Description xml:lang="en">Niger</structure:Description>
+			</structure:Code>
+			<structure:Code value="NGA">
+				<structure:Description xml:lang="en">Nigeria</structure:Description>
+			</structure:Code>
+			<structure:Code value="NIU">
+				<structure:Description xml:lang="en">Niue</structure:Description>
+			</structure:Code>
+			<structure:Code value="NFK">
+				<structure:Description xml:lang="en">Norfolk Island</structure:Description>
+			</structure:Code>
+			<structure:Code value="MNP">
+				<structure:Description xml:lang="en">Northern Mariana
+					Islands</structure:Description>
+			</structure:Code>
+			<structure:Code value="NOR">
+				<structure:Description xml:lang="en">Norway</structure:Description>
+			</structure:Code>
+			<structure:Code value="PSE">
+				<structure:Description xml:lang="en">Occupied Palestinian
+					Territory</structure:Description>
+			</structure:Code>
+			<structure:Code value="OMN">
+				<structure:Description xml:lang="en">Oman</structure:Description>
+			</structure:Code>
+			<structure:Code value="PAK">
+				<structure:Description xml:lang="en">Pakistan</structure:Description>
+			</structure:Code>
+			<structure:Code value="PLW">
+				<structure:Description xml:lang="en">Palau</structure:Description>
+			</structure:Code>
+			<structure:Code value="PAN">
+				<structure:Description xml:lang="en">Panama</structure:Description>
+			</structure:Code>
+			<structure:Code value="PNG">
+				<structure:Description xml:lang="en">Papua New Guinea</structure:Description>
+			</structure:Code>
+			<structure:Code value="PRY">
+				<structure:Description xml:lang="en">Paraguay</structure:Description>
+			</structure:Code>
+			<structure:Code value="PER">
+				<structure:Description xml:lang="en">Peru</structure:Description>
+			</structure:Code>
+			<structure:Code value="PHL">
+				<structure:Description xml:lang="en">Philippines</structure:Description>
+			</structure:Code>
+			<structure:Code value="PCN">
+				<structure:Description xml:lang="en">Pitcairn</structure:Description>
+			</structure:Code>
+			<structure:Code value="POL">
+				<structure:Description xml:lang="en">Poland</structure:Description>
+			</structure:Code>
+			<structure:Code value="PRT">
+				<structure:Description xml:lang="en">Portugal</structure:Description>
+			</structure:Code>
+			<structure:Code value="PRI">
+				<structure:Description xml:lang="en">Puerto Rico</structure:Description>
+			</structure:Code>
+			<structure:Code value="QAT">
+				<structure:Description xml:lang="en">Qatar</structure:Description>
+			</structure:Code>
+			<structure:Code value="KOR">
+				<structure:Description xml:lang="en">Republic of Korea</structure:Description>
+			</structure:Code>
+			<structure:Code value="REU">
+				<structure:Description xml:lang="en">Réunion</structure:Description>
+			</structure:Code>
+			<structure:Code value="ROU">
+				<structure:Description xml:lang="en">Romania</structure:Description>
+			</structure:Code>
+			<structure:Code value="RUS">
+				<structure:Description xml:lang="en">Russian Federation</structure:Description>
+			</structure:Code>
+			<structure:Code value="RWA">
+				<structure:Description xml:lang="en">Rwanda</structure:Description>
+			</structure:Code>
+			<structure:Code value="BLM">
+				<structure:Description xml:lang="en">Saint-Barthélemy</structure:Description>
+			</structure:Code>
+			<structure:Code value="SHN">
+				<structure:Description xml:lang="en">Saint Helena</structure:Description>
+			</structure:Code>
+			<structure:Code value="KNA">
+				<structure:Description xml:lang="en">Saint Kitts and Nevis</structure:Description>
+			</structure:Code>
+			<structure:Code value="LCA">
+				<structure:Description xml:lang="en">Saint Lucia</structure:Description>
+			</structure:Code>
+			<structure:Code value="MAF">
+				<structure:Description xml:lang="en">Saint-Martin (French
+					part)</structure:Description>
+			</structure:Code>
+			<structure:Code value="SPM">
+				<structure:Description xml:lang="en">Saint Pierre and
+					Miquelon</structure:Description>
+			</structure:Code>
+			<structure:Code value="VCT">
+				<structure:Description xml:lang="en">Saint Vincent and the
+					Grenadines</structure:Description>
+			</structure:Code>
+			<structure:Code value="WSM">
+				<structure:Description xml:lang="en">Samoa</structure:Description>
+			</structure:Code>
+			<structure:Code value="SMR">
+				<structure:Description xml:lang="en">San Marino</structure:Description>
+			</structure:Code>
+			<structure:Code value="STP">
+				<structure:Description xml:lang="en">Sao Tome and Principe</structure:Description>
+			</structure:Code>
+			<structure:Code value="SAU">
+				<structure:Description xml:lang="en">Saudi Arabia</structure:Description>
+			</structure:Code>
+			<structure:Code value="SEN">
+				<structure:Description xml:lang="en">Senegal</structure:Description>
+			</structure:Code>
+			<structure:Code value="SRB">
+				<structure:Description xml:lang="en">Serbia</structure:Description>
+			</structure:Code>
+			<structure:Code value="SYC">
+				<structure:Description xml:lang="en">Seychelles</structure:Description>
+			</structure:Code>
+			<structure:Code value="SLE">
+				<structure:Description xml:lang="en">Sierra Leone</structure:Description>
+			</structure:Code>
+			<structure:Code value="SGP">
+				<structure:Description xml:lang="en">Singapore</structure:Description>
+			</structure:Code>
+			<structure:Code value="SVK">
+				<structure:Description xml:lang="en">Slovakia</structure:Description>
+			</structure:Code>
+			<structure:Code value="SVN">
+				<structure:Description xml:lang="en">Slovenia</structure:Description>
+			</structure:Code>
+			<structure:Code value="SLB">
+				<structure:Description xml:lang="en">Solomon Islands</structure:Description>
+			</structure:Code>
+			<structure:Code value="SOM">
+				<structure:Description xml:lang="en">Somalia</structure:Description>
+			</structure:Code>
+			<structure:Code value="ZAF">
+				<structure:Description xml:lang="en">South Africa</structure:Description>
+			</structure:Code>
+			<structure:Code value="ESP">
+				<structure:Description xml:lang="en">Spain</structure:Description>
+			</structure:Code>
+			<structure:Code value="LKA">
+				<structure:Description xml:lang="en">Sri Lanka</structure:Description>
+			</structure:Code>
+			<structure:Code value="SDN">
+				<structure:Description xml:lang="en">Sudan</structure:Description>
+			</structure:Code>
+			<structure:Code value="SUR">
+				<structure:Description xml:lang="en">Suriname</structure:Description>
+			</structure:Code>
+			<structure:Code value="SJM">
+				<structure:Description xml:lang="en">Svalbard and Jan Mayen
+					Islands</structure:Description>
+			</structure:Code>
+			<structure:Code value="SWZ">
+				<structure:Description xml:lang="en">Swaziland</structure:Description>
+			</structure:Code>
+			<structure:Code value="SWE">
+				<structure:Description xml:lang="en">Sweden</structure:Description>
+			</structure:Code>
+			<structure:Code value="CHE">
+				<structure:Description xml:lang="en">Switzerland</structure:Description>
+			</structure:Code>
+			<structure:Code value="SYR">
+				<structure:Description xml:lang="en">Syrian Arab Republic</structure:Description>
+			</structure:Code>
+			<structure:Code value="TJK">
+				<structure:Description xml:lang="en">Tajikistan</structure:Description>
+			</structure:Code>
+			<structure:Code value="THA">
+				<structure:Description xml:lang="en">Thailand</structure:Description>
+			</structure:Code>
+			<structure:Code value="MKD">
+				<structure:Description xml:lang="en">The former Yugoslav Republic of
+					Macedonia</structure:Description>
+			</structure:Code>
+			<structure:Code value="TLS">
+				<structure:Description xml:lang="en">Timor-Leste</structure:Description>
+			</structure:Code>
+			<structure:Code value="TGO">
+				<structure:Description xml:lang="en">Togo</structure:Description>
+			</structure:Code>
+			<structure:Code value="TKL">
+				<structure:Description xml:lang="en">Tokelau</structure:Description>
+			</structure:Code>
+			<structure:Code value="TON">
+				<structure:Description xml:lang="en">Tonga</structure:Description>
+			</structure:Code>
+			<structure:Code value="TTO">
+				<structure:Description xml:lang="en">Trinidad and Tobago</structure:Description>
+			</structure:Code>
+			<structure:Code value="TUN">
+				<structure:Description xml:lang="en">Tunisia</structure:Description>
+			</structure:Code>
+			<structure:Code value="TUR">
+				<structure:Description xml:lang="en">Turkey</structure:Description>
+			</structure:Code>
+			<structure:Code value="TKM">
+				<structure:Description xml:lang="en">Turkmenistan</structure:Description>
+			</structure:Code>
+			<structure:Code value="TCA">
+				<structure:Description xml:lang="en">Turks and Caicos
+					Islands</structure:Description>
+			</structure:Code>
+			<structure:Code value="TUV">
+				<structure:Description xml:lang="en">Tuvalu</structure:Description>
+			</structure:Code>
+			<structure:Code value="UGA">
+				<structure:Description xml:lang="en">Uganda</structure:Description>
+			</structure:Code>
+			<structure:Code value="UKR">
+				<structure:Description xml:lang="en">Ukraine</structure:Description>
+			</structure:Code>
+			<structure:Code value="ARE">
+				<structure:Description xml:lang="en">United Arab Emirates</structure:Description>
+			</structure:Code>
+			<structure:Code value="GBR">
+				<structure:Description xml:lang="en">United Kingdom of Great Britain and Northern
+					Ireland</structure:Description>
+			</structure:Code>
+			<structure:Code value="TZA">
+				<structure:Description xml:lang="en">United Republic of
+					Tanzania</structure:Description>
+			</structure:Code>
+			<structure:Code value="USA">
+				<structure:Description xml:lang="en">United States of
+					America</structure:Description>
+			</structure:Code>
+			<structure:Code value="VIR">
+				<structure:Description xml:lang="en">United States Virgin
+					Islands</structure:Description>
+			</structure:Code>
+			<structure:Code value="URY">
+				<structure:Description xml:lang="en">Uruguay</structure:Description>
+			</structure:Code>
+			<structure:Code value="UZB">
+				<structure:Description xml:lang="en">Uzbekistan</structure:Description>
+			</structure:Code>
+			<structure:Code value="VUT">
+				<structure:Description xml:lang="en">Vanuatu</structure:Description>
+			</structure:Code>
+			<structure:Code value="VEN">
+				<structure:Description xml:lang="en">Venezuela (Bolivarian Republic
+					of)</structure:Description>
+			</structure:Code>
+			<structure:Code value="VNM">
+				<structure:Description xml:lang="en">Viet Nam</structure:Description>
+			</structure:Code>
+			<structure:Code value="WLF">
+				<structure:Description xml:lang="en">Wallis and Futuna
+					Islands</structure:Description>
+			</structure:Code>
+			<structure:Code value="ESH">
+				<structure:Description xml:lang="en">Western Sahara</structure:Description>
+			</structure:Code>
+			<structure:Code value="YEM">
+				<structure:Description xml:lang="en">Yemen</structure:Description>
+			</structure:Code>
+			<structure:Code value="ZMB">
+				<structure:Description xml:lang="en">Zambia</structure:Description>
+			</structure:Code>
+			<structure:Code value="ZWE">
+				<structure:Description xml:lang="en">Zimbabwe</structure:Description>
+			</structure:Code>
+			<structure:Code value="MDG_DEVELOPED">
+				<structure:Description xml:lang="en">MDG_Developed regions</structure:Description>
+			</structure:Code>
+			<structure:Code value="MDG_TRANS_SEEUR">
+				<structure:Description xml:lang="en">MDG_Transition countries of south-eastern
+					Europe</structure:Description>
+			</structure:Code>
+			<structure:Code value="MDG_CIS">
+				<structure:Description xml:lang="en">MDG_Commonwealth of Independent States
+					(CIS)</structure:Description>
+			</structure:Code>
+			<structure:Code value="MDG_DEVELOPING">
+				<structure:Description xml:lang="en">MDG_Developing regions</structure:Description>
+			</structure:Code>
+			<structure:Code value="MDG_NAFR">
+				<structure:Description xml:lang="en">MDG_Northern Africa</structure:Description>
+			</structure:Code>
+			<structure:Code value="MDG_SSA">
+				<structure:Description xml:lang="en">MDG_Sub-Saharan Africa</structure:Description>
+			</structure:Code>
+			<structure:Code value="MDG_LAC">
+				<structure:Description xml:lang="en">MDG_Latin America and the
+					Caribbean</structure:Description>
+			</structure:Code>
+			<structure:Code value="MDG_EAS">
+				<structure:Description xml:lang="en">MDG_Eastern Asia</structure:Description>
+			</structure:Code>
+			<structure:Code value="MDG_EAS_NOCHINA">
+				<structure:Description xml:lang="en">MDG_Eastern Asia excluding
+					China</structure:Description>
+			</structure:Code>
+			<structure:Code value="MDG_SAS">
+				<structure:Description xml:lang="en">MDG_Southern Asia</structure:Description>
+			</structure:Code>
+			<structure:Code value="MDG_SEAS">
+				<structure:Description xml:lang="en">MDG_South-eastern Asia</structure:Description>
+			</structure:Code>
+			<structure:Code value="MDG_WAS">
+				<structure:Description xml:lang="en">MDG_Western Asia</structure:Description>
+			</structure:Code>
+			<structure:Code value="MDG_OCE">
+				<structure:Description xml:lang="en">MDG_Oceania</structure:Description>
+			</structure:Code>
+			<structure:Code value="MDG_LLDC">
+				<structure:Description xml:lang="en">MDG_Landlocked developing
+					countries</structure:Description>
+			</structure:Code>
+			<structure:Code value="MDG_SIDS">
+				<structure:Description xml:lang="en">MDG_Small island developing
+					States</structure:Description>
+			</structure:Code>
+			<structure:Code value="MDG_LDC">
+				<structure:Description xml:lang="en">MDG_Least developed
+					countries</structure:Description>
+			</structure:Code>
+			<structure:Code value="WB_EAP">
+				<structure:Description xml:lang="en">WB_East Asia and
+					Pacific</structure:Description>
+			</structure:Code>
+			<structure:Code value="WB_ECA">
+				<structure:Description xml:lang="en">WB_Europe and Central
+					Asia</structure:Description>
+			</structure:Code>
+			<structure:Code value="WB_LAC">
+				<structure:Description xml:lang="en">WB_Latin America and the
+					Caribbean</structure:Description>
+			</structure:Code>
+			<structure:Code value="WB_MNA">
+				<structure:Description xml:lang="en">WB_Middle East and North
+					Africa</structure:Description>
+			</structure:Code>
+			<structure:Code value="WB_SAS">
+				<structure:Description xml:lang="en">WB_South Asia</structure:Description>
+			</structure:Code>
+			<structure:Code value="WB_SSA">
+				<structure:Description xml:lang="en">WB_Sub-Saharan Africa</structure:Description>
+			</structure:Code>
+			<structure:Code value="WB_LIC">
+				<structure:Description xml:lang="en">WB_Low income</structure:Description>
+			</structure:Code>
+			<structure:Code value="WB_LMC">
+				<structure:Description xml:lang="en">WB_Lower middle income</structure:Description>
+			</structure:Code>
+			<structure:Code value="WB_UMC">
+				<structure:Description xml:lang="en">WB_Upper middle income</structure:Description>
+			</structure:Code>
+			<structure:Code value="WB_LMY">
+				<structure:Description xml:lang="en">WB_Low and middle income
+					economies</structure:Description>
+			</structure:Code>
+			<structure:Code value="WB_HIC">
+				<structure:Description xml:lang="en">WB_High income</structure:Description>
+			</structure:Code>
+			<structure:Code value="AFG">
+				<structure:Description xml:lang="en">Afghanistan</structure:Description>
+			</structure:Code>
+			<structure:Code value="ALA">
+				<structure:Description xml:lang="en">Åland Islands</structure:Description>
+			</structure:Code>
+			<structure:Code value="ALB">
+				<structure:Description xml:lang="en">Albania</structure:Description>
+			</structure:Code>
+			<structure:Code value="DZA">
+				<structure:Description xml:lang="en">Algeria</structure:Description>
+			</structure:Code>
+			<structure:Code value="ASM">
+				<structure:Description xml:lang="en">American Samoa</structure:Description>
+			</structure:Code>
+			<structure:Code value="AND">
+				<structure:Description xml:lang="en">Andorra</structure:Description>
+			</structure:Code>
+			<structure:Code value="AGO">
+				<structure:Description xml:lang="en">Angola</structure:Description>
+			</structure:Code>
+			<structure:Code value="AIA">
+				<structure:Description xml:lang="en">Anguilla</structure:Description>
+			</structure:Code>
+			<structure:Code value="ATG">
+				<structure:Description xml:lang="en">Antigua and Barbuda</structure:Description>
+			</structure:Code>
+			<structure:Code value="ARG">
+				<structure:Description xml:lang="en">Argentina</structure:Description>
+			</structure:Code>
+			<structure:Code value="ARM">
+				<structure:Description xml:lang="en">Armenia</structure:Description>
+			</structure:Code>
+			<structure:Code value="ABW">
+				<structure:Description xml:lang="en">Aruba</structure:Description>
+			</structure:Code>
+			<structure:Code value="AUS">
+				<structure:Description xml:lang="en">Australia</structure:Description>
+			</structure:Code>
+			<structure:Code value="AUT">
+				<structure:Description xml:lang="en">Austria</structure:Description>
+			</structure:Code>
+			<structure:Code value="AZE">
+				<structure:Description xml:lang="en">Azerbaijan</structure:Description>
+			</structure:Code>
+			<structure:Code value="BHS">
+				<structure:Description xml:lang="en">Bahamas</structure:Description>
+			</structure:Code>
+			<structure:Code value="BHR">
+				<structure:Description xml:lang="en">Bahrain</structure:Description>
+			</structure:Code>
+			<structure:Code value="BGD">
+				<structure:Description xml:lang="en">Bangladesh</structure:Description>
+			</structure:Code>
+			<structure:Code value="BRB">
+				<structure:Description xml:lang="en">Barbados</structure:Description>
+			</structure:Code>
+			<structure:Code value="BLR">
+				<structure:Description xml:lang="en">Belarus</structure:Description>
+			</structure:Code>
+			<structure:Code value="BEL">
+				<structure:Description xml:lang="en">Belgium</structure:Description>
+			</structure:Code>
+			<structure:Code value="BLZ">
+				<structure:Description xml:lang="en">Belize</structure:Description>
+			</structure:Code>
+			<structure:Code value="BEN">
+				<structure:Description xml:lang="en">Benin</structure:Description>
+			</structure:Code>
+			<structure:Code value="BMU">
+				<structure:Description xml:lang="en">Bermuda</structure:Description>
+			</structure:Code>
+			<structure:Code value="BTN">
+				<structure:Description xml:lang="en">Bhutan</structure:Description>
+			</structure:Code>
+			<structure:Code value="BOL">
+				<structure:Description xml:lang="en">Bolivia</structure:Description>
+			</structure:Code>
+			<structure:Code value="BIH">
+				<structure:Description xml:lang="en">Bosnia and Herzegovina</structure:Description>
+			</structure:Code>
+			<structure:Code value="BWA">
+				<structure:Description xml:lang="en">Botswana</structure:Description>
+			</structure:Code>
+			<structure:Code value="BRA">
+				<structure:Description xml:lang="en">Brazil</structure:Description>
+			</structure:Code>
+			<structure:Code value="VGB">
+				<structure:Description xml:lang="en">British Virgin Islands</structure:Description>
+			</structure:Code>
+			<structure:Code value="BRN">
+				<structure:Description xml:lang="en">Brunei Darussalam</structure:Description>
+			</structure:Code>
+			<structure:Code value="BGR">
+				<structure:Description xml:lang="en">Bulgaria</structure:Description>
+			</structure:Code>
+			<structure:Code value="BFA">
+				<structure:Description xml:lang="en">Burkina Faso</structure:Description>
+			</structure:Code>
+			<structure:Code value="BDI">
+				<structure:Description xml:lang="en">Burundi</structure:Description>
+			</structure:Code>
+			<structure:Code value="KHM">
+				<structure:Description xml:lang="en">Cambodia</structure:Description>
+			</structure:Code>
+			<structure:Code value="CMR">
+				<structure:Description xml:lang="en">Cameroon</structure:Description>
+			</structure:Code>
+			<structure:Code value="CAN">
+				<structure:Description xml:lang="en">Canada</structure:Description>
+			</structure:Code>
+			<structure:Code value="CPV">
+				<structure:Description xml:lang="en">Cape Verde</structure:Description>
+			</structure:Code>
+			<structure:Code value="CYM">
+				<structure:Description xml:lang="en">Cayman Islands</structure:Description>
+			</structure:Code>
+			<structure:Code value="CAF">
+				<structure:Description xml:lang="en">Central African
+					Republic</structure:Description>
+			</structure:Code>
+			<structure:Code value="TCD">
+				<structure:Description xml:lang="en">Chad</structure:Description>
+			</structure:Code>
+			<structure:Code value="830">
+				<structure:Description xml:lang="en">Channel Islands</structure:Description>
+			</structure:Code>
+			<structure:Code value="CHL">
+				<structure:Description xml:lang="en">Chile</structure:Description>
+			</structure:Code>
+			<structure:Code value="CHN">
+				<structure:Description xml:lang="en">China</structure:Description>
+			</structure:Code>
+			<structure:Code value="HKG">
+				<structure:Description xml:lang="en">Hong Kong Special Administrative Region of
+					China</structure:Description>
+			</structure:Code>
+			<structure:Code value="MAC">
+				<structure:Description xml:lang="en">Macao Special Administrative Region of
+					China</structure:Description>
+			</structure:Code>
+			<structure:Code value="COL">
+				<structure:Description xml:lang="en">Colombia</structure:Description>
+			</structure:Code>
+			<structure:Code value="COM">
+				<structure:Description xml:lang="en">Comoros</structure:Description>
+			</structure:Code>
+			<structure:Code value="COG">
+				<structure:Description xml:lang="en">Congo</structure:Description>
+			</structure:Code>
+			<structure:Code value="COK">
+				<structure:Description xml:lang="en">Cook Islands</structure:Description>
+			</structure:Code>
+			<structure:Code value="CRI">
+				<structure:Description xml:lang="en">Costa Rica</structure:Description>
+			</structure:Code>
+			<structure:Code value="CIV">
+				<structure:Description xml:lang="en">Côte d'Ivoire</structure:Description>
+			</structure:Code>
+			<structure:Code value="HRV">
+				<structure:Description xml:lang="en">Croatia</structure:Description>
+			</structure:Code>
+			<structure:Code value="CUB">
+				<structure:Description xml:lang="en">Cuba</structure:Description>
+			</structure:Code>
+			<structure:Code value="CYP">
+				<structure:Description xml:lang="en">Cyprus</structure:Description>
+			</structure:Code>
+			<structure:Code value="CZE">
+				<structure:Description xml:lang="en">Czech Republic</structure:Description>
+			</structure:Code>
+			<structure:Code value="MDG_CIS_ASIA">
+				<structure:Description xml:lang="en">MDG_Commonwealth of Independent States (CIS),
+					Asia</structure:Description>
+			</structure:Code>
+			<structure:Code value="MDG_CIS_EUROPE">
+				<structure:Description xml:lang="en">MDG_Commonwealth of Independent States (CIS),
+					Europe</structure:Description>
+			</structure:Code>
+			<structure:Code value="MDG_WORLD">
+				<structure:Description xml:lang="en">MDG_World</structure:Description>
+			</structure:Code>
+			<structure:Code value="WB_WORLD">
+				<structure:Description xml:lang="en">WB_World</structure:Description>
+			</structure:Code>
+		</structure:CodeList>
+
+		<structure:CodeList id="CL_SERIES_WB" agencyID="UIS" version="1.0">
+			<structure:Name xml:lang="en">Series code list</structure:Name>
+			<structure:Code value="DC_HPC_COMR">
+				<structure:Description xml:lang="en">Debt relief committed under HIPC
+					Initiatives</structure:Description>
+			</structure:Code>
+			<structure:Code value="DC_HPC_STATUS">
+				<structure:Description xml:lang="en">HIPC Initiative status of a
+					country</structure:Description>
+			</structure:Code>
+			<structure:Code value="DC_MDR_COMR">
+				<structure:Description xml:lang="en">Debt relief committed under
+					MDRI</structure:Description>
+			</structure:Code>
+			<structure:Code value="DT_TDS_DECT">
+				<structure:Description xml:lang="en">Debt service as percentage of exports of goods
+					and services and net income from abroad</structure:Description>
+			</structure:Code>
+			<structure:Code value="EG_USE_COMM">
+				<structure:Description xml:lang="en">Energy use</structure:Description>
+			</structure:Code>
+			<structure:Code value="NY_GDP_MKTP">
+				<structure:Description xml:lang="en">GDP</structure:Description>
+			</structure:Code>
+			<structure:Code value="NY_GDP_PCAP">
+				<structure:Description xml:lang="en">GDP per capita</structure:Description>
+			</structure:Code>
+			<structure:Code value="NY_GNP_MKTP">
+				<structure:Description xml:lang="en">GNI</structure:Description>
+			</structure:Code>
+			<structure:Code value="NY_GNP_PCAP_CD">
+				<structure:Description xml:lang="en">GNI per capita (Atlas
+					method)</structure:Description>
+			</structure:Code>
+			<structure:Code value="NY_GNP_PCAP">
+				<structure:Description xml:lang="en">GNI per capita</structure:Description>
+			</structure:Code>
+			<structure:Code value="PA_NUS_ATLS">
+				<structure:Description xml:lang="en">DEC alternative conversion
+					factor</structure:Description>
+			</structure:Code>
+			<structure:Code value="PA_NUS_FCRF">
+				<structure:Description xml:lang="en">Official exchange rate (period
+					average)</structure:Description>
+			</structure:Code>
+			<structure:Code value="PA_NUS_PPP">
+				<structure:Description xml:lang="en">PPP conversion factor
+					(GDP)</structure:Description>
+			</structure:Code>
+			<structure:Code value="PA_NUS_PPPC_RF">
+				<structure:Description xml:lang="en">PPP conversion factor (GDP) to market exchange
+					rate ratio</structure:Description>
+			</structure:Code>
+			<structure:Code value="SI_DST_1QNT">
+				<structure:Description xml:lang="en">Share of poorest quintile in national
+					consumption</structure:Description>
+			</structure:Code>
+			<structure:Code value="SI_POV_DAY1">
+				<structure:Description xml:lang="en">Population below USD 1 (PPP) per
+					day</structure:Description>
+			</structure:Code>
+			<structure:Code value="SI_POV_GAP1">
+				<structure:Description xml:lang="en">Poverty gap ratio at USD 1 (PPP) per
+					day</structure:Description>
+			</structure:Code>
+			<structure:Code value="SI_POV_NAHC">
+				<structure:Description xml:lang="en">Population below national poverty
+					line</structure:Description>
+			</structure:Code>
+			<structure:Code value="THAGE_0">
+				<structure:Description xml:lang="en">Pre-Primary education (ISCED 0) Theoretical
+					Entry Age</structure:Description>
+			</structure:Code>
+			<structure:Code value="THDUR_0">
+				<structure:Description xml:lang="en">Pre-Primary education (ISCED 0) Theoretical
+					Duration</structure:Description>
+			</structure:Code>
+			<structure:Code value="E_0">
+				<structure:Description xml:lang="en">Pre-Primary education (ISCED 0)
+					Enrolment</structure:Description>
+			</structure:Code>
+			<structure:Code value="PRP_0">
+				<structure:Description xml:lang="en">Private Enrolment in Pre-Primary education
+					(ISCED 0)</structure:Description>
+			</structure:Code>
+			<structure:Code value="GER_0">
+				<structure:Description xml:lang="en">Pre-Primary education (ISCED 0) Gross enrolment
+					ratio</structure:Description>
+			</structure:Code>
+			<structure:Code value="GER_0_GPI">
+				<structure:Description xml:lang="en">Pre-Primary education (ISCED 0) Gross enrolment
+					ratio GPI</structure:Description>
+			</structure:Code>
+			<structure:Code value="NER_0">
+				<structure:Description xml:lang="en">Pre-Primary education (ISCED 0) Net enrolment
+					rate</structure:Description>
+			</structure:Code>
+			<structure:Code value="NER_0_GPI">
+				<structure:Description xml:lang="en">Pre-Primary education (ISCED 0) Net enrolment
+					rate GPI</structure:Description>
+			</structure:Code>
+			<structure:Code value="T_0">
+				<structure:Description xml:lang="en">Pre-Primary education (ISCED 0) Teaching
+					staff</structure:Description>
+			</structure:Code>
+			<structure:Code value="PTRHC_0">
+				<structure:Description xml:lang="en">Pre-Primary education (ISCED 0) Pupil-teacher
+					ratio</structure:Description>
+			</structure:Code>
+			<structure:Code value="SAP_0">
+				<structure:Description xml:lang="en">Pre-Primary education (ISCED 0) School-age
+					population</structure:Description>
+			</structure:Code>
+			<structure:Code value="THAGE_1">
+				<structure:Description xml:lang="en">Primary education (ISCED 1) Theoretical Entry
+					Age</structure:Description>
+			</structure:Code>
+			<structure:Code value="THDUR_1">
+				<structure:Description xml:lang="en">Primary education (ISCED 1) Theoretical
+					Duration</structure:Description>
+			</structure:Code>
+			<structure:Code value="CEAGE_1">
+				<structure:Description xml:lang="en">Compulsory Education, Starting
+					age</structure:Description>
+			</structure:Code>
+			<structure:Code value="CEDUR_1">
+				<structure:Description xml:lang="en">Compulsory Education,
+					Duration</structure:Description>
+			</structure:Code>
+			<structure:Code value="NE_1_G1">
+				<structure:Description xml:lang="en">New Entrants to Grade 1 of Primary
+					education</structure:Description>
+			</structure:Code>
+			<structure:Code value="AIR_1">
+				<structure:Description xml:lang="en">Apparent intake rate</structure:Description>
+			</structure:Code>
+			<structure:Code value="AIR_1_GPI">
+				<structure:Description xml:lang="en">Apparent intake rate
+					GPI</structure:Description>
+			</structure:Code>
+			<structure:Code value="NIR_1">
+				<structure:Description xml:lang="en">Net intake rate</structure:Description>
+			</structure:Code>
+			<structure:Code value="NIR_1_GPI">
+				<structure:Description xml:lang="en">Net intake rate GPI</structure:Description>
+			</structure:Code>
+			<structure:Code value="ECDP_1">
+				<structure:Description xml:lang="en">New entrants to Primary education with ECCE
+					experience</structure:Description>
+			</structure:Code>
+			<structure:Code value="ECDP_1_GPI">
+				<structure:Description xml:lang="en">New entrants to Primary education with ECCE
+					experience GPI</structure:Description>
+			</structure:Code>
+			<structure:Code value="E_1">
+				<structure:Description xml:lang="en">Primary education (ISCED 1)
+					Enrolment</structure:Description>
+			</structure:Code>
+			<structure:Code value="FEP_1">
+				<structure:Description xml:lang="en">Percentage of female students in primary</structure:Description>
+			</structure:Code>
+			<structure:Code value="PRP_1">
+				<structure:Description xml:lang="en">Private Enrolment in Primary education (ISCED
+					1)</structure:Description>
+			</structure:Code>
+			<structure:Code value="GER_1">
+				<structure:Description xml:lang="en">Primary education (ISCED 1) Gross enrolment
+					ratio</structure:Description>
+			</structure:Code>
+			<structure:Code value="GER_1_GPI">
+				<structure:Description xml:lang="en">Primary education (ISCED 1) Gross enrolment
+					ratio GPI</structure:Description>
+			</structure:Code>
+			<structure:Code value="NER_1">
+				<structure:Description xml:lang="en">Primary education (ISCED 1) Net enrolment
+					rate</structure:Description>
+			</structure:Code>
+			<structure:Code value="NER_1_GPI">
+				<structure:Description xml:lang="en">Primary education (ISCED 1) Net enrolment rate
+					GPI</structure:Description>
+			</structure:Code>
+			<structure:Code value="T_1">
+				<structure:Description xml:lang="en">Primary education (ISCED 1) Teaching
+					staff</structure:Description>
+			</structure:Code>
+			<structure:Code value="PTRHC_1">
+				<structure:Description xml:lang="en">Primary education (ISCED 1) Pupil-teacher
+					ratio</structure:Description>
+			</structure:Code>
+			<structure:Code value="SAP_1">
+				<structure:Description xml:lang="en">Primary education (ISCED 1) School-age
+					population</structure:Description>
+			</structure:Code>
+			<structure:Code value="E_1_G1">
+				<structure:Description xml:lang="en">Primary education (ISCED 1) Enrolment Grade
+					1</structure:Description>
+			</structure:Code>
+			<structure:Code value="E_1_G2">
+				<structure:Description xml:lang="en">Primary education (ISCED 1) Enrolment Grade
+					2</structure:Description>
+			</structure:Code>
+			<structure:Code value="E_1_G3">
+				<structure:Description xml:lang="en">Primary education (ISCED 1) Enrolment Grade
+					3</structure:Description>
+			</structure:Code>
+			<structure:Code value="E_1_G4">
+				<structure:Description xml:lang="en">Primary education (ISCED 1) Enrolment Grade
+					4</structure:Description>
+			</structure:Code>
+			<structure:Code value="E_1_G5">
+				<structure:Description xml:lang="en">Primary education (ISCED 1) Enrolment Grade
+					5</structure:Description>
+			</structure:Code>
+			<structure:Code value="E_1_G6">
+				<structure:Description xml:lang="en">Primary education (ISCED 1) Enrolment Grade
+					6</structure:Description>
+			</structure:Code>
+			<structure:Code value="E_1_G7">
+				<structure:Description xml:lang="en">Primary education (ISCED 1) Enrolment Grade
+					7</structure:Description>
+			</structure:Code>
+			<structure:Code value="E_1_GA">
+				<structure:Description xml:lang="en">Primary education (ISCED 1) Enrolment All
+					Grades</structure:Description>
+			</structure:Code>
+			<structure:Code value="E_1_GUK">
+				<structure:Description xml:lang="en">Primary education (ISCED 1) Enrolment Grade
+					Unspecified</structure:Description>
+			</structure:Code>
+			<structure:Code value="R_1_G1">
+				<structure:Description xml:lang="en">Primary education (ISCED 1) Repeaters Grade
+					1</structure:Description>
+			</structure:Code>
+			<structure:Code value="R_1_G2">
+				<structure:Description xml:lang="en">Primary education (ISCED 1) Repeaters Grade
+					2</structure:Description>
+			</structure:Code>
+			<structure:Code value="R_1_G3">
+				<structure:Description xml:lang="en">Primary education (ISCED 1) Repeaters Grade
+					3</structure:Description>
+			</structure:Code>
+			<structure:Code value="R_1_G4">
+				<structure:Description xml:lang="en">Primary education (ISCED 1) Repeaters Grade
+					4</structure:Description>
+			</structure:Code>
+			<structure:Code value="R_1_G5">
+				<structure:Description xml:lang="en">Primary education (ISCED 1) Repeaters Grade
+					5</structure:Description>
+			</structure:Code>
+			<structure:Code value="R_1_G6">
+				<structure:Description xml:lang="en">Primary education (ISCED 1) Repeaters Grade
+					6</structure:Description>
+			</structure:Code>
+			<structure:Code value="R_1_G7">
+				<structure:Description xml:lang="en">Primary education (ISCED 1) Repeaters Grade
+					7</structure:Description>
+			</structure:Code>
+			<structure:Code value="R_1">
+				<structure:Description xml:lang="en">Primary education (ISCED 1) Repeaters All
+					Grades</structure:Description>
+			</structure:Code>
+			<structure:Code value="R_1_GUK">
+				<structure:Description xml:lang="en">Primary education (ISCED 1) Repeaters Grade
+					Unspecified</structure:Description>
+			</structure:Code>
+			<structure:Code value="REPP_1">
+				<structure:Description xml:lang="en">Primary education (ISCED 1) Percentage of
+					Repeaters</structure:Description>
+			</structure:Code>
+			<structure:Code value="REPP_1_GPI">
+				<structure:Description xml:lang="en">Primary education (ISCED 1) Percentage of
+					Repeaters GPI</structure:Description>
+			</structure:Code>
+			<structure:Code value="REPP_1_G1">
+				<structure:Description xml:lang="en">Primary education (ISCED 1) Percentage of
+					Repeaters Grade 1</structure:Description>
+			</structure:Code>
+			<structure:Code value="REPP_1_G2">
+				<structure:Description xml:lang="en">Primary education (ISCED 1) Percentage of
+					Repeaters Grade 2</structure:Description>
+			</structure:Code>
+			<structure:Code value="REPP_1_G3">
+				<structure:Description xml:lang="en">Primary education (ISCED 1) Percentage of
+					Repeaters Grade 3</structure:Description>
+			</structure:Code>
+			<structure:Code value="REPP_1_G4">
+				<structure:Description xml:lang="en">Primary education (ISCED 1) Percentage of
+					Repeaters Grade 4</structure:Description>
+			</structure:Code>
+			<structure:Code value="REPP_1_G5">
+				<structure:Description xml:lang="en">Primary education (ISCED 1) Percentage of
+					Repeaters Grade 5</structure:Description>
+			</structure:Code>
+			<structure:Code value="REPP_1_G6">
+				<structure:Description xml:lang="en">Primary education (ISCED 1) Percentage of
+					Repeaters Grade 6</structure:Description>
+			</structure:Code>
+			<structure:Code value="REPP_1_G7">
+				<structure:Description xml:lang="en">Primary education (ISCED 1) Percentage of
+					Repeaters Grade 7</structure:Description>
+			</structure:Code>
+			<structure:Code value="REPR_1_G1">
+				<structure:Description xml:lang="en">Primary education (ISCED 1) Repetition rate
+					Grade 1</structure:Description>
+			</structure:Code>
+			<structure:Code value="REPR_1_G2">
+				<structure:Description xml:lang="en">Primary education (ISCED 1) Repetition rate
+					Grade 2</structure:Description>
+			</structure:Code>
+			<structure:Code value="REPR_1_G3">
+				<structure:Description xml:lang="en">Primary education (ISCED 1) Repetition rate
+					Grade 3</structure:Description>
+			</structure:Code>
+			<structure:Code value="REPR_1_G4">
+				<structure:Description xml:lang="en">Primary education (ISCED 1) Repetition rate
+					Grade 4</structure:Description>
+			</structure:Code>
+			<structure:Code value="REPR_1_G5">
+				<structure:Description xml:lang="en">Primary education (ISCED 1) Repetition rate
+					Grade 5</structure:Description>
+			</structure:Code>
+			<structure:Code value="REPR_1_G6">
+				<structure:Description xml:lang="en">Primary education (ISCED 1) Repetition rate
+					Grade 6</structure:Description>
+			</structure:Code>
+			<structure:Code value="REPR_1_G7">
+				<structure:Description xml:lang="en">Primary education (ISCED 1) Repetition rate
+					Grade 7</structure:Description>
+			</structure:Code>
+			<structure:Code value="DR_1">
+				<structure:Description xml:lang="en">Primary education (ISCED 1) Drop-out
+					rate</structure:Description>
+			</structure:Code>
+			<structure:Code value="DR_1_G1">
+				<structure:Description xml:lang="en">Primary education (ISCED 1) Drop-out rate Grade
+					1</structure:Description>
+			</structure:Code>
+			<structure:Code value="DR_1_G2">
+				<structure:Description xml:lang="en">Primary education (ISCED 1) Drop-out rate Grade
+					2</structure:Description>
+			</structure:Code>
+			<structure:Code value="DR_1_G3">
+				<structure:Description xml:lang="en">Primary education (ISCED 1) Drop-out rate Grade
+					3</structure:Description>
+			</structure:Code>
+			<structure:Code value="DR_1_G4">
+				<structure:Description xml:lang="en">Primary education (ISCED 1) Drop-out rate Grade
+					4</structure:Description>
+			</structure:Code>
+			<structure:Code value="DR_1_G5">
+				<structure:Description xml:lang="en">Primary education (ISCED 1) Drop-out rate Grade
+					5</structure:Description>
+			</structure:Code>
+			<structure:Code value="DR_1_G6">
+				<structure:Description xml:lang="en">Primary education (ISCED 1) Drop-out rate Grade
+					6</structure:Description>
+			</structure:Code>
+			<structure:Code value="DR_1_G7">
+				<structure:Description xml:lang="en">Primary education (ISCED 1) Drop-out rate Grade
+					7</structure:Description>
+			</structure:Code>
+			<structure:Code value="SR_1_G4">
+				<structure:Description xml:lang="en">Primary education (ISCED 1) Survival rate to
+					Grade 4</structure:Description>
+			</structure:Code>
+			<structure:Code value="SR_1_G4_GPI">
+				<structure:Description xml:lang="en">Primary education (ISCED 1) Survival rate to
+					Grade 4 GPI</structure:Description>
+			</structure:Code>
+			<structure:Code value="SR_1_G5">
+				<structure:Description xml:lang="en">Primary education (ISCED 1) Survival rate to
+					Grade 5</structure:Description>
+			</structure:Code>
+			<structure:Code value="SR_1_G5_GPI">
+				<structure:Description xml:lang="en">Primary education (ISCED 1) Survival rate to
+					Grade 5 GPI</structure:Description>
+			</structure:Code>
+			<structure:Code value="SR_1_GLAST">
+				<structure:Description xml:lang="en">Primary education (ISCED 1) Survival rate to
+					last Grade</structure:Description>
+			</structure:Code>
+			<structure:Code value="SR_1_GLAST_GPI">
+				<structure:Description xml:lang="en">Primary education (ISCED 1) Survival rate to
+					last Grade GPI</structure:Description>
+			</structure:Code>
+			<structure:Code value="AIRE_1_GLAST">
+				<structure:Description xml:lang="en">Expected gross intake ratio to the last grade
+					of primary</structure:Description>
+			</structure:Code>
+			<structure:Code value="AIRE_1_GLAST_GPI">
+				<structure:Description xml:lang="en">Expected gross intake ratio to the last grade
+					of primary GPI</structure:Description>
+			</structure:Code>
+			<structure:Code value="GGR_1">
+				<structure:Description xml:lang="en">Gross graduation ratio</structure:Description>
+			</structure:Code>
+			<structure:Code value="GGR_1_GPI">
+				<structure:Description xml:lang="en">Gross graduation ratio
+					GPI</structure:Description>
+			</structure:Code>
+			<structure:Code value="EGGR_1">
+				<structure:Description xml:lang="en">Expected gross graduation
+					ratio</structure:Description>
+			</structure:Code>
+			<structure:Code value="EGGR_1_GPI">
+				<structure:Description xml:lang="en">Expected gross graduation ratio
+					GPI</structure:Description>
+			</structure:Code>
+			<structure:Code value="OFST_1_CP">
+				<structure:Description xml:lang="en">Out of school</structure:Description>
+			</structure:Code>
+			<structure:Code value="ROFST_1">
+				<structure:Description xml:lang="en">Rate of out of school</structure:Description>
+			</structure:Code>
+			<structure:Code value="SLE_123">
+				<structure:Description xml:lang="en">School life expectancy ISCED
+					1-3</structure:Description>
+			</structure:Code>
+			<structure:Code value="SLE_123_GPI">
+				<structure:Description xml:lang="en">School life expectancy ISCED 1-3
+					GPI</structure:Description>
+			</structure:Code>
+			<structure:Code value="SLE_1T6">
+				<structure:Description xml:lang="en">School life expectancy ISCED
+					1-6</structure:Description>
+			</structure:Code>
+			<structure:Code value="SLE_1T6_GPI">
+				<structure:Description xml:lang="en">School life expectancy ISCED 1-6
+					GPI</structure:Description>
+			</structure:Code>
+			<structure:Code value="TRANR_23_GPV">
+				<structure:Description xml:lang="en">Transition rate to Secondary education (General
+					Programmes only)</structure:Description>
+			</structure:Code>
+			<structure:Code value="TRANR_23_GPV_GPI">
+				<structure:Description xml:lang="en">Transition rate to Secondary education (General
+					Programmes only) GPI</structure:Description>
+			</structure:Code>
+			<structure:Code value="THAGE_2_A_GPV">
+				<structure:Description xml:lang="en">Lower Secondary education Theoretical Entry
+					Age</structure:Description>
+			</structure:Code>
+			<structure:Code value="THDUR_2_A_GPV">
+				<structure:Description xml:lang="en">Lower Secondary education Theoretical
+					Duration</structure:Description>
+			</structure:Code>
+			<structure:Code value="E_2_GPV">
+				<structure:Description xml:lang="en">Lower Secondary education Enrolment in general
+					programmes</structure:Description>
+			</structure:Code>
+			<structure:Code value="GER_2">
+				<structure:Description xml:lang="en">Lower Secondary education Gross enrolment
+					ratio</structure:Description>
+			</structure:Code>
+			<structure:Code value="GER_2_GPI">
+				<structure:Description xml:lang="en">Lower Secondary education Gross enrolment ratio
+					GPI</structure:Description>
+			</structure:Code>
+			<structure:Code value="THAGE_3_A_GPV">
+				<structure:Description xml:lang="en">Upper Secondary education Theoretical Entry
+					Age</structure:Description>
+			</structure:Code>
+			<structure:Code value="THDUR_3_A_GPV">
+				<structure:Description xml:lang="en">Upper Secondary education Theoretical
+					Duration</structure:Description>
+			</structure:Code>
+			<structure:Code value="E_3_GPV">
+				<structure:Description xml:lang="en">Upper Secondary education Enrolment in general
+					programmes</structure:Description>
+			</structure:Code>
+			<structure:Code value="E_3_V">
+				<structure:Description xml:lang="en">Upper Secondary education Enrolment in
+					technical vocational programmes</structure:Description>
+			</structure:Code>
+			<structure:Code value="GER_3">
+				<structure:Description xml:lang="en">Upper Secondary education Gross enrolment
+					ratio</structure:Description>
+			</structure:Code>
+			<structure:Code value="GER_3_GPI">
+				<structure:Description xml:lang="en">Upper Secondary education Gross enrolment ratio
+					GPI</structure:Description>
+			</structure:Code>
+			<structure:Code value="E_23_GPV">
+				<structure:Description xml:lang="en">Total Secondary education Enrolment in general
+					programmes</structure:Description>
+			</structure:Code>
+			<structure:Code value="E_23_V">
+				<structure:Description xml:lang="en">Total Secondary education Enrolment in
+					technical vocational programmes</structure:Description>
+			</structure:Code>
+			<structure:Code value="FEP_23">
+				<structure:Description xml:lang="en">Percentage of female students in
+					secondary</structure:Description>
+			</structure:Code>
+			<structure:Code value="E_23">
+				<structure:Description xml:lang="en">Total Secondary education enrolment in all
+					programs</structure:Description>
+			</structure:Code>
+			<structure:Code value="PRP_23">
+				<structure:Description xml:lang="en">Private Enrolment in Total Secondary
+					Education</structure:Description>
+			</structure:Code>
+			<structure:Code value="GER_23">
+				<structure:Description xml:lang="en">Total Secondary Gross enrolment
+					ratio</structure:Description>
+			</structure:Code>
+			<structure:Code value="GER_23_GPI">
+				<structure:Description xml:lang="en">Total Secondary Gross enrolment ratio
+					GPI</structure:Description>
+			</structure:Code>
+			<structure:Code value="NER_23">
+				<structure:Description xml:lang="en">Total Secondary Net enrolment
+					rate</structure:Description>
+			</structure:Code>
+			<structure:Code value="NER_23_GPI">
+				<structure:Description xml:lang="en">Total Secondary Net enrolment rate
+					GPI</structure:Description>
+			</structure:Code>
+			<structure:Code value="E_23_GPV_GA">
+				<structure:Description xml:lang="en">Secondary education Enrolment All Grades
+					(general programmes)</structure:Description>
+			</structure:Code>
+			<structure:Code value="E_23_GPV_G1">
+				<structure:Description xml:lang="en">Secondary education Enrolment Grade 1 (general
+					programmes)</structure:Description>
+			</structure:Code>
+			<structure:Code value="E_23_GPV_G2">
+				<structure:Description xml:lang="en">Secondary education Enrolment Grade 2 (general
+					programmes)</structure:Description>
+			</structure:Code>
+			<structure:Code value="E_23_GPV_G3">
+				<structure:Description xml:lang="en">Secondary education Enrolment Grade 3 (general
+					programmes)</structure:Description>
+			</structure:Code>
+			<structure:Code value="E_23_GPV_G4">
+				<structure:Description xml:lang="en">Secondary education Enrolment Grade 4 (general
+					programmes)</structure:Description>
+			</structure:Code>
+			<structure:Code value="E_23_GPV_G5">
+				<structure:Description xml:lang="en">Secondary education Enrolment Grade 5 (general
+					programmes)</structure:Description>
+			</structure:Code>
+			<structure:Code value="E_23_GPV_G6">
+				<structure:Description xml:lang="en">Secondary education Enrolment Grade 6 (general
+					programmes)</structure:Description>
+			</structure:Code>
+			<structure:Code value="E_23_GPV_G7">
+				<structure:Description xml:lang="en">Secondary education Enrolment Grade 7 (general
+					programmes)</structure:Description>
+			</structure:Code>
+			<structure:Code value="E_23_GPV_G8">
+				<structure:Description xml:lang="en">Secondary education Enrolment Grade 8 (general
+					programmes)</structure:Description>
+			</structure:Code>
+			<structure:Code value="E_23_GPV_G9">
+				<structure:Description xml:lang="en">Secondary education Enrolment Grade 9 (general
+					programmes)</structure:Description>
+			</structure:Code>
+			<structure:Code value="E_23_GPV_G10">
+				<structure:Description xml:lang="en">Secondary education Enrolment Grade 10 (general
+					programmes)</structure:Description>
+			</structure:Code>
+			<structure:Code value="R_23_GPV_G1">
+				<structure:Description xml:lang="en">Secondary education Repeaters Grade 1 (general
+					programmes)</structure:Description>
+			</structure:Code>
+			<structure:Code value="R_23_GPV_G2">
+				<structure:Description xml:lang="en">Secondary education Repeaters Grade 2 (general
+					programmes)</structure:Description>
+			</structure:Code>
+			<structure:Code value="R_23_GPV_G3">
+				<structure:Description xml:lang="en">Secondary education Repeaters Grade 3 (general
+					programmes)</structure:Description>
+			</structure:Code>
+			<structure:Code value="R_23_GPV_G4">
+				<structure:Description xml:lang="en">Secondary education Repeaters Grade 4 (general
+					programmes)</structure:Description>
+			</structure:Code>
+			<structure:Code value="R_23_GPV_G5">
+				<structure:Description xml:lang="en">Secondary education Repeaters Grade 5 (general
+					programmes)</structure:Description>
+			</structure:Code>
+			<structure:Code value="R_23_GPV_G6">
+				<structure:Description xml:lang="en">Secondary education Repeaters Grade 6 (general
+					programmes)</structure:Description>
+			</structure:Code>
+			<structure:Code value="R_23_GPV_G7">
+				<structure:Description xml:lang="en">Secondary education Repeaters Grade 7 (general
+					programmes)</structure:Description>
+			</structure:Code>
+			<structure:Code value="R_23_GPV_G8">
+				<structure:Description xml:lang="en">Secondary education Repeaters Grade 8 (general
+					programmes)</structure:Description>
+			</structure:Code>
+			<structure:Code value="R_23_GPV_G9">
+				<structure:Description xml:lang="en">Secondary education Repeaters Grade 9 (general
+					programmes)</structure:Description>
+			</structure:Code>
+			<structure:Code value="R_23_GPV_G10">
+				<structure:Description xml:lang="en">Secondary education Repeaters Grade 10 (general
+					programmes)</structure:Description>
+			</structure:Code>
+			<structure:Code value="R_23_GPV">
+				<structure:Description xml:lang="en">Secondary education Repeaters All Grades
+					(general programmes)</structure:Description>
+			</structure:Code>
+			<structure:Code value="REPP_23_GPV">
+				<structure:Description xml:lang="en">Secondary education Percentage of Repeaters
+					(general programmes)</structure:Description>
+			</structure:Code>
+			<structure:Code value="REPP_23_GPV_G1">
+				<structure:Description xml:lang="en">Secondary education Percentage of Repeaters
+					Grade 1 (general programmes)</structure:Description>
+			</structure:Code>
+			<structure:Code value="REPP_23_GPV_G2">
+				<structure:Description xml:lang="en">Secondary education Percentage of Repeaters
+					Grade 2 (general programmes)</structure:Description>
+			</structure:Code>
+			<structure:Code value="REPP_23_GPV_G3">
+				<structure:Description xml:lang="en">Secondary education Percentage of Repeaters
+					Grade 3 (general programmes)</structure:Description>
+			</structure:Code>
+			<structure:Code value="REPP_23_GPV_G4">
+				<structure:Description xml:lang="en">Secondary education Percentage of Repeaters
+					Grade 4 (general programmes)</structure:Description>
+			</structure:Code>
+			<structure:Code value="REPP_23_GPV_G5">
+				<structure:Description xml:lang="en">Secondary education Percentage of Repeaters
+					Grade 5 (general programmes)</structure:Description>
+			</structure:Code>
+			<structure:Code value="REPP_23_GPV_G6">
+				<structure:Description xml:lang="en">Secondary education Percentage of Repeaters
+					Grade 6 (general programmes)</structure:Description>
+			</structure:Code>
+			<structure:Code value="REPP_23_GPV_G7">
+				<structure:Description xml:lang="en">Secondary education Percentage of Repeaters
+					Grade 7 (general programmes)</structure:Description>
+			</structure:Code>
+			<structure:Code value="REPP_23_GPV_G8">
+				<structure:Description xml:lang="en">Secondary education Percentage of Repeaters
+					Grade 8 (general programmes)</structure:Description>
+			</structure:Code>
+			<structure:Code value="T_2">
+				<structure:Description xml:lang="en">Lower Secondary Teaching
+					Staff</structure:Description>
+			</structure:Code>
+			<structure:Code value="PTRHC_2">
+				<structure:Description xml:lang="en">Lower Secondary Pupil/teacher
+					ratio</structure:Description>
+			</structure:Code>
+			<structure:Code value="T_3">
+				<structure:Description xml:lang="en">Upper Secondary Teaching
+					Staff</structure:Description>
+			</structure:Code>
+			<structure:Code value="PTRHC_3">
+				<structure:Description xml:lang="en">Upper Secondary Pupil/teacher
+					ratio</structure:Description>
+			</structure:Code>
+			<structure:Code value="T_23">
+				<structure:Description xml:lang="en">Total Secondary Teaching
+					Staff</structure:Description>
+			</structure:Code>
+			<structure:Code value="PTRHC_23">
+				<structure:Description xml:lang="en">Total Secondary Pupil/teacher
+					ratio</structure:Description>
+			</structure:Code>
+			<structure:Code value="GER_123">
+				<structure:Description xml:lang="en">Combined Gross Enrolment ratio - primary and
+					secondary (ISCED 1-3)</structure:Description>
+			</structure:Code>
+			<structure:Code value="GER_123_GPI">
+				<structure:Description xml:lang="en">Combined Gross Enrolment ratio - primary and
+					secondary (ISCED 1-3) GPI</structure:Description>
+			</structure:Code>
+			<structure:Code value="GER_1T6">
+				<structure:Description xml:lang="en">Combined Gross Enrolment ratio - all levels
+					(ISCED 1-6)</structure:Description>
+			</structure:Code>
+			<structure:Code value="GER_1T6_GPI">
+				<structure:Description xml:lang="en">Combined Gross Enrolment ratio - all levels
+					(ISCED 1-6) GPI</structure:Description>
+			</structure:Code>
+			<structure:Code value="E_4">
+				<structure:Description xml:lang="en">Post-Secondary Non-Tertiary Education
+					Enrolment</structure:Description>
+			</structure:Code>
+			<structure:Code value="T_4">
+				<structure:Description xml:lang="en">Post-Secondary Non-Tertiary Education Teaching
+					Staff</structure:Description>
+			</structure:Code>
+			<structure:Code value="TRTP_0">
+				<structure:Description xml:lang="en">Trained teachers by level of education
+					Pre-Primary (ISCED 0 )</structure:Description>
+			</structure:Code>
+			<structure:Code value="TRTP_0_GPI">
+				<structure:Description xml:lang="en">Trained teachers by level of education
+					Pre-Primary (ISCED 0 ) GPI</structure:Description>
+			</structure:Code>
+			<structure:Code value="TRTP_1">
+				<structure:Description xml:lang="en">Trained teachers by level of education Primary
+					(ISCED 1)</structure:Description>
+			</structure:Code>
+			<structure:Code value="TRTP_1_GPI">
+				<structure:Description xml:lang="en">Trained teachers by level of education Primary
+					(ISCED 1) GPI</structure:Description>
+			</structure:Code>
+			<structure:Code value="TRTP_2">
+				<structure:Description xml:lang="en">Trained teachers by level of education Lower
+					Secondary (ISCED 2)</structure:Description>
+			</structure:Code>
+			<structure:Code value="TRTP_2_GPI">
+				<structure:Description xml:lang="en">Trained teachers by level of education Lower
+					Secondary (ISCED 2) GPI</structure:Description>
+			</structure:Code>
+			<structure:Code value="TRTP_3">
+				<structure:Description xml:lang="en">Trained teachers by level of education Upper
+					Secondary (ISCED 3)</structure:Description>
+			</structure:Code>
+			<structure:Code value="TRTP_3_GPI">
+				<structure:Description xml:lang="en">Trained teachers by level of education Upper
+					Secondary (ISCED 3) GPI</structure:Description>
+			</structure:Code>
+			<structure:Code value="TRTP_23">
+				<structure:Description xml:lang="en">Trained teachers by level of education Total
+					Secondary (ISCED 2 and 3)</structure:Description>
+			</structure:Code>
+			<structure:Code value="TRTP_23_GPI">
+				<structure:Description xml:lang="en">Trained teachers by level of education Total
+					Secondary (ISCED 2 and 3) GPI</structure:Description>
+			</structure:Code>
+			<structure:Code value="E_56">
+				<structure:Description xml:lang="en">Tertiary education (ISCED 5 and 6)
+					Enrolment</structure:Description>
+			</structure:Code>
+			<structure:Code value="PRP_56">
+				<structure:Description xml:lang="en">Private Enrolment in Tertiary (ISCED 5 and 6)
+					Education</structure:Description>
+			</structure:Code>
+			<structure:Code value="GER_56">
+				<structure:Description xml:lang="en">Tertiary education (ISCED 5 and 6) Gross
+					enrolment ratio</structure:Description>
+			</structure:Code>
+			<structure:Code value="GER_56_GPI">
+				<structure:Description xml:lang="en">Tertiary education (ISCED 5 and 6) Gross
+					enrolment ratio GPI</structure:Description>
+			</structure:Code>
+			<structure:Code value="TEP_5_A">
+				<structure:Description xml:lang="en">Distiribution of students by ISCED level
+					5A</structure:Description>
+			</structure:Code>
+			<structure:Code value="TEP_5_B">
+				<structure:Description xml:lang="en">Distiribution of students by ISCED level
+					5B</structure:Description>
+			</structure:Code>
+			<structure:Code value="TEP_6">
+				<structure:Description xml:lang="en">Distiribution of students by ISCED level
+					6</structure:Description>
+			</structure:Code>
+			<structure:Code value="FEP_5_A">
+				<structure:Description xml:lang="en">Percentage of Female ISCED level
+					5A</structure:Description>
+			</structure:Code>
+			<structure:Code value="FEP_5_B">
+				<structure:Description xml:lang="en">Percentage of Female ISCED level
+					5B</structure:Description>
+			</structure:Code>
+			<structure:Code value="FEP_6">
+				<structure:Description xml:lang="en">Percentage of Female ISCED level
+					6</structure:Description>
+			</structure:Code>
+			<structure:Code value="T_56">
+				<structure:Description xml:lang="en">Tertiary education (ISCED 5 and 6) Teaching
+					Staff</structure:Description>
+			</structure:Code>
+			<structure:Code value="E_56_F140">
+				<structure:Description xml:lang="en">Tertiary education (ISCED 5 and 6) Enrolment by
+					FOS Education</structure:Description>
+			</structure:Code>
+			<structure:Code value="E_56_F200">
+				<structure:Description xml:lang="en">Tertiary education (ISCED 5 and 6) Enrolment by
+					FOS Humanities and Arts</structure:Description>
+			</structure:Code>
+			<structure:Code value="E_56_F300">
+				<structure:Description xml:lang="en">Tertiary education (ISCED 5 and 6) Enrolment by
+					FOS Social Sciences, Business and Law</structure:Description>
+			</structure:Code>
+			<structure:Code value="E_56_F400">
+				<structure:Description xml:lang="en">Tertiary education (ISCED 5 and 6) Enrolment by
+					FOS Science</structure:Description>
+			</structure:Code>
+			<structure:Code value="E_56_F500">
+				<structure:Description xml:lang="en">Tertiary education (ISCED 5 and 6) Enrolment by
+					FOS Engineering, Manufacturing and Construction</structure:Description>
+			</structure:Code>
+			<structure:Code value="E_56_F600">
+				<structure:Description xml:lang="en">Tertiary education (ISCED 5 and 6) Enrolment by
+					FOS Agriculture</structure:Description>
+			</structure:Code>
+			<structure:Code value="E_56_F700">
+				<structure:Description xml:lang="en">Tertiary education (ISCED 5 and 6) Enrolment by
+					FOS Health and Welfare</structure:Description>
+			</structure:Code>
+			<structure:Code value="E_56_F800">
+				<structure:Description xml:lang="en">Tertiary education (ISCED 5 and 6) Enrolment by
+					FOS Services</structure:Description>
+			</structure:Code>
+			<structure:Code value="E_56_FGEN">
+				<structure:Description xml:lang="en">Tertiary education (ISCED 5 and 6) Enrolment by
+					FOS General programmes</structure:Description>
+			</structure:Code>
+			<structure:Code value="E_56_FNS">
+				<structure:Description xml:lang="en">Tertiary education (ISCED 5 and 6) Enrolment by
+					FOS Unspecified</structure:Description>
+			</structure:Code>
+			<structure:Code value="E_56_FA">
+				<structure:Description xml:lang="en">Tertiary education (ISCED 5 and 6) Enrolment by
+					FOS Total</structure:Description>
+			</structure:Code>
+			<structure:Code value="FOSEP_56_F140">
+				<structure:Description xml:lang="en">Tertiary education (ISCED 5 and 6) Enrolment by
+					FOS % Education</structure:Description>
+			</structure:Code>
+			<structure:Code value="FOSEP_56_F200">
+				<structure:Description xml:lang="en">Tertiary education (ISCED 5 and 6) Enrolment by
+					FOS % Humanities and Arts</structure:Description>
+			</structure:Code>
+			<structure:Code value="FOSEP_56_F300">
+				<structure:Description xml:lang="en">Tertiary education (ISCED 5 and 6) Enrolment by
+					FOS % Social Sciences, Business and Law</structure:Description>
+			</structure:Code>
+			<structure:Code value="FOSEP_56_F400">
+				<structure:Description xml:lang="en">Tertiary education (ISCED 5 and 6) Enrolment by
+					FOS % Science</structure:Description>
+			</structure:Code>
+			<structure:Code value="FOSEP_56_F500">
+				<structure:Description xml:lang="en">Tertiary education (ISCED 5 and 6) Enrolment by
+					FOS % Engineering, Manufacturing and Construction</structure:Description>
+			</structure:Code>
+			<structure:Code value="FOSEP_56_F600">
+				<structure:Description xml:lang="en">Tertiary education (ISCED 5 and 6) Enrolment by
+					FOS % Agriculture</structure:Description>
+			</structure:Code>
+			<structure:Code value="FOSEP_56_F700">
+				<structure:Description xml:lang="en">Tertiary education (ISCED 5 and 6) Enrolment by
+					FOS % Health and Welfare</structure:Description>
+			</structure:Code>
+			<structure:Code value="FOSEP_56_F800">
+				<structure:Description xml:lang="en">Tertiary education (ISCED 5 and 6) Enrolment by
+					FOS % Services</structure:Description>
+			</structure:Code>
+			<structure:Code value="FOSEP_56_FNS">
+				<structure:Description xml:lang="en">Tertiary education (ISCED 5 and 6) Enrolment by
+					FOS % General programmes and Unspecified</structure:Description>
+			</structure:Code>
+			<structure:Code value="G_56_DCOUNT">
+				<structure:Description xml:lang="en">Tertiary education (ISCED 5 and 6)
+					Graduates</structure:Description>
+			</structure:Code>
+			<structure:Code value="GCR_5_A">
+				<structure:Description xml:lang="en">Gross completion ratio ISCED 5A first
+					degree</structure:Description>
+			</structure:Code>
+			<structure:Code value="GCR_5_A_GPI">
+				<structure:Description xml:lang="en">Gross completion ratio ISCED 5A first degree
+					GPI</structure:Description>
+			</structure:Code>
+			<structure:Code value="G_56_F140_DCOUNT">
+				<structure:Description xml:lang="en">Tertiary education (ISCED 5 and 6) Graduates by
+					FOS Education</structure:Description>
+			</structure:Code>
+			<structure:Code value="G_56_F200_DCOUNT">
+				<structure:Description xml:lang="en">Tertiary education (ISCED 5 and 6) Graduates by
+					FOS Humanities and Arts</structure:Description>
+			</structure:Code>
+			<structure:Code value="G_56_F300_DCOUNT">
+				<structure:Description xml:lang="en">Tertiary education (ISCED 5 and 6) Graduates by
+					FOS Social Sciences, Business and Law</structure:Description>
+			</structure:Code>
+			<structure:Code value="G_56_F400_DCOUNT">
+				<structure:Description xml:lang="en">Tertiary education (ISCED 5 and 6) Graduates by
+					FOS Science</structure:Description>
+			</structure:Code>
+			<structure:Code value="G_56_F500_DCOUNT">
+				<structure:Description xml:lang="en">Tertiary education (ISCED 5 and 6) Graduates by
+					FOS Engineering, Manufacturing and Construction</structure:Description>
+			</structure:Code>
+			<structure:Code value="G_56_F600_DCOUNT">
+				<structure:Description xml:lang="en">Tertiary education (ISCED 5 and 6) Graduates by
+					FOS Agriculture</structure:Description>
+			</structure:Code>
+			<structure:Code value="G_56_F700_DCOUNT">
+				<structure:Description xml:lang="en">Tertiary education (ISCED 5 and 6) Graduates by
+					FOS Health and Welfare</structure:Description>
+			</structure:Code>
+			<structure:Code value="G_56_F800_DCOUNT">
+				<structure:Description xml:lang="en">Tertiary education (ISCED 5 and 6) Graduates by
+					FOS Services</structure:Description>
+			</structure:Code>
+			<structure:Code value="G_56_FGEN_DCOUNT">
+				<structure:Description xml:lang="en">Tertiary education (ISCED 5 and 6) Graduates by
+					FOS General programmes</structure:Description>
+			</structure:Code>
+			<structure:Code value="G_56_FNS_DCOUNT">
+				<structure:Description xml:lang="en">Tertiary education (ISCED 5 and 6) Graduates by
+					FOS Not known or unspecified</structure:Description>
+			</structure:Code>
+			<structure:Code value="FOSGP_56_F140">
+				<structure:Description xml:lang="en">Tertiary education (ISCED 5 and 6) Graduates by
+					FOS % Education</structure:Description>
+			</structure:Code>
+			<structure:Code value="FOSGP_56_F200">
+				<structure:Description xml:lang="en">Tertiary education (ISCED 5 and 6) Graduates by
+					FOS % Humanities and Arts</structure:Description>
+			</structure:Code>
+			<structure:Code value="FOSGP_56_F300">
+				<structure:Description xml:lang="en">Tertiary education (ISCED 5 and 6) Graduates by
+					FOS % Social sciences, Business and Law</structure:Description>
+			</structure:Code>
+			<structure:Code value="FOSGP_56_F400">
+				<structure:Description xml:lang="en">Tertiary education (ISCED 5 and 6) Graduates by
+					FOS % Science</structure:Description>
+			</structure:Code>
+			<structure:Code value="FOSGP_56_F500">
+				<structure:Description xml:lang="en">Tertiary education (ISCED 5 and 6) Graduates by
+					FOS % Engineering, Manufacturing and Constructions</structure:Description>
+			</structure:Code>
+			<structure:Code value="FOSGP_56_F600">
+				<structure:Description xml:lang="en">Tertiary education (ISCED 5 and 6) Graduates by
+					FOS % Agriculture</structure:Description>
+			</structure:Code>
+			<structure:Code value="FOSGP_56_F700">
+				<structure:Description xml:lang="en">Tertiary education (ISCED 5 and 6) Graduates by
+					FOS % Health and Welfare</structure:Description>
+			</structure:Code>
+			<structure:Code value="FOSGP_56_F800">
+				<structure:Description xml:lang="en">Tertiary education (ISCED 5 and 6) Graduates by
+					FOS % Services</structure:Description>
+			</structure:Code>
+			<structure:Code value="FOSGP_56_FNS">
+				<structure:Description xml:lang="en">Tertiary education (ISCED 5 and 6) Graduates by
+					FOS % Not known or unspecified and General</structure:Description>
+			</structure:Code>
+			<structure:Code value="XGNP_FSGOV">
+				<structure:Description xml:lang="en">Public expenditure on education as % of
+					GNI</structure:Description>
+			</structure:Code>
+			<structure:Code value="XGDP_FSGOV">
+				<structure:Description xml:lang="en">Public expenditure on education as % of
+					GDP</structure:Description>
+			</structure:Code>
+			<structure:Code value="XGOVEXP">
+				<structure:Description xml:lang="en">Public expenditure on education as % total
+					government expenditure</structure:Description>
+			</structure:Code>
+			<structure:Code value="XGOVEXP_FNCUR_FFD">
+				<structure:Description xml:lang="en">Public current expenditure on education as %
+					total current government expenditure</structure:Description>
+			</structure:Code>
+			<structure:Code value="XNATURP_FSGOV_FNCUR_FFD">
+				<structure:Description xml:lang="en">Public current expenditure on education as % of
+					public expenditure on education</structure:Description>
+			</structure:Code>
+			<structure:Code value="XLEVEL_1_FSGOV">
+				<structure:Description xml:lang="en">Public expenditure on Primary as % of public
+					expenditure on education</structure:Description>
+			</structure:Code>
+			<structure:Code value="XLEVEL_23_FSGOV">
+				<structure:Description xml:lang="en">Public expenditure on Secondary as % of public
+					expenditure on education</structure:Description>
+			</structure:Code>
+			<structure:Code value="XLEVEL_56_FSGOV">
+				<structure:Description xml:lang="en">Public expenditure on Tertiary as % of public
+					expenditure on education</structure:Description>
+			</structure:Code>
+			<structure:Code value="XLEVEL_1_FSGOV_FNCUR_FFD">
+				<structure:Description xml:lang="en">Public current educational expenditure in
+					Primary as % of public current educational expediture</structure:Description>
+			</structure:Code>
+			<structure:Code value="XLEVEL_23_FSGOV_FNCUR_FFD">
+				<structure:Description xml:lang="en">Public current educational expenditure in
+					Secondary as % of public current educational expediture</structure:Description>
+			</structure:Code>
+			<structure:Code value="XLEVEL_56_FSGOV_FNCUR_FFD">
+				<structure:Description xml:lang="en">Public current educational expenditure in
+					Tertiary as % of public current educational expediture</structure:Description>
+			</structure:Code>
+			<structure:Code value="XUNIT_GDPCAP_1_FSGOV">
+				<structure:Description xml:lang="en">Total public educational expenditure per pupil
+					as a percentage of GDP per capita. Primary</structure:Description>
+			</structure:Code>
+			<structure:Code value="XUNIT_GDPCAP_23_FSGOV">
+				<structure:Description xml:lang="en">Total public educational expenditure per pupil
+					as a percentage of GDP per capita. Secondary</structure:Description>
+			</structure:Code>
+			<structure:Code value="XUNIT_GDPCAP_56_FSGOV">
+				<structure:Description xml:lang="en">Total public educational expenditure per pupil
+					as a percentage of GDP per capita. Tertiary</structure:Description>
+			</structure:Code>
+			<structure:Code value="XUNIT_GDPCAP_FSGOV">
+				<structure:Description xml:lang="en">Total public educational expenditure per pupil
+					as a percentage of GDP per capita. All levels</structure:Description>
+			</structure:Code>
+			<structure:Code value="XNATURCP_1_FDPUB_FNTS">
+				<structure:Description xml:lang="en">Teachers salaries as % of current educational
+					expenditure; Primary; public institutions</structure:Description>
+			</structure:Code>
+			<structure:Code value="XNATURCP_23_FDPUB_FNTS">
+				<structure:Description xml:lang="en">Teachers salaries as % of current educational
+					expenditure; Secondary; public institutions</structure:Description>
+			</structure:Code>
+			<structure:Code value="XNATURCP_FDPUB_FNTS">
+				<structure:Description xml:lang="en">Teachers salaries as % of current educational
+					expenditure; Total all levels; public institutions</structure:Description>
+			</structure:Code>
+			<structure:Code value="XNATURCP_1_FDPUB_FNS">
+				<structure:Description xml:lang="en">All personnel salaries as % of current
+					educational expenditure; Primary; public institutions</structure:Description>
+			</structure:Code>
+			<structure:Code value="XNATURCP_23_FDPUB_FNS">
+				<structure:Description xml:lang="en">All personnel salaries as % of current
+					educational expenditure; Secondary; public institutions</structure:Description>
+			</structure:Code>
+			<structure:Code value="XNATURCP_FDPUB_FNS">
+				<structure:Description xml:lang="en">All personnel salaries as % of current
+					educational expenditure; Total all levels; public
+					institutions</structure:Description>
+			</structure:Code>
+			<structure:Code value="XNATURCP_1_FDPUB_FNBOOKS">
+				<structure:Description xml:lang="en">Percentage of educational current expenditure
+					on teaching materials; Primary; public institutions</structure:Description>
+			</structure:Code>
+			<structure:Code value="XNATURCP_23_FDPUB_FNBOOKS">
+				<structure:Description xml:lang="en">Percentage of educational current expenditure
+					on teaching materials; Secondary; public institutions</structure:Description>
+			</structure:Code>
+			<structure:Code value="SAP_1_G1">
+				<structure:Description xml:lang="en">Official entrance age School age
+					population</structure:Description>
+			</structure:Code>
+			<structure:Code value="SAP_23">
+				<structure:Description xml:lang="en">Secondary School age
+					population</structure:Description>
+			</structure:Code>
+			<structure:Code value="SAP_2">
+				<structure:Description xml:lang="en">Lower Secondary School age
+					population</structure:Description>
+			</structure:Code>
+			<structure:Code value="SAP_3">
+				<structure:Description xml:lang="en">Upper Secondary School age
+					population</structure:Description>
+			</structure:Code>
+			<structure:Code value="SAP_4">
+				<structure:Description xml:lang="en">Post-Secondary School age
+					population</structure:Description>
+			</structure:Code>
+			<structure:Code value="SAP_56">
+				<structure:Description xml:lang="en">Tertiary School age
+					population</structure:Description>
+			</structure:Code>
+			<structure:Code value="SAP_1_G6">
+				<structure:Description xml:lang="en">Last Grade Primary School age
+					population</structure:Description>
+			</structure:Code>
+			<structure:Code value="GAP_1">
+				<structure:Description xml:lang="en">Primary Graduation Age
+					population</structure:Description>
+			</structure:Code>
+			<structure:Code value="NERT_1">
+				<structure:Description xml:lang="en">Net enrolment rate Primary age children in
+					primary or secondary</structure:Description>
+			</structure:Code>
+			<structure:Code value="NERT_1_GPI">
+				<structure:Description xml:lang="en">Net enrolment rate Primary age children in
+					primary or secondary GPI</structure:Description>
+			</structure:Code>
+			<structure:Code value="AIR_1_GLAST">
+				<structure:Description xml:lang="en">Gross intake rate to the last grade of
+					Primary</structure:Description>
+			</structure:Code>
+			<structure:Code value="LR_AG15T24">
+				<structure:Description xml:lang="en">Literacy rate 15-24 years
+					old</structure:Description>
+			</structure:Code>
+			<structure:Code value="LR_AG15T24_GPI">
+				<structure:Description xml:lang="en">Literacy gender parity index 15-24 years
+					old</structure:Description>
+			</structure:Code>
+		</structure:CodeList>
+
+		<structure:CodeList id="CL_SEX_MDG" agencyID="IAEG" version="1.0">
+			<structure:Name xml:lang="en">Sex code list</structure:Name>
+			<structure:Code value="NA">
+				<structure:Description xml:lang="en">Not applicable</structure:Description>
+			</structure:Code>
+			<structure:Code value="F">
+				<structure:Description xml:lang="en">Female</structure:Description>
+			</structure:Code>
+			<structure:Code value="M">
+				<structure:Description xml:lang="en">Male</structure:Description>
+			</structure:Code>
+			<structure:Code value="T">
+				<structure:Description xml:lang="en">All genders</structure:Description>
+			</structure:Code>
+		</structure:CodeList>
+
+		<structure:CodeList id="CL_SOURCE_TYPE" agencyID="IAEG" version="1.0">
+			<structure:Name xml:lang="en">Source Type Code List</structure:Name>
+			<structure:Code value="S">
+				<structure:Description xml:lang="en">Survey</structure:Description>
+			</structure:Code>
+			<structure:Code value="R">
+				<structure:Description xml:lang="en">Administrative records</structure:Description>
+			</structure:Code>
+			<structure:Code value="C">
+				<structure:Description xml:lang="en">Census</structure:Description>
+			</structure:Code>
+			<structure:Code value="O">
+				<structure:Description xml:lang="en">Other</structure:Description>
+			</structure:Code>
+			<structure:Code value="NA">
+				<structure:Description xml:lang="en">Not available</structure:Description>
+			</structure:Code>
+		</structure:CodeList>
+
+		<structure:CodeList id="CL_UNIT_MDG" agencyID="IAEG" version="1.0">
+			<structure:Name xml:lang="en">Units code list</structure:Name>
+			<structure:Code value="NA">
+				<structure:Description xml:lang="en">Not applicable</structure:Description>
+			</structure:Code>
+			<structure:Code value="CUR_LCU">
+				<structure:Description xml:lang="en">Local currency</structure:Description>
+			</structure:Code>
+			<structure:Code value="CUR_USD">
+				<structure:Description xml:lang="en">USD</structure:Description>
+			</structure:Code>
+			<structure:Code value="CUR_PPP_USD">
+				<structure:Description xml:lang="en">USD (PPP)</structure:Description>
+			</structure:Code>
+			<structure:Code value="LCU_USD">
+				<structure:Description xml:lang="en">Local currency per USD</structure:Description>
+			</structure:Code>
+			<structure:Code value="LCU_PPP_USD">
+				<structure:Description xml:lang="en">Local currency per USD
+					(PPP)</structure:Description>
+			</structure:Code>
+			<structure:Code value="CON_LCU">
+				<structure:Description xml:lang="en">Constant local currency</structure:Description>
+			</structure:Code>
+			<structure:Code value="CON_USD">
+				<structure:Description xml:lang="en">Constant 2000 USD</structure:Description>
+			</structure:Code>
+			<structure:Code value="CON_PPP_USD">
+				<structure:Description xml:lang="en">Constant 2005 USD (PPP)</structure:Description>
+			</structure:Code>
+			<structure:Code value="NUMBER">
+				<structure:Description xml:lang="en">Number</structure:Description>
+			</structure:Code>
+			<structure:Code value="PERCENT">
+				<structure:Description xml:lang="en">Percent</structure:Description>
+			</structure:Code>
+			<structure:Code value="PV_USD">
+				<structure:Description xml:lang="en">USD in end-2006 net present value
+					terms</structure:Description>
+			</structure:Code>
+			<structure:Code value="KG_OE_PER_GDP_CON_PPP_USD">
+				<structure:Description xml:lang="en">kg oil equivalent per USD1,000 constant 2005
+					PPP GDP</structure:Description>
+			</structure:Code>
+		</structure:CodeList>
+
+		<structure:CodeList id="CL_UNIT_MULT_SDMX" agencyID="IAEG" version="1.0">
+			<structure:Name xml:lang="en">Units multipliers code list</structure:Name>
+			<structure:Code value="0">
+				<structure:Description xml:lang="en">Units</structure:Description>
+			</structure:Code>
+			<structure:Code value="1">
+				<structure:Description xml:lang="en">Tens</structure:Description>
+			</structure:Code>
+			<structure:Code value="2">
+				<structure:Description xml:lang="en">Hundreds</structure:Description>
+			</structure:Code>
+			<structure:Code value="3">
+				<structure:Description xml:lang="en">Thousands</structure:Description>
+			</structure:Code>
+			<structure:Code value="4">
+				<structure:Description xml:lang="en">Tens of thousands</structure:Description>
+			</structure:Code>
+			<structure:Code value="6">
+				<structure:Description xml:lang="en">Millions</structure:Description>
+			</structure:Code>
+			<structure:Code value="9">
+				<structure:Description xml:lang="en">Billions</structure:Description>
+			</structure:Code>
+			<structure:Code value="12">
+				<structure:Description xml:lang="en">Trillions</structure:Description>
+			</structure:Code>
+		</structure:CodeList>
+	</CodeLists>
+
+	<Concepts>
+		<structure:Concept id="AGE_GROUP" agencyID="IAEG" version="1.0">
+			<structure:Name xml:lang="en">Age group</structure:Name>
+			<structure:Description xml:lang="en">Age - or age range - of the individuals the
+				observation refers to.</structure:Description>
+		</structure:Concept>
+		<structure:Concept id="FOOTNOTES" agencyID="IAEG" version="1.0">
+			<structure:Name xml:lang="en">Footnotes</structure:Name>
+			<structure:Description xml:lang="en">Additional information on specific aspects of each
+				observation, such as how the observation was computed/estimated or details that
+				could affect the comparability of this data point with others in a time
+				series.</structure:Description>
+		</structure:Concept>
+		<structure:Concept id="FREQ" agencyID="IAEG" version="1.0">
+			<structure:Name xml:lang="en">Frequency</structure:Name>
+			<structure:Description xml:lang="en">Indicates rate of recurrence at which observations
+				occur (e.g. monthly, yearly, biannually, etc.).</structure:Description>
+		</structure:Concept>
+		<structure:Concept id="LOCATION" agencyID="IAEG" version="1.0">
+			<structure:Name xml:lang="en">Location</structure:Name>
+			<structure:Description xml:lang="en">Refers to a disaggregation within the Reference
+				Area the data alludes; normally National (total), Urban or Rural - although
+				additional disaggregations are possible within an area (e.g.
+				subUrban).</structure:Description>
+		</structure:Concept>
+		<structure:Concept id="NATURE" agencyID="IAEG" version="1.0">
+			<structure:Name xml:lang="en">Nature of data points</structure:Name>
+			<structure:Description xml:lang="en">Information on the production and dissemination of
+				the data (e.g.: if the figure has been produced and disseminated by the country,
+				estimated by international agencies, etc.)</structure:Description>
+		</structure:Concept>
+		<structure:Concept id="REF_AREA" agencyID="IAEG" version="1.0">
+			<structure:Name xml:lang="en">Reference Area</structure:Name>
+			<structure:Description xml:lang="en">Reference Area: Specific areas (e.g. Country,
+				Regional Grouping, etc) the observed values refer to. Reference areas can be
+				determined according to different criteria (e.g.: geographical, economic,
+				etc.).</structure:Description>
+		</structure:Concept>
+		<structure:Concept id="SERIES" agencyID="IAEG" version="1.0">
+			<structure:Name xml:lang="en">Series</structure:Name>
+			<structure:Description xml:lang="en">The phenomenon or phenomena to be measured in the
+				data set. The word SERIES is used for consistency with the term used in the MDG
+				Database. SERIES are all the official MDG series and background series currently in
+				the MDG Database.</structure:Description>
+		</structure:Concept>
+		<structure:Concept id="SEX" agencyID="IAEG" version="1.0">
+			<structure:Name xml:lang="en">Sex</structure:Name>
+			<structure:Description xml:lang="en">Gender condition: male or female. This dimension
+				applies only if data can be dissaggregated by sex. </structure:Description>
+		</structure:Concept>
+		<structure:Concept id="SOURCE_DETAIL" agencyID="IAEG" version="1.0">
+			<structure:Name xml:lang="en">Source details</structure:Name>
+			<structure:Description xml:lang="en">Information on the name and specific details of
+				each observation's data source. Both the sources for the numerator and denominator
+				could be specified here.</structure:Description>
+		</structure:Concept>
+		<structure:Concept id="SOURCE_TYPE" agencyID="IAEG" version="1.0">
+			<structure:Name xml:lang="en">Source type</structure:Name>
+			<structure:Description xml:lang="en">Type of data source: survey, administrative
+				records, census or other. Details about the source, if available, could be provided
+				in the free-text attribute SOURCE_DETAIL.</structure:Description>
+		</structure:Concept>
+		<structure:Concept id="TIME_DETAIL" agencyID="IAEG" version="1.0">
+			<structure:Name xml:lang="en">Time period details</structure:Name>
+			<structure:Description xml:lang="en">When TIME_PERIOD refers to a date range, this
+				attribute is used to provide METADATA on the actual range the observation refers to
+				(e.g. for period '2001-2003' TIME_PERIOD would be 2002 but the actual dates
+				--2001-2003-- would be expressed here).</structure:Description>
+		</structure:Concept>
+		<structure:Concept id="TIME_PERIOD" agencyID="IAEG" version="1.0">
+			<structure:Name xml:lang="en">Time period</structure:Name>
+			<structure:Description xml:lang="en">Reference date - or date range - the observed value
+				refers to (usually different from the dates of data production or dissemination).
+				For MDG data exchange it is usually expressed as a four-digit year (e.g.: 1995) so,
+				if the observation refers to a period of time (range), details about such period
+				should be specified in the attribute TIME_DETAIL</structure:Description>
+		</structure:Concept>
+		<structure:Concept id="UNIT" agencyID="IAEG" version="1.0">
+			<structure:Name xml:lang="en">Units of measurement</structure:Name>
+			<structure:Description xml:lang="en">Dimension by which the series are described (e.g.:
+				percentage, USD, etc.)</structure:Description>
+		</structure:Concept>
+		<structure:Concept id="UNIT_MULT" agencyID="IAEG" version="1.0">
+			<structure:Name xml:lang="en">Unit multiplier</structure:Name>
+			<structure:Description xml:lang="en">Exponent in base 10 that multiplied by the
+				observation numeric value gives the result expressed in the unit of
+				measure.</structure:Description>
+		</structure:Concept>
+		<structure:Concept id="OBS_VALUE" agencyID="IAEG" version="1.0">
+			<structure:Name xml:lang="en">Observation Value</structure:Name>
+			<structure:Description xml:lang="en">Observation value</structure:Description>
+		</structure:Concept>
+	</Concepts>
+
+	<KeyFamilies>
+		<structure:KeyFamily id="MDG" agencyID="IAEG" version="1.1">
+			<structure:Name xml:lang="en">SDMX-MDGs</structure:Name>
+			<structure:Components>
+
+				<structure:Dimension conceptRef="FREQ" codelist="CL_FREQ_MDG"
+					isFrequencyDimension="true"/>
+				<structure:Dimension conceptRef="SERIES" codelist="CL_SERIES_WB"/>
+				<structure:Dimension conceptRef="UNIT" codelist="CL_UNIT_MDG"/>
+				<structure:Dimension conceptRef="LOCATION" codelist="CL_LOCATION_MDG"/>
+				<structure:Dimension conceptRef="AGE_GROUP" codelist="CL_AGE_GROUP_MDG"/>
+				<structure:Dimension conceptRef="SEX" codelist="CL_SEX_MDG"/>
+				<structure:Dimension conceptRef="REF_AREA" codelist="CL_REF_AREA_MDG"/>
+				<structure:Dimension conceptRef="SOURCE_TYPE" codelist="CL_SOURCE_TYPE"/>
+				<structure:TimeDimension conceptRef="TIME_PERIOD"> </structure:TimeDimension>
+
+				<structure:Group id="SiblingGroup">
+					<structure:DimensionRef>SERIES</structure:DimensionRef>
+					<structure:DimensionRef>LOCATION</structure:DimensionRef>
+					<structure:DimensionRef>SEX</structure:DimensionRef>
+					<structure:DimensionRef>AGE_GROUP</structure:DimensionRef>
+					<structure:DimensionRef>REF_AREA</structure:DimensionRef>
+					<structure:Description xml:lang="en">Group of Dimensions</structure:Description>
+				</structure:Group>
+
+				<structure:PrimaryMeasure conceptRef="OBS_VALUE"/>
+				<structure:Attribute conceptRef="UNIT_MULT" codelist="CL_UNIT_MULT_SDMX"
+					attachmentLevel="Observation" assignmentStatus="Mandatory"> </structure:Attribute>
+				<structure:Attribute conceptRef="TIME_DETAIL" attachmentLevel="Observation"
+					assignmentStatus="Conditional">
+					<structure:TextFormat/>
+				</structure:Attribute>
+				<structure:Attribute conceptRef="NATURE" codelist="CL_NATURE_MDG"
+					attachmentLevel="Observation" assignmentStatus="Conditional"> </structure:Attribute>
+				<structure:Attribute conceptRef="SOURCE_DETAIL" attachmentLevel="Observation"
+					assignmentStatus="Conditional">
+					<structure:TextFormat/>
+				</structure:Attribute>
+				<structure:Attribute conceptRef="FOOTNOTES" attachmentLevel="Observation"
+					assignmentStatus="Conditional">
+					<structure:TextFormat/>
+				</structure:Attribute>
+
+			</structure:Components>
+		</structure:KeyFamily>
+	</KeyFamilies>
+</Structure>
