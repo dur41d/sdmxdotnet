@@ -38,7 +38,7 @@ namespace SDMX.Parsers
         private void SetParentID(ID parentID, CodeList codeList)
         {
             if (parentID != null)
-                code.Parent = codeList[parentID];
+                code.Parent = codeList.Get(parentID);
         }
 
         protected override void AddAnnotation(Annotation annotation)

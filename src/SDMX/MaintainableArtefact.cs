@@ -15,5 +15,6 @@ namespace SDMX
         
         public ID AgencyID { get; private set; }
         public bool IsFinal { get; set; }
+        public bool IsExternalReference { get; set; }
     }
 }

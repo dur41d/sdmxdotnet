@@ -55,7 +55,7 @@ namespace OXM
             if (isSimple)
             {
                 var collectionMap = new SimpleElementCollectionMap<TObj, TProperty>(_name, _required);
-                collectionMap.ClassMapConstructor = () => new SimpleElementClassMap<TProperty>(_simpleMemberMap.GetConverter());
+                collectionMap.ClassMapFactory = () => new SimpleElementClassMap<TProperty>(_simpleMemberMap.GetConverter());
                 collectionMap.Collection = _simpleMemberMap.GetCollection();
                 ((IElementMapContainer<TObj>)map).AddElementMap(_name, collectionMap);
             }
@@ -63,7 +63,7 @@ namespace OXM
             {
                 var collectionMap = new ElementCollectionMap<TObj, TProperty>(_name, _required);
                 collectionMap.Collection = _classMemberMap.GetCollection();
-                collectionMap.ClassMapConstructor = _classMemberMap.GetClassMapConstructor();
+                collectionMap.ClassMapFactory = _classMemberMap.GetClassMapFactory();
                 ((IElementMapContainer<TObj>)map).AddElementMap(_name, collectionMap);
             }
             else

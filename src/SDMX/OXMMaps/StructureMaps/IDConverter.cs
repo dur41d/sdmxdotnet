@@ -20,7 +20,7 @@ namespace SDMX.Parsers
 
         public TimePeriod ToObj(string value)
         {
-            var dateTime = XmlConvert.ToDateTime(value);
+            var dateTime = XmlConvert.ToDateTime(value, XmlDateTimeSerializationMode.RoundtripKind);
             return new TimePeriod(dateTime);
         }
     }

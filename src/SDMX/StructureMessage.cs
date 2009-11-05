@@ -17,12 +17,14 @@ namespace SDMX
         public IList<CodeList> CodeLists { get; private set; }
         public IList<Concept> Concepts { get; private set; }
         public IList<KeyFamily> KeyFamilies { get; private set; }
+        public IList<HierarchicalCodeList> HierarchicalCodeLists { get; private set; }
 
         public StructureMessage()
         {
             CodeLists = new List<CodeList>();
             Concepts = new List<Concept>();
             KeyFamilies = new List<KeyFamily>();
+            HierarchicalCodeLists = new List<HierarchicalCodeList>();
         }
 
 

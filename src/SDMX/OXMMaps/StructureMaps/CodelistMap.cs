@@ -17,11 +17,7 @@ namespace SDMX.Parsers
             AttributesOrder("id", "agencyID", "version", "uri", "isExternalReference", "isFinal", "validFrom", "validTo");
             ElementsOrder("Name", "Description", "Code", "Annotations");
 
-            Map<bool?>(o => o.IsExternalReference == false ? (bool?)null : true).ToAttribute("isExternalReference", false)
-                .Set(v => _isExternalReference = v.Value)
-                .Converter(new NullableBooleanConverter());
-
-            MapCollection(o => o.Items).ToElement("Code", false)
+            MapCollection(o => o).ToElement("Code", false)
                 .Set(v => _codeList.Add(v))
                 .ClassMap(() => new CodeMap(_codeList));
         }
@@ -48,6 +44,11 @@ namespace SDMX.Parsers
         protected override void SetIsFinal(bool isFinal)
         {
             _isFinal = isFinal;
+        }
+
+        protected override void SetIsExternalReference(bool isExternalReference)
+        {
+            _isExternalReference = isExternalReference;
         }
 
         protected override void SetVersion(string version)

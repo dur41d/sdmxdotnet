@@ -23,7 +23,6 @@ namespace SDMX
 
         public TimeDimension TimeDimension { get; internal set; }
         public PrimaryMeasure PrimaryMeasure { get; internal set; }
-        public bool IsExternalReference { get; set; }
 
         public IEnumerable<Dimension> Dimensions
         {

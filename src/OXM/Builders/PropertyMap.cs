@@ -144,7 +144,7 @@ namespace OXM
                 var elementMap = new ElementMap<TObj, TProperty>(_name, _required);
                 ((IElementMapContainer<TObj>)map).AddElementMap(_name, elementMap);
                 elementMap.Property = _classMemberMap.GetProperty();
-                elementMap.ClassMap = _classMemberMap.GetClassMap();
+                elementMap.ClassMapFactory = _classMemberMap.GetClassMapFactory();
             }
             else if (map is IElementMapContainer<TObj> && isSimpleElement)
             {
@@ -152,7 +152,7 @@ namespace OXM
                 var simpleElementMap = new SimpleElementMap<TObj, TProperty>(_name, _required);
                 ((IElementMapContainer<TObj>)map).AddElementMap(_name, simpleElementMap);
                 simpleElementMap.Property = _simpleMemberMap.GetProperty();
-                simpleElementMap.ClassMap = new SimpleElementClassMap<TProperty>(_simpleMemberMap.GetConverter());
+                simpleElementMap.ClassMapFactory = () => new SimpleElementClassMap<TProperty>(_simpleMemberMap.GetConverter());
             }
             else if (map is IElementContentContainer<TObj> && isContent)
             {

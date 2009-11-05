@@ -13,7 +13,7 @@ namespace OXM
     internal class ElementCollectionMap<T, TProperty> : ElementMapBase<T>
     {
         internal Collection<T, TProperty> Collection { get; set; }
-        internal Func<ClassMap<TProperty>> ClassMapConstructor { get; set;}
+        internal Func<ClassMap<TProperty>> ClassMapFactory { get; set;}
 
         public ElementCollectionMap(XName name, bool required)
             : base(name, required)
@@ -21,7 +21,7 @@ namespace OXM
       
         public override void ReadXml(XmlReader reader)
         {
-            var classMap = ClassMapConstructor();
+            var classMap = ClassMapFactory();
             classMap.Namespace = Name.Namespace;
 
             TProperty property = classMap.ReadXml(reader);
@@ -56,7 +56,7 @@ namespace OXM
                 {
                     if (Writing != null) Writing();
                     writer.WriteStartElement(Name.LocalName, Name.NamespaceName);
-                    var classMap = ClassMapConstructor();
+                    var classMap = ClassMapFactory();
                     classMap.Namespace = Name.Namespace;
                     classMap.WriteXml(writer, value);
                     writer.WriteEndElement();

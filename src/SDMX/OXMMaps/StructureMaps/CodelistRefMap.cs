@@ -2,67 +2,41 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Xml.Linq;
-using System.Linq.Expressions;
-using System.Reflection;
-using Common;
 using OXM;
+using Common;
+using System.Xml.Linq;
 
 namespace SDMX.Parsers
 {
-    public class CodelistRef
+    internal class CodeListRefMap : ClassMap<CodeListRef>
     {
-        public CodelistRef()
-        { }
+        CodeListRef codeListRef = new CodeListRef();
 
-        public static CodelistRef Create(CodeList codelist)
+        public CodeListRefMap()
         {
-            if (codelist == null)
-            {
-                return null;
-            }
-            else
-            {
-                var codelistRef = new CodelistRef();
-                codelistRef.ID = codelist.ID;
-                codelistRef.Version = codelist.Version;
-                codelistRef.AgencyID = codelist.AgencyID;
+            Map<Uri>(o => null).ToSimpleElement("URN", false)
+                .Converter(new UriConverter());
 
-                return codelistRef;
-            }          
-        }      
-
-        public ID ID { get; set; }
-        public string Version { get; set; }
-        public ID AgencyID { get; set; }
-    }
-
-
-    public class CodelistRefMap : AttributeGroupTypeMap<CodelistRef>
-    {
-        CodelistRef codelistRef = new CodelistRef();
-
-        public CodelistRefMap()
-        {
-            MapAttribute(o => o.ID, "codelist", false)
-                .Set(v => codelistRef.ID = v)
+            Map(o => o.AgencyID).ToSimpleElement("AgencyID", false)
+                .Set(v => codeListRef.AgencyID = v)
                 .Converter(new IDConverter());
 
-            MapAttribute(o => o.Version, "codelistVersion", false)
-               .Set(v => codelistRef.Version = v)
-               .Converter(new StringConverter());
+            Map(o => o.ID).ToSimpleElement("CodelistID", false)
+                .Set(v => codeListRef.ID = v)
+                .Converter(new IDConverter());
 
-            MapAttribute(o => o.AgencyID, "codelistAgency", false)
-               .Set(v => codelistRef.AgencyID = v)
-               .Converter(new IDConverter());
+            Map(o => o.Version).ToSimpleElement("Version", false)
+                .Set(v => codeListRef.Version = v)
+                .Converter(new StringConverter());
+
+            Map(o => o.Alias).ToSimpleElement("Alias", false)
+                .Set(v => codeListRef.Alias = v)
+                .Converter(new IDConverter());
         }
 
-        protected override CodelistRef Return()
+        protected override CodeListRef Return()
         {
-            if (codelistRef.ID == null)
-                return null;
-
-            return codelistRef;
+            return codeListRef;
         }
     }
 }

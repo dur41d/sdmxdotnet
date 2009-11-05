@@ -12,21 +12,9 @@ namespace OXM
 {
     internal class ElementMap<T, TProperty> : ElementMapBase<T>
     {
-        internal Property<T, TProperty> Property { get; set; }
+        internal Property<T, TProperty> Property { get; set; }        
         
-        private ClassMap<TProperty> _classMap;
-        internal ClassMap<TProperty> ClassMap
-        {
-            get
-            {
-                return _classMap;
-            }
-            set
-            {
-                _classMap = value;
-                _classMap.Namespace = Name.Namespace;
-            }
-        }
+        internal Func<ClassMap<TProperty>> ClassMapFactory { get; set; }
 
         public ElementMap(XName name, bool required)
             : base(name, required)
@@ -39,8 +27,10 @@ namespace OXM
             {
                 throw new OXMException("Element '{0}' has already occured and it is not supposed to occure more than once.", Name);
             }
-            
-            TProperty property = ClassMap.ReadXml(reader);
+
+            var classMap = ClassMapFactory();
+            classMap.Namespace = Name.Namespace;
+            TProperty property = classMap.ReadXml(reader);
 
             if ((object)property != null)
                 Property.Set(property);
@@ -62,8 +52,10 @@ namespace OXM
             else
             {
                 if (Writing != null) Writing();
-                writer.WriteStartElement(Name.LocalName, Name.NamespaceName);                
-                ClassMap.WriteXml(writer, value);
+                writer.WriteStartElement(Name.LocalName, Name.NamespaceName);
+                var classMap = ClassMapFactory();
+                classMap.Namespace = Name.Namespace;
+                classMap.WriteXml(writer, value);
                 writer.WriteEndElement();
             }
         }

@@ -16,17 +16,17 @@ namespace SDMX.Parsers
         
         internal MeasureMap(StructureMessage message)
         {
-            Map(o => ConceptRef.Create(o.Concept)).ToAttributeGroup("conceptRef")
+            Map(o => TempConceptRef.Create(o.Concept)).ToAttributeGroup("conceptRef")
                .Set(v => _measure = Create(message.GetConcept(v.ID, v.AgencyID, v.Version)))
-               .GroupTypeMap(new ConceptRefMap());
+               .GroupTypeMap(new TempConceptRefMap());
 
-            Map(o => CodelistRef.Create(o.CodeList)).ToAttributeGroup("codelist")
+            Map(o => TempCodelistRef.Create(o.CodeList)).ToAttributeGroup("codelist")
                 .Set(v => _measure.CodeList = message.GetCodeList(v.ID, v.AgencyID, v.Version))
-                .GroupTypeMap(new CodelistRefMap());
+                .GroupTypeMap(new TempCodelistRefMap());
 
             Map(o => o.TextFormat).ToElement("TextFormat", false)
                  .Set(v => _measure.TextFormat = v)
-                 .ClassMap(new TextFormatMap());
+                 .ClassMap(() => new TextFormatMap());
         }     
     }
 }

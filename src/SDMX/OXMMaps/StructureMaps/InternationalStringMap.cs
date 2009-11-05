@@ -15,7 +15,7 @@ namespace SDMX.Parsers
 
         public InternationalStringMap()
         {
-            Map(o => o.Language).ToAttribute(XNamespace.Xml + "lang", true, "en")
+            Map(o => o.Language).ToAttribute(XNamespace.Xml + "lang", false, "en")
                 .Set(v => lang = v)
                 .Converter(new LanguageConverter());
 

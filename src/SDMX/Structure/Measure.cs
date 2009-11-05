@@ -39,7 +39,7 @@ namespace SDMX
         {
             if (IsCoded)
             {
-                return CodeList[value];
+                return CodeList.Get(value);
             }
             else
             {
