@@ -63,11 +63,6 @@ namespace SDMX.Tests
             Assert.IsTrue(Utility.ValidateMessage(doc));
         }
 
-        private void Get()
-        { 
-            
-        }
-
         [Test]
         public void HeirarchicalCodeListSample()
         {
@@ -91,6 +86,43 @@ namespace SDMX.Tests
             }
 
             var doc = XDocument.Load(Utility.GetPathFromProjectBase("lib\\HeirarchicalCodeListSample2.xml"));
+            Assert.IsTrue(Utility.ValidateMessage(doc));
+        }
+
+        [Test]
+        public void WBDSD_HierarchicalCodeList()
+        {
+            string dsdPath = Utility.GetPathFromProjectBase("lib\\DSD_WB.xml");
+
+            var message = StructureMessage.Load(dsdPath);
+
+            var refAreaCodeList = message.CodeLists.Where(codeList => codeList.ID == "CL_REF_AREA_MDG").Single();
+
+            var MDG_DEVELOPED = refAreaCodeList.Where(code => code.ID == "MDG_DEVELOPED").Single();
+
+            ID[] countries = new[] { new ID("USA"), new ID("GBR"), new ID("SWE") };
+
+            var developedCountries = (from c in refAreaCodeList
+                                     where c.ID == "USA" || c.ID == "GBR" || c.ID == "SWE"
+                                     select c).ToList();
+
+            var hlist = new HierarchicalCodeList("MDG_Regions", "MDG");
+            hlist.Name[Language.English] = "MDG Regions";
+            hlist.AddCodeList(refAreaCodeList, "REF_AREA");
+
+            var hierarchy = new Hierarchy("Developed_Countries", new CodeRef(MDG_DEVELOPED, () => developedCountries));
+            hierarchy.Name[Language.English] = "Developed Countries";
+            hlist.Add(hierarchy);
+
+            message.HierarchicalCodeLists.Add(hlist);
+
+            Assert.AreEqual(1, message.HierarchicalCodeLists.Count);
+
+            message.Save(Utility.GetPathFromProjectBase("lib\\DSD_WB2.xml"));
+
+            string messageText = message.ToString();
+
+            var doc = XDocument.Parse(messageText);
             Assert.IsTrue(Utility.ValidateMessage(doc));
         }
     
