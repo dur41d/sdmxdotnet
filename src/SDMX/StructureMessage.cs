@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Common;
+using SDMX.Parsers;
+using System.Xml;
+using System.IO;
 
 namespace SDMX
 {
@@ -93,6 +96,57 @@ namespace SDMX
         //        }
         //    }
         //}
+
+        public static StructureMessage Parse(string text)
+        {
+            var map = new StructureMessageMap();
+
+            StructureMessage message;
+            using (var reader = XmlReader.Create(new StringReader(text)))
+            {
+                message = map.ReadXml(reader);
+            }
+
+            return message;
+        }
+
+        public static StructureMessage Load(string fileName)
+        {
+            var map = new StructureMessageMap();
+
+            StructureMessage message;
+            using (var reader = XmlReader.Create(fileName))
+            {
+                message = map.ReadXml(reader);
+            }
+
+            return message;
+        }
+
+        public void Save(string fileName)
+        {   
+            var map = new StructureMessageMap();
+
+            var settings = new XmlWriterSettings() { Indent = true };
+            using (var writer = XmlWriter.Create(fileName, settings))
+            {
+                map.WriteXml(writer, this);
+            }
+        }
+
+        public override string ToString()
+        {
+            var map = new StructureMessageMap();
+            var sb = new StringBuilder();
+
+            var settings = new XmlWriterSettings() { Indent = true };
+            using (var writer = XmlWriter.Create(sb, settings))
+            {
+                map.WriteXml(writer, this);
+            }
+
+            return sb.ToString();
+        }
 
         public Concept GetConcept(ID conceptID, ID agencyID, string version)
         {

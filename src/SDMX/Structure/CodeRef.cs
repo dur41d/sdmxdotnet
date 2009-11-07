@@ -43,12 +43,15 @@ namespace SDMX
             AddChildren(children);                       
         }
 
-        public CodeRef(Code code, Func<IEnumerable<CodeRef>> funcCodeRef)
+        public CodeRef(Code code, Func<IEnumerable<Code>> funcCodeRef)
             : this(code)
         {
             Contract.AssertNotNull(() => funcCodeRef);
 
-            AddChildren(funcCodeRef());
+            foreach (var c in funcCodeRef())
+            {
+                Children.Add(new CodeRef(c));
+            }
         }
 
         private void AddChildren(IEnumerable<CodeRef> children)

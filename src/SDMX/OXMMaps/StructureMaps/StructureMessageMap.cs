@@ -35,6 +35,8 @@ namespace SDMX.Parsers
             RegisterNamespace("common", Namespaces.Common);
             RegisterNamespace("structure", Namespaces.Structure);
 
+            ElementsOrder("Header", "CodeLists", "HierarchicalCodelists", "Concepts", "KeyFamilies");
+
             Map(o => o.Header).ToElement("Header", true)
                 .Set(v => _message.Header = v)
                 .ClassMap(() => new HeaderMap());
@@ -44,6 +46,11 @@ namespace SDMX.Parsers
                     .Set(v => _message.CodeLists.Add(v))
                     .ClassMap(() => new CodeListMap());
 
+            MapContainer("HierarchicalCodelists", false)
+              .MapCollection(o => o.HierarchicalCodeLists).ToElement(Namespaces.Structure + "HierarchicalCodelist", false)
+                  .Set(v => _message.HierarchicalCodeLists.Add(v))
+                  .ClassMap(() => new HierarchicalCodeListMap());
+
             MapContainer("Concepts", false)
                 .MapCollection(o => o.Concepts).ToElement(Namespaces.Structure + "Concept", false)
                     .Set(v => _message.Concepts.Add(v))
@@ -52,12 +59,7 @@ namespace SDMX.Parsers
             MapContainer("KeyFamilies", false)
                 .MapCollection(o => o.KeyFamilies).ToElement(Namespaces.Structure + "KeyFamily", false)
                     .Set(v => _message.KeyFamilies.Add(v))
-                    .ClassMap(() => new KeyFamilyMap(_message));
-
-            MapContainer("HierarchicalCodelists", false)
-                .MapCollection(o => o.HierarchicalCodeLists).ToElement(Namespaces.Structure + "HierarchicalCodelist", false)
-                    .Set(v => _message.HierarchicalCodeLists.Add(v))
-                    .ClassMap(() => new HierarchicalCodeListMap());
+                    .ClassMap(() => new KeyFamilyMap(_message));          
         }
 
         protected override StructureMessage Return()
