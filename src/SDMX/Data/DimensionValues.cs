@@ -3,17 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Collections;
+using Common;
 
 namespace SDMX
 {
-    public class DimensionValues : ComponenetValues<Dimension>
+    public class DimensionValues
     {
-        public IEnumerable<Dimension> Dimensions
-        {
-            get
-            {
-                return values.Keys.AsEnumerable();
-            }
-        }
+      
     }
 }

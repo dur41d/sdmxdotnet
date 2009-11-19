@@ -5,18 +5,16 @@ using System.Text;
 
 namespace SDMX
 {
-    public class Observation
+    public class Observation : AnnotableArtefact, IAttachableArtefact
     {
         public TimePeriod Time { get; set; }
         public object Value { get; set; }
 
-        public AttributeValues Attributes { get; private set; }
-        public IList<Annotation> Annotations { get; private set; }
+        public AttributeValueCollection Attributes { get; private set; }
 
         public Observation()
         {
-            Attributes = new AttributeValues();
-            Annotations = new List<Annotation>();
+            Attributes = new AttributeValueCollection(null, AttachmentLevel.Observation);
         }
     }
 }

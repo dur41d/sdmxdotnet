@@ -5,19 +5,7 @@ using System.Text;
 using Common;
 
 namespace SDMX
-{
-    public class Group2
-    {
-        public IList<Attribute> Attributes { get; internal set; }
-        public IList<Annotation> Annotations { get; internal set; }
-
-        internal Group2()
-        {         
-            
-        }
-
-    }
-
+{  
     public class Group : AnnotableArtefact
     {
         private Dictionary<ID, Dimension> dimensions = new Dictionary<ID, Dimension>();

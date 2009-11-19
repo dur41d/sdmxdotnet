@@ -7,7 +7,7 @@ using SDMX.Parsers;
 using Common;
 
 namespace SDMX
-{
+{   
     public class KeyFamily : MaintainableArtefact
     {
         public KeyFamily(InternationalString name, ID id, ID agencyID)
@@ -32,7 +32,7 @@ namespace SDMX
             }
         }
 
-         public IEnumerable<Group> Groups
+        public IEnumerable<Group> Groups
         {
             get
             {
