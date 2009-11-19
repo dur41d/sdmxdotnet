@@ -15,18 +15,36 @@ namespace SDMX.Tests
     [TestFixture]
     public class GenericDataTests
     {
+
         [Test]
-        public void Create_GenericData_from_xml()
+        public void CreateDataSet()
         {
-            string samplePath = Utility.GetPathFromProjectBase("lib\\GenericSample.xml");
-            XDocument loadedXml = XDocument.Load(samplePath);
+            var keyFamily = StructureMessage.Load(Utility.GetPathFromProjectBase("lib\\StructureSample.xml")).KeyFamilies[0];
+            var dataSet = new DataSet(keyFamily);
+            var key = dataSet.Series.CreateKey();
+            key.Add("Freq", "A");
+            var series = dataSet.Series[key];
 
-            var message = new Messages.GenericData(loadedXml.ToString());
+            //series.Add(
 
-            XDocument generatedXml = XDocument.Parse(message.ToXml());
 
-            Assert.IsTrue(Utility.CompareXML(loadedXml, generatedXml));
+
+
         }
+
+
+        //[Test]
+        //public void Create_GenericData_from_xml()
+        //{
+        //    string samplePath = Utility.GetPathFromProjectBase("lib\\GenericSample.xml");
+        //    XDocument loadedXml = XDocument.Load(samplePath);
+
+        //    var message = new Messages.GenericData(loadedXml.ToString());
+
+        //    XDocument generatedXml = XDocument.Parse(message.ToXml());
+
+        //    Assert.IsTrue(Utility.CompareXML(loadedXml, generatedXml));
+        //}
 
 //        [Test]
 //        public void Create_Structure_from_xml()

@@ -7,7 +7,7 @@ namespace SDMX
 {
     public abstract class AnnotableArtefact
     {
-        public IList<Annotation> Annotations { get; protected set; }
+        public IList<Annotation> Annotations { get; private set; }
 
         public AnnotableArtefact()
         {

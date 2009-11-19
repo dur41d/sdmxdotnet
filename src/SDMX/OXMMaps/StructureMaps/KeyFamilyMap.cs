@@ -29,7 +29,7 @@ namespace SDMX.Parsers
                 .ClassMap(() => new TimeDimensionMap(message));
 
             components.MapCollection(o => o.Groups).ToElement("Group", false)
-               .ClassMap(() => new GroupMap(_keyFamily));
+               .ClassMap(() => new GroupDescriptorMap(_keyFamily));
 
             components.Map(o => o.PrimaryMeasure).ToElement("PrimaryMeasure", true)
                 .Set(v => _keyFamily.PrimaryMeasure = v)

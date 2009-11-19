@@ -8,21 +8,27 @@ namespace SDMX
 {
     public class CodeRef
     {
+        List<CodeRef> _children = new List<CodeRef>();
+
         public CodeListRef CodeListRef { get; internal set; }        
         public ID CodeID { get; set; }
-        public IList<CodeRef> Children { get; private set; }
         public ID LevelRef { get; set; }
         public ID NodeAliasID { get; set; }
         public string Version { get; set; }
         public TimePeriod ValidFrom { get; set; }
         public TimePeriod ValidTo { get; set; }
-
         public CodeRef Parent { get; internal set; }
 
-        public CodeRef()
+        public IEnumerable<CodeRef> Children
         {
-            Children = new List<CodeRef>();
+            get
+            {
+                return _children.AsEnumerable();
+            }
         }
+
+        public CodeRef()
+        { }
 
         public CodeRef(Code code)
         {
@@ -30,8 +36,6 @@ namespace SDMX
 
             CodeID = code.ID;
             CodeListRef = new CodeListRef(code.CodeList, null);
-            
-            Children = new List<CodeRef>();
         }
       
 
@@ -43,15 +47,32 @@ namespace SDMX
             AddChildren(children);                       
         }
 
+        public CodeRef(Code code, IEnumerable<Code> children)
+            : this(code)
+        {
+            Contract.AssertNotNull(() => children);
+
+            var list = CreateList(children);
+            AddChildren(list);
+        }
+
         public CodeRef(Code code, Func<IEnumerable<Code>> funcCodeRef)
             : this(code)
         {
             Contract.AssertNotNull(() => funcCodeRef);
 
-            foreach (var c in funcCodeRef())
+            var list = CreateList(funcCodeRef());
+            AddChildren(list);
+        }
+
+        private List<CodeRef> CreateList(IEnumerable<Code> codes)
+        {
+            List<CodeRef> result = new List<CodeRef>();
+            foreach (var code in codes)
             {
-                Children.Add(new CodeRef(c));
+                result.Add(new CodeRef(code));
             }
+            return result;
         }
 
         private void AddChildren(IEnumerable<CodeRef> children)
@@ -59,7 +80,7 @@ namespace SDMX
             foreach (var child in children)
             {
                 child.Parent = this;
-                Children.Add(child);
+                _children.Add(child);
             }
         }
 
@@ -84,7 +105,7 @@ namespace SDMX
             Contract.AssertNotNull(() => child.CodeListRef.Alias);
 
             child.Parent = this;
-            Children.Add(child);
+            _children.Add(child);
         }
     }
 }
