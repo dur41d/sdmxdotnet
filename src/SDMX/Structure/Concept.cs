@@ -15,7 +15,7 @@ namespace SDMX
 
         public ConceptScheme ConceptScheme { get; internal set; }
         public Concept Parent { get; set; }
-        public TextFormat TextFormat { get; set; }
+        public ITextFormat TextFormat { get; set; }
 
         public override Uri Urn
         {

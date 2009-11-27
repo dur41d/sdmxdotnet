@@ -6,7 +6,7 @@ using Common;
 
 namespace SDMX
 {
-    public class CodeListRef
+    public class CodeListRef : IEquatable<CodeListRef>
     {
         public ID ID { get; set; }
         public ID AgencyID { get; set; }
@@ -36,16 +36,23 @@ namespace SDMX
 
         public override string ToString()
         {
-            return Alias;
+            return Alias.ToString();
+        }
+
+        public override int GetHashCode()
+        {
+            return ID.GetHashCode();
         }
 
         public override bool Equals(object other)
-        {
+        {            
             return Equals(other as CodeListRef);
         }
 
         public bool Equals(CodeListRef other)
         {
+            if (other == null) return false;
+
             return ID.Equals(other.ID) &&
                 AgencyID.Equals(other.AgencyID) &&
                 Version.Equals(other.Version) &&

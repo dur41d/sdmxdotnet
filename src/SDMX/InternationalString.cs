@@ -5,10 +5,15 @@ using System.Text;
 
 namespace SDMX
 {
-    public class InternationalString
+    public enum Language
     {
-        public Language Language { get; private set; }
-        public string Value { get; private set; }
+        English
+    }
+
+    public struct InternationalString : IEquatable<InternationalString>
+    {
+        public readonly Language Language;
+        public readonly string Value;
 
         public InternationalString(Language language, string value)
         {
@@ -21,39 +26,36 @@ namespace SDMX
             return Value;
         }
 
+        public override int GetHashCode()
+        {
+            return Value.GetHashCode() * 37 + Language.GetHashCode();
+        }
+
         public override bool Equals(object other)
         {
-            return Equals(other as InternationalString);
+            if (!(other is InternationalString)) return false;
+            return Equals((InternationalString)other);
         }
 
         public bool Equals(InternationalString other)
         {
             return Language.Equals(other.Language) &&
                 Value.Equals(other.Value);
-        }
-
-        public static implicit operator InternationalString(string value)
-        {
-            return new InternationalString(Language.English, value);
-        }
+        }       
 
         public static implicit operator string(InternationalString iString)
-        {
-            if (iString == null)
-            {
-                return null;
-            }
+        {           
             return iString.Value;
         }
 
         public static bool operator ==(InternationalString x, InternationalString y)
         {
-            return Equals(x, y);
+            return x.Equals(y);
         }
 
         public static bool operator !=(InternationalString x, InternationalString y)
         {
-            return !Equals(x, y);
+            return !x.Equals(y);
         }      
     }
 }

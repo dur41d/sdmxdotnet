@@ -14,7 +14,7 @@ namespace SDMX
         
         public string Version { get; internal set; }
 
-        public TimePeriod ValidFrom { get; set; }
-        public TimePeriod ValidTo { get; set; }       
+        public ITimePeriod ValidFrom { get; set; }
+        public ITimePeriod ValidTo { get; set; }       
     }
 }

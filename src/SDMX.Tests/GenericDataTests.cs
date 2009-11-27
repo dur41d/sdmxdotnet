@@ -21,9 +21,9 @@ namespace SDMX.Tests
         {
             var keyFamily = StructureMessage.Load(Utility.GetPathFromProjectBase("lib\\StructureSample.xml")).KeyFamilies[0];
             var dataSet = new DataSet(keyFamily);
-            var key = dataSet.Series.CreateKey();
-            key.Add("Freq", "A");
-            var series = dataSet.Series[key];
+            var keyBuider = dataSet.Series.CreateKeyBuilder();
+            keyBuider.Add((ID)"FREQ", "A");
+            var series = dataSet.Series[keyBuider.Build()];
 
             //series.Add(
 

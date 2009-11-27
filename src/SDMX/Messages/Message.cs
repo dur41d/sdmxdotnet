@@ -9,7 +9,12 @@ using System.IO;
 
 namespace SDMX
 {
-    public abstract class Message
+    public interface IMessage
+    {
+        Header Header { get; set; }
+    }
+    
+    public abstract class Message : IMessage
     {
         public Header Header { get; set; }
     }

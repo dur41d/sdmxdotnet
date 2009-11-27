@@ -72,18 +72,9 @@ namespace SDMX.Tests
 
             StructureMessageMap map = new StructureMessageMap();
 
-            StructureMessage message;
-            using (var reader = XmlReader.Create(dsdPath))
-            {
-                message = map.ReadXml(reader);
-            }
+            StructureMessage message = StructureMessage.Load(dsdPath);
 
-            var sb = new StringBuilder();
-            var settings = new XmlWriterSettings() { Indent = true };
-            using (var writer = XmlWriter.Create(Utility.GetPathFromProjectBase("lib\\HeirarchicalCodeListSample2.xml"), settings))
-            {
-                map.WriteXml(writer, message);
-            }
+            message.Save(Utility.GetPathFromProjectBase("lib\\HeirarchicalCodeListSample2.xml"));         
 
             var doc = XDocument.Load(Utility.GetPathFromProjectBase("lib\\HeirarchicalCodeListSample2.xml"));
             Assert.IsTrue(Utility.ValidateMessage(doc));
@@ -98,16 +89,16 @@ namespace SDMX.Tests
             var dsd = StructureMessage.Load(dsdPath);
             
             // create hierarchical code list and add it to the DSD
-            var hlist = new HierarchicalCodeList("MDG_Regions", "MDG");
+            var hlist = new HierarchicalCodeList((ID)"MDG_Regions", (ID)"MDG");
             hlist.Name[Language.English] = "MDG Regions";
             dsd.HierarchicalCodeLists.Add(hlist);
 
             // get REF_AREA code list from the DSD and add it to the hierarchical code list
-            var refAreaCodeList = dsd.CodeLists.Where(codeList => codeList.ID == "CL_REF_AREA_MDG").Single();
-            hlist.AddCodeList(refAreaCodeList, "REF_AREA_MDG");
+            var refAreaCodeList = dsd.CodeLists.Where(codeList => codeList.ID == (ID)"CL_REF_AREA_MDG").Single();
+            hlist.AddCodeList(refAreaCodeList, (ID)"REF_AREA_MDG");
 
             // get parent country code
-            var MDG_DEVELOPED = refAreaCodeList.Where(code => code.ID == "MDG_DEVELOPED").Single();
+            var MDG_DEVELOPED = refAreaCodeList.Where(code => code.ID == (ID)"MDG_DEVELOPED").Single();
 
             // child country codes
             string[] ids = new[] { "ALB", "AND", "AUS", "AUT", "BEL", "BIH", "BMU", "BGR", "HRV", "CAN", "CZE", "DNK", "EST", "FRO", "FIN", "FRA", "DEU", "GRC", "HUN", "ISL", "IRL", "ITA", "JPN", "LVA", "LIE", "LTU", "LUX", "MKD", "MLT", "MCO", "MNE", "NLD", "NZL", "NOR", "POL", "PRT", "ROU", "SVK", "SMR", "SVN", "SRB", "ESP", "SWE", "CHE", "GBR", "USA" };
@@ -117,12 +108,12 @@ namespace SDMX.Tests
 
             // create hirarchy with parent code and child code and add it to
             // the hierarchical code list
-            var hierarchy = new Hierarchy("Developed_Countries", new CodeRef(MDG_DEVELOPED, countryCodes));
+            var hierarchy = new Hierarchy((ID)"Developed_Countries", new CodeRef(MDG_DEVELOPED, countryCodes));
             hierarchy.Name[Language.English] = "Developed Countries";
             hlist.Add(hierarchy);
 
             // create another hierarchy and add it to the hierarchical code list
-            var MDG_NAFR = refAreaCodeList.Where(code => code.ID == "MDG_NAFR").Single();
+            var MDG_NAFR = refAreaCodeList.Where(code => code.ID == (ID)"MDG_NAFR").Single();
 
             ids = new[] { "DZA", "EGY", "LBY", "MAR", "TUN" };
 
@@ -130,7 +121,7 @@ namespace SDMX.Tests
                             join cid in ids on c.ID.ToString() equals cid
                             select c).ToList();
 
-            hierarchy = new Hierarchy("MDG_NAFR", new CodeRef(MDG_NAFR, () => countryCodes));
+            hierarchy = new Hierarchy((ID)"MDG_NAFR", new CodeRef(MDG_NAFR, () => countryCodes));
             hierarchy.Name[Language.English] = "MDG Northern Africa Countries";
             hlist.Add(hierarchy);
 
@@ -146,18 +137,18 @@ namespace SDMX.Tests
         [Test]
         public void HierarchicalList_InvalidAlias()
         {
-            var hList = new HierarchicalCodeList("Europe", "HCL_Europe", "SDMX");
+            var hList = new HierarchicalCodeList(new InternationalString(Language.English, "Europe"), (ID)"HCL_Europe", (ID)"SDMX");
             var countryCL = GetCountryCodeList();
             var regionsCL = GetRegionsCodeList();
 
             // don't add the country code list to the hierarchy in order to throw the exception
             //hList.AddCodeList(countryCL, "countryCLAlias");
-            hList.AddCodeList(regionsCL, "RegionsAlias");
+            hList.AddCodeList(regionsCL, (ID)"RegionsAlias");
 
-            Hierarchy hierarchy = new Hierarchy("id",
-                new CodeRef(regionsCL.Get("Europe"),
-                    new CodeRef(countryCL.Get("Germany")),
-                    new CodeRef(countryCL.Get("UK"))));
+            Hierarchy hierarchy = new Hierarchy((ID)"id",
+                new CodeRef(regionsCL.Get((ID)"Europe"),
+                    new CodeRef(countryCL.Get((ID)"Germany")),
+                    new CodeRef(countryCL.Get((ID)"UK"))));
 
             Assert.Throws<SDMXException>(() => hList.Add(hierarchy));
         }
@@ -170,14 +161,14 @@ namespace SDMX.Tests
             var countryCL = GetCountryCodeList();
             var regionsCL = GetRegionsCodeList();
 
-            var hList = new HierarchicalCodeList("Europe", "HCL_Europe", "SDMX");
-            hList.AddCodeList(countryCL, "countryCLAlias");
-            hList.AddCodeList(regionsCL, "RegionsAlias");
+            var hList = new HierarchicalCodeList(new InternationalString(Language.English, "Europe"), (ID)"HCL_Europe", (ID)"SDMX");
+            hList.AddCodeList(countryCL, (ID)"countryCLAlias");
+            hList.AddCodeList(regionsCL, (ID)"RegionsAlias");
 
-            Hierarchy hierarchy = new Hierarchy("id",
-               new CodeRef(regionsCL.Get("Europe"),
-                   new CodeRef(countryCL.Get("Germany")),
-                   new CodeRef(countryCL.Get("UK"))));
+            Hierarchy hierarchy = new Hierarchy((ID)"id",
+               new CodeRef(regionsCL.Get((ID)"Europe"),
+                   new CodeRef(countryCL.Get((ID)"Germany")),
+                   new CodeRef(countryCL.Get((ID)"UK"))));
 
             hList.Add(hierarchy);
 
@@ -205,13 +196,13 @@ namespace SDMX.Tests
             {
                 Assert.IsNotNull(codeRef.CodeListRef);
                 Assert.IsNotNull(codeRef.CodeListRef.Alias);
-                Assert.IsTrue(codeRef.CodeListRef.Alias == "countryCLAlias" || codeRef.CodeListRef.Alias == "RegionsAlias");
+                Assert.IsTrue(codeRef.CodeListRef.Alias == (ID)"countryCLAlias" || codeRef.CodeListRef.Alias == (ID)"RegionsAlias");
             }
 
-            var europeCode = hirchy.GetCodeRefs().Where(i => i.CodeID == "Europe").Single();
+            var europeCode = hirchy.GetCodeRefs().Where(i => i.CodeID == (ID)"Europe").Single();
             Assert.IsNull(europeCode.Parent);
-            var germany = hirchy.GetCodeRefs().Where(i => i.CodeID == "Germany").Single();
-            var uk = hirchy.GetCodeRefs().Where(i => i.CodeID == "UK").Single();
+            var germany = hirchy.GetCodeRefs().Where(i => i.CodeID == (ID)"Germany").Single();
+            var uk = hirchy.GetCodeRefs().Where(i => i.CodeID == (ID)"UK").Single();
             Assert.AreSame(germany.Parent, europeCode);
             Assert.AreSame(uk.Parent, europeCode);
         }
@@ -222,10 +213,10 @@ namespace SDMX.Tests
             var countryCL = GetCountryCodeList();
             var regionsCL = GetRegionsCodeList();
 
-            Hierarchy hierarchy = new Hierarchy("id",
-                new CodeRef(regionsCL.Get("Europe"),
-                    new CodeRef(countryCL.Get("Germany")),
-                    new CodeRef(countryCL.Get("UK"))));
+            Hierarchy hierarchy = new Hierarchy((ID)"id",
+                new CodeRef(regionsCL.Get((ID)"Europe"),
+                    new CodeRef(countryCL.Get((ID)"Germany")),
+                    new CodeRef(countryCL.Get((ID)"UK"))));
 
             var codeRefs = hierarchy.GetCodeRefs();
 
@@ -234,22 +225,22 @@ namespace SDMX.Tests
 
         private static CodeList GetCountryCodeList()
         {
-            var codeList = new CodeList("Countries", "CL_Country", "SDMX");
-            codeList.Add(new Code("Japan"));
-            codeList.Add(new Code("USA"));
-            codeList.Add(new Code("UK"));
-            codeList.Add(new Code("Germany"));
-            codeList.Add(new Code("Brazil"));
+            var codeList = new CodeList(new InternationalString(Language.English, "Countries"), (ID)"CL_Country", (ID)"SDMX");
+            codeList.Add(new Code((ID)"Japan"));
+            codeList.Add(new Code((ID)"USA"));
+            codeList.Add(new Code((ID)"UK"));
+            codeList.Add(new Code((ID)"Germany"));
+            codeList.Add(new Code((ID)"Brazil"));
             return codeList;
         }
 
         private static CodeList GetRegionsCodeList()
         {
-            var codeList = new CodeList("Regions", "CL_Regions", "SDMX");
-            codeList.Add(new Code("Europe"));
-            codeList.Add(new Code("North_America"));
-            codeList.Add(new Code("Asia"));
-            codeList.Add(new Code("Africa"));
+            var codeList = new CodeList(new InternationalString(Language.English, "Regions"), (ID)"CL_Regions", (ID)"SDMX");
+            codeList.Add(new Code((ID)"Europe"));
+            codeList.Add(new Code((ID)"North_America"));
+            codeList.Add(new Code((ID)"Asia"));
+            codeList.Add(new Code((ID)"Africa"));
             return codeList;
         }
     }

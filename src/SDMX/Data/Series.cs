@@ -7,50 +7,43 @@ namespace SDMX
 {   
     public class Series : AnnotableArtefact, IEnumerable<Observation>
     {
-        private Dictionary<TimePeriod, Observation> observations = new Dictionary<TimePeriod, Observation>();
+        private Dictionary<ITimePeriod, Observation> _observations = new Dictionary<ITimePeriod, Observation>();
         
         public DataSet DataSet { get; internal set; }
         public SeriesKey Key { get; internal set; }
 
         public AttributeValueCollection Attributes { get; private set; }
 
-        internal Series()
+        internal Series(DataSet dataSet, SeriesKey key)
         {
-            Attributes = new AttributeValueCollection(DataSet.KeyFamily, AttachmentLevel.Series);
-        }      
-
-        internal Series(SeriesKey key)
-            : this()
-        {
-            Key = key;            
+            Key = key;
+            DataSet = dataSet;
+            Attributes = new AttributeValueCollection(dataSet.KeyFamily, AttachmentLevel.Series);
         }
 
-        public Observation this[TimePeriod timePeriod]
+        public Observation this[ITimePeriod timePeriod]
         {
             get
             {
-                return observations.GetValueOrDefault(timePeriod, null);
+                var obs = _observations.GetValueOrDefault(timePeriod, null);
+                if (obs == null)
+                {
+                    return new Observation(this, timePeriod);
+                }
+                return obs;
             }
         }
 
-        internal void Add(Observation observation)
+        internal void Include(Observation observation)
         {
-            if (observations.Keys.Contains(observation.Time))
-            {
-                throw new SDMXException("observation with time period already exsists '{0}'".F(observation.Time));
-            }
-
-
-
-            observations.Add(observation.Time, observation);
-
+            _observations[observation.Time] = observation;
         }
 
         #region IEnumerable<Observation> Members
 
         public IEnumerator<Observation> GetEnumerator()
         {
-            foreach (var item in observations)
+            foreach (var item in _observations)
             {
                 yield return item.Value;
             }
@@ -66,5 +59,7 @@ namespace SDMX
         }
 
         #endregion
+
+        
     }
 }

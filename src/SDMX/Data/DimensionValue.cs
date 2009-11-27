@@ -12,7 +12,7 @@ namespace SDMX
         public Dimension Dimension { get; private set; }
         public object Value { get; private set; }
 
-        public DimensionValue(Dimension dimension, object value)
+        internal DimensionValue(Dimension dimension, IValue value)
         {
             Contract.AssertNotNull(() => dimension);
             Contract.AssertNotNull(() => value);

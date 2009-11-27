@@ -8,60 +8,70 @@ using Common;
 namespace SDMX
 {
     /// <summary>
-    /// A class to restrict data to this pattern: ([A-Z]|[a-z]|\*|@|[0-9]|_|$|\-)*
+    /// A structure to restrict data to this pattern: ([A-Z]|[a-z]|\*|@|[0-9]|_|$|\-)*
     /// </summary>
-    public class ID
-    {   
-        private string value;
-        private const string _pattern = "^([A-Z]|[a-z]|\\*|@|[0-9]|_|$|\\-)*$";      
+    public struct ID : IEquatable<ID>
+    {
+        public static readonly ID Empty;
+        private string _value;
+
+        private const string _pattern = "^([A-Z]|[a-z]|\\*|@|[0-9]|_|$|\\-)*$";
+
+        static ID()
+        {
+            Empty = default(ID);
+        }
 
         public ID(string id)
         {
             if (!Regex.IsMatch(id, _pattern))
             {
                 throw new SDMXException("Invalid ID value '{0}'".F(id));
-            }
+            }           
 
-            this.value = id;
+            _value = id;
+        }
+
+        public bool IsEmpty()
+        {
+            return _value == null;
         }
 
         public override string  ToString()
         {
-             return value;
+             return _value;
+        }
+
+        public override int GetHashCode()
+        {
+            if (_value == null) return 0;
+            return _value.GetHashCode();
         }
 
         public override bool Equals(object other)
         {
-            return Equals(other as ID);
+            if (!(other is ID)) return false;
+            return Equals((ID)other);
         }
 
         public bool Equals(ID other)
-        {
-            return value.Equals(other.value);
+        {            
+            return Equals(_value, other._value);
         }    
 
-        public static implicit operator ID(string id)
+        public static explicit operator ID(string id)
         {
             return new ID(id);
-        }
-
-        public static implicit operator string(ID id)
-        {
-            if (id == null)
-            {
-                return null;
-            }
-            return id.value;
-        }
+        }    
 
         public static bool operator ==(ID x, ID y)
         {
-            return Equals(x, y);
+            return x.Equals(y);
         }
 
         public static bool operator !=(ID x, ID y)
         {
-            return !Equals(x, y);
-        }      
+            return !x.Equals(y);
+        }
     }
 }

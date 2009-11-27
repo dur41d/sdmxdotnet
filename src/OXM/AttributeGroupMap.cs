@@ -46,7 +46,7 @@ namespace OXM
         {
             TProperty property = GroupTypeMap.ReadXml(reader);
 
-            if ((object)property != null)
+            if (!property.IsDefault())
                 Property.Set(property);
         }
 

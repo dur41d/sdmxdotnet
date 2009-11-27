@@ -7,8 +7,8 @@ namespace SDMX
 {
     public class SeriesCollection : IEnumerable<Series>
     {
-        private Dictionary<SeriesKey, Series> series = new Dictionary<SeriesKey, Series>();
-        DataSet _dataSet;
+        private Dictionary<SeriesKey, Series> _collection = new Dictionary<SeriesKey, Series>();
+        private DataSet _dataSet;
 
         internal SeriesCollection(DataSet dataSet)
         {
@@ -19,19 +19,20 @@ namespace SDMX
         {
             get
             {
-                var s = series.GetValueOrDefault(key, null);
-                if (s == null)
+                var series = _collection.GetValueOrDefault(key, null);
+                if (series == null)
                 {
-                    return new Series(key);
+                    series = new Series(_dataSet, key);
+                    _collection.Add(key, series);
                 }
 
-                return s;
+                return series;
             }
         }
 
-        public SeriesKey CreateKey()
+        public SeriesKeyBuilder CreateKeyBuilder()
         {
-            return new SeriesKey(_dataSet);
+            return new SeriesKeyBuilder(_dataSet);
         }
 
 
@@ -39,7 +40,7 @@ namespace SDMX
 
         public IEnumerator<Series> GetEnumerator()
         {
-            foreach (var item in series)
+            foreach (var item in _collection)
             {
                 yield return item.Value;
             }

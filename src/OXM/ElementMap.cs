@@ -10,6 +10,17 @@ using System.Xml;
 
 namespace OXM
 {
+    internal static class Extensions
+    {
+        public static bool IsDefault<T>(this T value)
+        {
+            if (typeof(T).IsEnum) return false;
+
+            if ((object)value == null) return true;
+            return value.Equals(default(T));
+        }
+    }
+
     internal class ElementMap<T, TProperty> : ElementMapBase<T>
     {
         internal Property<T, TProperty> Property { get; set; }        
@@ -41,7 +52,7 @@ namespace OXM
         public override void WriteXml(XmlWriter writer, T obj)
         {
             var value = Property.Get(obj);
-            if ((object)value == null)
+            if (value.IsDefault())
             {
                 if (Required)
                 {

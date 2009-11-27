@@ -5,7 +5,7 @@ using System.Text;
 
 namespace SDMX
 {
-    public class Code : IdentifiableArtefact
+    public class Code : IdentifiableArtefact, IValue
     {
         public Code(ID id)
             : base(id)

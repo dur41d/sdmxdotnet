@@ -8,7 +8,7 @@ namespace SDMX
 {
     public class CodeList : MaintainableArtefact, IEnumerable<Code>
     {
-        List<Code> codes = new List<Code>();
+        Dictionary<ID, Code> codes = new Dictionary<ID, Code>();
         
         public CodeList(InternationalString name, ID id, ID agencyID)
             : base(id, agencyID)
@@ -20,19 +20,23 @@ namespace SDMX
         {
             Contract.AssertNotNull(() => code);
             code.CodeList = this;
-            codes.Add(code);
+            codes.Add(code.ID, code);
         }
 
         public void Remove(Code code)
         {
             Contract.AssertNotNull(() => code);
-            codes.Remove(code);
+            codes.Remove(code.ID);
         }
 
         public Code Get(ID codeID)
         {
-            Contract.AssertNotNull(() => codeID);
-            return codes.Where(c => c.ID == codeID).Single();
+            return codes.GetValueOrDefault(codeID, null);
+        }
+
+        public bool Contains(ID codeID)
+        {
+            return codes.ContainsKey(codeID);
         }
         
         public override Uri Urn
@@ -46,10 +50,10 @@ namespace SDMX
         #region IEnumerable<Code> Members
 
         public IEnumerator<Code> GetEnumerator()
-        {
-            foreach (var code in codes)
+        {   
+            foreach (var item in codes)
             {
-                yield return code;
+                yield return item.Value;
             }
         }
 
