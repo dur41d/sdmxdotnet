@@ -10,7 +10,7 @@ namespace SDMX
     public class GroupValueCollection : IEnumerable<GroupValue>
     {
         private Dictionary<GroupKey, GroupValue> groups = new Dictionary<GroupKey, GroupValue>();
-        DataSet _dataSet;
+        private DataSet _dataSet;
 
         Group _group;
         
@@ -35,18 +35,18 @@ namespace SDMX
                 var group = groups.GetValueOrDefault(key, null);
                 if (group == null)
                 {
-                    group = new GroupValue(key);
+                    group = new GroupValue(_dataSet, key, _group.ID, this);
+                    groups.Add(key, group);
                 }
 
                 return group;
             }
         }
 
-        public GroupKey CreateKey()
+        public GroupKeyBuilder CreateKeyBuilder()
         {
-            return new GroupKey(_dataSet, _group);
+            return new GroupKeyBuilder(_dataSet, _group);
         }
-
 
         #region IEnumerable<GroupValue> Members
 

@@ -26,7 +26,7 @@ namespace OXM
 
             TProperty property = classMap.ReadXml(reader);
             
-            if ((object)property != null)
+            if (!property.IsDefault())
                 Collection.Set(property);
 
            _occurances++;

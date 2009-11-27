@@ -11,6 +11,17 @@ namespace SDMX
         private List<CodeListRef> codeListRefs = new List<CodeListRef>();
         private List<Hierarchy> hierarchies = new List<Hierarchy>();
 
+        public HierarchicalCodeList(ID id, ID agencyID)
+            : base(id, agencyID)
+        {
+        }
+
+        public HierarchicalCodeList(InternationalString name, ID id, ID agencyID)
+            : this(id, agencyID)
+        {
+            Name.Add(name);
+        }
+
         public IEnumerable<CodeListRef> CodeListRefs
         {
             get
@@ -54,7 +65,7 @@ namespace SDMX
         {
             foreach (var codeRef in hierarchy.GetCodeRefs())
             {
-                if (codeRef.CodeListRef.Alias == null)
+                if (codeRef.CodeListRef.Alias.IsEmpty())
                 {
                     var codeListRef = codeListRefs.Where(c => c.ID == codeRef.CodeListRef.ID
                         && c.AgencyID == codeRef.CodeListRef.AgencyID).FirstOrDefault();
@@ -68,17 +79,6 @@ namespace SDMX
                     codeRef.CodeListRef.Alias = codeListRef.Alias;
                 }
             }
-        }
-
-        public HierarchicalCodeList(ID id, ID agencyID)
-            : base(id, agencyID)
-        {           
-        }
-
-        public HierarchicalCodeList(InternationalString name, ID id, ID agencyID)
-            : this(id, agencyID)
-        {            
-            Name.Add(name);
         }
 
         public override Uri Urn

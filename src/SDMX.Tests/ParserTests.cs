@@ -24,8 +24,7 @@ namespace SDMX.Tests
                                   select e).Single();
 
             KeyFamily keyFamiliy = KeyFamily.Parse(dsdXml);
-            DataSet dataSet = DataSet.Parse(datasetElement, keyFamiliy);
-
+            //DataSet dataSet = DataSet.Parse(datasetElement, keyFamiliy);
         }
      
         Dictionary<XElement, int> list = new Dictionary<XElement, int>();

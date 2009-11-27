@@ -14,12 +14,13 @@ namespace OXM
     {
         ISimpleTypeConverter<TProperty> _converter;
         MemberCollectionMap<TObj, TProperty> _memberCollectionMap;
-        Expression<Func<TObj, IEnumerable<TProperty>>> _coll;
+        Expression<Func<TObj, IEnumerable<TProperty>>> _collection;
 
 
         public SimpleMemberCollectionMap(Expression<Func<TObj, IEnumerable<TProperty>>> collection)
         {
             _memberCollectionMap = new MemberCollectionMap<TObj, TProperty>(collection);
+            _collection = collection;
         }
 
         public SimpleMemberCollectionMap<TObj, TProperty> Set(Action<TProperty> set)
@@ -43,7 +44,7 @@ namespace OXM
         {
             if (_converter == null)
             {
-                var coll = new Collection<TObj, TProperty>(_coll, null);
+                var coll = new Collection<TObj, TProperty>(_collection, null);
                 throw new OXMException("Converter is not set for collection ({0}).{1}.", coll.GetTypeName(), coll.GetName());
             }
 

@@ -9,10 +9,9 @@ namespace SDMX
 {
     public class AttributeValueCollection : IEnumerable<AttributeValue>
     {
-        protected Dictionary<string, AttributeValue> values = new Dictionary<string, AttributeValue>();
+        private Dictionary<ID, AttributeValue> values = new Dictionary<ID, AttributeValue>();
         private KeyFamily _keyFamily;
         private AttachmentLevel _attachmentLevel;
-        private GroupValue _groupValue;
 
         internal AttributeValueCollection(KeyFamily keyFamily, AttachmentLevel attachmentLevel)
         {
@@ -20,39 +19,33 @@ namespace SDMX
             _attachmentLevel = attachmentLevel;
         }
 
-        public AttributeValueCollection(KeyFamily keyFamily, AttachmentLevel attachmentLevel, GroupValue groupValue)
-            : this(keyFamily, attachmentLevel)
+        public AttributeValue this[ID conceptID]
         {
-            _groupValue = groupValue;
+            get
+            {
+                Contract.AssertNotNull(() => conceptID);
+
+                var attributeValue = values.GetValueOrDefault(conceptID, null);
+                if (attributeValue == null)
+                {
+                    var attribute = _keyFamily.GetAttribute(conceptID);
+
+                    if (attribute.AttachementLevel != _attachmentLevel)
+                    {
+                        throw new SDMXException("Attribute '{0}' has attachment level '{1}' and not '{2}'.",
+                            conceptID, attribute.AttachementLevel, _attachmentLevel);
+                    }
+
+                    return new AttributeValue(attribute, this);
+                }
+
+                return attributeValue;
+            }
         }
 
-        public void Add(string concept, string value)
+        internal void Include(AttributeValue attributeValue)
         {
-            Contract.AssertNotNull(() => concept);
-            Contract.AssertNotNull(() => value);
-
-            if (values.ContainsKey(concept))
-            {
-                throw new SDMXException("Attribuet '{0}' already exists in the collection.", concept);
-            }            
-            
-            var attribute = _keyFamily.GetAttribute(concept);
-            if (attribute.AttachementLevel != _attachmentLevel)
-            {
-                throw new SDMXException("Invalid attachment level for attribute '{0}'. Expected '{1}' but was '{2}'.",
-                    concept, _attachmentLevel, attribute.AttachementLevel);
-            }
-
-            object attValue = attribute.GetValue(value);
-            values.Add(concept, new AttributeValue(attribute, attValue));
-
-            // we only want to add the group value to the dataset if it has attributes
-            // i.e. we want to avoid having groups that have no attributes because only function is to hold
-            // attributes. 
-            if (_attachmentLevel == AttachmentLevel.Group)
-            {
-                _groupValue.AddToDataSet();
-            }
+            values[attributeValue.Attribute.Concept.ID] = attributeValue;
         }
 
         #region IEnumerable<Attribute> Members

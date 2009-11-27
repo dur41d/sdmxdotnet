@@ -9,7 +9,7 @@ namespace SDMX
     {
         public Concept Concept { get; set; }
         public CodeList CodeList { get; set; }
-        public TextFormat TextFormat { get; set; }
+        public ITextFormat TextFormat { get; set; }
         public CrossSectionalAttachmentLevel CrossSectionalAttachmentLevel { get; set; }
 
         public int Order { get; set; }
@@ -33,20 +33,63 @@ namespace SDMX
             }
         }
 
-        public virtual object GetValue(string value)
+        //public virtual object Parse(string value)
+        //{
+        //    return Parse(value, null);    
+        //}
+
+        //public virtual object Parse(string value, string startTime)
+        //{
+        //    if (IsCoded)
+        //    {
+        //        return CodeList.Get((ID)value);
+        //    }
+        //    else
+        //    {
+        //        throw new Exception("non coded components are not supported yet.");
+        //    }
+        //}
+
+        public virtual IValue Parse(string value)
         {
-            return GetValue(value, null);    
+            return Parse(value, null);
         }
 
-        public virtual object GetValue(string value, string startTime)
+        public virtual IValue Parse(string value, string startTime)
         {
             if (IsCoded)
             {
-                return CodeList.Get(value);
+                return (IValue)CodeList.Get((ID)value);
             }
             else
             {
-                throw new Exception("non coded components are not supported yet.");
+                return TextFormat.Parse(value, startTime);
+            }
+        }
+
+        public virtual void Serialize(IValue value, out string stringValue, out string startTime)
+        {
+            if (IsCoded)
+            {
+                stringValue = null; //((ID)value).ToString();
+                startTime = null;
+            }
+            else
+            {   
+               TextFormat.Serialize(value, out stringValue, out startTime);               
+            }
+        }
+
+        public virtual bool IsValid(IValue value)
+        {
+            if (IsCoded)
+            {
+                return false;
+                // return value.Is<Code>() && CodeList.Contains((ID)value);
+            }
+            else
+            {
+                return TextFormat.IsValid(value);
             }
         }
     }

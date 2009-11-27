@@ -9,56 +9,29 @@ namespace SDMX
 {
     public class GroupKey : IEnumerable<DimensionValue>
     {
-        private Dictionary<string, DimensionValue> _values = new Dictionary<string, DimensionValue>();
-        private KeyFamily _keyFamily;
-        internal Group Group { get; set; }
+        private Dictionary<ID, DimensionValue> _keyValues = new Dictionary<ID, DimensionValue>();
+        private KeyFamily _keyFamily;        
 
-        internal GroupKey(DataSet dataSet, Group group)
+        internal GroupKey(KeyFamily keyFamily, Dictionary<ID, DimensionValue> keyValues)
         {
-            Contract.AssertNotNull(() => dataSet);
-            Contract.AssertNotNull(() => group);
-                        
-            _keyFamily = dataSet.KeyFamily;
-            Group = group;
+            _keyFamily = keyFamily;            
+            _keyValues = keyValues;
         }
 
-        public void Add(string concept, string value)
-        {
-            Contract.AssertNotNull(() => concept);
-            Contract.AssertNotNull(() => value);
-
-            var dimension = _keyFamily.GetDimension(concept);
-            object dimValue = dimension.GetValue(value);
-
-            _values.Add(concept, new DimensionValue(dimension, dimValue));
-        }
-
-        public object this[string concept]
+        public DimensionValue this[ID concept]
         {
             get
             {
                 Contract.AssertNotNull(() => concept);
-                var dimValue = _values.GetValueOrDefault(concept, null);
-
-                if (dimValue == null)
-                {
-                    throw new SDMXException("Group key does not contain dimension '{0}'", concept);
-                }
-
-                return dimValue.Value;
+                return _keyValues.GetValueOrDefault(concept, null);
             }
-        }
-
-        public bool IsValid()
-        {
-            return Group.Dimensions.Count() == _values.Count;
         }
 
         #region IEnumerable<DimensionValue> Members
 
         public IEnumerator<DimensionValue> GetEnumerator()
         {
-            foreach (var item in _values)
+            foreach (var item in _keyValues)
             {
                 yield return item.Value;
             }

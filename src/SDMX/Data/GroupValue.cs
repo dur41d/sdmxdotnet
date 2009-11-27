@@ -6,31 +6,23 @@ using Common;
 
 namespace SDMX
 {
-    public class GroupValue : AnnotableArtefact
+    public class GroupValue : AnnotableArtefact, IAttachableArtefact
     {
-        public string Type { get; set; }
-        public DataSet DataSet { get; internal set; }
-        public GroupKey Key { get; internal set; }
-        
+        public ID GroupID { get; private set; }
+        public DataSet DataSet { get; private set; }
+        public GroupKey Key { get; private set; }
+
+        private GroupValueCollection _collection;
 
         public AttributeValueCollection Attributes { get; private set; }
               
-        internal GroupValue(GroupKey key)
+        internal GroupValue(DataSet dataSet, GroupKey key, ID groupID, GroupValueCollection collection)
         {
-            Contract.AssertNotNull(() => key);
-
-            if (!key.IsValid())
-            {
-                throw new SDMXException("Group key is not valid '{0}'.", key);
-            }
-            
-            Attributes = new AttributeValueCollection(DataSet.KeyFamily, AttachmentLevel.Group, this);
-            Key = key;            
-        }
-
-        internal void AddToDataSet()
-        { 
-             
+            DataSet = dataSet;
+            Key = key;
+            GroupID = groupID;
+            _collection = collection;
+            Attributes = new AttributeValueCollection(DataSet.KeyFamily, AttachmentLevel.Group);            
         }
     }
 }

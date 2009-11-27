@@ -8,56 +8,31 @@ namespace SDMX
 {
     public class SeriesKey : IEnumerable<DimensionValue>
     {
-        //private Series series;
-        private object[] key;
-        private KeyFamily keyFamily;
+        private Dictionary<ID, DimensionValue> _keyValues;
+        private KeyFamily _keyFamily;
 
-        internal SeriesKey(Series series)
+        internal SeriesKey(KeyFamily keyFamily, Dictionary<ID, DimensionValue> key)
         {
-            //  this.series = series;
-            key = new object[series.DataSet.KeyFamily.Dimensions.Count()];
-        }
-       
-        internal SeriesKey(DataSet dataSet)
-        {
-            //  this.series = series;
-            this.keyFamily = dataSet.KeyFamily;
-            key = new object[dataSet.KeyFamily.Dimensions.Count()];
-        }
+            _keyFamily = keyFamily;
+            _keyValues = key;
+        }      
 
-        public void Add(string concept, string value)
-        {
-            Contract.AssertNotNull(() => concept);
-            Contract.AssertNotNull(() => value);
-
-            var dimension = keyFamily.GetDimension(concept);
-            object dimValue = dimension.GetValue(value);
-
-            key[dimension.Order] = dimValue;
-        }
-
-        public object this[string concept]
+        public object this[ID conceptID]
         {
             get
             {
-                Contract.AssertNotNull(() => concept);
-                var dimension = keyFamily.GetDimension(concept);
-                return key[dimension.Order];
+                Contract.AssertNotNull(() => conceptID);                
+                return _keyValues[conceptID];
             }          
-        }
-
-        public bool IsValid()
-        {
-            return !key.Any(i => i == null);
         }
 
         #region IEnumerable<DimensionValue> Members
 
         public IEnumerator<DimensionValue> GetEnumerator()
         {
-            for (int i = 0; i < key.Length; i++)
+            foreach (var item in _keyValues)
             {
-                yield return new DimensionValue(keyFamily.Dimensions.ElementAt(i), key[i]);
+                yield return item.Value;
             }
         }
 

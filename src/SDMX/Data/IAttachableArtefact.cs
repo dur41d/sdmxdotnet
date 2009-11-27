@@ -7,6 +7,6 @@ namespace SDMX
 {
     public interface IAttachableArtefact
     {
-        AttributeValueCollection Attributes { get; }
+        AttributeValueCollection Attributes { get; }        
     }
 }

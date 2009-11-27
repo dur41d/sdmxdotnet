@@ -32,7 +32,7 @@ namespace OXM
         
         protected override void WriteValue(XmlWriter writer, string value)
         {
-            if (value == null)
+            if (value.IsDefault())
             {
                 // if the attribute is required through an exception otherwise do nothing
                 if (_required)

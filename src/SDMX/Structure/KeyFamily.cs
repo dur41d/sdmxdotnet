@@ -16,8 +16,8 @@ namespace SDMX
             Name.Add(name);
         }
 
-        private Dictionary<string, Dimension> dimensions = new Dictionary<string, Dimension>();
-        private Dictionary<string, Attribute> attributes = new Dictionary<string, Attribute>();
+        private Dictionary<ID, Dimension> dimensions = new Dictionary<ID, Dimension>();
+        private Dictionary<ID, Attribute> attributes = new Dictionary<ID, Attribute>();
         private Dictionary<ID, Group> groups = new Dictionary<ID,Group>();
         private Dictionary<ID, CrossSectionalMeasure> crossSectionalMeasures = new Dictionary<ID, CrossSectionalMeasure>();
 
@@ -77,23 +77,25 @@ namespace SDMX
             groups.Remove(group.ID);
         }
 
-        public Dimension GetDimension(string conceptName)
+        public Dimension GetDimension(ID conceptID)
         {
-            Contract.AssertNotNull(() => conceptName);
-            var dimension = dimensions.GetValueOrDefault(conceptName, null);
+            Contract.AssertNotNull(() => conceptID);
+            var dimension = dimensions.GetValueOrDefault(conceptID, null);
             if (dimension == null)
             {
-                throw new SDMXException("Dimension not found: '{0}'".F(conceptName));
+                throw new SDMXException("Dimension not found: '{0}'".F(conceptID));
             }
             return dimension;
         }
 
-        public Attribute GetAttribute(string conceptName)
+        public Attribute GetAttribute(ID conceptID)
         {
-            var attribute = attributes.GetValueOrDefault(conceptName, null);
+            Contract.AssertNotNull(() => conceptID);
+
+            var attribute = attributes.GetValueOrDefault(conceptID, null);
             if (attribute == null)
             {
-                throw new SDMXException("Attribute not found: '{0}'".F(conceptName));
+                throw new SDMXException("Attribute not found: '{0}'", conceptID);
             }
             return attribute;
         }
