@@ -23,17 +23,9 @@ namespace OXM
         protected void RegisterNamespace(string prefix, XNamespace ns)
         {
             namespaces.Add(prefix, ns);
-        }
+        }      
 
-        //internal void VerifyNamespace(XNamespace ns)
-        //{
-        //    if (namespaces.Values.Where(x => x == ns).Count() > 0)
-        //    {
-        //        throw new OXMException("Namespace '{0}' is not registered. Must be registered with the root element.");
-        //    }
-        //}
-
-        public void WriteXml(XmlWriter writer, T obj)
+        public new void WriteXml(XmlWriter writer, T obj)
         {
             writer.WriteStartElement(Name.LocalName, Name.NamespaceName);
             foreach (var item in namespaces)
@@ -45,7 +37,7 @@ namespace OXM
             writer.WriteEndElement();
         }
 
-        public T ReadXml(XmlReader reader)
+        public new T ReadXml(XmlReader reader)
         {   
             if (reader.ReadState == ReadState.Initial)
             {

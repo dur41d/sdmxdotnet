@@ -13,10 +13,18 @@ namespace OXM.Tests
     public class Tests
     {
         [Test]
+        public void Person_test1()
+        { 
+            
+        }
+        
+        
+        
+        [Test]
         public void TestPersonMap()
         {
             var person = new Person() { Name = "duraid", Age = 35 };
-            person.Address = new Address() { Street = "Decelles", City = "Montreal" };
+            //person.Address = new Address() { Street = "Decelles", City = "Montreal" };
             var map = new PersonMap();
 
             var sb = new StringBuilder();

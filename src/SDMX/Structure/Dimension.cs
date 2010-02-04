@@ -6,7 +6,7 @@ using System.Text;
 namespace SDMX
 {
 
-    public class Dimension : Component
+    public class Dimension : Component, Item
     {
         public bool IsMeasureDimension { get; set; }
         public bool IsFrequencyDimension { get; set; }
@@ -25,5 +25,14 @@ namespace SDMX
             : base(concept, codeList)
         {
         }
+
+        #region Item Members
+
+        ID Item.ID
+        {
+            get { return Concept.ID; }
+        }
+
+        #endregion
     }
 }

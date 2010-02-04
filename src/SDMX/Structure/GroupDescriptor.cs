@@ -6,7 +6,7 @@ using Common;
 
 namespace SDMX
 {  
-    public class Group : AnnotableArtefact
+    public class GroupDescriptor : AnnotableArtefact, Item
     {
         private Dictionary<ID, Dimension> dimensions = new Dictionary<ID, Dimension>();
         
@@ -23,7 +23,7 @@ namespace SDMX
             }
         }
         
-        internal Group(ID id, KeyFamily keyFamily)
+        internal GroupDescriptor(ID id, KeyFamily keyFamily)
         {
             Contract.AssertNotNull(() => id);
             Contract.AssertNotNull(() => keyFamily);
@@ -37,7 +37,7 @@ namespace SDMX
         {
             Contract.AssertNotNull(() => conceptID);
 
-            var dimension = KeyFamily.GetDimension(conceptID);
+            var dimension = KeyFamily.Dimensions.Get(conceptID);
             dimensions.Add(conceptID, dimension);
         }
 

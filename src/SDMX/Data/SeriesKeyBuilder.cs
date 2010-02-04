@@ -26,7 +26,7 @@ namespace SDMX
             Contract.AssertNotNull(() => conceptID);
             Contract.AssertNotNullOrEmpty(() => value);
 
-            var dimension = _keyFamily.GetDimension(conceptID);
+            var dimension = _keyFamily.Dimensions.Get(conceptID);
             IValue dimValue = dimension.Parse(value, startTime);
 
             _keyValues.Add(conceptID, new DimensionValue(dimension, dimValue));

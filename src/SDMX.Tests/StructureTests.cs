@@ -51,6 +51,7 @@ namespace SDMX.Tests
             {
                 message = map.ReadXml(reader);
             }
+            message.Header.Name[Language.English] = "New Name";
 
             var sb = new StringBuilder();
             var settings = new XmlWriterSettings() { Indent = true };
@@ -60,6 +61,7 @@ namespace SDMX.Tests
             }
 
             var doc = XDocument.Parse(sb.ToString());
+            doc.Save(@"c:\temp\dsdsample.xml");
             Assert.IsTrue(Utility.ValidateMessage(doc));
         }
      

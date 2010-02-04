@@ -21,7 +21,7 @@ namespace SDMX.Parsers
             var components = MapContainer("Components", false);
 
             components.MapCollection(o => o.Dimensions).ToElement("Dimension", false)
-                .Set(v => _keyFamily.AddDimension(v))
+                .Set(v => _keyFamily.Dimensions.Add(v))
                 .ClassMap(() => new DimensionMap(message));
 
             components.Map(o => o.TimeDimension).ToElement("TimeDimension", false)
@@ -35,12 +35,12 @@ namespace SDMX.Parsers
                 .Set(v => _keyFamily.PrimaryMeasure = v)
                 .ClassMap(() => new PrimaryMeasureMap(message));
 
-            components.MapCollection(o => o.CrossSectionalMeasures).ToElement("CrossSectionalMeasure", false)
-                .Set(v => _keyFamily.AddMeasure(v))
+            components.MapCollection(o => o.XMeasures).ToElement("CrossSectionalMeasure", false)
+                .Set(v => _keyFamily.XMeasures.Add(v))
                 .ClassMap(() => new CrossSectionalMeasureMap(message));
 
             components.MapCollection(o => o.Attributes).ToElement("Attribute", false)
-                .Set(v => _keyFamily.AddAttribute(v))
+                .Set(v => _keyFamily.Attributes.Add(v))
                 .ClassMap(() => new AttributeMap(message));
         }
 

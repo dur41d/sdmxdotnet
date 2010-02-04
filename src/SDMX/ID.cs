@@ -24,6 +24,10 @@ namespace SDMX
 
         public ID(string id)
         {
+            if (id == null)
+            {
+                throw new InvalidCastException("Cannot convert a null string to ID.");
+            }
             if (!Regex.IsMatch(id, _pattern))
             {
                 throw new SDMXException("Invalid ID value '{0}'".F(id));
@@ -57,12 +61,12 @@ namespace SDMX
         public bool Equals(ID other)
         {            
             return Equals(_value, other._value);
-        }    
-
+        }
+       
         public static explicit operator ID(string id)
         {
             return new ID(id);
-        }    
+        }   
 
         public static bool operator ==(ID x, ID y)
         {

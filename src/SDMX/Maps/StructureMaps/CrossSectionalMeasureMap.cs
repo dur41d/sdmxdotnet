@@ -7,9 +7,9 @@ using Common;
 
 namespace SDMX.Parsers
 {
-    internal class CrossSectionalMeasureMap : MeasureMap<CrossSectionalMeasure>
+    internal class CrossSectionalMeasureMap : MeasureMap<XMeasure>
     {
-        CrossSectionalMeasure _measure;
+        XMeasure _measure;
         
         internal CrossSectionalMeasureMap(StructureMessage message)
             : base(message)
@@ -30,9 +30,9 @@ namespace SDMX.Parsers
                 .Converter(new IDConverter());
         }      
 
-        protected override CrossSectionalMeasure Create(Concept conecpt)
+        protected override XMeasure Create(Concept conecpt)
         {
-            _measure = new CrossSectionalMeasure(conecpt);
+            _measure = new XMeasure(conecpt);
             return _measure;
         }
 
@@ -41,7 +41,7 @@ namespace SDMX.Parsers
             _measure.Annotations.Add(annotation);
         }
 
-        protected override CrossSectionalMeasure Return()
+        protected override XMeasure Return()
         {
             return _measure;
         }
