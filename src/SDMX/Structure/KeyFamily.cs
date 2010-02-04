@@ -7,115 +7,34 @@ using SDMX.Parsers;
 using Common;
 
 namespace SDMX
-{   
+{
+
+
     public class KeyFamily : MaintainableArtefact
     {
         public KeyFamily(InternationalString name, ID id, ID agencyID)
             : base(id, agencyID)
         {
             Name.Add(name);
+            Dimensions = new Collection<Dimension>();
+            Attributes = new Collection<Attribute>();
+            Groups = new Collection<GroupDescriptor>();
+            XMeasures = new Collection<XMeasure>();
         }
-
-        private Dictionary<ID, Dimension> dimensions = new Dictionary<ID, Dimension>();
-        private Dictionary<ID, Attribute> attributes = new Dictionary<ID, Attribute>();
-        private Dictionary<ID, Group> groups = new Dictionary<ID,Group>();
-        private Dictionary<ID, CrossSectionalMeasure> crossSectionalMeasures = new Dictionary<ID, CrossSectionalMeasure>();
 
         public TimeDimension TimeDimension { get; internal set; }
         public PrimaryMeasure PrimaryMeasure { get; internal set; }
+        public Collection<Dimension> Dimensions { get; private set; }
+        public Collection<GroupDescriptor> Groups { get; private set; }
+        public Collection<Attribute> Attributes { get; private set; }
+        public Collection<XMeasure> XMeasures { get; set; }
 
-        public IEnumerable<Dimension> Dimensions
+        public GroupDescriptor CreateNewGroup(ID groupID)
         {
-            get
-            {
-                return dimensions.Values.AsEnumerable();
-            }
-        }
-
-        public IEnumerable<Group> Groups
-        {
-            get
-            {
-                return groups.Values.AsEnumerable();
-            }
-        }
-
-        public IEnumerable<Attribute> Attributes
-        {
-            get
-            {
-                return attributes.Values.AsEnumerable();
-            }
-        }
-
-        public IEnumerable<CrossSectionalMeasure> CrossSectionalMeasures
-        {
-            get
-            {
-                return crossSectionalMeasures.Values.AsEnumerable();
-            }
-        }
-
-        public Group CreateNewGroup(ID groupID)
-        {
-            var group = new Group(groupID, this);
-            groups.Add(groupID, group);
+            var group = new GroupDescriptor(groupID, this);
+            Groups.Add(group);
             return group;
         }
-
-        public void RemoveGroup(ID groupID)
-        {		    
-		    groups.Remove(groupID);
-        }
-
-        public void RemoveGroup(Group group)
-        {
-            if (group.KeyFamily != this)
-            {
-                throw new SDMXException("This group belongs to another key family '{0}'.".F(group.KeyFamily.Urn));
-            }
-            groups.Remove(group.ID);
-        }
-
-        public Dimension GetDimension(ID conceptID)
-        {
-            Contract.AssertNotNull(() => conceptID);
-            var dimension = dimensions.GetValueOrDefault(conceptID, null);
-            if (dimension == null)
-            {
-                throw new SDMXException("Dimension not found: '{0}'".F(conceptID));
-            }
-            return dimension;
-        }
-
-        public Attribute GetAttribute(ID conceptID)
-        {
-            Contract.AssertNotNull(() => conceptID);
-
-            var attribute = attributes.GetValueOrDefault(conceptID, null);
-            if (attribute == null)
-            {
-                throw new SDMXException("Attribute not found: '{0}'", conceptID);
-            }
-            return attribute;
-        }
-
-        public void AddDimension(Dimension dimension)
-        {
-            dimensions.Add(dimension.Concept.ID, dimension);
-        }
-
-        public void AddAttribute(Attribute attribute)
-        {
-            attributes.Add(attribute.Concept.ID, attribute);
-        }
-
-        public void AddMeasure(CrossSectionalMeasure measure)
-        {
-            crossSectionalMeasures.Add(measure.Concept.ID, measure);
-        }
-
-
         public static KeyFamily Parse(XDocument dsdXml)
         {
             KeyFamilyParser parser = new KeyFamilyParser();

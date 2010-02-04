@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="SDMX.StructureMessage" Collapsed="true">
+    <Position X="3.5" Y="2.25" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AACggIAAAAQIAAAFAAQAAAAAABAAAEAAAAAAAAAAAAA=</HashCode>
+      <FileName>Messages\StructureMessage.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="CodeLists" />
+      <Property Name="Concepts" />
+      <Property Name="HierarchicalCodeLists" />
+      <Property Name="KeyFamilies" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="SDMX.Message">
+    <Position X="3.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Messages\Message.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="SDMX.CodeList" Collapsed="true">
+    <Position X="7.25" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACIAAAAAAAAAABBAAQAABAAAAAAAAAAACAAAAAAQAAA=</HashCode>
+      <FileName>Structure\CodeList.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="SDMX.Concept" Collapsed="true">
+    <Position X="7.25" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAABAAAAAAAAAACAAAAQAAAAAAAAAAACAAAAAAAAAA=</HashCode>
+      <FileName>Structure\Concept.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SDMX.HierarchicalCodeList" Collapsed="true">
+    <Position X="7.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACIAgAAAAAAAABAAAAAAAAAAQAAAAAAAiAAAAgAAAAI=</HashCode>
+      <FileName>Structure\HierarchicalCodeList.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="SDMX.KeyFamily" Collapsed="true">
+    <Position X="7.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAgAEAAAAAAEAQAAgAIAAKQAAAAUAIACEBAAwBAAAA=</HashCode>
+      <FileName>Structure\KeyFamily.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Tahoma" Size="8.25" />
+</ClassDiagram>

@@ -28,7 +28,7 @@ namespace SDMX
                 var attributeValue = values.GetValueOrDefault(conceptID, null);
                 if (attributeValue == null)
                 {
-                    var attribute = _keyFamily.GetAttribute(conceptID);
+                    var attribute = _keyFamily.Attributes.Get(conceptID);
 
                     if (attribute.AttachementLevel != _attachmentLevel)
                     {

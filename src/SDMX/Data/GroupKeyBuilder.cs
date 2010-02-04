@@ -11,9 +11,9 @@ namespace SDMX
     {
         private Dictionary<ID, DimensionValue> _keyValues = new Dictionary<ID, DimensionValue>();
         private KeyFamily _keyFamily;
-        private Group _group;
+        private GroupDescriptor _group;
 
-        internal GroupKeyBuilder(DataSet dataSet, Group group)
+        internal GroupKeyBuilder(DataSet dataSet, GroupDescriptor group)
         {
             _keyFamily = dataSet.KeyFamily;
             _group = group;
@@ -29,7 +29,7 @@ namespace SDMX
             Contract.AssertNotNull(() => conceptID);
             Contract.AssertNotNullOrEmpty(() => value);
 
-            var dimension = _keyFamily.GetDimension(conceptID);
+            var dimension = _keyFamily.Dimensions.Get(conceptID);
             IValue dimValue = dimension.Parse(value, startTime);
 
             _keyValues.Add(conceptID, new DimensionValue(dimension, dimValue));

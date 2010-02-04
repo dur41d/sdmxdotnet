@@ -12,7 +12,7 @@ namespace SDMX
         private Dictionary<GroupKey, GroupValue> groups = new Dictionary<GroupKey, GroupValue>();
         private DataSet _dataSet;
 
-        Group _group;
+        GroupDescriptor _group;
         
         public ID GroupID 
         {
@@ -22,7 +22,7 @@ namespace SDMX
             }
         }
 
-        internal GroupValueCollection(DataSet dataSet, Group group)
+        internal GroupValueCollection(DataSet dataSet, GroupDescriptor group)
         {
             _dataSet = dataSet;
             _group = group;

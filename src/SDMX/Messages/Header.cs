@@ -38,5 +38,11 @@ namespace SDMX
         {
             Senders.Add(sender);
         }
+
+        public Header(ID id, Party sender, DateTime prepared)
+            : this(id, sender)
+        {
+            Prepared = prepared;
+        }
     }
 }

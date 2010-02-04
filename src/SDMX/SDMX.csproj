@@ -121,6 +121,7 @@
     <Compile Include="Data\ComponenetValues.cs" />
     <Compile Include="Structure\CodeListRef.cs" />
     <Compile Include="Structure\CodeRef.cs" />
+    <Compile Include="Structure\Collection.cs" />
     <Compile Include="Structure\Component.cs" />
     <Compile Include="Structure\Concept.cs" />
     <Compile Include="Data\DataSet.cs" />
@@ -157,6 +158,12 @@
       <Project>{8441ED91-9F2B-4E43-8023-73883DA1FEA2}</Project>
       <Name>OXM</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="BasicHeirarchy.cd" />
+    <None Include="Maps\BasicMapping.cd" />
+    <None Include="Messages\StructureMessage.cd" />
+    <None Include="Structure\KeyFamily.cd" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

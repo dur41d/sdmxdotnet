@@ -6,7 +6,7 @@ using System.Collections;
 
 namespace SDMX
 {
-    public class Attribute : Component
+    public class Attribute : Component, Item
     {   
         public AttachmentLevel AttachementLevel { get; set; }
         public AssignmentStatus AssignmentStatus { get; set; }
@@ -44,5 +44,14 @@ namespace SDMX
             : base(concept, codeList)
         {
         }
+
+        #region Item Members
+
+        ID Item.ID
+        {
+            get { return Concept.ID; }
+        }
+
+        #endregion
     }
 }

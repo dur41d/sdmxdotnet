@@ -24,7 +24,7 @@ namespace SDMX.Parsers
                         {
                             var parser = new DimensionParser();
                             var dimension = parser.Parse(element, dsd);
-                            keyFamily.AddDimension(dimension);
+                            keyFamily.Dimensions.Add(dimension);
                         }
                     }
                 }

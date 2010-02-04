@@ -1,0 +1,5 @@
+glob:*.pdb
+glob:*.dll
+glob:*.orig
+glob:*.cache
+glob:*.FileListAbsolute.txt
