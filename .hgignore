@@ -4,3 +4,4 @@ glob:*.orig
 glob:*.cache
 glob:*.FileListAbsolute.txt
 glob:src/SDMX.Tests/obj/Debug/build.force
+glob:src/SDMX.suo
