@@ -26,13 +26,13 @@ namespace SDMX
 
         public void Add(ID conceptID, string value, string startTime)
         {
-            Contract.AssertNotNull(() => conceptID);
-            Contract.AssertNotNullOrEmpty(() => value);
+            //Contract.AssertNotNull(() => conceptID);
+            //Contract.AssertNotNullOrEmpty(() => value);
 
-            var dimension = _keyFamily.Dimensions.Get(conceptID);
-            IValue dimValue = dimension.Parse(value, startTime);
+            //var dimension = _keyFamily.Dimensions.Get(conceptID);
+            //IValue dimValue = dimension.Parse(value, startTime);
 
-            _keyValues.Add(conceptID, new DimensionValue(dimension, dimValue));
+            //_keyValues.Add(conceptID, new DimensionValue(dimension, dimValue));
         }
 
         public GroupKey Build()

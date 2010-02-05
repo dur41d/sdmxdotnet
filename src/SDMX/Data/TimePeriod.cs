@@ -45,6 +45,11 @@ namespace SDMX
         {
             return Regex.IsMatch(value, _pattern);
         }
+
+        internal static bool TryParse(string stringValue, out IValue value, out string reason)
+        {
+            throw new NotImplementedException();
+        }
     }
 
     public class DateTimePeriod : ITimePeriod
@@ -92,6 +97,11 @@ namespace SDMX
         public static bool IsMatch(string value)
         {
             return Regex.IsMatch(value, _pattern);
+        }
+
+        internal static bool TryParse(string stringValue, out IValue value, out string reason)
+        {
+            throw new NotImplementedException();
         }
     }
 
@@ -157,6 +167,11 @@ namespace SDMX
         {
             return Regex.IsMatch(value, _pattern);
         }
+
+        internal static bool TryParse(string stringValue, out IValue value, out string reason)
+        {
+            throw new NotImplementedException();
+        }
     }
 
     public class YearTimePeriod : ITimePeriod
@@ -213,6 +228,20 @@ namespace SDMX
         public static bool IsMatch(string value)
         {
             return Regex.IsMatch(value, _pattern);
+        }
+
+        public static bool TryParse(string s, out IValue value, out string reason)
+        {
+            reason = null;
+            value = null;
+            int result;
+            if (!int.TryParse(s, out result))
+            {
+                reason = "Could not parse string to YearTimePeriod: '{0}'.".F(s);
+                return false;
+            }
+            value = new YearTimePeriod(result);
+            return true;
         }
     }
 

@@ -11,7 +11,7 @@ namespace SDMX
     {
         private Dictionary<ID, GroupValueCollection> groups = new Dictionary<ID, GroupValueCollection>();
 
-        public KeyFamily KeyFamily { get; private set; }     
+        internal KeyFamily KeyFamily { get; private set; }     
         public AttributeValueCollection Attributes { get; private set; }
 
         public DataSet(KeyFamily keyFamily)

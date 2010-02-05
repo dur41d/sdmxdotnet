@@ -52,6 +52,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CodeListTests.cs" />
+    <Compile Include="DataTests.cs" />
     <Compile Include="GenericDataTests.cs" />
     <Compile Include="ParserTests.cs" />
     <Compile Include="QueryMessageTests.cs" />

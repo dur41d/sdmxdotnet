@@ -16,23 +16,6 @@ namespace SDMX.Tests
     public class GenericDataTests
     {
 
-        [Test]
-        public void CreateDataSet()
-        {
-            var keyFamily = StructureMessage.Load(Utility.GetPathFromProjectBase("lib\\StructureSample.xml")).KeyFamilies[0];
-            var dataSet = new DataSet(keyFamily);
-            var keyBuider = dataSet.Series.CreateKeyBuilder();
-            keyBuider.Add((ID)"FREQ", "A");
-            var series = dataSet.Series[keyBuider.Build()];
-
-            //series.Add(
-
-
-
-
-        }
-
-
         //[Test]
         //public void Create_GenericData_from_xml()
         //{

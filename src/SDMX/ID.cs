@@ -24,16 +24,22 @@ namespace SDMX
 
         public ID(string id)
         {
-            if (id == null)
-            {
-                throw new InvalidCastException("Cannot convert a null string to ID.");
-            }
-            if (!Regex.IsMatch(id, _pattern))
+            AssertValidID(id);
+            _value = id;
+        }
+
+        public static bool IsValidID(string id)
+        {
+            Contract.AssertNotNullOrEmpty(() => id);
+            return Regex.IsMatch(id, _pattern);
+        }
+
+        public static void AssertValidID(string id)
+        {
+            if (!IsValidID(id))
             {
                 throw new SDMXException("Invalid ID value '{0}'".F(id));
-            }           
-
-            _value = id;
+            }    
         }
 
         public bool IsEmpty()

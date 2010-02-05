@@ -19,7 +19,7 @@ namespace SDMX
         {
             Contract.AssertNotNull(() => item);
             items.Add(item.ID, item);
-        }
+        }      
 
         public T Get(ID conceptID)
         {
@@ -31,6 +31,20 @@ namespace SDMX
         {
             Contract.AssertNotNull(() => conceptID);
             items.Remove(conceptID);
+        }
+
+        public bool Contains(ID conceptID)
+        {
+            Contract.AssertNotNull(() => conceptID);
+            return items.ContainsKey(conceptID);
+        }
+
+        public int Count
+        {
+            get
+            {
+                return items.Count;
+            }
         }
 
         #region IEnumerable<Dimension> Members

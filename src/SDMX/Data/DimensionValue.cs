@@ -10,7 +10,7 @@ namespace SDMX
     public class DimensionValue
     {
         public Dimension Dimension { get; private set; }
-        public object Value { get; private set; }
+        public IValue Value { get; private set; }
 
         internal DimensionValue(Dimension dimension, IValue value)
         {

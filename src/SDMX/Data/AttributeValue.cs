@@ -46,8 +46,8 @@ namespace SDMX
 
         public void Parse(string value)
         {
-            Contract.AssertNotNullOrEmpty(() => value);
-            _value = Attribute.Parse(value);
+            //Contract.AssertNotNullOrEmpty(() => value);
+            //_value = Attribute.Parse(value);
         }
     }
 }

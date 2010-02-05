@@ -6,6 +6,54 @@ using OXM;
 
 namespace SDMX.Parsers
 {
+    internal class KeyItemMap : ClassMap<KeyItem>
+    {
+        ID conceptID;
+        string value, startTime;
+
+
+        public KeyItemMap()
+        {
+            Map(o => o.Concept).ToAttribute("concept", true)
+                .Set(v => conceptID = v)
+                .Converter(new IDConverter());
+
+            Map(o => o.Value).ToAttribute("value", true)
+                .Set(v => value = v)
+                .Converter(new StringConverter());
+
+            Map(o => o.StartTime).ToAttribute("startTime", false)
+                .Set(v => startTime = v)
+                .Converter(new StringConverter());
+        }
+
+        protected override KeyItem Return()
+        {
+            var keyItem = new KeyItem(conceptID, value);
+            if (!String.IsNullOrEmpty(startTime))
+            {
+                keyItem.StartTime = startTime;
+            }
+            return keyItem;
+        }
+    }
+    
+    internal class KeyMap : ClassMap<Key>
+    {
+        Key key = new Key();
+        public KeyMap()
+        {
+            MapCollection(o => o).ToElement("Value", true)
+                .Set(v => key.Add(v))
+                .ClassMap(() => new KeyItemMap());
+        }
+
+        protected override Key Return()
+        {
+            return key;
+        }
+    }
+    
     internal class SeriesKeyMap : ClassMap<SeriesKey>
     {
         SeriesKeyBuilder builder;
@@ -25,7 +73,7 @@ namespace SDMX.Parsers
             {
                 var value = new KeyValue() 
                     { 
-                        Concept = dimValue.Dimension.Concept.ID, 
+                        Concept = dimValue.Key.Concept.ID, 
                         Value = dimValue.Value.ToString() 
                     };
 

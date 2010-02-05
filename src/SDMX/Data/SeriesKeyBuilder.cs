@@ -23,19 +23,25 @@ namespace SDMX
 
         public void Add(ID conceptID, string value, string startTime)
         {
-            Contract.AssertNotNull(() => conceptID);
-            Contract.AssertNotNullOrEmpty(() => value);
+            //Contract.AssertNotNull(() => conceptID);
+            //Contract.AssertNotNullOrEmpty(() => value);
 
-            var dimension = _keyFamily.Dimensions.Get(conceptID);
-            IValue dimValue = dimension.Parse(value, startTime);
+            //var dimension = _keyFamily.Dimensions.Get(conceptID);
 
-            _keyValues.Add(conceptID, new DimensionValue(dimension, dimValue));
+            //if (dimension == null)
+            //{
+            //    throw new SDMXException("Cannot find dimension {0}.", conceptID);
+            //}
+
+            //IValue dimValue = dimension.Parse(value, startTime);
+
+            //_keyValues.Add(conceptID, new DimensionValue(dimension, dimValue));
         }
 
         public SeriesKey Build()
         {
             ValidateKey();
-            return new SeriesKey(_keyFamily, _keyValues);
+            return new SeriesKey();
         }
 
         private void ValidateKey()

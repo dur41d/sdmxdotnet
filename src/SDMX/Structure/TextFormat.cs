@@ -9,9 +9,9 @@ namespace SDMX
 {
     public interface ITextFormat
     {
-        bool IsValid(IValue value);
-        IValue Parse(string value, string startTime);
+        bool IsValid(IValue value);        
         void Serialize(IValue value, out string stringValue, out string startTime);
+        bool TryParse(string s, string startTime, out IValue value, out string reason);
     }
 
     public interface ITimePeriodTextFormat : ITextFormat
@@ -25,11 +25,12 @@ namespace SDMX
         {
             return value is StringValue;
         }
-
-        public IValue Parse(string value, string startTime)
+      
+        public bool TryParse(string stringValue, string startTime, out IValue value, out string reason)
         {
-            return new StringValue(value);
+            return StringValue.TryParse(stringValue, out value, out reason);
         }
+
 
         public void Serialize(IValue value, out string stringValue, out string startTime)
         {
@@ -43,11 +44,11 @@ namespace SDMX
         public bool IsValid(IValue value)
         {
             return value is DecimalValue;
-        }
+        }       
 
-        public IValue Parse(string value, string startTime)
+        public bool TryParse(string stringValue, string startTime, out IValue value, out string reason)
         {
-            return new DecimalValue(decimal.Parse(value));
+            return DecimalValue.TryParse(stringValue, out value, out reason);
         }
 
         public void Serialize(IValue value, out string stringValue, out string startTime)
@@ -64,9 +65,9 @@ namespace SDMX
             return value is YearTimePeriod;
         }
 
-        public IValue Parse(string value, string startTime)
+        public bool TryParse(string stringValue, string startTime, out IValue value, out string reason)
         {
-            return YearTimePeriod.Parse(value);
+            return YearTimePeriod.TryParse(stringValue, out value, out reason);
         }
 
         public void Serialize(IValue value, out string stringValue, out string startTime)
@@ -81,11 +82,11 @@ namespace SDMX
         public bool IsValid(IValue value)
         {
             return value is YearMonthTimePeriod;
-        }
+        }    
 
-        public IValue Parse(string value, string startTime)
+        public bool TryParse(string stringValue, string startTime, out IValue value, out string reason)
         {
-            return YearMonthTimePeriod.Parse(value);
+            return YearMonthTimePeriod.TryParse(stringValue, out value, out reason);
         }
 
         public void Serialize(IValue value, out string stringValue, out string startTime)
@@ -102,9 +103,9 @@ namespace SDMX
             return value is DateTimeTimePeriod;
         }
 
-        public IValue Parse(string value, string startTime)
+        public bool TryParse(string stringValue, string startTime, out IValue value, out string reason)
         {
-            return DateTimeTimePeriod.Parse(value);
+            return DateTimeTimePeriod.TryParse(stringValue, out value, out reason);
         }
 
         public void Serialize(IValue value, out string stringValue, out string startTime)
@@ -121,9 +122,9 @@ namespace SDMX
             return value is DateTimePeriod;
         }
 
-        public IValue Parse(string value, string startTime)
+        public bool TryParse(string stringValue, string startTime, out IValue value, out string reason)
         {
-            return DateTimePeriod.Parse(value);
+            return DateTimePeriod.TryParse(stringValue, out value, out reason);
         }
 
         public void Serialize(IValue value, out string stringValue, out string startTime)
