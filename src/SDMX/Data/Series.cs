@@ -10,11 +10,11 @@ namespace SDMX
         private Dictionary<ITimePeriod, Observation> _observations = new Dictionary<ITimePeriod, Observation>();
         
         public DataSet DataSet { get; internal set; }
-        public SeriesKey Key { get; internal set; }
+        public Key Key { get; internal set; }
 
         public AttributeValueCollection Attributes { get; private set; }
 
-        internal Series(DataSet dataSet, SeriesKey key)
+        internal Series(DataSet dataSet, Key key)
         {
             Key = key;
             DataSet = dataSet;

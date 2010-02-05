@@ -8,8 +8,6 @@ using Common;
 
 namespace SDMX
 {
-
-
     public class KeyFamily : MaintainableArtefact
     {
         public KeyFamily(InternationalString name, ID id, ID agencyID)
@@ -35,19 +33,43 @@ namespace SDMX
             Groups.Add(group);
             return group;
         }
-        public static KeyFamily Parse(XDocument dsdXml)
-        {
-            KeyFamilyParser parser = new KeyFamilyParser();
-            DSDDocument dsd = new DSDDocument(dsdXml);
-            return parser.Parse(dsd);
-        }
-
+    
         public override Uri Urn
         {
             get 
             {
                 return new Uri(string.Format("{0}.keyfamily.KeyFamily={1}:{2}[{3}]".F(UrnPrefix, AgencyID, ID, Version)));
             }
+        }
+
+        internal bool IsValidSeriesKey(Key key, out string reason)
+        {
+            reason = null;            
+            if (key.Count != Dimensions.Count)
+            {                
+                reason = string.Format("Key items count ({0}) is differnt than the dimension count ({1}).", key.Count, Dimensions.Count);
+                return false;
+            }
+            foreach (var keyItem in key)
+            {
+                var dim = Dimensions.Get((ID)keyItem.Concept);
+                if (dim == null)
+                {
+                    reason = string.Format("Dimension is not found for key item '{0}'.", keyItem.Concept);
+                    return false;
+                }
+
+                IValue value = null;
+                string parseReason;
+                if (!dim.TryParse(keyItem.Value, keyItem.StartTime, out value, out parseReason))
+                {
+                    reason = "Faild to parse value: '{0}' startTime '{1}'. reason: '{2}'."
+                        .F(keyItem.Value, keyItem.StartTime, parseReason);
+                    return false;
+                }
+            }
+
+            return true;
         }
     }
 }

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Common;
 
 namespace SDMX
 {
@@ -48,22 +49,26 @@ namespace SDMX
         //    {
         //        throw new Exception("non coded components are not supported yet.");
         //    }
-        //}
+        //}       
 
-        public virtual IValue Parse(string value)
+        public virtual bool TryParse(string s, string startTime, out IValue value, out string reason)
         {
-            return Parse(value, null);
-        }
-
-        public virtual IValue Parse(string value, string startTime)
-        {
+            value = null;
+            reason = null;
             if (IsCoded)
             {
-                return (IValue)CodeList.Get((ID)value);
+                var code = CodeList.Get((ID)s);
+                if (code == null)
+                {
+                    reason = string.Format("Code not found for value '{0}'.", s);
+                    return false;
+                }
+                value = code;
+                return true;
             }
             else
             {
-                return TextFormat.Parse(value, startTime);
+                return TextFormat.TryParse(s, startTime, out value, out reason);
             }
         }
 

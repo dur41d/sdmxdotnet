@@ -7,7 +7,7 @@ namespace SDMX
 {
     public class SeriesCollection : IEnumerable<Series>
     {
-        private Dictionary<SeriesKey, Series> _collection = new Dictionary<SeriesKey, Series>();
+        private Dictionary<Key, Series> _collection = new Dictionary<Key, Series>();
         private DataSet _dataSet;
 
         internal SeriesCollection(DataSet dataSet)
@@ -15,10 +15,31 @@ namespace SDMX
             _dataSet = dataSet;
         }
 
-        public Series this[SeriesKey key]
+        //public Series this[SeriesKey key]
+        //{
+        //    get
+        //    {
+        //        var series = _collection.GetValueOrDefault(key, null);
+        //        if (series == null)
+        //        {
+        //            series = new Series(_dataSet, key);
+        //            _collection.Add(key, series);
+        //        }
+
+        //        return series;
+        //    }
+        //}
+
+        public Series this[Key key]
         {
             get
             {
+                string reason;
+                if (!_dataSet.KeyFamily.IsValidSeriesKey(key, out reason))
+                {
+                    throw new SDMXException("Invalid series key. reason: {0}, key: {1}", reason, key.ToString());
+                }
+                
                 var series = _collection.GetValueOrDefault(key, null);
                 if (series == null)
                 {
