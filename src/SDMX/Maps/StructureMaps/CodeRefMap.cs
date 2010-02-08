@@ -21,7 +21,7 @@ namespace SDMX.Parsers
 
             Map(o => o.CodeListRef.Alias).ToSimpleElement("CodelistAliasRef", true)
                 .Set(v => codeRef.CodeListRef = GetCodeListRef(hierarchicalCodeList, v))
-                .Converter(new IDConverter());
+                .Converter(new NullableIDConverter());
 
             Map(o => o.CodeID).ToSimpleElement("CodeID", true)
                 .Set(v => codeRef.CodeID = v)
@@ -52,7 +52,7 @@ namespace SDMX.Parsers
                 .Converter(new TimePeriodConverter());
         }
 
-        private CodeListRef GetCodeListRef(HierarchicalCodeList hierarchicalCodeList, ID alias)
+        private CodeListRef GetCodeListRef(HierarchicalCodeList hierarchicalCodeList, ID? alias)
         {
             return hierarchicalCodeList.CodeListRefs.Where(c => c.Alias == alias).Single();
         }

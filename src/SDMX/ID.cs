@@ -11,15 +11,14 @@ namespace SDMX
     /// A structure to restrict data to this pattern: ([A-Z]|[a-z]|\*|@|[0-9]|_|$|\-)*
     /// </summary>
     public struct ID : IEquatable<ID>
-    {
-        public static readonly ID Empty;
+    {   
         private string _value;
 
         private const string _pattern = "^([A-Z]|[a-z]|\\*|@|[0-9]|_|$|\\-)*$";
 
         static ID()
         {
-            Empty = default(ID);
+            
         }
 
         public ID(string id)
