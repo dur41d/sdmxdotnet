@@ -65,7 +65,7 @@ namespace SDMX
         {
             foreach (var codeRef in hierarchy.GetCodeRefs())
             {
-                if (codeRef.CodeListRef.Alias.IsEmpty())
+                if (codeRef.CodeListRef.Alias == null)
                 {
                     var codeListRef = codeListRefs.Where(c => c.ID == codeRef.CodeListRef.ID
                         && c.AgencyID == codeRef.CodeListRef.AgencyID).FirstOrDefault();

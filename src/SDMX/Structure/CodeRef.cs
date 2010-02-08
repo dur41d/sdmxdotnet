@@ -35,7 +35,7 @@ namespace SDMX
             Contract.AssertNotNull(() => code);
 
             CodeID = code.ID;
-            CodeListRef = new CodeListRef(code.CodeList, ID.Empty);
+            CodeListRef = new CodeListRef(code.CodeList, null);
         }
       
 
