@@ -174,7 +174,7 @@ namespace SDMX
         }
     }
 
-    public class YearTimePeriod : ITimePeriod
+    public class YearTimePeriod : ITimePeriod, IEquatable<YearTimePeriod>
     {        
         const string _pattern = @"(?<Sign>[-|+]?)(?<Year>\d{4})(?<Z>Z)?(?:(?<ZoneSign>[+-])(?<ZoneHour>\d{2}):(?<ZoneMinute>\d{2}))?";
         DateTimeOffset _timeOffset;
@@ -225,6 +225,11 @@ namespace SDMX
             return new YearTimePeriod(input);
         }
 
+        public static explicit operator YearTimePeriod(int input)
+        {
+            return new YearTimePeriod(input);
+        }
+
         public static bool IsMatch(string value)
         {
             return Regex.IsMatch(value, _pattern);
@@ -243,6 +248,36 @@ namespace SDMX
             value = new YearTimePeriod(result);
             return true;
         }
+
+        #region IEquatable<DecimalValue> Members
+
+        public override int GetHashCode()
+        {
+            return _timeOffset.GetHashCode();
+        }
+
+        public override bool Equals(object other)
+        {
+            if (!(other is YearTimePeriod)) return false;
+            return Equals((YearTimePeriod)other);
+        }
+
+        public bool Equals(YearTimePeriod other)
+        {
+            return _timeOffset.Equals(other._timeOffset);
+        }
+
+        public static bool operator ==(IValue x, YearTimePeriod y)
+        {
+            return x.Equals(y);
+        }
+
+        public static bool operator !=(IValue x, YearTimePeriod y)
+        {
+            return !x.Equals(y);
+        }
+
+        #endregion
     }
 
     public class QuarterlyTimePeriod : ITimePeriod
