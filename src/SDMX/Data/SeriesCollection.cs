@@ -51,6 +51,14 @@ namespace SDMX
             }
         }
 
+        public int Count
+        {
+            get
+            {
+                return _collection.Count;
+            }
+        }
+
         public SeriesKeyBuilder CreateKeyBuilder()
         {
             return new SeriesKeyBuilder(_dataSet);

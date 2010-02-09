@@ -51,7 +51,7 @@ namespace SDMX
         }
     }
 
-    public class DecimalValue : IValue
+    public class DecimalValue : IValue, IEquatable<DecimalValue>
     {
         decimal _value;
 
@@ -88,6 +88,105 @@ namespace SDMX
             value = new DecimalValue(result);
             return true;
         }
+
+        #region IEquatable<DecimalValue> Members
+
+        public override int GetHashCode()
+        {
+            return _value.GetHashCode();
+        }
+
+        public override bool Equals(object other)
+        {
+            if (!(other is DecimalValue)) return false;
+            return Equals((DecimalValue)other);
+        }
+
+        public bool Equals(DecimalValue other)
+        {
+            return _value.Equals(other._value);
+        }
+
+        public static bool operator ==(IValue x, DecimalValue y)
+        {
+            return x.Equals(y);
+        }
+
+        public static bool operator !=(IValue x, DecimalValue y)
+        {
+            return !x.Equals(y);
+        }
+
+        #endregion
+    }
+
+    public class IntegerValue : IValue, IEquatable<IntegerValue>
+    {
+        int _value;
+
+        public IntegerValue(int value)
+        {
+            _value = value;
+        }
+
+        public static explicit operator IntegerValue(int value)
+        {
+            return new IntegerValue(value);
+        }
+
+        public static explicit operator int(IntegerValue value)
+        {
+            return value._value;
+        }
+
+        public override string ToString()
+        {
+            return _value.ToString();
+        }
+
+        public static bool TryParse(string s, out IValue value, out string reason)
+        {
+            reason = null;
+            value = null;
+            int result;
+            if (!int.TryParse(s, out result))
+            {
+                reason = "Could not parse string to int: '{0}'.".F(s);
+                return false;
+            }
+            value = new IntegerValue(result);
+            return true;
+        }
+
+        #region IEquatable<DecimalValue> Members
+
+        public override int GetHashCode()
+        {
+            return _value.GetHashCode();
+        }
+
+        public override bool Equals(object other)
+        {
+            if (!(other is IntegerValue)) return false;
+            return Equals((IntegerValue)other);
+        }
+
+        public bool Equals(IntegerValue other)
+        {
+            return _value.Equals(other._value);
+        }
+
+        public static bool operator ==(IValue x, IntegerValue y)
+        {
+            return x.Equals(y);
+        }
+
+        public static bool operator !=(IValue x, IntegerValue y)
+        {
+            return !x.Equals(y);
+        }
+
+        #endregion
     }
 
 

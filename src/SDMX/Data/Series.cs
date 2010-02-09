@@ -34,6 +34,11 @@ namespace SDMX
             }
         }
 
+        public int Count
+        {
+            get { return _observations.Count; }
+        }
+
         internal void Include(Observation observation)
         {
             _observations[observation.Time] = observation;
