@@ -55,10 +55,10 @@ namespace SDMX.Tests
                 dataSet.Series.Add(series);
             }
 
-            Assert.IsTrue(dataSet.Series.Count == 1);
+            Assert.AreEqual(2, dataSet.Series.Count);
             var series2 = dataSet.Series.ElementAt(0);
-            Assert.IsTrue(series2.Attributes.Count == 2);
-            Assert.IsTrue(series2.Count == 2);
+            Assert.AreEqual(2, series2.Attributes.Count);
+            Assert.AreEqual(1 , series2.Count);
             var obs2 = series2.Get((YearTimePeriod)1999);
             Assert.IsTrue(obs2.Value == (DecimalValue)3.3m);
             obs2 = series2.Get((YearTimePeriod)2000);
@@ -97,7 +97,7 @@ namespace SDMX.Tests
             table.Columns.Add("value", typeof(decimal));
 
             var row = table.NewRow();
-            row["freq"] = "A";
+            row["freq"] = "D";
             row["jdtype"] = "P";
             row["jdcat"] = "B";
             row["city"] = "DE";
