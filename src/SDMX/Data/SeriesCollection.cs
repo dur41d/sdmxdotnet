@@ -8,7 +8,7 @@ namespace SDMX
 {
     public class SeriesCollection : IEnumerable<Series>
     {
-        private Dictionary<Key, Series> _collection = new Dictionary<Key, Series>();
+        private Dictionary<ReadOnlyKey, Series> _collection = new Dictionary<ReadOnlyKey, Series>();
         private DataSet _dataSet;
 
         internal SeriesCollection(DataSet dataSet)
@@ -17,6 +17,13 @@ namespace SDMX
         }
 
         public Series Get(Key key)
+        {
+            Contract.AssertNotNull(() => key);
+
+            return Get(new ReadOnlyKey(key));
+        }
+
+        public Series Get(ReadOnlyKey key)
         {
             Contract.AssertNotNull(() => key);
 

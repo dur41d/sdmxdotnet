@@ -12,11 +12,11 @@ namespace SDMX
         private Dictionary<ITimePeriod, Observation> _observations = new Dictionary<ITimePeriod, Observation>();
         
         public DataSet DataSet { get; internal set; }
-        public Key Key { get; internal set; }
+        public ReadOnlyKey Key { get; internal set; }
 
-        public AttributeValueCollection Attributes { get; private set; }
-
-        internal Series(DataSet dataSet, Key key)
+        public AttributeValueCollection Attributes { get; private set; }      
+        
+        internal Series(DataSet dataSet, ReadOnlyKey key)
         {               
             dataSet.KeyFamily.ValidateSeriesKey(key);
 
