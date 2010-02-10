@@ -39,7 +39,7 @@ namespace SDMX.Tests
                 var time = new YearTimePeriod((int)row["time"]);
                 var value = new DecimalValue((decimal)row["value"]);
 
-                var series = dataSet.Series.Get(key);
+                var series = dataSet.Series.Get(key);                
                 var obs = series.Get(time);
 
                 if (series.Attributes["TIME_FORMAT"] == null)

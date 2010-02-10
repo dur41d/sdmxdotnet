@@ -14,9 +14,9 @@ namespace SDMX.Parsers
         {
             ElementsOrder("SeriesKey", "Attributes", "Obs", "Annotations");
 
-            Map(o => o.Key).ToElement("SeriesKey", true)
-                .Set(v => _series = new Series(dataSet, v))
-                .ClassMap(() => new KeyMap());
+            //Map(o => o.Key).ToElement("SeriesKey", true)
+            //    .Set(v => _series = dataSet.Series.Get(v))
+            //    .ClassMap(() => new KeyMap());
 
             //MapContainer(Namespaces.Generic + "Attributes", false)
             //    .MapCollection(o => GetKeyValues(o.Attributes)).ToElement("Value", false)

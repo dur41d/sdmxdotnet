@@ -41,12 +41,13 @@ namespace SDMX
                         throw new SDMXException("Attribute '{0}' does not have code list and thus cannot be assigned a value using id '{1}'."
                             , concept, (ID)value);
                     }
-                    value = att.CodeList.Get((ID)value);
-                    if (value == null)
+                    var code = att.CodeList.Get((ID)value);
+                    if (code == null)
                     {
                         throw new SDMXException("Value '{0}' is not found in the code list of attribute '{1}'.",
                             (ID)value, concept);
                     }
+                    value = code;
                 }
                 else
                 {

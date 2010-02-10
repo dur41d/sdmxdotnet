@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Common;
+using System.Collections;
 
 namespace SDMX
 {
@@ -20,6 +21,98 @@ namespace SDMX
     //    }
     //}
 
+    public class ReadOnlyKey : IEnumerable<KeyValuePair<ID, IValue>>, IEquatable<ReadOnlyKey>
+    {
+        private Dictionary<ID, IValue> _keyValues;       
+
+        internal ReadOnlyKey(Key key)
+        {
+            _keyValues = new Dictionary<ID, IValue>();
+            foreach (var item in key)
+            { 
+                _keyValues[item.Key] = item.Value;
+            }
+        }
+
+        public virtual IValue this[ID concept]
+        {
+            get
+            {
+                return _keyValues[concept];
+            }
+        }
+
+        public int Count
+        {
+            get
+            {
+                return _keyValues.Count;
+            }
+        }
+
+        #region IEnumerable<KeyValuePair<ID,IValue>> Members
+
+        public IEnumerator<KeyValuePair<ID, IValue>> GetEnumerator()
+        {
+            foreach (var item in _keyValues)
+                yield return item;
+        }
+
+        #endregion
+
+        #region IEnumerable Members
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+
+        #endregion
+
+        #region IEquatable<Key> Members
+
+        public bool Equals(ReadOnlyKey other)
+        {
+            if (Count != other.Count)
+            {
+                return false;
+            }
+
+            foreach (var item in this)
+            {
+                var otherValue = other[item.Key];
+                if (!item.Value.Equals(otherValue))
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (!(obj is ReadOnlyKey)) return false;
+            return Equals((ReadOnlyKey)obj);
+        }
+
+        public override int GetHashCode()
+        {
+            int hash = 0;
+            _keyValues.ForEach(k => hash = hash ^ 37 ^ k.Key.GetHashCode() ^ k.Value.GetHashCode());
+            return hash;
+        }
+
+        public override string ToString()
+        {
+            var builder = new StringBuilder();
+            _keyValues.ForEach(k => builder.AppendFormat("{0}={1},", k.Key, k.Value));
+            return builder.Remove(builder.Length -1, 1).ToString();
+        }
+
+        #endregion      
+    }
+
     public class Key : IEnumerable<KeyValuePair<ID, IValue>>, IEquatable<Key>
     {
         private Dictionary<ID, IValue> _keyValues;
@@ -31,7 +124,7 @@ namespace SDMX
             _keyFamily = keyFamily;
         }
 
-        public IValue this[ID concept]
+        public virtual IValue this[ID concept]
         {
             get
             {
@@ -53,12 +146,13 @@ namespace SDMX
                         throw new SDMXException("Dimension '{0}' does not have code list and thus cannot be assigned a value using id '{1}'."
                             , concept, (ID)value);
                     }
-                    value = dim.CodeList.Get((ID)value);
-                    if (value == null)
+                    var code = dim.CodeList.Get((ID)value);
+                    if (code == null)
                     {
                         throw new SDMXException("Value '{0}' is not found in the code list of dimension '{1}'.",
                             (ID)value, concept);
                     }
+                    value = code;
                 }
 
                 _keyValues[concept] = value;

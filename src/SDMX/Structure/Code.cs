@@ -20,9 +20,7 @@ namespace SDMX
             {
                 return new Uri(string.Format("{0}.codelist.Code={1}:{2}.{3}[{4}]".F(UrnPrefix, CodeList.AgencyID, CodeList.ID, ID, CodeList.Version)));
             }
-        }
-
-     
+        }     
 
         #region IEquatable<Code> Members
 
@@ -35,7 +33,7 @@ namespace SDMX
         public override bool Equals(object obj)
         {
             if (!(obj is Code)) return false;
-            return base.Equals((Code)obj);
+            return Equals((Code)obj);
         }
 
         public override int GetHashCode()

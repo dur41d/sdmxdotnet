@@ -42,7 +42,7 @@ namespace SDMX
             }
         }
 
-        internal bool IsValidSeriesKey(Key key, out string reason)
+        internal bool IsValidSeriesKey(ReadOnlyKey key, out string reason)
         {
             reason = null;            
             if (key.Count != Dimensions.Count)
@@ -70,7 +70,7 @@ namespace SDMX
             return true;
         }
 
-        public void ValidateSeriesKey(Key key)
+        public void ValidateSeriesKey(ReadOnlyKey key)
         {
             string reason;
             if (!IsValidSeriesKey(key, out reason))
