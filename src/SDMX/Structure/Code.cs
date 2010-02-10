@@ -47,7 +47,8 @@ namespace SDMX
 
         public override string ToString()
         {
-            return string.Format("{0}.{1}", CodeList, ID);
+            //return string.Format("{0}.{1}", CodeList, ID);
+            return ID.ToString();
         }
 
         #endregion

@@ -56,18 +56,25 @@ namespace SDMX
                 values[concept] = value;
             }
         }
-    
-        #region IEnumerable<KeyValuePair<ID,IValue>> Members
 
-        IEnumerator<KeyValuePair<ID, IValue>> IEnumerable<KeyValuePair<ID, IValue>>.GetEnumerator()
+        public int Count
         {
-            throw new NotImplementedException();
+            get { return values.Count; }
+        }
+    
+        #region IEnumerable Members
+
+        public IEnumerator<KeyValuePair<ID, IValue>> GetEnumerator()
+        {
+            foreach (var item in values)
+                yield return item;
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            throw new NotImplementedException();
+            return GetEnumerator();
         }
+
 
         #endregion
     }
