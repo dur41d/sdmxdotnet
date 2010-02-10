@@ -33,7 +33,7 @@ namespace SDMX
                 return CodeList != null;
             }
         }
-
+      
         //public virtual object Parse(string value)
         //{
         //    return Parse(value, null);    
@@ -89,8 +89,7 @@ namespace SDMX
         {
             if (IsCoded)
             {
-                return false;
-                // return value.Is<Code>() && CodeList.Contains((ID)value);
+                return value is Code && CodeList.Contains((Code)value);
             }
             else
             {

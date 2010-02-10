@@ -6,59 +6,40 @@ using Common;
 
 namespace SDMX
 {
-    public class KeyItem
-    {
-        public ID Concept { get; private set; }
-        public string Value { get; private set; }
-        public string StartTime { get; set; }
+    //public class KeyItem
+    //{
+    //    public ID Concept { get; private set; }
+    //    public string Value { get; private set; }
+    //    public string StartTime { get; set; }
         
-        public KeyItem(ID key, string value)
-        {            
-            Contract.AssertNotNullOrEmpty(() => value);
-            Concept = key;
-            Value = value;
-        }
-    }
+    //    public KeyItem(ID key, string value)
+    //    {            
+    //        Contract.AssertNotNullOrEmpty(() => value);
+    //        Concept = key;
+    //        Value = value;
+    //    }
+    //}
 
-    public class Key : IEnumerable<KeyItem>
+    public class Key : IEnumerable<KeyValuePair<ID, IValue>>, IEquatable<Key>, ICloneable
     {
-        private Dictionary<string, KeyItem> _keyValues;
+        private Dictionary<ID, IValue> _keyValues;
 
         public Key()
         {
-            _keyValues = new Dictionary<string, KeyItem>();            
+            _keyValues = new Dictionary<ID, IValue>();            
         }
 
-        public string this[string key]
+        public IValue this[ID key]
         {
             get
-            { 
-                Contract.AssertNotNullOrEmpty(() => key);
-                return _keyValues[key].Value;
+            {
+                return _keyValues[key];
             }
             set
-            {                
-                _keyValues[key] = new KeyItem((ID)key, value);
-            }
-        }
-
-        internal void Add(KeyItem keyItem)
-        {
-            Contract.AssertNotNull(() => keyItem);
-            _keyValues.Add(keyItem.Concept.ToString(), keyItem);
-        }
-
-        public void SetStartTime(string key, string startTime)
-        {
-            Contract.AssertNotNullOrEmpty(() => key);
-            Contract.AssertNotNullOrEmpty(() => startTime);
-
-            if (!_keyValues.ContainsKey(key))
             {
-                throw new SDMXException("key does not exist '{0}'.", key);    
+                Contract.AssertNotNull(() => value);
+                _keyValues[key] = value;
             }
-
-            _keyValues[key].StartTime = startTime;
         }
 
         public int Count
@@ -69,12 +50,12 @@ namespace SDMX
             }
         }
 
-        #region IEnumerable<KeyItem> Members
+        #region IEnumerable<KeyValuePair<ID,IValue>> Members
 
-        public IEnumerator<KeyItem> GetEnumerator()
+        public IEnumerator<KeyValuePair<ID, IValue>> GetEnumerator()
         {
             foreach (var item in _keyValues)
-                yield return item.Value;
+                yield return item;
         }
 
         #endregion
@@ -83,55 +64,115 @@ namespace SDMX
 
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
-            return GetEnumerator();
+            throw new NotImplementedException();
+        }
+
+        #endregion
+
+        #region IEquatable<Key> Members
+
+        public bool Equals(Key other)
+        {
+            if (Count != other.Count)
+            {
+                return false;
+            }
+
+            foreach (var item in this)
+            {
+                var otherValue = other[item.Key];
+                if (!item.Value.Equals(otherValue))
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (!(obj is Key)) return false;
+            return Equals((Key)obj);
+        }
+
+        public override int GetHashCode()
+        {
+            int hash = 0;
+            _keyValues.ForEach(k => hash = hash ^ 37 ^ k.Key.GetHashCode() ^ k.Value.GetHashCode());
+            return hash;
+        }
+
+        public override string ToString()
+        {
+            var builder = new StringBuilder();
+            _keyValues.ForEach(k => builder.AppendFormat("{0}={1},", k.Key, k.Value));
+            return builder.Remove(builder.Length -1, 1).ToString();
+        }
+
+        #endregion
+
+        #region ICloneable Members
+
+        public object Clone()
+        {
+            throw new NotImplementedException();
         }
 
         #endregion
     }
     
-    public class SeriesKey : IEnumerable<KeyValuePair<Dimension, IValue>>
-    {
-        private Dictionary<Dimension, IValue> _keyValues;       
+    //public class SeriesKey : IEnumerable<KeyValuePair<ID, IValue>>
+    //{
+    //    private Dictionary<ID, IValue> _keyValues;
+    //    private KeyFamily _keyFamily;
 
-        internal SeriesKey()
-        {
-            _keyValues = new Dictionary<Dimension, IValue>();            
-        }
+    //    internal SeriesKey(KeyFamily keyFamily)
+    //    {
+    //        _keyFamily = keyFamily;
+    //        _keyValues = new Dictionary<ID, IValue>();            
+    //    }    
+                
+    //    public IValue this[ID id]
+    //    {
+    //        get
+    //        {                
+    //            return _keyValues[id];
+    //        }
+    //        set
+    //        {                
+    //            Contract.AssertNotNull(() => value);
+    //            _keyValues[id] = value;   
+    //        }
+    //    }
 
-        public IValue this[Dimension dim]
-        {
-            get
-            {
-                Contract.AssertNotNull(() => dim);
-                return _keyValues[dim];
-            }
-            set
-            {
-                Contract.AssertNotNull(() => dim);
-                Contract.AssertNotNull(() => value);
-                _keyValues[dim] = value;   
-            }
-        }
+    //    public int Count
+    //    {
+    //        get
+    //        {
+    //            return _keyValues.Count;
+    //        }
+    //    }
 
-        #region IEnumerable<DimensionValue> Members
+    //    #region IEnumerable<DimensionValue> Members
 
-        public IEnumerator<KeyValuePair<Dimension, IValue>> GetEnumerator()
-        {
-            foreach (var item in _keyValues)
-            {
-                yield return item;
-            }
-        }
+    //    public IEnumerator<KeyValuePair<ID, IValue>> GetEnumerator()
+    //    {
+    //        foreach (var item in _keyValues)
+    //        {
+    //            yield return item;
+    //        }
+    //    }
 
-        #endregion
+    //    #endregion
 
-        #region IEnumerable Members
+    //    #region IEnumerable Members
 
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
+    //    System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+    //    {
+    //        return GetEnumerator();
+    //    }
 
-        #endregion
-    }
+    //    #endregion
+    //}
 }

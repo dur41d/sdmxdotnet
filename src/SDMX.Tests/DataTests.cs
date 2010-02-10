@@ -27,28 +27,41 @@ namespace SDMX.Tests
             var keyFamily = dsd.KeyFamilies[0];
             var dataSet = new DataSet(keyFamily);
 
-            var dataTable = GetDataTable();
-
-            
+            var dataTable = GetDataTable();            
 
             foreach (DataRow row in dataTable.Rows)
             {
                 var key = new Key();
-                key["FREQ"] = (string)row["freq"];
-                key["JD_TYPE"] = (string)row["jdtype"];
-                key["JD_CATEGORY"] = (string)row["jdcat"];
-                key["VIS_CTY"] = (string)row["city"];
+                key[(ID)"FREQ"] = keyFamily.Dimensions.Get((ID)"FREQ").CodeList.Get((ID)((string)row["freq"]));
+                key[(ID)"JD_TYPE"] = keyFamily.Dimensions.Get((ID)"JD_TYPE").CodeList.Get((ID)((string)row["jdtype"]));
+                key[(ID)"JD_CATEGORY"] = keyFamily.Dimensions.Get((ID)"JD_CATEGORY").CodeList.Get((ID)((string)row["jdcat"]));
+                key[(ID)"VIS_CTY"] = keyFamily.Dimensions.Get((ID)"VIS_CTY").CodeList.Get((ID)((string)row["city"]));
                 var time = new YearTimePeriod((int)row["time"]);
-                var value = new DecimalValue(2332);
+                var value = new DecimalValue((decimal)row["value"]);
 
-                dataSet.Series[key][time].Value = value;
+                var series = dataSet.Series.Get(key);
+                var obs = series.Get(time);
+
+                if (series.Attributes[(ID)"TIME_FORMAT"] == null)
+                {
+                    series.Attributes[(ID)"TIME_FORMAT"] = keyFamily.Attributes.Get((ID)"TIME_FORMAT").CodeList.Get((ID)"P1Y");
+                    series.Attributes[(ID)"COLLECTION"] = keyFamily.Attributes.Get((ID)"COLLECTION").CodeList.Get((ID)"A");
+                }
+                
+                obs.Value = value;
+                obs.Attributes[(ID)"OBS_STATUS"] = keyFamily.Attributes.Get((ID)"OBS_STATUS").CodeList.Get((ID)"A");
+                
+                series.Add(obs);
+                dataSet.Series.Add(series);
             }
 
             Assert.IsTrue(dataSet.Series.Count == 1);
-            var series = dataSet.Series.ElementAt(0);
-            Assert.IsTrue(series.Count == 1);
-            Assert.IsTrue(series.ElementAt(0).Value == ((DecimalValue)2332));
-            Assert.IsTrue(series.ElementAt(0).Time == (YearTimePeriod)1999);
+            var series2 = dataSet.Series.ElementAt(0);
+            Assert.IsTrue(series2.Count == 2);
+            var obs2 = series2.Get((YearTimePeriod)1999);
+            Assert.IsTrue(obs2.Value == (DecimalValue)3.3m);
+            obs2 = series2.Get((YearTimePeriod)2000);
+            Assert.IsTrue(obs2.Value == (DecimalValue)4.4m);
             
         }
 
@@ -68,7 +81,17 @@ namespace SDMX.Tests
             row["jdcat"] = "B";
             row["city"] = "DE";
             row["time"] = 1999;
-            row["value"] = 3.3223m;
+            row["value"] = 3.3m;
+
+            table.Rows.Add(row);
+
+            row = table.NewRow();
+            row["freq"] = "A";
+            row["jdtype"] = "P";
+            row["jdcat"] = "B";
+            row["city"] = "DE";
+            row["time"] = 2000;
+            row["value"] = 4.4m;
 
             table.Rows.Add(row);
 

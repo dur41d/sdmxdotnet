@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System;
 using System.Xml.Linq;
 using SDMX.Parsers;
+using Common;
 
 namespace SDMX
 {
@@ -15,40 +16,32 @@ namespace SDMX
             _dataSet = dataSet;
         }
 
-        //public Series this[SeriesKey key]
-        //{
-        //    get
-        //    {
-        //        var series = _collection.GetValueOrDefault(key, null);
-        //        if (series == null)
-        //        {
-        //            series = new Series(_dataSet, key);
-        //            _collection.Add(key, series);
-        //        }
-
-        //        return series;
-        //    }
-        //}
-
-        public Series this[Key key]
+        public Series Get(Key key)
         {
-            get
-            {
-                string reason;
-                if (!_dataSet.KeyFamily.IsValidSeriesKey(key, out reason))
-                {
-                    throw new SDMXException("Invalid series key. reason: {0}, key: {1}", reason, key.ToString());
-                }
-                
-                var series = _collection.GetValueOrDefault(key, null);
-                if (series == null)
-                {
-                    series = new Series(_dataSet, key);
-                    _collection.Add(key, series);
-                }
+            Contract.AssertNotNull(() => key);
 
-                return series;
+            var series = _collection.GetValueOrDefault(key, null);
+            if (series == null)
+            {
+                return new Series(_dataSet, key);
             }
+
+            return series;
+        }
+        
+        public void Add(Series series)
+        {
+            if (series == null)
+            {
+                throw new SDMXException("Series is null.");
+            }
+            if (series.DataSet != _dataSet)
+            {
+                throw new SDMXException("This series wasn't created for this dataset and thus cannot be added to it.");
+            }
+
+            _dataSet.KeyFamily.AssertHasManatoryAttributes(series.Attributes, AttachmentLevel.Series);
+            _collection[series.Key] = series;
         }
 
         public int Count
@@ -59,11 +52,8 @@ namespace SDMX
             }
         }
 
-        public SeriesKeyBuilder CreateKeyBuilder()
-        {
-            return new SeriesKeyBuilder(_dataSet);
-        }
-
+       
+      
 
         #region IEnumerable<Series> Members
 

@@ -10,7 +10,7 @@ namespace SDMX
     {
     }
 
-    public class StringValue : IValue
+    public class StringValue : IValue,  IEquatable<StringValue>
     {
         string _value;
 
@@ -49,6 +49,36 @@ namespace SDMX
             value = new StringValue(stringValue);
             return true;
         }
+
+        #region IEquatable<StringValue> Members
+
+        public override int GetHashCode()
+        {
+            return _value.GetHashCode();
+        }
+
+        public override bool Equals(object other)
+        {
+            if (!(other is StringValue)) return false;
+            return Equals((StringValue)other);
+        }
+
+        public bool Equals(StringValue other)
+        {
+            return _value.Equals(other._value);
+        }
+
+        public static bool operator ==(IValue x, StringValue y)
+        {
+            return x.Equals(y);
+        }
+
+        public static bool operator !=(IValue x, StringValue y)
+        {
+            return !x.Equals(y);
+        }
+
+        #endregion
     }
 
     public class DecimalValue : IValue, IEquatable<DecimalValue>
