@@ -18,25 +18,25 @@ namespace SDMX.Parsers
                 .Set(v => _series = new Series(dataSet, v))
                 .ClassMap(() => new KeyMap());
 
-            MapContainer(Namespaces.Generic + "Attributes", false)
-                .MapCollection(o => GetKeyValues(o.Attributes)).ToElement("Value", false)
-                    .Set(v => dataSet.Attributes[v.Concept].Parse(v.Value))
-                    .ClassMap(() => new KeyValueMap());;
+            //MapContainer(Namespaces.Generic + "Attributes", false)
+            //    .MapCollection(o => GetKeyValues(o.Attributes)).ToElement("Value", false)
+            //        .Set(v => dataSet.Attributes[v.Concept].Parse(v.Value))
+            //        .ClassMap(() => new KeyValueMap());;
 
             MapCollection(o => o).ToElement("Obs", true)
                 //.Set(v => dataSet.Series[key][")
                 .ClassMap(() => new ObservationMap(dataSet));
         }
 
-        private IEnumerable<KeyValue> GetKeyValues(AttributeValueCollection attributes)
-        {
-            foreach (var attribute in attributes)
-            {
-                var value = new KeyValue() { Concept = attribute.Attribute.Concept.ID, Value = attribute.Value.ToString() };
-                // TODO: implement startTime
-                yield return value;
-            }
-        }
+        //private IEnumerable<KeyValue> GetKeyValues(AttributeValueCollection attributes)
+        //{
+        //    foreach (var attribute in attributes)
+        //    {
+        //        var value = new KeyValue() { Concept = attribute.Attribute.Concept.ID, Value = attribute.Value.ToString() };
+        //        // TODO: implement startTime
+        //        yield return value;
+        //    }
+        //}
 
         protected override Series Return()
         {

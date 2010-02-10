@@ -7,9 +7,9 @@ using Common;
 
 namespace SDMX
 {
-    public class AttributeValueCollection : IEnumerable<AttributeValue>
+    public class AttributeValueCollection : IEnumerable<KeyValuePair<ID, IValue>>
     {
-        private Dictionary<ID, AttributeValue> values = new Dictionary<ID, AttributeValue>();
+        private Dictionary<ID, IValue> values = new Dictionary<ID, IValue>();
         private KeyFamily _keyFamily;
         private AttachmentLevel _attachmentLevel;
 
@@ -19,45 +19,28 @@ namespace SDMX
             _attachmentLevel = attachmentLevel;
         }
 
-        public AttributeValue this[ID conceptID]
+        public IValue this[ID conceptID]
         {
             get
             {
-                Contract.AssertNotNull(() => conceptID);
+                return values.GetValueOrDefault(conceptID, null);                
+            }
+            set
+            {
+                Contract.AssertNotNull(() => value);
 
-                var attributeValue = values.GetValueOrDefault(conceptID, null);
-                if (attributeValue == null)
-                {
-                    var attribute = _keyFamily.Attributes.Get(conceptID);
+                _keyFamily.ValidateAttribute(conceptID, value, _attachmentLevel);
 
-                    if (attribute.AttachementLevel != _attachmentLevel)
-                    {
-                        throw new SDMXException("Attribute '{0}' has attachment level '{1}' and not '{2}'.",
-                            conceptID, attribute.AttachementLevel, _attachmentLevel);
-                    }
-
-                    return new AttributeValue(attribute, this);
-                }
-
-                return attributeValue;
+                values[conceptID] = value;
             }
         }
+    
+        #region IEnumerable<KeyValuePair<ID,IValue>> Members
 
-        internal void Include(AttributeValue attributeValue)
-        {
-            values[attributeValue.Attribute.Concept.ID] = attributeValue;
-        }
-
-        #region IEnumerable<Attribute> Members
-
-        public IEnumerator<AttributeValue> GetEnumerator()
+        IEnumerator<KeyValuePair<ID, IValue>> IEnumerable<KeyValuePair<ID, IValue>>.GetEnumerator()
         {
             throw new NotImplementedException();
         }
-
-        #endregion
-
-        #region IEnumerable Members
 
         IEnumerator IEnumerable.GetEnumerator()
         {

@@ -52,24 +52,74 @@ namespace SDMX
             }
             foreach (var keyItem in key)
             {
-                var dim = Dimensions.Get((ID)keyItem.Concept);
+                var dim = Dimensions.Get((ID)keyItem.Key);
                 if (dim == null)
                 {
-                    reason = string.Format("Dimension is not found for key item '{0}'.", keyItem.Concept);
+                    reason = string.Format("Dimension is not found for key item '{0}'.", keyItem.Key);
                     return false;
-                }
-
-                IValue value = null;
-                string parseReason;
-                if (!dim.TryParse(keyItem.Value, keyItem.StartTime, out value, out parseReason))
+                }                
+                
+                if (!dim.IsValid(keyItem.Value))
                 {
-                    reason = "Faild to parse value: '{0}' startTime '{1}'. reason: '{2}'."
-                        .F(keyItem.Value, keyItem.StartTime, parseReason);
+                    reason = "Invalid value '{0}' for key '{1}'."
+                        .F(keyItem.Value, keyItem.Key);
                     return false;
                 }
             }
 
             return true;
+        }
+
+        public void ValidateSeriesKey(Key key)
+        {
+            string reason;
+            if (!IsValidSeriesKey(key, out reason))
+            {
+                throw new SDMXException("Invalid series key. reason: {0}, key: {1}", reason, key.ToString());
+            }
+        }
+
+        internal void Validate(Observation obs)
+        {
+            if (obs == null)
+            {
+                throw new SDMXException("Observation is null.");
+            }
+
+            AssertHasManatoryAttributes(obs.Attributes, AttachmentLevel.Observation);
+        }
+
+        internal void AssertHasManatoryAttributes(AttributeValueCollection attributeValues, AttachmentLevel level)
+        {
+            foreach (var attribute in Attributes.Where(
+                a => a.AssignmentStatus == AssignmentStatus.Mandatory
+                && a.AttachementLevel == level))
+            {
+                if (attributeValues[attribute.Concept.ID] == null)
+                {
+                    throw new SDMXException("Value for attribute '{0}' is mandatory for the attachment level '{1}' but found missing."
+                        , attribute.Concept.ID, level);
+                }
+            }
+        }
+
+        internal void ValidateAttribute(ID conceptID, IValue value, AttachmentLevel level)
+        {
+            var attribute = Attributes.Get(conceptID);
+            if (attribute == null)
+            {
+                throw new SDMXException("Invalid attribute '{0}'.", conceptID);
+            }
+            if (attribute.AttachementLevel != level)
+            {
+                throw new SDMXException("Attribute '{0}' has attachment level '{1}' but was attached to level '{2}'."
+                    , conceptID, attribute.AttachementLevel, level);
+            }
+            if (!attribute.IsValid(value))
+            {
+                throw new SDMXException("Invalid value for attribute '{0}'. Value: {1}."
+                    , conceptID, value);
+            }
         }
     }
 }

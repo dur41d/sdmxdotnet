@@ -16,7 +16,7 @@ namespace SDMX
         {
             Series = series;
             Time = time;
-            Attributes = new AttributeValueCollection(null, AttachmentLevel.Observation);
+            Attributes = new AttributeValueCollection(series.DataSet.KeyFamily, AttachmentLevel.Observation);
         }
 
         private IValue _value;
@@ -34,8 +34,6 @@ namespace SDMX
                 }
 
                 _value = value;
-
-                Series.Include(this);
             }
         }
 

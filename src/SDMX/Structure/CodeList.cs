@@ -66,6 +66,6 @@ namespace SDMX
             return GetEnumerator();
         }
 
-        #endregion
+        #endregion     
     }
 }

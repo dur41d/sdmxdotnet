@@ -7,47 +7,47 @@ using Common;
 
 namespace SDMX
 {
-    public class AttributeValue
-    {
-        private AttributeValueCollection _collection;
-        private IValue _value;
+    //public class AttributeValue
+    //{
+    //    private AttributeValueCollection _collection;
+    //    private IValue _value;
 
-        public Attribute Attribute { get; private set; }
+    //    public Attribute Attribute { get; private set; }
         
-        public IValue Value
-        {
-            get
-            {
-                return _value;
-            }
-            set
-            {
-                if (!Attribute.IsValid(value))
-                {
-                    throw new SDMXException("Invalid value '{0}' for attribute '{1}'.", value, Attribute.Concept.ID);   
-                }
+    //    public IValue Value
+    //    {
+    //        get
+    //        {
+    //            return _value;
+    //        }
+    //        set
+    //        {
+    //            if (!Attribute.IsValid(value))
+    //            {
+    //                throw new SDMXException("Invalid value '{0}' for attribute '{1}'.", value, Attribute.Concept.ID);   
+    //            }
 
-                _value = value;
+    //            _value = value;
 
-                _collection.Include(this);
-            }
-        }
+    //            _collection.Include(this);
+    //        }
+    //    }
       
-        internal AttributeValue(Attribute attribute, AttributeValueCollection collection)
-        {
-            Attribute = attribute;
-            _collection = collection;
-        }
+    //    internal AttributeValue(Attribute attribute, AttributeValueCollection collection)
+    //    {
+    //        Attribute = attribute;
+    //        _collection = collection;
+    //    }
 
-        public override string ToString()
-        {
-            return _value.ToString();
-        }
+    //    public override string ToString()
+    //    {
+    //        return _value.ToString();
+    //    }
 
-        public void Parse(string value)
-        {
-            //Contract.AssertNotNullOrEmpty(() => value);
-            //_value = Attribute.Parse(value);
-        }
-    }
+    //    public void Parse(string value)
+    //    {
+    //        //Contract.AssertNotNullOrEmpty(() => value);
+    //        //_value = Attribute.Parse(value);
+    //    }
+    //}
 }
