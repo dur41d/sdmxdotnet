@@ -48,5 +48,10 @@ namespace SDMX
         {
             return groups.Values.AsEnumerable();
         }
+
+        public Key NewKey()
+        {
+            return new Key(KeyFamily);
+        }
     }
 }
