@@ -139,11 +139,13 @@ namespace SDMX
 
         public static bool operator ==(IValue x, DecimalValue y)
         {
+            if (x == null) return y == null;
             return x.Equals(y);
         }
 
         public static bool operator !=(IValue x, DecimalValue y)
         {
+            if (x == null) return y != null;
             return !x.Equals(y);
         }
 
@@ -208,11 +210,13 @@ namespace SDMX
 
         public static bool operator ==(IValue x, IntegerValue y)
         {
+            if (x == null) return y == null;
             return x.Equals(y);
         }
 
         public static bool operator !=(IValue x, IntegerValue y)
         {
+            if (x == null) return y != null;
             return !x.Equals(y);
         }
 
