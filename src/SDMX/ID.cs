@@ -10,7 +10,7 @@ namespace SDMX
     /// <summary>
     /// A structure to restrict data to this pattern: ([A-Z]|[a-z]|\*|@|[0-9]|_|$|\-)*
     /// </summary>
-    public struct ID : IEquatable<ID>
+    public struct ID : IEquatable<ID>, IValue
     {   
         private string _value;
 
@@ -69,7 +69,7 @@ namespace SDMX
         public static implicit operator ID(string id)
         {
             return new ID(id);
-        }
+        }      
 
         public static bool operator ==(ID x, object y)
         {

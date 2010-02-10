@@ -19,19 +19,41 @@ namespace SDMX
             _attachmentLevel = attachmentLevel;
         }
 
-        public IValue this[ID conceptID]
+        public IValue this[ID concept]
         {
             get
             {
-                return values.GetValueOrDefault(conceptID, null);                
+                return values.GetValueOrDefault(concept, null);                
             }
             set
             {
                 Contract.AssertNotNull(() => value);
 
-                _keyFamily.ValidateAttribute(conceptID, value, _attachmentLevel);
+                if (value is ID)
+                {
+                    var att = _keyFamily.Attributes.Get(concept);
+                    if (att == null)
+                    {
+                        throw new SDMXException("Attribute is not found for concept '{0}'.", concept);
+                    }
+                    if (att.CodeList == null)
+                    {
+                        throw new SDMXException("Attribute '{0}' does not have code list and thus cannot be assigned a value using id '{1}'."
+                            , concept, (ID)value);
+                    }
+                    value = att.CodeList.Get((ID)value);
+                    if (value == null)
+                    {
+                        throw new SDMXException("Value '{0}' is not found in the code list of attribute '{1}'.",
+                            (ID)value, concept);
+                    }
+                }
+                else
+                {
+                    _keyFamily.ValidateAttribute(concept, value, _attachmentLevel);
+                }
 
-                values[conceptID] = value;
+                values[concept] = value;
             }
         }
     

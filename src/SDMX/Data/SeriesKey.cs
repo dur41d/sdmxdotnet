@@ -23,22 +23,45 @@ namespace SDMX
     public class Key : IEnumerable<KeyValuePair<ID, IValue>>, IEquatable<Key>, ICloneable
     {
         private Dictionary<ID, IValue> _keyValues;
+        private KeyFamily _keyFamily;
 
-        public Key()
+        internal Key(KeyFamily keyFamily)
         {
-            _keyValues = new Dictionary<ID, IValue>();            
+            _keyValues = new Dictionary<ID, IValue>();
+            _keyFamily = keyFamily;
         }
 
-        public IValue this[ID key]
+        public IValue this[ID concept]
         {
             get
             {
-                return _keyValues[key];
+                return _keyValues[concept];
             }
             set
             {
                 Contract.AssertNotNull(() => value);
-                _keyValues[key] = value;
+
+                if (value is ID)
+                {                    
+                    var dim = _keyFamily.Dimensions.Get(concept);
+                    if (dim == null)
+                    {
+                        throw new SDMXException("Dimension is not found for concept '{0}'.", concept);
+                    }
+                    if (dim.CodeList == null)
+                    {
+                        throw new SDMXException("Dimension '{0}' does not have code list and thus cannot be assigned a value using id '{1}'."
+                            , concept, (ID)value);
+                    }
+                    value = dim.CodeList.Get((ID)value);
+                    if (value == null)
+                    {
+                        throw new SDMXException("Value '{0}' is not found in the code list of dimension '{1}'.",
+                            (ID)value, concept);
+                    }
+                }
+
+                _keyValues[concept] = value;
             }
         }
 

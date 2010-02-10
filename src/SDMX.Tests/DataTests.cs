@@ -31,11 +31,11 @@ namespace SDMX.Tests
 
             foreach (DataRow row in dataTable.Rows)
             {
-                var key = new Key();
-                key["FREQ"] = keyFamily.Dimensions.Get("FREQ").CodeList.Get((string)row["freq"]);
-                key["JD_TYPE"] = keyFamily.Dimensions.Get("JD_TYPE").CodeList.Get((string)row["jdtype"]);
-                key["JD_CATEGORY"] = keyFamily.Dimensions.Get("JD_CATEGORY").CodeList.Get((string)row["jdcat"]);
-                key["VIS_CTY"] = keyFamily.Dimensions.Get("VIS_CTY").CodeList.Get((string)row["city"]);
+                var key = dataSet.NewKey();
+                key["FREQ"] = (ID)(row["freq"] as string);
+                key["JD_TYPE"] = (ID)(row["jdtype"] as string);
+                key["JD_CATEGORY"] = (ID)(row["jdcat"] as string);
+                key["VIS_CTY"] = (ID)(row["city"] as string);
                 var time = new YearTimePeriod((int)row["time"]);
                 var value = new DecimalValue((decimal)row["value"]);
 
@@ -44,12 +44,12 @@ namespace SDMX.Tests
 
                 if (series.Attributes["TIME_FORMAT"] == null)
                 {
-                    series.Attributes["TIME_FORMAT"] = keyFamily.Attributes.Get("TIME_FORMAT").CodeList.Get("P1Y");
-                    series.Attributes["COLLECTION"] = keyFamily.Attributes.Get("COLLECTION").CodeList.Get("A");
+                    series.Attributes["TIME_FORMAT"] = (ID)"P1Y";
+                    series.Attributes["COLLECTION"] = (ID)"A";
                 }
                 
                 obs.Value = value;
-                obs.Attributes["OBS_STATUS"] = keyFamily.Attributes.Get("OBS_STATUS").CodeList.Get("A");
+                obs.Attributes["OBS_STATUS"] = (ID)"A";
                 
                 series.Add(obs);
                 dataSet.Series.Add(series);

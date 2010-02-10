@@ -35,7 +35,7 @@ namespace SDMX.Parsers
     
     internal class KeyMap : ClassMap<Key>
     {
-        Key key = new Key();
+        Key key;
         public KeyMap()
         {
             //MapCollection(o => o).ToElement("Value", true)
