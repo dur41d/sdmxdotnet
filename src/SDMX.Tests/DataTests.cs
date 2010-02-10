@@ -27,7 +27,7 @@ namespace SDMX.Tests
             var keyFamily = dsd.KeyFamilies[0];
             var dataSet = new DataSet(keyFamily);
 
-            var dataTable = GetDataTable();            
+            var dataTable = GetDataTable();
 
             foreach (DataRow row in dataTable.Rows)
             {
@@ -47,22 +47,43 @@ namespace SDMX.Tests
                     series.Attributes["TIME_FORMAT"] = (ID)"P1Y";
                     series.Attributes["COLLECTION"] = (ID)"A";
                 }
-                
+
                 obs.Value = value;
                 obs.Attributes["OBS_STATUS"] = (ID)"A";
-                
+
                 series.Add(obs);
                 dataSet.Series.Add(series);
             }
 
             Assert.IsTrue(dataSet.Series.Count == 1);
             var series2 = dataSet.Series.ElementAt(0);
+            Assert.IsTrue(series2.Attributes.Count == 2);
             Assert.IsTrue(series2.Count == 2);
             var obs2 = series2.Get((YearTimePeriod)1999);
             Assert.IsTrue(obs2.Value == (DecimalValue)3.3m);
             obs2 = series2.Get((YearTimePeriod)2000);
             Assert.IsTrue(obs2.Value == (DecimalValue)4.4m);
-            
+
+            PrintAttributes(dataSet.Attributes);
+            foreach (var series in dataSet.Series)
+            {
+                Console.Write("Series: {0}, Att: ", series.Key);
+                PrintAttributes(series.Attributes);
+                foreach (var obs in series)
+                {
+                    Console.Write("Obs: {0}={1}, Att: ", obs.Time, obs.Value);
+                    PrintAttributes(obs.Attributes);
+                }
+            }
+        }
+
+        private void PrintAttributes(AttributeValueCollection atts)
+        {
+            foreach (var att in atts)
+            {
+                Console.Write("{0}={1} ", att.Key, att.Value);
+            }
+            Console.WriteLine();
         }
 
         private DataTable GetDataTable()

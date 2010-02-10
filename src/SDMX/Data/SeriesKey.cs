@@ -20,7 +20,7 @@ namespace SDMX
     //    }
     //}
 
-    public class Key : IEnumerable<KeyValuePair<ID, IValue>>, IEquatable<Key>, ICloneable
+    public class Key : IEnumerable<KeyValuePair<ID, IValue>>, IEquatable<Key>
     {
         private Dictionary<ID, IValue> _keyValues;
         private KeyFamily _keyFamily;
@@ -133,16 +133,7 @@ namespace SDMX
             return builder.Remove(builder.Length -1, 1).ToString();
         }
 
-        #endregion
-
-        #region ICloneable Members
-
-        public object Clone()
-        {
-            throw new NotImplementedException();
-        }
-
-        #endregion
+        #endregion      
     }
     
     //public class SeriesKey : IEnumerable<KeyValuePair<ID, IValue>>
