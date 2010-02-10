@@ -16,26 +16,24 @@ namespace SDMX
 
         private const string _pattern = "^([A-Z]|[a-z]|\\*|@|[0-9]|_|$|\\-)*$";
 
-        static ID()
-        {
-            
-        }
-
         public ID(string id)
         {
-            AssertValidID(id);
+            Validate(id);
             _value = id;
         }
 
-        public static bool IsValidID(string id)
+        public static bool IsValid(string id)
         {
-            Contract.AssertNotNullOrEmpty(() => id);
+            if (string.IsNullOrEmpty(id))
+            {
+                return false;
+            }
             return Regex.IsMatch(id, _pattern);
         }
 
-        public static void AssertValidID(string id)
+        public static void Validate(string id)
         {
-            if (!IsValidID(id))
+            if (!IsValid(id))
             {
                 throw new SDMXException("Invalid ID value '{0}'".F(id));
             }    
@@ -67,18 +65,28 @@ namespace SDMX
         {            
             return Equals(_value, other._value);
         }
-       
-        public static explicit operator ID(string id)
+
+        public static implicit operator ID(string id)
         {
             return new ID(id);
-        }   
+        }
 
-        public static bool operator ==(ID x, ID y)
+        public static bool operator ==(ID x, object y)
         {
             return x.Equals(y);
         }
 
-        public static bool operator !=(ID x, ID y)
+        public static bool operator !=(ID x, object y)
+        {
+            return !x.Equals(y);
+        }
+
+        public static bool operator ==(ID? x, object y)
+        {
+            return x.Equals(y);
+        }
+
+        public static bool operator !=(ID? x, object y)
         {
             return !x.Equals(y);
         }

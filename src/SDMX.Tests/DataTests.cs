@@ -32,24 +32,24 @@ namespace SDMX.Tests
             foreach (DataRow row in dataTable.Rows)
             {
                 var key = new Key();
-                key[(ID)"FREQ"] = keyFamily.Dimensions.Get((ID)"FREQ").CodeList.Get((ID)((string)row["freq"]));
-                key[(ID)"JD_TYPE"] = keyFamily.Dimensions.Get((ID)"JD_TYPE").CodeList.Get((ID)((string)row["jdtype"]));
-                key[(ID)"JD_CATEGORY"] = keyFamily.Dimensions.Get((ID)"JD_CATEGORY").CodeList.Get((ID)((string)row["jdcat"]));
-                key[(ID)"VIS_CTY"] = keyFamily.Dimensions.Get((ID)"VIS_CTY").CodeList.Get((ID)((string)row["city"]));
+                key["FREQ"] = keyFamily.Dimensions.Get("FREQ").CodeList.Get((string)row["freq"]);
+                key["JD_TYPE"] = keyFamily.Dimensions.Get("JD_TYPE").CodeList.Get((string)row["jdtype"]);
+                key["JD_CATEGORY"] = keyFamily.Dimensions.Get("JD_CATEGORY").CodeList.Get((string)row["jdcat"]);
+                key["VIS_CTY"] = keyFamily.Dimensions.Get("VIS_CTY").CodeList.Get((string)row["city"]);
                 var time = new YearTimePeriod((int)row["time"]);
                 var value = new DecimalValue((decimal)row["value"]);
 
                 var series = dataSet.Series.Get(key);
                 var obs = series.Get(time);
 
-                if (series.Attributes[(ID)"TIME_FORMAT"] == null)
+                if (series.Attributes["TIME_FORMAT"] == null)
                 {
-                    series.Attributes[(ID)"TIME_FORMAT"] = keyFamily.Attributes.Get((ID)"TIME_FORMAT").CodeList.Get((ID)"P1Y");
-                    series.Attributes[(ID)"COLLECTION"] = keyFamily.Attributes.Get((ID)"COLLECTION").CodeList.Get((ID)"A");
+                    series.Attributes["TIME_FORMAT"] = keyFamily.Attributes.Get("TIME_FORMAT").CodeList.Get("P1Y");
+                    series.Attributes["COLLECTION"] = keyFamily.Attributes.Get("COLLECTION").CodeList.Get("A");
                 }
                 
                 obs.Value = value;
-                obs.Attributes[(ID)"OBS_STATUS"] = keyFamily.Attributes.Get((ID)"OBS_STATUS").CodeList.Get((ID)"A");
+                obs.Attributes["OBS_STATUS"] = keyFamily.Attributes.Get("OBS_STATUS").CodeList.Get("A");
                 
                 series.Add(obs);
                 dataSet.Series.Add(series);

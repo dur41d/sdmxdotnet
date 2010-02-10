@@ -21,7 +21,7 @@ namespace Common
         public static void AssertNotNullOrEmpty(Expression<Func<string>> expr)
         {           
             var stringFunc = expr.Compile();            
-            if (string.IsNullOrEmpty(stringFunc().Trim()))
+            if (string.IsNullOrEmpty(stringFunc()))
             {
                 string paramName = ((MemberExpression)expr.Body).Member.Name;
                 throw new ArgumentException(string.Format("String is null or empty: '{0}'", paramName));

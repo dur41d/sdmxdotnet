@@ -15,7 +15,7 @@ namespace SDMX.Parsers
     {
         public string ToXml(ID value)
         {
-            return value == null ? null : value.ToString();
+            return value.ToString();
         }
 
         public ID ToObj(string value)

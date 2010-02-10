@@ -19,8 +19,8 @@ namespace SDMX
         internal Series(DataSet dataSet, Key key)
         {               
             dataSet.KeyFamily.ValidateSeriesKey(key);
-            
-            Key = (Key)key.Clone();
+
+            Key = key;
             DataSet = dataSet;
             Attributes = new AttributeValueCollection(dataSet.KeyFamily, AttachmentLevel.Series);
         }
@@ -57,6 +57,10 @@ namespace SDMX
             if (obs.Series != this)
             {
                 throw new SDMXException("This observation wasn't created for this series and thus cannot be added to it.");
+            }
+            if (obs.Value == null)
+            {
+                throw new SDMXException("Observation value is null. Observation must have a value to be added to a series.");
             }
             DataSet.KeyFamily.AssertHasManatoryAttributes(obs.Attributes, AttachmentLevel.Observation);
             _observations[obs.Time] = obs;

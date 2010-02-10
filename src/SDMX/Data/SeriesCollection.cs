@@ -39,6 +39,10 @@ namespace SDMX
             {
                 throw new SDMXException("This series wasn't created for this dataset and thus cannot be added to it.");
             }
+            if (series.Count == 0)
+            {
+                throw new SDMXException("The series is empty. Series must have at least one observation to be added.");
+            }
 
             _dataSet.KeyFamily.AssertHasManatoryAttributes(series.Attributes, AttachmentLevel.Series);
             _collection[series.Key] = series;
