@@ -10,7 +10,7 @@ using System.IO;
 namespace SDMX
 {
     public class StructureMessage : Message
-    {  
+    {
         public IList<CodeList> CodeLists { get; private set; }
         public IList<Concept> Concepts { get; private set; }
         public IList<KeyFamily> KeyFamilies { get; private set; }
