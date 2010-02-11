@@ -138,8 +138,6 @@ namespace SDMX.Tests
 
             Console.WriteLine("Min: {0} Max: {1} Avg: {2}",
                 new TimeSpan(list2.Min()), new TimeSpan(list2.Max()), new TimeSpan((long)list2.Average()));
-
-
         }
 
         private void PrintAttributes(AttributeValueCollection atts)

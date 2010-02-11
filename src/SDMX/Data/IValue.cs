@@ -7,7 +7,7 @@ using Common;
 namespace SDMX
 {
     public interface IValue
-    {
+    {        
     }
 
     public class StringValue : IValue,  IEquatable<StringValue>
@@ -16,8 +16,6 @@ namespace SDMX
 
         public StringValue(string value)
         {
-            
-
             _value = value;
         }
 
@@ -36,19 +34,19 @@ namespace SDMX
             return _value;
         }
 
-        public static bool TryParse(string stringValue, out IValue value, out string reason)
-        {
-            reason = null;
-            value = null;
-            if (String.IsNullOrEmpty(stringValue))
-            {
-                reason = "Cannot parse to SrtingValue because string is null or empty.";
-                return false;
-            }
+        //public static bool TryParse(string stringValue, out IValue value, out string reason)
+        //{
+        //    reason = null;
+        //    value = null;
+        //    if (String.IsNullOrEmpty(stringValue))
+        //    {
+        //        reason = "Cannot parse to SrtingValue because string is null or empty.";
+        //        return false;
+        //    }
 
-            value = new StringValue(stringValue);
-            return true;
-        }
+        //    value = new StringValue(stringValue);
+        //    return true;
+        //}
 
         #region IEquatable<StringValue> Members
 
@@ -105,19 +103,19 @@ namespace SDMX
             return _value.ToString();
         }
 
-        public static bool TryParse(string s, out IValue value, out string reason)
-        {
-            reason = null;
-            value = null;
-            decimal result;            
-            if (!decimal.TryParse(s, out result))
-            {
-                reason = "Could not parse string to decimal: '{0}'.".F(s);
-                return false; 
-            }
-            value = new DecimalValue(result);
-            return true;
-        }
+        //public static bool TryParse(string s, out IValue value, out string reason)
+        //{
+        //    reason = null;
+        //    value = null;
+        //    decimal result;            
+        //    if (!decimal.TryParse(s, out result))
+        //    {
+        //        reason = "Could not parse string to decimal: '{0}'.".F(s);
+        //        return false; 
+        //    }
+        //    value = new DecimalValue(result);
+        //    return true;
+        //}
 
         #region IEquatable<DecimalValue> Members
 
@@ -176,19 +174,19 @@ namespace SDMX
             return _value.ToString();
         }
 
-        public static bool TryParse(string s, out IValue value, out string reason)
-        {
-            reason = null;
-            value = null;
-            int result;
-            if (!int.TryParse(s, out result))
-            {
-                reason = "Could not parse string to int: '{0}'.".F(s);
-                return false;
-            }
-            value = new IntegerValue(result);
-            return true;
-        }
+        //public static bool TryParse(string s, out IValue value, out string reason)
+        //{
+        //    reason = null;
+        //    value = null;
+        //    int result;
+        //    if (!int.TryParse(s, out result))
+        //    {
+        //        reason = "Could not parse string to int: '{0}'.".F(s);
+        //        return false;
+        //    }
+        //    value = new IntegerValue(result);
+        //    return true;
+        //}
 
         #region IEquatable<DecimalValue> Members
 

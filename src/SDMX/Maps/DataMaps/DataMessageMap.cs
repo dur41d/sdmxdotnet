@@ -21,7 +21,7 @@ namespace SDMX.Parsers
                 .Set(v => _message.Header = v)
                 .ClassMap(() => new HeaderMap());
 
-            Map(o => o.DataSet).ToElement(Namespaces.Generic + "DataSet", true)
+            Map(o => o.DataSet).ToElement("DataSet", true)
                 .Set(v => _message.DataSet = v)
                 .ClassMap(() => new DataSetMap(keyFamily));
         }

@@ -37,7 +37,7 @@ namespace SDMX.Parsers
 
             components.MapCollection(o => o.XMeasures).ToElement("CrossSectionalMeasure", false)
                 .Set(v => _keyFamily.XMeasures.Add(v))
-                .ClassMap(() => new CrossSectionalMeasureMap(message));
+                .ClassMap(() => new XMeasureMap(message));
 
             components.MapCollection(o => o.Attributes).ToElement("Attribute", false)
                 .Set(v => _keyFamily.Attributes.Add(v))

@@ -121,5 +121,20 @@ namespace SDMX
                     , conceptID, value);
             }
         }
+
+        internal Component GetComponent(ID id)
+        {
+            Component com = Dimensions.Get(id);
+            if (com == null)
+            {
+                com = Attributes.Get(id);                
+            }
+
+            if (com == null)
+            {
+                throw new SDMXException("Did not find component with id '{0}'.", id);
+            }
+            return com;
+        }
     }
 }

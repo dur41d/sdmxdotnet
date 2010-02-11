@@ -16,6 +16,7 @@ namespace SDMX
         public bool IsFrequencyAttribute { get; set; }
         public bool IsIdentityAttribute { get; set; }
         public bool IsTimeFormat { get; set; }
+        public CrossSectionalAttachmentLevel CrossSectionalAttachmentLevel { get; set; }
 
         private IList<ID> _attachmentMeasures = new List<ID>();
         public IList<ID> AttachmentMeasures

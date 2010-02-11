@@ -53,6 +53,7 @@
   <ItemGroup>
     <Compile Include="CodeListTests.cs" />
     <Compile Include="DataTests.cs" />
+    <Compile Include="GenericDataSetMapTests.cs" />
     <Compile Include="GenericDataTests.cs" />
     <Compile Include="IDTests.cs" />
     <Compile Include="ParserTests.cs" />

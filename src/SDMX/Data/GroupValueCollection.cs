@@ -7,66 +7,66 @@ using Common;
 
 namespace SDMX
 {
-    public class GroupValueCollection : IEnumerable<GroupValue>
-    {
-        private Dictionary<GroupKey, GroupValue> groups = new Dictionary<GroupKey, GroupValue>();
-        private DataSet _dataSet;
+    //public class GroupValueCollection : IEnumerable<GroupValue>
+    //{
+    //    private Dictionary<GroupKey, GroupValue> groups = new Dictionary<GroupKey, GroupValue>();
+    //    private DataSet _dataSet;
 
-        GroupDescriptor _group;
+    //    GroupDescriptor _group;
         
-        public ID GroupID 
-        {
-            get
-            {
-                return _group.ID;
-            }
-        }
+    //    public ID GroupID 
+    //    {
+    //        get
+    //        {
+    //            return _group.ID;
+    //        }
+    //    }
 
-        internal GroupValueCollection(DataSet dataSet, GroupDescriptor group)
-        {
-            _dataSet = dataSet;
-            _group = group;
-        }
+    //    internal GroupValueCollection(DataSet dataSet, GroupDescriptor group)
+    //    {
+    //        _dataSet = dataSet;
+    //        _group = group;
+    //    }
 
-        public GroupValue this[GroupKey key]
-        {
-            get
-            {   
-                var group = groups.GetValueOrDefault(key, null);
-                if (group == null)
-                {
-                    group = new GroupValue(_dataSet, key, _group.ID, this);
-                    groups.Add(key, group);
-                }
+    //    public GroupValue this[GroupKey key]
+    //    {
+    //        get
+    //        {   
+    //            var group = groups.GetValueOrDefault(key, null);
+    //            if (group == null)
+    //            {
+    //                group = new GroupValue(_dataSet, key, _group.ID, this);
+    //                groups.Add(key, group);
+    //            }
 
-                return group;
-            }
-        }
+    //            return group;
+    //        }
+    //    }
 
-        public GroupKeyBuilder CreateKeyBuilder()
-        {
-            return new GroupKeyBuilder(_dataSet, _group);
-        }
+    //    public GroupKeyBuilder CreateKeyBuilder()
+    //    {
+    //        return new GroupKeyBuilder(_dataSet, _group);
+    //    }
 
-        #region IEnumerable<GroupValue> Members
+    //    #region IEnumerable<GroupValue> Members
 
-        public IEnumerator<GroupValue> GetEnumerator()
-        {
-            foreach (var item in groups)
-            {
-                yield return item.Value;
-            }
-        }
+    //    public IEnumerator<GroupValue> GetEnumerator()
+    //    {
+    //        foreach (var item in groups)
+    //        {
+    //            yield return item.Value;
+    //        }
+    //    }
 
-        #endregion
+    //    #endregion
 
-        #region IEnumerable Members
+    //    #region IEnumerable Members
 
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
+    //    System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+    //    {
+    //        return GetEnumerator();
+    //    }
 
-        #endregion
-    }
+    //    #endregion
+    //}
 }

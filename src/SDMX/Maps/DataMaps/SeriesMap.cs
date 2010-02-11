@@ -9,37 +9,29 @@ namespace SDMX.Parsers
     internal class SeriesMap : AnnotableArtefactMap<Series>
     {
         Series _series;
+        List<Observation> observations = new List<Observation>();
 
         public SeriesMap(DataSet dataSet)
         {
             ElementsOrder("SeriesKey", "Attributes", "Obs", "Annotations");
 
-            //Map(o => o.Key).ToElement("SeriesKey", true)
-            //    .Set(v => _series = dataSet.Series.Get(v))
-            //    .ClassMap(() => new KeyMap());
+            Map(o => o.Key).ToElement("SeriesKey", true)
+                .Set(v => _series = dataSet.Series.Get(v))
+                .ClassMap(() => new KeyMap(dataSet));
 
-            //MapContainer(Namespaces.Generic + "Attributes", false)
-            //    .MapCollection(o => GetKeyValues(o.Attributes)).ToElement("Value", false)
-            //        .Set(v => dataSet.Attributes[v.Concept].Parse(v.Value))
-            //        .ClassMap(() => new KeyValueMap());;
+            MapContainer("Attributes", false)
+                .MapCollection(o => o.Attributes).ToElement("Value", false)
+                    .Set(v => _series.Attributes[v.Key] = v.Value)
+                    .ClassMap(() => new ValueMap(dataSet.KeyFamily));
 
             MapCollection(o => o).ToElement("Obs", true)
-                //.Set(v => dataSet.Series[key][")
-                .ClassMap(() => new ObservationMap(dataSet));
+                .Set(v => observations.Add(v))
+                .ClassMap(() => new ObservationMap(_series, dataSet.KeyFamily));
         }
-
-        //private IEnumerable<KeyValue> GetKeyValues(AttributeValueCollection attributes)
-        //{
-        //    foreach (var attribute in attributes)
-        //    {
-        //        var value = new KeyValue() { Concept = attribute.Attribute.Concept.ID, Value = attribute.Value.ToString() };
-        //        // TODO: implement startTime
-        //        yield return value;
-        //    }
-        //}
-
+       
         protected override Series Return()
         {
+            observations.ForEach(obs => _series.Add(obs));
             return _series;
         }
 

@@ -6,7 +6,7 @@ using Common;
 
 namespace SDMX
 {   
-    public class XMeasure : Measure, Item
+    public class XMeasure : Component, Item
     {
         public ID Dimension { get; set; }
         public ID Code { get; set; }

@@ -79,7 +79,7 @@ namespace SDMX
             int year = int.Parse(match.Groups["Year"].Value);
             int month = int.Parse(match.Groups["Month"].Value);
             int day = int.Parse(match.Groups["Day"].Value);
-            TimeSpan offset = TimePeriodUtility.ParseTimeOffset(match);            
+            TimeSpan offset = TimePeriodUtility.ParseTimeOffset(match);
             return new DateTimePeriod(new DateTimeOffset(year, month, day, 0, 0, 0, 0, offset));
         }
 

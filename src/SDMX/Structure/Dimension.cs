@@ -14,6 +14,7 @@ namespace SDMX
         public bool IsCountDimension { get; set; }
         public bool IsNonObservationTimeDimension { get; set; }
         public bool IsIdentityDimension { get; set; }
+        public CrossSectionalAttachmentLevel CrossSectionalAttachmentLevel { get; set; }
         
         public Dimension(Concept concept)
             : base(concept)

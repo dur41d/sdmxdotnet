@@ -10,8 +10,7 @@ namespace SDMX
     {
         public Concept Concept { get; set; }
         public CodeList CodeList { get; set; }
-        public ITextFormat TextFormat { get; set; }
-        public CrossSectionalAttachmentLevel CrossSectionalAttachmentLevel { get; set; }
+        public ITextFormat TextFormat { get; set; }        
 
         public int Order { get; set; }
 
@@ -51,39 +50,39 @@ namespace SDMX
         //    }
         //}       
 
-        public virtual bool TryParse(string s, string startTime, out IValue value, out string reason)
-        {
-            value = null;
-            reason = null;
-            if (IsCoded)
-            {
-                var code = CodeList.Get((ID)s);
-                if (code == null)
-                {
-                    reason = string.Format("Code not found for value '{0}'.", s);
-                    return false;
-                }
-                value = code;
-                return true;
-            }
-            else
-            {
-                return TextFormat.TryParse(s, startTime, out value, out reason);
-            }
-        }
+        //public virtual bool TryParse(string s, string startTime, out IValue value, out string reason)
+        //{
+        //    value = null;
+        //    reason = null;
+        //    if (IsCoded)
+        //    {
+        //        var code = CodeList.Get((ID)s);
+        //        if (code == null)
+        //        {
+        //            reason = string.Format("Code not found for value '{0}'.", s);
+        //            return false;
+        //        }
+        //        value = code;
+        //        return true;
+        //    }
+        //    else
+        //    {
+        //        return TextFormat.TryParse(s, startTime, out value, out reason);
+        //    }
+        //}
 
-        public virtual void Serialize(IValue value, out string stringValue, out string startTime)
-        {
-            if (IsCoded)
-            {
-                stringValue = null; //((ID)value).ToString();
-                startTime = null;
-            }
-            else
-            {   
-               TextFormat.Serialize(value, out stringValue, out startTime);               
-            }
-        }
+        //public virtual void Serialize(IValue value, out string s, out string startTime)
+        //{
+        //    if (IsCoded)
+        //    {
+        //        s = null; //((ID)value).ToString();
+        //        startTime = null;
+        //    }
+        //    else
+        //    {   
+        //       TextFormat.Serialize(value, out s, out startTime);               
+        //    }
+        //}
 
         public virtual bool IsValid(IValue value)
         {
@@ -94,6 +93,18 @@ namespace SDMX
             else
             {
                 return TextFormat.IsValid(value);
+            }
+        }
+
+        internal Type GetValueType()
+        {
+            if (IsCoded)
+            {
+                return typeof(Code);
+            }
+            else
+            {
+                return TextFormat.GetValueType();
             }
         }
     }

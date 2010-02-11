@@ -28,7 +28,7 @@ namespace SDMX.Parsers
                             "isIdentityDimension",
                             "crossSectionalAttachmentLevel");
 
-            ElementsOrder("TextFormat", "Annotations");
+            ElementsOrder("TextFormat", "Annotations");           
 
             Map(o => o.IsMeasureDimension).ToAttribute("isMeasureDimension", false, "false")
                 .Set(v => _dimension.IsMeasureDimension = v)
@@ -53,6 +53,10 @@ namespace SDMX.Parsers
             Map(o => o.IsIdentityDimension).ToAttribute("isIdentityDimension", false, "false")
                 .Set(v => _dimension.IsIdentityDimension = v)
                 .Converter(new BooleanConverter());
+
+            Map(o => o.CrossSectionalAttachmentLevel).ToAttributeGroup("crossSectionalAttachmentLevel", CrossSectionalAttachmentLevel.None)
+              .Set(v => _dimension.CrossSectionalAttachmentLevel = v)
+              .GroupTypeMap(new CrossSectionalAttachmentLevelMap());
         }
 
         protected override Dimension Create(Concept conecpt)

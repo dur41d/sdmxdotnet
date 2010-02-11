@@ -24,6 +24,7 @@ namespace SDMX.Parsers
             //        .ClassMap(() => new KeyValueMap());
 
             MapCollection(o => o.Series).ToElement(Namespaces.Generic + "Series", false)
+                .Set(v => _dataSet.Series.Add(v))
                 .ClassMap(() => new SeriesMap(_dataSet));
         }
 

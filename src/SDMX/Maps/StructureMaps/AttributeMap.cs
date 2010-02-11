@@ -29,7 +29,7 @@ namespace SDMX.Parsers
                             "isFrequencyAttribute",
                             "isIdentityAttribute");
 
-            ElementsOrder("TextFormat", "AttachmentGroup", "AttachmentMeasure", "Annotations");
+            ElementsOrder("TextFormat", "AttachmentGroup", "AttachmentMeasure", "Annotations");            
 
             Map(o => o.AttachementLevel).ToAttribute("attachmentLevel", true)
                 .Set(v => _attribute.AttachementLevel = v)
@@ -42,6 +42,10 @@ namespace SDMX.Parsers
             Map(o => o.IsTimeFormat).ToAttribute("isTimeFormat", false, "false")
                 .Set(v => _attribute.IsTimeFormat = v)
                 .Converter(new BooleanConverter());
+
+            Map(o => o.CrossSectionalAttachmentLevel).ToAttributeGroup("crossSectionalAttachmentLevel", CrossSectionalAttachmentLevel.None)
+               .Set(v => _attribute.CrossSectionalAttachmentLevel = v)
+               .GroupTypeMap(new CrossSectionalAttachmentLevelMap());
 
             Map(o => o.IsEntityAttribute).ToAttribute("isEntityAttribute", false, "false")
                 .Set(v => _attribute.IsEntityAttribute = v)

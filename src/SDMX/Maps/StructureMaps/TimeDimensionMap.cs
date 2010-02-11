@@ -22,6 +22,11 @@ namespace SDMX.Parsers
                             "crossSectionalAttachmentLevel");
 
             ElementsOrder("TextFormat", "Annotations");
+
+            Map(o => o.CrossSectionalAttachmentLevel).ToAttributeGroup("crossSectionalAttachmentLevel", CrossSectionalAttachmentLevel.None)
+               .Set(v => _timeDimension.CrossSectionalAttachmentLevel = v)
+               .GroupTypeMap(new CrossSectionalAttachmentLevelMap());
+
         }
 
         protected override TimeDimension Create(Concept conecpt)
