@@ -124,7 +124,7 @@ namespace SDMX
             _keyFamily = keyFamily;
         }
 
-        public virtual IValue this[ID concept]
+        public virtual object this[ID concept]
         {
             get
             {
@@ -133,6 +133,11 @@ namespace SDMX
             set
             {
                 Contract.AssertNotNull(() => value);
+
+                if (value is string)
+                {
+                    value = new ID(value as string);
+                }
 
                 if (value is ID)
                 {                    
@@ -154,8 +159,13 @@ namespace SDMX
                     }
                     value = code;
                 }
+                
+                if (!(value is IValue))
+                {
+                    throw new SDMXException("Value must be IValue or ID type.");
+                }
 
-                _keyValues[concept] = value;
+                _keyValues[concept] = (IValue)value;
             }
         }
 

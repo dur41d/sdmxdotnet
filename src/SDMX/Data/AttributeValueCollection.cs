@@ -19,7 +19,7 @@ namespace SDMX
             _attachmentLevel = attachmentLevel;
         }
 
-        public IValue this[ID concept]
+        public object this[ID concept]
         {
             get
             {
@@ -28,6 +28,11 @@ namespace SDMX
             set
             {
                 Contract.AssertNotNull(() => value);
+
+                if (value is string)
+                {
+                    value = new ID(value as string);
+                }
 
                 if (value is ID)
                 {
@@ -51,10 +56,16 @@ namespace SDMX
                 }
                 else
                 {
-                    _keyFamily.ValidateAttribute(concept, value, _attachmentLevel);
+                    if (!(value is IValue))
+                    {
+                        throw new SDMXException("Value must be IValue or ID type.");
+                    }
+                    _keyFamily.ValidateAttribute(concept, (IValue)value, _attachmentLevel);
                 }
 
-                values[concept] = value;
+               
+
+                values[concept] = (IValue)value;
             }
         }
 

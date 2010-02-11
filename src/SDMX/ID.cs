@@ -10,7 +10,7 @@ namespace SDMX
     /// <summary>
     /// A structure to restrict data to this pattern: ([A-Z]|[a-z]|\*|@|[0-9]|_|$|\-)*
     /// </summary>
-    public struct ID : IEquatable<ID>, IValue
+    public struct ID : IEquatable<ID>
     {   
         private string _value;
 
