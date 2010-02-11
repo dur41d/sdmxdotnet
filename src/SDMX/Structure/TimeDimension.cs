@@ -7,6 +7,8 @@ namespace SDMX
 {
     public class TimeDimension : Component
     {
+        public CrossSectionalAttachmentLevel CrossSectionalAttachmentLevel { get; set; }
+
         public TimeDimension(Concept concept)
             : base(concept)
         {

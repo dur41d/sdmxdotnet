@@ -25,11 +25,7 @@ namespace SDMX.Parsers
 
             Map(o => TempCodelistRef.Create(o.CodeList)).ToAttributeGroup("codelist")
                 .Set(v => _component.CodeList = message.GetCodeList(v.ID, v.AgencyID, v.Version))
-                .GroupTypeMap(new TempCodelistRefMap());
-
-            Map(o => o.CrossSectionalAttachmentLevel).ToAttributeGroup("crossSectionalAttachmentLevel", CrossSectionalAttachmentLevel.None)
-                .Set(v => _component.CrossSectionalAttachmentLevel = v)
-                .GroupTypeMap(new CrossSectionalAttachmentLevelMap());
+                .GroupTypeMap(new TempCodelistRefMap());           
 
             Map(o => o.TextFormat).ToElement("TextFormat", false)
                 .Set(v => _component.TextFormat = v)

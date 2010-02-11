@@ -7,18 +7,18 @@ using Common;
 
 namespace SDMX
 {
-    public class DimensionValue
-    {
-        public Dimension Dimension { get; private set; }
-        public IValue Value { get; private set; }
+    //public class DimensionValue
+    //{
+    //    public Dimension Dimension { get; private set; }
+    //    public IValue Value { get; private set; }
 
-        internal DimensionValue(Dimension dimension, IValue value)
-        {
-            Contract.AssertNotNull(() => dimension);
-            Contract.AssertNotNull(() => value);
+    //    internal DimensionValue(Dimension dimension, IValue value)
+    //    {
+    //        Contract.AssertNotNull(() => dimension);
+    //        Contract.AssertNotNull(() => value);
 
-            Dimension = dimension;
-            Value = value;
-        }
-    }
+    //        Dimension = dimension;
+    //        Value = value;
+    //    }
+    //}
 }

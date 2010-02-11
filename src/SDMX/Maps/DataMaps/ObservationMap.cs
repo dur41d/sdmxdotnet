@@ -10,9 +10,21 @@ namespace SDMX.Parsers
     {
         Observation _obs;
 
-        public ObservationMap(DataSet dataSet)
+        public ObservationMap(Series series, KeyFamily keyFamily)
         {
+            Map(o => o.Time).ToSimpleElement("Time", true)
+                .Set(v => _obs = series.Get(v))
+                .Converter(new TimePeriodConverter());
 
+            Map(o => o.Value).ToElement("ObsValue", true)
+                .Set(v => _obs.Value = v)
+                .ClassMap(() => new ObsValueMap(keyFamily));
+
+            MapContainer("Attributes", false)
+               .MapCollection(o => o.Attributes).ToElement("Value", false)
+                   .Set(v => _obs.Attributes[v.Key] = v.Value)
+                   .ClassMap(() => new ValueMap(keyFamily));
+                
         }
 
         protected override void AddAnnotation(Annotation annotation)

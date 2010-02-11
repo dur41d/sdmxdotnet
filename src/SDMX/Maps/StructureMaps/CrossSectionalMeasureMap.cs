@@ -7,11 +7,11 @@ using Common;
 
 namespace SDMX.Parsers
 {
-    internal class CrossSectionalMeasureMap : MeasureMap<XMeasure>
+    internal class XMeasureMap : CompoenentMap<XMeasure>
     {
         XMeasure _measure;
         
-        internal CrossSectionalMeasureMap(StructureMessage message)
+        internal XMeasureMap(StructureMessage message)
             : base(message)
         {
             AttributesOrder("conceptRef",

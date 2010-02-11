@@ -6,46 +6,172 @@ using OXM;
 
 namespace SDMX.Parsers
 {
-    internal class KeyItemMap : ClassMap<KeyValuePair<ID, IValue>>
-    {
-        ID conceptID;
-        string value, startTime;
+    internal class ValueConverter
+    {        
+        private Dictionary<Type, IValueConverter> registry = new Dictionary<Type, IValueConverter>();
 
+        public ValueConverter()
+        {            
+            registry.Add(typeof(Code), new CodeValueConverter());
+            registry.Add(typeof(StringValue), new StringValueConverter());
+            registry.Add(typeof(DecimalValue), new DecimalValueConverter());
+            registry.Add(typeof(YearTimePeriod), new YearValueConverter());
+        }
 
-        public KeyItemMap()
+        public IValue Parse(Component component, string s, string startTime)
         {
+            Type valueType = component.GetValueType();
+            var converter = registry[valueType];
+            return converter.Parse(component, s, startTime);
+        }
+
+        public string Serialize(IValue value, out string startTime)
+        {
+            var converter = registry[value.GetType()];
+            return converter.Serialize(value, out startTime);
+        }
+    }
+
+    internal interface IValueConverter
+    {
+        IValue Parse(Component component, string s, string startTime);
+        string Serialize(IValue value, out string startTime);
+    }
+
+    internal class CodeValueConverter : IValueConverter
+    {
+        public IValue Parse(Component component, string s, string startTime)
+        {
+            return component.CodeList.Get(s);
+        }
+
+        public string Serialize(IValue value, out string startTime)
+        {
+            startTime = null;
+            return ((Code)value).ID.ToString();
+        }
+    }
+
+    internal class StringValueConverter : IValueConverter
+    {
+        public IValue Parse(Component component, string s, string startTime)
+        {
+            return new StringValue(s);
+        }
+
+        public string Serialize(IValue value, out string startTime)
+        {
+            startTime = null;
+            return ((StringValue)value).ToString();
+        }
+    }
+
+    internal class DecimalValueConverter : IValueConverter
+    {
+        public IValue Parse(Component component, string s, string startTime)
+        {
+            return new DecimalValue(decimal.Parse(s));
+        }
+
+        public string Serialize(IValue value, out string startTime)
+        {
+            startTime = null;
+            return ((DecimalValue)value).ToString();
+        }
+    }
+
+    internal class YearValueConverter : IValueConverter
+    {
+        public IValue Parse(Component component, string s, string startTime)
+        {
+            return new YearTimePeriod(int.Parse(s));
+        }
+
+        public string Serialize(IValue value, out string startTime)
+        {
+            startTime = null;
+            DateTimeOffset time = (DateTimeOffset)(YearTimePeriod)value;
+            return time.Year.ToString();
+        }
+    }
+
+
+
+    internal class ObsValueMap : ClassMap<IValue>
+    {
+        string s, startTime;
+        ValueConverter converter = new ValueConverter();
+        KeyFamily _keyFamily;
+
+        public ObsValueMap(KeyFamily keyFamily)
+        {
+            _keyFamily = keyFamily;
+
+            Map(o => converter.Serialize(o, out startTime)).ToAttribute("value", true)
+                .Set(v => s = v)
+                .Converter(new StringConverter());
+
+            Map(o => startTime).ToAttribute("startTime", false)
+                .Set(v => startTime = v)
+                .Converter(new StringConverter());
+        }
+
+        protected override IValue Return()
+        {
+            var component = _keyFamily.PrimaryMeasure;
+            IValue value = converter.Parse(component, s, startTime);
+            return value;
+        }
+    }
+
+
+    internal class ValueMap : ClassMap<KeyValuePair<ID, IValue>>
+    {
+        ID id;
+        string s, startTime;
+        ValueConverter converter = new ValueConverter();
+        KeyFamily _keyFamily;
+
+        public ValueMap(KeyFamily keyFamily)
+        {
+            _keyFamily = keyFamily;
+
             Map(o => o.Key).ToAttribute("concept", true)
-                .Set(v => conceptID = v)
+                .Set(v => id = v)
                 .Converter(new IDConverter());
 
-            //Map(o => o.Value.ToString()).ToAttribute("value", true)
-            //    .Set(v => value = v)
-            //    .Converter(new StringConverter());
+            Map(o => converter.Serialize(o.Value, out startTime)).ToAttribute("value", true)
+                .Set(v => s = v)
+                .Converter(new StringConverter());
 
-            //Map(o => o.Value.ToString()).ToAttribute("startTime", false)
-            //    .Set(v => startTime = v)
-            //    .Converter(new StringConverter());
+            Map(o => startTime).ToAttribute("startTime", false)
+                .Set(v => startTime = v)
+                .Converter(new StringConverter());
         }
 
         protected override KeyValuePair<ID, IValue> Return()
         {
-            throw new NotImplementedException();
+            var component = _keyFamily.GetComponent(id);
+            IValue value = converter.Parse(component, s, startTime);
+            return new KeyValuePair<ID, IValue>(id, value);
         }
     }
     
-    internal class KeyMap : ClassMap<Key>
+    internal class KeyMap : ClassMap<ReadOnlyKey>
     {
         Key key;
-        public KeyMap()
+        public KeyMap(DataSet dataSet)
         {
-            //MapCollection(o => o).ToElement("Value", true)
-            //    .Set(v => key.Add(v))
-            //    .ClassMap(() => new KeyItemMap());
+            key = dataSet.NewKey();
+
+            MapCollection(o => o).ToElement("Value", true)
+                .Set(v => key[v.Key] = v.Value)
+                .ClassMap(() => new ValueMap(dataSet.KeyFamily));
         }
 
-        protected override Key Return()
+        protected override ReadOnlyKey Return()
         {
-            return key;
+            return new ReadOnlyKey(key);
         }
     }
 

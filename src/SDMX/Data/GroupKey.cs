@@ -7,45 +7,45 @@ using Common;
 
 namespace SDMX
 {
-    public class GroupKey : IEnumerable<DimensionValue>
-    {
-        private Dictionary<ID, DimensionValue> _keyValues = new Dictionary<ID, DimensionValue>();
-        private KeyFamily _keyFamily;        
+    //public class GroupKey : IEnumerable<DimensionValue>
+    //{
+    //    private Dictionary<ID, DimensionValue> _keyValues = new Dictionary<ID, DimensionValue>();
+    //    private KeyFamily _keyFamily;        
 
-        internal GroupKey(KeyFamily keyFamily, Dictionary<ID, DimensionValue> keyValues)
-        {
-            _keyFamily = keyFamily;            
-            _keyValues = keyValues;
-        }
+    //    internal GroupKey(KeyFamily keyFamily, Dictionary<ID, DimensionValue> keyValues)
+    //    {
+    //        _keyFamily = keyFamily;            
+    //        _keyValues = keyValues;
+    //    }
 
-        public DimensionValue this[ID concept]
-        {
-            get
-            {
-                Contract.AssertNotNull(() => concept);
-                return _keyValues.GetValueOrDefault(concept, null);
-            }
-        }
+    //    public DimensionValue this[ID concept]
+    //    {
+    //        get
+    //        {
+    //            Contract.AssertNotNull(() => concept);
+    //            return _keyValues.GetValueOrDefault(concept, null);
+    //        }
+    //    }
 
-        #region IEnumerable<DimensionValue> Members
+    //    #region IEnumerable<DimensionValue> Members
 
-        public IEnumerator<DimensionValue> GetEnumerator()
-        {
-            foreach (var item in _keyValues)
-            {
-                yield return item.Value;
-            }
-        }
+    //    public IEnumerator<DimensionValue> GetEnumerator()
+    //    {
+    //        foreach (var item in _keyValues)
+    //        {
+    //            yield return item.Value;
+    //        }
+    //    }
 
-        #endregion
+    //    #endregion
 
-        #region IEnumerable Members
+    //    #region IEnumerable Members
 
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
+    //    System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+    //    {
+    //        return GetEnumerator();
+    //    }
 
-        #endregion
-    }
+    //    #endregion
+    //}
 }

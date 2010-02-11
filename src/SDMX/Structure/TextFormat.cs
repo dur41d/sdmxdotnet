@@ -10,8 +10,10 @@ namespace SDMX
     public interface ITextFormat
     {
         bool IsValid(IValue value);        
-        void Serialize(IValue value, out string stringValue, out string startTime);
-        bool TryParse(string s, string startTime, out IValue value, out string reason);
+        //void Serialize(IValue value, out string stringValue, out string startTime);
+        //bool TryParse(string s, string startTime, out IValue value, out string reason);
+
+        Type GetValueType();
     }
 
     public interface ITimePeriodTextFormat : ITextFormat
@@ -21,22 +23,28 @@ namespace SDMX
 
     public class StringTextFormat : ITextFormat
     {
+        
         public bool IsValid(IValue value)
         {
             return value is StringValue;
         }
+
+        public Type GetValueType()
+        {
+            return typeof(StringValue);
+        }
       
-        public bool TryParse(string stringValue, string startTime, out IValue value, out string reason)
-        {
-            return StringValue.TryParse(stringValue, out value, out reason);
-        }
+        //public bool TryParse(string stringValue, string startTime, out IValue value, out string reason)
+        //{
+        //    return StringValue.TryParse(stringValue, out value, out reason);
+        //}
 
 
-        public void Serialize(IValue value, out string stringValue, out string startTime)
-        {
-            stringValue = ((StringValue)value).ToString();
-            startTime = null;
-        }
+        //public void Serialize(IValue value, out string stringValue, out string startTime)
+        //{
+        //    stringValue = ((StringValue)value).ToString();
+        //    startTime = null;
+        //}
     }
 
     public class DecimalTextFormat : ITextFormat
@@ -44,18 +52,24 @@ namespace SDMX
         public bool IsValid(IValue value)
         {
             return value is DecimalValue;
-        }       
-
-        public bool TryParse(string stringValue, string startTime, out IValue value, out string reason)
-        {
-            return DecimalValue.TryParse(stringValue, out value, out reason);
         }
 
-        public void Serialize(IValue value, out string stringValue, out string startTime)
+        public Type GetValueType()
         {
-            stringValue = ((DecimalValue)value).ToString();
-            startTime = null;
+            return typeof(DecimalValue);
         }
+      
+
+        //public bool TryParse(string stringValue, string startTime, out IValue value, out string reason)
+        //{
+        //    return DecimalValue.TryParse(stringValue, out value, out reason);
+        //}
+
+        //public void Serialize(IValue value, out string stringValue, out string startTime)
+        //{
+        //    stringValue = ((DecimalValue)value).ToString();
+        //    startTime = null;
+        //}
     }
 
     public class YearTextFormat : ITimePeriodTextFormat
@@ -65,16 +79,22 @@ namespace SDMX
             return value is YearTimePeriod;
         }
 
-        public bool TryParse(string stringValue, string startTime, out IValue value, out string reason)
+        public Type GetValueType()
         {
-            return YearTimePeriod.TryParse(stringValue, out value, out reason);
+            return typeof(YearTimePeriod);
         }
+      
 
-        public void Serialize(IValue value, out string stringValue, out string startTime)
-        {
-            stringValue = ((YearTimePeriod)value).ToString();
-            startTime = null;
-        }
+        //public bool TryParse(string stringValue, string startTime, out IValue value, out string reason)
+        //{
+        //    return YearTimePeriod.TryParse(stringValue, out value, out reason);
+        //}
+
+        //public void Serialize(IValue value, out string stringValue, out string startTime)
+        //{
+        //    stringValue = ((YearTimePeriod)value).ToString();
+        //    startTime = null;
+        //}
     }
 
     public class YearMonthTextFormat : ITimePeriodTextFormat
@@ -82,18 +102,23 @@ namespace SDMX
         public bool IsValid(IValue value)
         {
             return value is YearMonthTimePeriod;
-        }    
-
-        public bool TryParse(string stringValue, string startTime, out IValue value, out string reason)
-        {
-            return YearMonthTimePeriod.TryParse(stringValue, out value, out reason);
         }
 
-        public void Serialize(IValue value, out string stringValue, out string startTime)
+        public Type GetValueType()
         {
-            stringValue = ((YearMonthTimePeriod)value).ToString();
-            startTime = null;
+            return typeof(YearMonthTimePeriod);
         }
+
+        //public bool TryParse(string stringValue, string startTime, out IValue value, out string reason)
+        //{
+        //    return YearMonthTimePeriod.TryParse(stringValue, out value, out reason);
+        //}
+
+        //public void Serialize(IValue value, out string stringValue, out string startTime)
+        //{
+        //    stringValue = ((YearMonthTimePeriod)value).ToString();
+        //    startTime = null;
+        //}
     }
 
     public class DateTimeTextFormat : ITimePeriodTextFormat
@@ -103,16 +128,21 @@ namespace SDMX
             return value is DateTimeTimePeriod;
         }
 
-        public bool TryParse(string stringValue, string startTime, out IValue value, out string reason)
+        public Type GetValueType()
         {
-            return DateTimeTimePeriod.TryParse(stringValue, out value, out reason);
+            return typeof(DateTimeTimePeriod);
         }
 
-        public void Serialize(IValue value, out string stringValue, out string startTime)
-        {
-            stringValue = ((DateTimeTimePeriod)value).ToString();
-            startTime = null;
-        }
+        //public bool TryParse(string stringValue, string startTime, out IValue value, out string reason)
+        //{
+        //    return DateTimeTimePeriod.TryParse(stringValue, out value, out reason);
+        //}
+
+        //public void Serialize(IValue value, out string stringValue, out string startTime)
+        //{
+        //    stringValue = ((DateTimeTimePeriod)value).ToString();
+        //    startTime = null;
+        //}
     }
 
     public class DateTextFormat : ITimePeriodTextFormat
@@ -122,15 +152,20 @@ namespace SDMX
             return value is DateTimePeriod;
         }
 
-        public bool TryParse(string stringValue, string startTime, out IValue value, out string reason)
+        public Type GetValueType()
         {
-            return DateTimePeriod.TryParse(stringValue, out value, out reason);
+            return typeof(DateTimePeriod);
         }
 
-        public void Serialize(IValue value, out string stringValue, out string startTime)
-        {
-            stringValue = ((DateTimePeriod)value).ToString();
-            startTime = null;
-        }
+        //public bool TryParse(string stringValue, string startTime, out IValue value, out string reason)
+        //{
+        //    return DateTimePeriod.TryParse(stringValue, out value, out reason);
+        //}
+
+        //public void Serialize(IValue value, out string stringValue, out string startTime)
+        //{
+        //    stringValue = ((DateTimePeriod)value).ToString();
+        //    startTime = null;
+        //}
     }
 }
