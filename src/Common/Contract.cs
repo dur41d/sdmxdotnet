@@ -8,23 +8,23 @@ namespace Common
 {
     public static class Contract
     {       
-        public static void AssertNotNull(Expression<Func<object>> expr)
-        {
-            var func = expr.Compile();
-            if (func() == null)
+        public static void AssertNotNull(object o, string message)
+        {           
+            if (o == null)
             {
-                string paramName = ((MemberExpression)expr.Body).Member.Name;
-                throw new ArgumentNullException(paramName);
+                throw new ArgumentNullException(message);
             }
         }
 
-        public static void AssertNotNullOrEmpty(Expression<Func<string>> expr)
-        {           
-            var stringFunc = expr.Compile();            
-            if (string.IsNullOrEmpty(stringFunc()))
+        public static void AssertNotNullOrEmpty(string s, string message)
+        {        
+            if (s == null)
             {
-                string paramName = ((MemberExpression)expr.Body).Member.Name;
-                throw new ArgumentException(string.Format("String is null or empty: '{0}'", paramName));
+                throw new ArgumentNullException(string.Format("String is null: '{0}'", message));
+            }
+            if (s.Trim() == "")
+            {
+                throw new ArgumentException(string.Format("String is empty: '{0}'", message));
             }
         }
     }

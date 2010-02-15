@@ -17,20 +17,19 @@ namespace SDMX
 
         public void Add(Concept concept)
         {
-            Contract.AssertNotNull(() => concept);
+            Contract.AssertNotNull(concept, "concept");
             concept.ConceptScheme = this;
             concepts.Add(concept);
         }
 
         public void Remove(Concept concept)
         {
-            Contract.AssertNotNull(() => concept);
+            Contract.AssertNotNull(concept, "concept");
             concepts.Remove(concept);
         }
 
         public Concept Get(ID conceptID)
-        {
-            Contract.AssertNotNull(() => conceptID);
+        {            
             return concepts.Where(c => c.ID == conceptID).Single();
         }
 

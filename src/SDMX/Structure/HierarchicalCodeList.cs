@@ -32,17 +32,17 @@ namespace SDMX
 
         public void AddCodeList(CodeList codeList, ID alias)
         {
-            Contract.AssertNotNull(() => codeList);
+            Contract.AssertNotNull(codeList, "codeList");
 
             AddCodeList(new CodeListRef(codeList, alias));
         }
 
         public void AddCodeList(CodeListRef codelistRef)
         {
-            Contract.AssertNotNull(() => codelistRef);
-            Contract.AssertNotNull(() => codelistRef.ID);
-            Contract.AssertNotNull(() => codelistRef.AgencyID);
-            Contract.AssertNotNull(() => codelistRef.Alias);
+            Contract.AssertNotNull(codelistRef, "codelistRef");
+            Contract.AssertNotNull(codelistRef.ID, "codelistRef.ID");
+            Contract.AssertNotNull(codelistRef.AgencyID, "codelistRef.AgencyID");
+            Contract.AssertNotNull(codelistRef.Alias, "codelistRef.Alias");
 
             if (codeListRefs.Exists(c => c == codelistRef))
             {
@@ -54,7 +54,7 @@ namespace SDMX
 
         public void Add(Hierarchy hierarchy)
         {
-            Contract.AssertNotNull(() => hierarchy);
+            Contract.AssertNotNull(hierarchy, "hierarchy");
 
             hierarchy.HierarchicalCodeList = this;
             SetCodeListRefAliases(hierarchy);

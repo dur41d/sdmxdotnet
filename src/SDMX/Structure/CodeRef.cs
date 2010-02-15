@@ -32,7 +32,7 @@ namespace SDMX
 
         public CodeRef(Code code)
         {
-            Contract.AssertNotNull(() => code);
+            Contract.AssertNotNull(code, "code");
 
             CodeID = code.ID;
             CodeListRef = new CodeListRef(code.CodeList, null);
@@ -42,7 +42,7 @@ namespace SDMX
         public CodeRef(Code code, params CodeRef[] children)
             : this(code)
         {
-            Contract.AssertNotNull(() => children);
+            Contract.AssertNotNull(children, "children");
 
             AddChildren(children);                       
         }
@@ -50,7 +50,7 @@ namespace SDMX
         public CodeRef(Code code, IEnumerable<Code> children)
             : this(code)
         {
-            Contract.AssertNotNull(() => children);
+            Contract.AssertNotNull(children, "children");
 
             var list = CreateList(children);
             AddChildren(list);
@@ -59,7 +59,7 @@ namespace SDMX
         public CodeRef(Code code, Func<IEnumerable<Code>> funcCodeRef)
             : this(code)
         {
-            Contract.AssertNotNull(() => funcCodeRef);
+            Contract.AssertNotNull(funcCodeRef, "funcCodeRef");  
 
             var list = CreateList(funcCodeRef());
             AddChildren(list);
@@ -97,12 +97,9 @@ namespace SDMX
 
         public void Add(CodeRef child)
         {
-            Contract.AssertNotNull(() => child);
-            Contract.AssertNotNull(() => child.CodeID);
-            Contract.AssertNotNull(() => child.CodeListRef);
-            Contract.AssertNotNull(() => child.CodeListRef.ID);
-            Contract.AssertNotNull(() => child.CodeListRef.AgencyID);
-            Contract.AssertNotNull(() => child.CodeListRef.Alias);
+            Contract.AssertNotNull(child, "child");            
+            Contract.AssertNotNull(child.CodeListRef, "child.CodeListRef");
+            Contract.AssertNotNull(child.CodeListRef.Alias, "child.CodeListRef.Alias");
 
             child.Parent = this;
             _children.Add(child);

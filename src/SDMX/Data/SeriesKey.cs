@@ -23,7 +23,10 @@ namespace SDMX
 
     public class ReadOnlyKey : IEnumerable<KeyValuePair<ID, IValue>>, IEquatable<ReadOnlyKey>
     {
-        private Dictionary<ID, IValue> _keyValues;       
+        private Dictionary<ID, IValue> _keyValues;
+
+        int _hash;
+        string _string;
 
         internal ReadOnlyKey(Key key)
         {
@@ -73,21 +76,7 @@ namespace SDMX
 
         public bool Equals(ReadOnlyKey other)
         {
-            if (Count != other.Count)
-            {
-                return false;
-            }
-
-            foreach (var item in this)
-            {
-                var otherValue = other[item.Key];
-                if (!item.Value.Equals(otherValue))
-                {
-                    return false;
-                }
-            }
-
-            return true;
+            return GetHashCode() == other.GetHashCode();
         }
 
         public override bool Equals(object obj)
@@ -98,16 +87,22 @@ namespace SDMX
 
         public override int GetHashCode()
         {
-            int hash = 0;
-            _keyValues.ForEach(k => hash = hash ^ 37 ^ k.Key.GetHashCode() ^ k.Value.GetHashCode());
-            return hash;
+            if (_hash == 0)
+            {
+                _hash = ToString().GetHashCode();
+            }
+            return _hash;
         }
 
         public override string ToString()
         {
-            var builder = new StringBuilder();
-            _keyValues.ForEach(k => builder.AppendFormat("{0}={1},", k.Key, k.Value));
-            return builder.Remove(builder.Length -1, 1).ToString();
+            if (_string == null)
+            {
+                var builder = new StringBuilder();
+                _keyValues.ForEach(k => builder.AppendFormat("{0}={1},", k.Key, k.Value));
+                _string = builder.Remove(builder.Length - 1, 1).ToString();
+            }
+            return _string;
         }
 
         #endregion      
@@ -132,7 +127,7 @@ namespace SDMX
             }
             set
             {
-                Contract.AssertNotNull(() => value);
+                Contract.AssertNotNull(value, "value");
 
                 if (value is string)
                 {
@@ -199,22 +194,8 @@ namespace SDMX
         #region IEquatable<Key> Members
 
         public bool Equals(Key other)
-        {
-            if (Count != other.Count)
-            {
-                return false;
-            }
-
-            foreach (var item in this)
-            {
-                var otherValue = other[item.Key];
-                if (!item.Value.Equals(otherValue))
-                {
-                    return false;
-                }
-            }
-
-            return true;
+        {   
+            return GetHashCode() == other.GetHashCode();
         }
 
         public override bool Equals(object obj)
@@ -225,9 +206,7 @@ namespace SDMX
 
         public override int GetHashCode()
         {
-            int hash = 0;
-            _keyValues.ForEach(k => hash = hash ^ 37 ^ k.Key.GetHashCode() ^ k.Value.GetHashCode());
-            return hash;
+            return ToString().GetHashCode();
         }
 
         public override string ToString()

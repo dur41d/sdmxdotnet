@@ -27,7 +27,7 @@ namespace SDMX
             }
             set
             {
-                Contract.AssertNotNull(() => value);
+                Contract.AssertNotNull(value, "value");
 
                 if (value is string)
                 {

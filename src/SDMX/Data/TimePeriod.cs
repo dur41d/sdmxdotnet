@@ -27,7 +27,7 @@ namespace SDMX
 
         public static explicit operator DateTimeOffset(DateTimeTimePeriod input)
         {
-            Contract.AssertNotNull(() => input);
+            Contract.AssertNotNull(input, "input");
             return input._time;
         }
 
@@ -85,7 +85,7 @@ namespace SDMX
 
         public static explicit operator DateTimeOffset(DateTimePeriod input)
         {
-            Contract.AssertNotNull(() => input);
+            Contract.AssertNotNull(input, "input");
             return input._timeOffset;
         }
 
@@ -154,7 +154,7 @@ namespace SDMX
 
         public static explicit operator DateTimeOffset(YearMonthTimePeriod input)
         {
-            Contract.AssertNotNull(() => input);
+            Contract.AssertNotNull(input, "input");
             return input._timeOffset;
         }
 
@@ -216,7 +216,7 @@ namespace SDMX
 
         public static explicit operator DateTimeOffset(YearTimePeriod input)
         {
-            Contract.AssertNotNull(() => input);
+            Contract.AssertNotNull(input, "input");
             return input._timeOffset;
         }
 

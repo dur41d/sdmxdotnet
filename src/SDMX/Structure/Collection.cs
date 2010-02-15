@@ -17,25 +17,22 @@ namespace SDMX
 
         public void Add(T item)
         {
-            Contract.AssertNotNull(() => item);
+            Contract.AssertNotNull(item, "item");
             items.Add(item.ID, item);
         }      
 
         public T Get(ID conceptID)
         {
-            Contract.AssertNotNull(() => conceptID);
             return items.GetValueOrDefault(conceptID, default(T));
         }
 
         public void Remove(ID conceptID)
-        {
-            Contract.AssertNotNull(() => conceptID);
+        {            
             items.Remove(conceptID);
         }
 
         public bool Contains(ID conceptID)
-        {
-            Contract.AssertNotNull(() => conceptID);
+        {            
             return items.ContainsKey(conceptID);
         }
 
