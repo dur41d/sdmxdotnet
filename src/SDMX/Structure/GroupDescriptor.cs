@@ -24,9 +24,9 @@ namespace SDMX
         }
         
         internal GroupDescriptor(ID id, KeyFamily keyFamily)
-        {
-            Contract.AssertNotNull(() => id);
-            Contract.AssertNotNull(() => keyFamily);
+        {            
+            Contract.AssertNotNull(id, "id");
+            Contract.AssertNotNull(keyFamily, "keyFamily");
 
             ID = id;
             KeyFamily = keyFamily;
@@ -35,7 +35,7 @@ namespace SDMX
 
         public void AddDimension(ID conceptID)
         {
-            Contract.AssertNotNull(() => conceptID);
+            Contract.AssertNotNull(conceptID, "conceptID");
 
             var dimension = KeyFamily.Dimensions.Get(conceptID);
             dimensions.Add(conceptID, dimension);
@@ -43,8 +43,6 @@ namespace SDMX
 
         public void RemoveDimension(ID conceptID)
         {
-            Contract.AssertNotNull(() => conceptID);
-
             dimensions.Remove(conceptID);
         }
     }

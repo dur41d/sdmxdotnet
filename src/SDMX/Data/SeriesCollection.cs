@@ -16,25 +16,31 @@ namespace SDMX
             _dataSet = dataSet;
         }
 
-        public Series Get(Key key)
+        public Series this[Key key]
         {
-            Contract.AssertNotNull(() => key);
-
-            return Get(new ReadOnlyKey(key));
-        }
-
-        public Series Get(ReadOnlyKey key)
-        {
-            Contract.AssertNotNull(() => key);
-
-            var series = _collection.GetValueOrDefault(key, null);
-            if (series == null)
+            get
             {
-                return new Series(_dataSet, key);
+                Contract.AssertNotNull(key, "key");
+                return _collection.GetValueOrDefault(new ReadOnlyKey(key), null);
             }
-
-            return series;
         }
+
+        public Series this[ReadOnlyKey key]
+        {
+            get
+            {
+                Contract.AssertNotNull(key, "key");
+                return _collection.GetValueOrDefault(key, null);
+            }
+        }
+
+        public Series Create(Key key)
+        {
+            Contract.AssertNotNull(key, "key");
+
+            return new Series(_dataSet, new ReadOnlyKey(key));    
+        }
+     
         
         public void Add(Series series)
         {
@@ -49,6 +55,10 @@ namespace SDMX
             if (series.Count == 0)
             {
                 throw new SDMXException("The series is empty. Series must have at least one observation to be added.");
+            }
+            if (this[series.Key] != null)
+            {
+                throw new SDMXException("Series already exists: {0}.", series.Key);
             }
 
             _dataSet.KeyFamily.AssertHasManatoryAttributes(series.Attributes, AttachmentLevel.Series);

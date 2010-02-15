@@ -13,8 +13,7 @@ namespace SDMX
     public struct ID : IEquatable<ID>
     {   
         private string _value;
-
-        private const string _pattern = "^([A-Z]|[a-z]|\\*|@|[0-9]|_|$|\\-)*$";
+        static Regex regex = new Regex("^([A-Z]|[a-z]|\\*|@|[0-9]|_|$|\\-)*$", RegexOptions.Compiled);
 
         public ID(string id)
         {
@@ -28,7 +27,7 @@ namespace SDMX
             {
                 return false;
             }
-            return Regex.IsMatch(id, _pattern);
+            return regex.IsMatch(id);
         }
 
         public static void Validate(string id)

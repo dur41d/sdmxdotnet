@@ -16,30 +16,30 @@ namespace SDMX.Tests
         {
             StringBuilder o = new StringBuilder("some object");
 
-            Contract.AssertNotNull(() => o);
+            Contract.AssertNotNull(o, "o");
 
             o = null;
 
             Assert.Throws<ArgumentNullException>(
-                    () => Contract.AssertNotNull(() => o)
+                    () => Contract.AssertNotNull(o, "o")
                 );
 
             o = new StringBuilder("other object");
 
-            Contract.AssertNotNull(() => o);
+            Contract.AssertNotNull(o, "o");
         }
 
         [Test]
         public void AssrtNotNullOrEmpty()
         {
-            string o = "   ";
+            string o = "    ";
 
             Assert.Throws<ArgumentException>(
-                    () => Contract.AssertNotNullOrEmpty(() => o)
+                    () => Contract.AssertNotNullOrEmpty(o, "o")
                 );
             o = "some string";
 
-            Contract.AssertNotNullOrEmpty(() => o);
+            Contract.AssertNotNullOrEmpty(o, "o");
         }
     }
 }

@@ -17,15 +17,15 @@ namespace SDMX
         }
 
         public void Add(Code code)
-        {
-            Contract.AssertNotNull(() => code);
+        {            
+            Contract.AssertNotNull(code, "code");
             code.CodeList = this;
             codes.Add(code.ID, code);
         }
 
         public void Remove(Code code)
         {
-            Contract.AssertNotNull(() => code);
+            Contract.AssertNotNull(code, "code");
             codes.Remove(code.ID);
         }
 

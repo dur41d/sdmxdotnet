@@ -24,8 +24,8 @@ namespace SDMX
 
         public Hierarchy(ID id, CodeRef root)
             : this(id)
-        {            
-            Contract.AssertNotNull(() => root);
+        {
+            Contract.AssertNotNull(root, "root");
             
             Root = root;
         }

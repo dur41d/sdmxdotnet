@@ -25,35 +25,26 @@ namespace SDMX
             Attributes = new AttributeValueCollection(dataSet.KeyFamily, AttachmentLevel.Series);
         }
 
-        //public Observation this[ITimePeriod timePeriod]
-        //{
-        //    get
-        //    {
-        //        var obs = _observations.GetValueOrDefault(timePeriod, null);
-        //        if (obs == null)
-        //        {
-        //            return new Observation(this, timePeriod);
-        //        }
-        //        return obs;
-        //    }
-        //}
-
-        public Observation Get(ITimePeriod time)
+        public Observation this[ITimePeriod timePeriod]
         {
-            Contract.AssertNotNull(() => time);
-
-            var obs = _observations.GetValueOrDefault(time, null);
-            if (obs == null)
+            get
             {
-                return new Observation(this, time);
+                Contract.AssertNotNull(timePeriod, "timePeriod");
+                return _observations.GetValueOrDefault(timePeriod, null);
             }
-
-            return obs;
         }
 
+        public Observation Create(ITimePeriod time)
+        {
+            Contract.AssertNotNull(time, "time");
+           
+            return new Observation(this, time);
+        }
+     
         public void Add(Observation obs)
         {
-            Contract.AssertNotNull(() => obs);
+            Contract.AssertNotNull(obs, "obs");
+
             if (obs.Series != this)
             {
                 throw new SDMXException("This observation wasn't created for this series and thus cannot be added to it.");
@@ -61,6 +52,10 @@ namespace SDMX
             if (obs.Value == null)
             {
                 throw new SDMXException("Observation value is null. Observation must have a value to be added to a series.");
+            }
+            if (this[obs.Time] != null)
+            {
+                throw new SDMXException("Observation {0} already exists for series {1}.", obs.Time, Key);
             }
             DataSet.KeyFamily.AssertHasManatoryAttributes(obs.Attributes, AttachmentLevel.Observation);
             _observations[obs.Time] = obs;
