@@ -38,11 +38,6 @@ namespace SDMX
             }    
         }
 
-        public bool IsEmpty()
-        {
-            return _value == null;
-        }
-
         public override string  ToString()
         {
              return _value;
