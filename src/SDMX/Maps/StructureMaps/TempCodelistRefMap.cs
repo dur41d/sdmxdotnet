@@ -32,9 +32,9 @@ namespace SDMX.Parsers
             }          
         }      
 
-        public ID ID { get; set; }
+        public ID? ID { get; set; }
         public string Version { get; set; }
-        public ID AgencyID { get; set; }
+        public ID? AgencyID { get; set; }
     }
 
 
@@ -46,7 +46,7 @@ namespace SDMX.Parsers
         {
             MapAttribute(o => o.ID, "codelist", false)
                 .Set(v => codelistRef.ID = v)
-                .Converter(new IDConverter());
+                .Converter(new NullableIDConverter());
 
             MapAttribute(o => o.Version, "codelistVersion", false)
                .Set(v => codelistRef.Version = v)
@@ -54,12 +54,12 @@ namespace SDMX.Parsers
 
             MapAttribute(o => o.AgencyID, "codelistAgency", false)
                .Set(v => codelistRef.AgencyID = v)
-               .Converter(new IDConverter());
+               .Converter(new NullableIDConverter());
         }
 
         protected override TempCodelistRef Return()
         {
-            if (codelistRef.ID.IsEmpty())
+            if (codelistRef.ID == null)
                 return null;
 
             return codelistRef;
