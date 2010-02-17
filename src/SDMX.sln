@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OXM", "OXM\OXM.csproj", "{8
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OXM.Tests", "OXM.Tests\OXM.Tests.csproj", "{1FAA4703-F89B-4C01-8066-AB8E4123723E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SDMX.Profiler", "SDMX.Profiler\SDMX.Profiler.csproj", "{2BC1CC9B-78C5-4924-A56B-4B5C4E1C215B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -43,8 +45,15 @@ Global
 		{1FAA4703-F89B-4C01-8066-AB8E4123723E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1FAA4703-F89B-4C01-8066-AB8E4123723E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1FAA4703-F89B-4C01-8066-AB8E4123723E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2BC1CC9B-78C5-4924-A56B-4B5C4E1C215B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2BC1CC9B-78C5-4924-A56B-4B5C4E1C215B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2BC1CC9B-78C5-4924-A56B-4B5C4E1C215B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2BC1CC9B-78C5-4924-A56B-4B5C4E1C215B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(SpecExplorer.ActivityCompletionStatus) = preSolution
+		SpecExplorer.ActivityCompletionStatus = 
 	EndGlobalSection
 EndGlobal
