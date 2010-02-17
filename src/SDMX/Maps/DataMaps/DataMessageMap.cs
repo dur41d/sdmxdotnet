@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using OXM;
+using System.Xml.Linq;
 
 namespace SDMX.Parsers
 {

@@ -54,7 +54,7 @@
 	<xs:complexType name="ObsType">
 		<xs:complexContent>
 			<xs:extension base="compact:ObsType">
-				<xs:attribute name="TIME_PERIOD" type="common:TimePeriodType" use="optional"/>
+				<xs:attribute name="TIME" type="common:TimePeriodType" use="optional"/>
 				<xs:attribute name="OBS_VALUE" type="xs:double" use="optional"/>
 				<xs:attribute name="OBS_CONF" type="CL_BIS_OBS_CONF" use="optional"/>
 				<xs:attribute name="OBS_PRE_BREAK" type="xs:string" use="optional"/>

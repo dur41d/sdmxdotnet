@@ -107,36 +107,26 @@ namespace SDMX
 
     public class YearMonthTimePeriod : ITimePeriod
     {     
-        const string _pattern = @"(?<Sign>[-|+]?)(?<Year>\d{4})-(?<Month>\d{2})(?<Z>Z)?(?:(?<ZoneSign>[+-])(?<ZoneHour>\d{2}):(?<ZoneMinute>\d{2}))?";
-        DateTimeOffset _timeOffset;
+        const string _pattern = @"(?<Sign>[-|+]?)(?<Year>\d{4})-(?<Month>\d{2})(?<Z>Z)?(?:(?<ZoneSign>[+-])(?<ZoneHour>\d{2}):(?<ZoneMinute>\d{2}))?";        
 
-        public int Year
-        {
-            get { return _timeOffset.Year; }
-        }
-
-        public int Month
-        {
-            get { return _timeOffset.Month; }
-        }
-
-        public YearMonthTimePeriod(DateTimeOffset dateTime)
-        {
-            _timeOffset = dateTime;
-        }
+        public int Year { get; private set; }
+        public int Month { get; private set; }        
 
         public YearMonthTimePeriod(int year, int month)
         {
             // use date time to validate the integers
-            _timeOffset = new DateTimeOffset(year, month, 1, 0, 0, 0, new TimeSpan());
-        }
+            if (year > 9999 || year < 1
+                || month > 12 || month < 1)
+            {
+                throw new SDMXException("Invalid year '{0}' month '{1}'", year, month);
+            }
+            Year = year;
+            Month = month;
+        }      
 
         public override string ToString()
         {
-            if (_timeOffset.Offset.Ticks == 0)
-                return _timeOffset.ToString("yyyy-MM");
-            else
-                return _timeOffset.ToString("yyyy-MMK");
+            return "{0}-{1}".F(Year, Month);
         }
 
         public static YearMonthTimePeriod Parse(string input)
@@ -147,21 +137,9 @@ namespace SDMX
                 throw new SDMXException("Invalid year month value '{0}'.", input);
             }
             int year = int.Parse(match.Groups["Year"].Value);
-            int month = int.Parse(match.Groups["Month"].Value);
-            TimeSpan offset = TimePeriodUtility.ParseTimeOffset(match);            
-            return new YearMonthTimePeriod(new DateTimeOffset(year, month, 1, 0, 0, 0, offset));
-        }
-
-        public static explicit operator DateTimeOffset(YearMonthTimePeriod input)
-        {
-            Contract.AssertNotNull(input, "input");
-            return input._timeOffset;
-        }
-
-        public static explicit operator YearMonthTimePeriod(DateTimeOffset input)
-        {
-            return new YearMonthTimePeriod(input);
-        }
+            int month = int.Parse(match.Groups["Month"].Value);            
+            return new YearMonthTimePeriod(year, month);
+        }      
 
         public static bool IsMatch(string value)
         {

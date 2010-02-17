@@ -42,6 +42,10 @@ namespace SDMX.Parsers
 
         protected override TimeDimension Return()
         {
+            if (_timeDimension.CodeList == null && _timeDimension.TextFormat == null)
+            {
+                _timeDimension.TextFormat = new YearMonthTextFormat();
+            }
             return _timeDimension;
         }
     }

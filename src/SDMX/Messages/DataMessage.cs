@@ -10,21 +10,21 @@ using OXM;
 namespace SDMX
 {
     public enum DataFormat
-    { 
+    {
         Generic,
         Compact,
         Utility
     }
-    
+
     public class DataMessage : Message
-    {   
-        public DataSet DataSet { get; set; }        
+    {
+        public DataSet DataSet { get; set; }
 
         public static DataMessage ReadXml(XmlReader reader, KeyFamily keyFamily, DataFormat format)
         {
             Contract.AssertNotNull(reader, "reader");
             Contract.AssertNotNull(keyFamily, "keyFamily");
-            
+
             var map = GetMessageMap(format, keyFamily);
 
             return map.ReadXml(reader);
@@ -44,7 +44,7 @@ namespace SDMX
         public void WriteXml(XmlWriter writer, DataFormat format)
         {
             Contract.AssertNotNull(writer, "writer");
-            
+
             var keyFamily = DataSet == null ? null : DataSet.KeyFamily;
             var map = GetMessageMap(format, keyFamily);
             map.WriteXml(writer, this);
@@ -62,11 +62,17 @@ namespace SDMX
         private static RoolElementMap<DataMessage> GetMessageMap(DataFormat format, KeyFamily keyFamily)
         {
             switch (format)
-            { 
+            {
                 case DataFormat.Generic:
-                    var map = new DataMessageMap();
-                    map.KeyFamily = keyFamily;
-                    return map;
+                    return new DataMessageMap()
+                     {
+                         KeyFamily = keyFamily
+                     };
+                case DataFormat.Compact:
+                    return new CompactDataMessageMap("bisc", "urn:sdmx:org.sdmx.infomodel.keyfamily.KeyFamily=BIS:EXT_DEBT:compact")
+                        {
+                            KeyFamily = keyFamily
+                        };
                 default:
                     throw new SDMXException("Invalid data format: {0}.", format);
             }
