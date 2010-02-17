@@ -20,7 +20,7 @@ namespace OXM
             _rootMap = this;
         }
 
-        protected void RegisterNamespace(string prefix, XNamespace ns)
+        public void RegisterNamespace(string prefix, XNamespace ns)
         {
             namespaces.Add(prefix, ns);
         }      

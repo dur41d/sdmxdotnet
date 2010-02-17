@@ -32,6 +32,11 @@ namespace SDMX
                 return CodeList != null;
             }
         }
+
+        public override string ToString()
+        {
+            return Concept.ID.ToString();
+        }
       
         //public virtual object Parse(string value)
         //{

@@ -26,17 +26,7 @@ namespace SDMX.Parsers
             MapCollection(o => o.Series).ToElement(Namespaces.Generic + "Series", false)
                 .Set(v => _dataSet.Series.Add(v))
                 .ClassMap(() => new SeriesMap(_dataSet));
-        }
-
-        //private IEnumerable<KeyValue> GetKeyValues(AttributeValueCollection attributes)
-        //{
-        //    foreach (var attribute in attributes)
-        //    {
-        //        var value = new KeyValue() { Concept = attribute.Attribute.Concept.ID, Value = attribute.Value.ToString() };
-        //        // TODO: implement startTime
-        //        yield return value;
-        //    }
-        //}
+        }   
 
         private void VerifyKeyFamilyRef(ID id)
         {

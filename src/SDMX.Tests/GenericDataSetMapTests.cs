@@ -34,5 +34,27 @@ namespace SDMX.Tests
             var doc = XDocument.Parse(sb.ToString());            
             Assert.IsTrue(Utility.IsValidMessage(doc));
         }
+
+        [Test]
+        public void Can_read_compact_data()
+        {
+            string dataPath = Utility.GetPathFromProjectBase("lib\\CompactSampleNoGroups.xml");
+            string dsdPath = Utility.GetPathFromProjectBase("lib\\StructureSample.xml");
+            var dsd = StructureMessage.Load(dsdPath);
+            var keyFamily = dsd.KeyFamilies[0];
+
+            var message = DataMessage.Load(dataPath, keyFamily, DataFormat.Compact);
+
+            var sb = new StringBuilder();
+            var settings = new XmlWriterSettings() { Indent = true };
+            using (var writer = XmlWriter.Create(sb, settings))
+            {
+                message.WriteXml(writer, DataFormat.Compact);
+            }
+
+            var doc = XDocument.Parse(sb.ToString());
+            doc.Save(Utility.GetPathFromProjectBase("\\lib\\CompactSampleNoGroups2.xml"));
+            //Assert.IsTrue(Utility.IsValidMessage(doc));
+        }
     }
 }
