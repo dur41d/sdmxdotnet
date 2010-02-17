@@ -10,7 +10,9 @@ namespace SDMX.Parsers
     {
         DataMessage _message = new DataMessage();
 
-        public DataMessageMap(KeyFamily keyFamily)
+        public KeyFamily KeyFamily { get; set; }
+
+        public DataMessageMap()
         {
             RegisterNamespace("common", Namespaces.Common);
             RegisterNamespace("generic", Namespaces.Generic);
@@ -23,7 +25,7 @@ namespace SDMX.Parsers
 
             Map(o => o.DataSet).ToElement("DataSet", true)
                 .Set(v => _message.DataSet = v)
-                .ClassMap(() => new DataSetMap(keyFamily));
+                .ClassMap(() => new DataSetMap(KeyFamily));
         }
 
         public override System.Xml.Linq.XName Name

@@ -13,7 +13,7 @@ namespace SDMX.Parsers
         public ObservationMap(Series series, KeyFamily keyFamily)
         {
             Map(o => o.Time).ToSimpleElement("Time", true)
-                .Set(v => _obs = series[v])
+                .Set(v => _obs = series.Create(v))
                 .Converter(new TimePeriodConverter());
 
             Map(o => o.Value).ToElement("ObsValue", true)
