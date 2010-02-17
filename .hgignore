@@ -6,3 +6,4 @@ glob:*.FileListAbsolute.txt
 glob:src/SDMX.Tests/obj/Debug/build.force
 glob:src/SDMX.suo
 glob:bin
+glob:*.exe
