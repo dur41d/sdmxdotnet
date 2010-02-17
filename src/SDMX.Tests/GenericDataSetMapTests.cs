@@ -6,6 +6,7 @@ using NUnit.Framework;
 using SDMX.Parsers;
 using System.Xml;
 using System.Xml.Linq;
+using System.IO;
 
 namespace SDMX.Tests
 {
@@ -20,24 +21,18 @@ namespace SDMX.Tests
             var dsd = StructureMessage.Load(dsdPath);
             var keyFamily = dsd.KeyFamilies[0];
 
-            var map = new DataMessageMap(keyFamily);
+            var message = DataMessage.Load(dataPath, keyFamily, DataFormat.Generic);
 
-            DataMessage message;
-            using (var reader = XmlReader.Create(dataPath))
-            {
-                message = map.ReadXml(reader);
-            }
-
-            var output = new StringBuilder();
+            var sb = new StringBuilder();
+                        
             var settings = new XmlWriterSettings() { Indent = true };
-            using (var writer = XmlWriter.Create(output, settings))
+            using (var writer = XmlWriter.Create(sb, settings))
             {
-                map.WriteXml(writer, message);
+                message.WriteXml(writer, DataFormat.Generic);
             }
 
-            var doc = XDocument.Parse(output.ToString());
-            doc.Save(Utility.GetPathFromProjectBase("lib\\GenericSample2Test.xml"));
-            Assert.IsTrue(Utility.ValidateMessage(doc));
+            var doc = XDocument.Parse(sb.ToString());            
+            Assert.IsTrue(Utility.IsValidMessage(doc));
         }
     }
 }

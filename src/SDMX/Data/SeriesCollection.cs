@@ -40,6 +40,13 @@ namespace SDMX
 
             return new Series(_dataSet, new ReadOnlyKey(key));    
         }
+
+        public Series Create(ReadOnlyKey key)
+        {
+            Contract.AssertNotNull(key, "key");
+
+            return new Series(_dataSet, key);
+        }
      
         
         public void Add(Series series)

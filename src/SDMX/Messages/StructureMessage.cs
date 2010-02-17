@@ -91,57 +91,40 @@ namespace SDMX
         //    }
         //}
 
-        public static StructureMessage Parse(string text)
+        public static StructureMessage ReadXml(XmlReader reader)
         {
             var map = new StructureMessageMap();
-
-            StructureMessage message;
-            using (var reader = XmlReader.Create(new StringReader(text)))
-            {
-                message = map.ReadXml(reader);
-            }
-
-            return message;
+           
+            return map.ReadXml(reader);
         }
 
         public static StructureMessage Load(string fileName)
         {
-            var map = new StructureMessageMap();
-
             StructureMessage message;
             using (var reader = XmlReader.Create(fileName))
             {
-                message = map.ReadXml(reader);
+                message = ReadXml(reader);
             }
 
             return message;
         }
 
-        public void Save(string fileName)
-        {   
+        public void WriteXml(XmlWriter writer)
+        {
+            Contract.AssertNotNull(writer, "writer");
             var map = new StructureMessageMap();
+            map.WriteXml(writer, this);
+        }
 
+        public void Save(string fileName)
+        {            
             var settings = new XmlWriterSettings() { Indent = true };
             using (var writer = XmlWriter.Create(fileName, settings))
             {
-                map.WriteXml(writer, this);
+                WriteXml(writer);
             }
         }
-
-        public override string ToString()
-        {
-            var map = new StructureMessageMap();
-            var sb = new StringBuilder();
-
-            var settings = new XmlWriterSettings() { Indent = true };
-            using (var writer = XmlWriter.Create(sb, settings))
-            {
-                map.WriteXml(writer, this);
-            }
-
-            return sb.ToString();
-        }
-
+        
         public Concept GetConcept(ID conceptID, ID agencyID, string version)
         {
             return Filter(Concepts, c => c.ID == conceptID, c => c.AgencyID == agencyID, c => c.Version == version);

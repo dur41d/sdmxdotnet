@@ -16,17 +16,23 @@ namespace SDMX.Parsers
             ElementsOrder("SeriesKey", "Attributes", "Obs", "Annotations");
 
             Map(o => o.Key).ToElement("SeriesKey", true)
-                .Set(v => _series = dataSet.Series[v])
+                .Set(v => _series = dataSet.Series.Create(v))
                 .ClassMap(() => new KeyMap(dataSet));
 
             MapContainer("Attributes", false)
                 .MapCollection(o => o.Attributes).ToElement("Value", false)
-                    .Set(v => _series.Attributes[v.Key] = v.Value)
+                    //.Set(v => _series.Attributes[v.Key] = v.Value)
+                    .Set(v => Debug(v))
                     .ClassMap(() => new ValueMap(dataSet.KeyFamily));
 
             MapCollection(o => o).ToElement("Obs", true)
                 .Set(v => observations.Add(v))
                 .ClassMap(() => new ObservationMap(_series, dataSet.KeyFamily));
+        }
+
+        private void Debug(KeyValuePair<ID, IValue> v)
+        {
+            _series.Attributes[v.Key] = v.Value;
         }
        
         protected override Series Return()

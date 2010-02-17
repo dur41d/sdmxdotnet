@@ -17,5 +17,10 @@ namespace SDMX
     public abstract class Message : IMessage
     {
         public Header Header { get; set; }
+
+        public override string ToString()
+        {
+            return Header.ToString();
+        }
     }
 }

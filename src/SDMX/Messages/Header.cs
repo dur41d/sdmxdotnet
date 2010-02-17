@@ -44,5 +44,10 @@ namespace SDMX
         {
             Prepared = prepared;
         }
+
+        public override string ToString()
+        {
+            return ID.ToString();
+        }
     }
 }

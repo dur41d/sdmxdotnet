@@ -9,7 +9,7 @@ namespace SDMX.Tests
 {
     internal static class Utility
     {
-        internal static bool ValidateMessage(XDocument doc)
+        internal static bool IsValidMessage(XDocument doc)
         {            
             var schemas = new XmlSchemaSet();
 
