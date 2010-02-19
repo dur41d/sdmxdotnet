@@ -18,7 +18,7 @@ namespace SDMX.Tests
         [Test]
         public void StructureSampleTest()
         {
-            string dsdPath = Utility.GetPathFromProjectBase("lib\\StructureSample.xml");
+            string dsdPath = Utility.GetPath("lib\\StructureSample.xml");
 
             StructureMessageMap map = new StructureMessageMap();
 
@@ -42,7 +42,7 @@ namespace SDMX.Tests
         [Test]
         public void WBDSD()
         {
-            string dsdPath = Utility.GetPathFromProjectBase("lib\\DSD_WB.xml");
+            string dsdPath = Utility.GetPath("lib\\DSD_WB.xml");
 
             StructureMessageMap map = new StructureMessageMap();
 
@@ -68,7 +68,7 @@ namespace SDMX.Tests
         [Test]
         public void HeirarchicalCodeListSample()
         {
-            string dsdPath = Utility.GetPathFromProjectBase("lib\\HeirarchicalCodeListSample.xml");
+            string dsdPath = Utility.GetPath("lib\\HeirarchicalCodeListSample.xml");
             var sample = XDocument.Load(dsdPath);
             Utility.IsValidMessage(sample);
 
@@ -76,9 +76,9 @@ namespace SDMX.Tests
 
             StructureMessage message = StructureMessage.Load(dsdPath);
 
-            message.Save(Utility.GetPathFromProjectBase("lib\\HeirarchicalCodeListSample2.xml"));         
+            message.Save(Utility.GetPath("lib\\HeirarchicalCodeListSample2.xml"));         
 
-            var doc = XDocument.Load(Utility.GetPathFromProjectBase("lib\\HeirarchicalCodeListSample2.xml"));
+            var doc = XDocument.Load(Utility.GetPath("lib\\HeirarchicalCodeListSample2.xml"));
             Assert.IsTrue(Utility.IsValidMessage(doc));
         }
 
@@ -86,7 +86,7 @@ namespace SDMX.Tests
         public void WBDSD_HierarchicalCodeList()
         {
             // load the DSD
-            string dsdPath = Utility.GetPathFromProjectBase("lib\\DSD_WB.xml");
+            string dsdPath = Utility.GetPath("lib\\DSD_WB.xml");
 
             var dsd = StructureMessage.Load(dsdPath);
             
@@ -128,7 +128,7 @@ namespace SDMX.Tests
             hlist.Add(hierarchy);
 
             // save the DSD
-            dsd.Save(Utility.GetPathFromProjectBase("lib\\DSD_WB2.xml"));
+            dsd.Save(Utility.GetPath("lib\\DSD_WB2.xml"));
 
             string messageText = dsd.ToString();
 

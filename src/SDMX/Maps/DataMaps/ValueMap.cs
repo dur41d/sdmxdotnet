@@ -17,7 +17,7 @@ namespace SDMX.Parsers
         public ValueMap(KeyFamily keyFamily)
         {
             _keyFamily = keyFamily;
-
+                        
             Map(o => o.Key).ToAttribute("concept", true)
                 .Set(v => id = v)
                 .Converter(new IDConverter());
