@@ -1,0 +1,125 @@
+﻿using System;
+using System.Collections.Generic;
+using NUnit.Framework;
+using Common = SDMX_ML.Framework.Common;
+using Message = SDMX_ML.Framework.Message;
+using Messages = SDMX_ML.Framework.Messages;
+using Query = SDMX_ML.Framework.Query;
+using Generic = SDMX_ML.Framework.Generic;
+using System.Xml.Linq;
+using System.Linq;
+
+namespace SDMX.Tests
+{
+    [TestFixture]
+    public class GenericDataTests
+    {
+        [Test]
+        public void Create_GenericData_from_xml()
+        {
+            string samplePath = Utility.GetPathFromProjectBase("lib\\GenericSample.xml");
+            XDocument loadedXml = XDocument.Load(samplePath);
+
+            var message = new Messages.GenericData(loadedXml.ToString());
+
+            XDocument generatedXml = XDocument.Parse(message.ToXml());
+
+            Assert.IsTrue(Utility.CompareXML(loadedXml, generatedXml));
+        }
+
+        [Test]
+        public void Create_Structure_from_xml()
+        {
+            string samplePath = Utility.GetPathFromProjectBase("lib\\StructureSample.xml");
+            XDocument loadedXml = XDocument.Load(samplePath);
+
+            var message = new Messages.Structure(loadedXml.ToString());
+
+            XDocument generatedXml = XDocument.Parse(message.ToXml());
+
+            Assert.IsTrue(Utility.CompareXML(loadedXml, generatedXml));
+        }
+
+        [Test]
+        public void Create_Copmpact_from_xml()
+        {
+            string samplePath = Utility.GetPathFromProjectBase("lib\\CompactSample.xml");
+            XDocument loadedXml = XDocument.Load(samplePath);
+
+            var message = new Messages.CompactData(loadedXml.ToString());
+
+            XDocument generatedXml = XDocument.Parse(message.ToXml());
+
+            Assert.IsTrue(Utility.CompareXML(loadedXml, generatedXml));
+        }
+
+        [Test, Ignore("TODO: To be implemented")]
+        public void Create_Utility_from_xml()
+        {
+            string samplePath = Utility.GetPathFromProjectBase("lib\\GenericSample.xml");
+            XDocument loadedXml = XDocument.Load(samplePath);
+
+            var message = new Messages.UtilityData();
+
+            XDocument generatedXml = XDocument.Parse(message.ToXml());
+
+            Assert.IsTrue(Utility.CompareXML(loadedXml, generatedXml));
+        }
+
+        [Test]
+        public void Create_GenericDataSet()
+        {
+            var dataset = new Generic.DataSetType();
+
+            var series = new Generic.SeriesType()
+            {
+                Serieskey = new List<Generic.ValueType>()
+                {
+                    new Generic.ValueType() { Concept = new Common.IDType("FREQ"), Value = "A" },
+                    new Generic.ValueType() { Concept = new Common.IDType("SEX"), Value = "M" },
+                    new Generic.ValueType() { Concept = new Common.IDType("AGE"), Value = "15" }
+                },
+                Obs = new List<Generic.ObsType>()
+                {
+                    new Generic.ObsType() 
+                    { 
+                        Time = new Common.TimePeriodType() { TimePeriod = "2007" },
+                        ObsValue = new Generic.ObsValueType() { Value = 1 }
+                    },
+                    new Generic.ObsType() 
+                    { 
+                        Time = new Common.TimePeriodType() { TimePeriod = "2008" },
+                        ObsValue = new Generic.ObsValueType() { Value = 2 }
+                    },
+                    new Generic.ObsType() 
+                    { 
+                        Time = new Common.TimePeriodType() { TimePeriod = "2009" },
+                        ObsValue = new Generic.ObsValueType() { Value = 3 }
+                    }
+                }
+            };
+
+            dataset.Series.Add(series);
+        }
+
+        [Test]
+        public void Create_GenericDataSet_2()
+        { 
+            // create code list 
+            var frequency = new CodeList()
+            {
+                Name = "FREQ",
+                Codes = new List<Code>()
+                {
+                    new Code() { Value = "A" },
+                    new Code() { Value = "B" },
+                    new Code() { Value = "C" },
+                    new Code() { Value = "D" },
+                }
+            };
+
+            var code = frequency["A"];
+        }
+      
+    }
+}

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright SDMX 2005  -   www.sdmx.org -->
+<MetadataReport xmlns="http://www.SDMX.org/resources/SDMXML/schemas/v2_0/message"  xmlns:metadatareport="http://www.SDMX.org/resources/SDMXML/schemas/v2_0/metadatareport" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.SDMX.org/resources/SDMXML/schemas/v2_0/message
+SDMXMessage.xsd urn:sdmx:org.sdmx.infomodel.metadatastructuredefinition.metadatastructuredefinition=IMF:SDDS:metadatareport IMF_CONTACT_MetadataReport.xsd" xmlns:imfc="urn:sdmx:org.sdmx.infomodel.metadatastructuredefinition.metadatastructuredefinition=IMF:SDDS:metadatareport">
+	<Header>
+			<ID>JD014</ID>
+			<Test>true</Test>
+			<Truncated>false</Truncated>
+			<Name xml:lang="en">Trans46302</Name>
+			<Prepared>2001-03-11T09:30:47-05:00</Prepared>
+			<Sender id="IMF">
+				<Name xml:lang="en">International Monetary Fund</Name>
+				<Contact>
+					<Name xml:lang="en">G.B. Smith</Name>
+					<Telephone>+000.000.0000</Telephone>
+				</Contact>
+			</Sender>
+			<Receiver id="ECB">
+				<Name xml:lang="en">European Central Bank</Name>
+				<Contact>
+					<Name xml:lang="en">B.S. Featherstone</Name>
+					<Department xml:lang="en">Statistics Division</Department>
+					<Telephone>+000.000.0001</Telephone>
+				</Contact>
+			</Receiver>
+			<DataSetAgency>BIS</DataSetAgency>
+			<DataSetID>BIS_JD_237</DataSetID>
+			<DataSetAction>Append</DataSetAction>
+			<Extracted>2001-03-11T09:30:47-05:00</Extracted>
+			<ReportingBegin>2000-01-01T00:00:00</ReportingBegin>
+			<ReportingEnd>2000-12-01T00:00:00</ReportingEnd>
+	</Header>
+	<imfc:MetadataSet>
+		<metadatareport:MetadataStructureRef>SDDS_CONTACT_INFO</metadatareport:MetadataStructureRef>
+		<metadatareport:MetadataStructureAgencyRef>IMF</metadatareport:MetadataStructureAgencyRef>
+		<imfc:PRIMARY_CONTACT_INFO>
+			<imfc:PRIMARY_CONTACT_INFOTarget>
+				<imfc:METADATAFLOW>SDDS</imfc:METADATAFLOW>
+				<imfc:CATEGORY>EXT_DEBT</imfc:CATEGORY>
+				<imfc:DATA_PROVIDER>MX</imfc:DATA_PROVIDER>
+			</imfc:PRIMARY_CONTACT_INFOTarget>
+			<imfc:NAME>Maria Rodrigues</imfc:NAME>
+			<imfc:ADDRESS>5335 Zocalo, Mexico DF, Mexico 46578</imfc:ADDRESS>
+			<imfc:TELEPHONE>675-908-9999</imfc:TELEPHONE>
+			<imfc:E-MAIL>mrodriguez@bmex.org</imfc:E-MAIL>			
+		</imfc:PRIMARY_CONTACT_INFO>
+		<imfc:CONTACT_INFO>
+			<imfc:CONTACT_INFOTarget>
+				<imfc:METADATAFLOW>SDDS</imfc:METADATAFLOW>
+				<imfc:CATEGORY>EXT_DEBT</imfc:CATEGORY>
+				<imfc:DATA_PROVIDER>MX</imfc:DATA_PROVIDER>
+			</imfc:CONTACT_INFOTarget>			
+			<imfc:NAME>Geraldo Flores</imfc:NAME>
+			<imfc:ADDRESS>5335 Zocalo, Mexico DF, Mexico 46578</imfc:ADDRESS>
+			<imfc:TELEPHONE>675-908-4664</imfc:TELEPHONE>
+			<imfc:E-MAIL>gflores@bmex.org</imfc:E-MAIL>			
+		</imfc:CONTACT_INFO>
+	
+	</imfc:MetadataSet>
+	
+	
+</MetadataReport>

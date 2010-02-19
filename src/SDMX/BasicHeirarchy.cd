@@ -1,0 +1,91 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="SDMX.AnnotableArtefact">
+    <Position X="5.25" Y="2.25" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>AnnotableArtefact.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SDMX.IdentifiableArtefact">
+    <Position X="7" Y="2.25" Width="1.75" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAggAAAAAAAQAQAAAAAAAAACAAAAAAAAAA=</HashCode>
+      <FileName>IdentifiableArtefact.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SDMX.MaintainableArtefact">
+    <Position X="11.25" Y="2.25" Width="1.75" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAQAACAAAAAAAAIAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>MaintainableArtefact.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SDMX.VersionableArtefact">
+    <Position X="9" Y="2.25" Width="1.75" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>IAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAACAAAAAAAAA=</HashCode>
+      <FileName>VersionableArtefact.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SDMX.KeyFamily" Collapsed="true">
+    <Position X="12.25" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAgAEAAAAAAEAQAAgAIAAKQAAAAUAIACEBAAwBAAAA=</HashCode>
+      <FileName>Structure\KeyFamily.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SDMX.CodeList" Collapsed="true">
+    <Position X="14" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACIAAAAAAAAAABBAAQAABAAAAAAAAAAACAAAAAAQAAA=</HashCode>
+      <FileName>Structure\CodeList.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="SDMX.Code" Collapsed="true">
+    <Position X="6.75" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAQAAAAAAAAEAACAAAAAAAAAA=</HashCode>
+      <FileName>Structure\Code.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="SDMX.HierarchicalCodeList" Collapsed="true">
+    <Position X="15.75" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACIAgAAAAAAAABAAAAAAAAAAQAAAAAAAiAAAAgAAAAI=</HashCode>
+      <FileName>Structure\HierarchicalCodeList.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="SDMX.Hierarchy" Collapsed="true">
+    <Position X="8.5" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACAAAAAAAAAACCAAAAAAQAAAAAAAAAACAAAAAAAAAA=</HashCode>
+      <FileName>Structure\Hierarchy.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SDMX.ConceptScheme" Collapsed="true">
+    <Position X="10.5" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACIAAAAAAAAAABBACAAABAAAAAAAAAAACAAAAAAAAAA=</HashCode>
+      <FileName>Structure\ConceptScheme.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Font Name="Tahoma" Size="8.25" />
+</ClassDiagram>

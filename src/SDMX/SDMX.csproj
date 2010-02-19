@@ -1,0 +1,182 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{8729DEDD-51EA-41DB-BF49-89297BB56D54}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SDMX</RootNamespace>
+    <AssemblyName>SDMX</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AnnotableArtefact.cs" />
+    <Compile Include="Annotation.cs" />
+    <Compile Include="Data\AttributeValue.cs" />
+    <Compile Include="Data\DimensionValue.cs" />
+    <Compile Include="Data\GroupKey.cs" />
+    <Compile Include="Data\GroupKeyBuilder.cs" />
+    <Compile Include="Data\GroupValue.cs" />
+    <Compile Include="Data\GroupValueCollection.cs" />
+    <Compile Include="Data\IAttachableArtefact.cs" />
+    <Compile Include="Data\IValue.cs" />
+    <Compile Include="Data\SeriesCollection.cs" />
+    <Compile Include="Data\SeriesKeyBuilder.cs" />
+    <Compile Include="ID.cs" />
+    <Compile Include="IdentifiableArtefact.cs" />
+    <Compile Include="InternationalString.cs" />
+    <Compile Include="Item.cs" />
+    <Compile Include="ItemScheme.cs" />
+    <Compile Include="MaintainableArtefact.cs" />
+    <Compile Include="Maps\ContactMap.cs" />
+    <Compile Include="Maps\DataMaps\Compact\CompactDataMessageMap.cs" />
+    <Compile Include="Maps\DataMaps\Compact\CompactDataSetMap.cs" />
+    <Compile Include="Maps\DataMaps\Compact\CompactObservationMap.cs" />
+    <Compile Include="Maps\DataMaps\Compact\CompactSeriesKeyMap.cs" />
+    <Compile Include="Maps\DataMaps\Compact\CompactSeriesMap.cs" />
+    <Compile Include="Maps\DataMaps\DataMessageMap.cs" />
+    <Compile Include="Maps\DataMaps\DataSetMap.cs" />
+    <Compile Include="Maps\DataMaps\KeyMap.cs" />
+    <Compile Include="Maps\DataMaps\ObservationMap.cs" />
+    <Compile Include="Maps\DataMaps\ObsValueMap.cs" />
+    <Compile Include="Maps\DataMaps\SeriesMap.cs" />
+    <Compile Include="Maps\DataMaps\ValueConverter.cs" />
+    <Compile Include="Maps\DataMaps\ValueMap.cs" />
+    <Compile Include="Maps\HeaderMap.cs" />
+    <Compile Include="Maps\PartyMap.cs" />
+    <Compile Include="Maps\StructureMaps\AnnotableArtefactMap.cs" />
+    <Compile Include="Maps\StructureMaps\AnnotationMap.cs" />
+    <Compile Include="Maps\StructureMaps\AttributeMap.cs" />
+    <Compile Include="Maps\StructureMaps\CodelistMap.cs" />
+    <Compile Include="Maps\StructureMaps\CodelistRefMap.cs" />
+    <Compile Include="Maps\StructureMaps\CodeMap.cs" />
+    <Compile Include="Maps\StructureMaps\CodeRefMap.cs" />
+    <Compile Include="Maps\StructureMaps\CompoenentMap.cs" />
+    <Compile Include="Maps\StructureMaps\ConceptMap.cs" />
+    <Compile Include="Maps\StructureMaps\CrossSectionalAttachmentLevelMap.cs" />
+    <Compile Include="Maps\StructureMaps\CrossSectionalMeasureMap.cs" />
+    <Compile Include="Maps\StructureMaps\DimensionMap.cs" />
+    <Compile Include="Maps\StructureMaps\GenericDataSetParser.cs" />
+    <Compile Include="Maps\StructureMaps\GroupDescriptorMap.cs" />
+    <Compile Include="Maps\StructureMaps\HierarchicalCodeListMap.cs" />
+    <Compile Include="Maps\StructureMaps\HierarchyMap.cs" />
+    <Compile Include="Maps\StructureMaps\IDConverter.cs" />
+    <Compile Include="Maps\StructureMaps\IdentifiableArtefactMap.cs" />
+    <Compile Include="Maps\StructureMaps\InternationalStringMap.cs" />
+    <Compile Include="Maps\StructureMaps\KeyFamilyMap.cs" />
+    <Compile Include="Maps\StructureMaps\KeyFamilyParser.cs" />
+    <Compile Include="Maps\StructureMaps\LanguageMap.cs" />
+    <Compile Include="Maps\StructureMaps\MaintainableArtefactMap.cs" />
+    <Compile Include="Maps\StructureMaps\MeasureMap.cs" />
+    <Compile Include="Maps\StructureMaps\PrimaryMeasureMap.cs" />
+    <Compile Include="Maps\StructureMaps\StructureMessageMap.cs" />
+    <Compile Include="Maps\StructureMaps\TempCodelistRefMap.cs" />
+    <Compile Include="Maps\StructureMaps\TempConceptRefMap.cs" />
+    <Compile Include="Maps\StructureMaps\TextFormatMap.cs" />
+    <Compile Include="Maps\StructureMaps\TimeDimensionMap.cs" />
+    <Compile Include="Maps\StructureMaps\TimePeriodConverter.cs" />
+    <Compile Include="Maps\StructureMaps\VersionableArtefactMap.cs" />
+    <Compile Include="Messages\Contact.cs" />
+    <Compile Include="Messages\DataMessage.cs" />
+    <Compile Include="Messages\DataSetAction.cs" />
+    <Compile Include="Messages\Header.cs" />
+    <Compile Include="Messages\Message.cs" />
+    <Compile Include="Messages\Party.cs" />
+    <Compile Include="Messages\StructureMessage.cs" />
+    <Compile Include="Structure\AssignmentStatus.cs" />
+    <Compile Include="Structure\AttachmentLevel.cs" />
+    <Compile Include="Structure\Attribute.cs" />
+    <Compile Include="Data\AttributeValueCollection.cs" />
+    <Compile Include="Structure\Code.cs" />
+    <Compile Include="Structure\CodeList.cs" />
+    <Compile Include="Data\ComponenetValues.cs" />
+    <Compile Include="Structure\CodeListRef.cs" />
+    <Compile Include="Structure\CodeRef.cs" />
+    <Compile Include="Structure\Collection.cs" />
+    <Compile Include="Structure\Component.cs" />
+    <Compile Include="Structure\Concept.cs" />
+    <Compile Include="Data\DataSet.cs" />
+    <Compile Include="Structure\ConceptScheme.cs" />
+    <Compile Include="Structure\CrossSectionalAttachmentLevel.cs" />
+    <Compile Include="Structure\CrossSectionalMeasure.cs" />
+    <Compile Include="Structure\Dimension.cs" />
+    <Compile Include="Extensions.cs" />
+    <Compile Include="Structure\GroupDescriptor.cs" />
+    <Compile Include="Structure\HierarchicalCodeList.cs" />
+    <Compile Include="Structure\Hierarchy.cs" />
+    <Compile Include="Structure\KeyFamily.cs" />
+    <Compile Include="Data\Observation.cs" />
+    <Compile Include="Data\ObservationValue.cs" />
+    <Compile Include="Structure\Level.cs" />
+    <Compile Include="Structure\Measure.cs" />
+    <Compile Include="Structure\PrimaryMeasure.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Exceptions.cs" />
+    <Compile Include="Data\Series.cs" />
+    <Compile Include="Data\SeriesKey.cs" />
+    <Compile Include="InternationalText.cs" />
+    <Compile Include="Structure\TextFormat.cs" />
+    <Compile Include="Structure\TimeDimension.cs" />
+    <Compile Include="Data\TimePeriod.cs" />
+    <Compile Include="VersionableArtefact.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Common\Common.csproj">
+      <Project>{EB9211B5-E5FB-4467-B60E-6E84C3D9810C}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OXM\OXM.csproj">
+      <Project>{8441ED91-9F2B-4E43-8023-73883DA1FEA2}</Project>
+      <Name>OXM</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="BasicHeirarchy.cd" />
+    <None Include="Maps\BasicMapping.cd" />
+    <None Include="Messages\StructureMessage.cd" />
+    <None Include="Structure\KeyFamily.cd" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- Copyright SDMX 2005  -   www.sdmx.org -->
+<xs:schema
+	xmlns:xs="http://www.w3.org/2001/XMLSchema"
+
+	xmlns:metadatareport="http://www.SDMX.org/resources/SDMXML/schemas/v2_0/metadatareport"
+	xmlns:common="http://www.SDMX.org/resources/SDMXML/schemas/v2_0/common"
+	xmlns="urn:sdmx:org.sdmx.infomodel.metadatastructuredefinition.metadatastructuredefinition=IMF:SDDS:metadatareport"
+	targetNamespace="urn:sdmx:org.sdmx.infomodel.metadatastructuredefinition.metadatastructuredefinition=IMF:SDDS:metadatareport"
+	elementFormDefault="qualified"
+	attributeFormDefault="unqualified"
+>
+
+
+
+<xs:import namespace="http://www.SDMX.org/resources/SDMXML/schemas/v2_0/common" schemaLocation="SDMXCommon.xsd"/>
+<xs:import namespace="http://www.SDMX.org/resources/SDMXML/schemas/v2_0/metadatareport" schemaLocation="SDMXMetadataReport.xsd"/>
+
+
+<xs:element name="MetadataSet" substitutionGroup="metadatareport:MetadataSet" type="MetadataSetType"/>
+
+<xs:complexType name="MetadataSetType">
+	<xs:complexContent>
+		<xs:extension base="metadatareport:MetadataSetType">
+			<xs:sequence>
+				<xs:element name="PRIMARY_CONTACT_INFO" type="PRIMARY_CONTACT_INFOType" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element name="CONTACT_INFO" type="CONTACT_INFOType" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:extension>
+	</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="PRIMARY_CONTACT_INFOType">
+	<xs:sequence>
+		<xs:element name="PRIMARY_CONTACT_INFOTarget" type="PRIMARY_CONTACT_INFOTargetType"/>
+		<xs:element name="NAME" type="xs:string" minOccurs="0"/>
+		<xs:element name="ADDRESS" type="xs:string" minOccurs="0"/>
+		<xs:element name="TELEPHONE" type="xs:string" minOccurs="0"/>
+		<xs:element name="E-MAIL" type="xs:string" minOccurs="0"/>
+	</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="CONTACT_INFOType">
+	<xs:sequence>
+		<xs:element name="CONTACT_INFOTarget" type="CONTACT_INFOTargetType"/>
+		<xs:element name="NAME" type="xs:string" minOccurs="0"/>
+		<xs:element name="ADDRESS" type="xs:string" minOccurs="0"/>
+		<xs:element name="TELEPHONE" type="xs:string" minOccurs="0"/>
+		<xs:element name="E-MAIL" type="xs:string" minOccurs="0"/>
+	</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="PRIMARY_CONTACT_INFOTargetType">
+	<xs:sequence>
+		<xs:element name="METADATAFLOW" type="METADATAFLOWType"/>
+		<xs:element name="CATEGORY" type="CATEGORYType"/>
+		<xs:element name="DATA_PROVIDER" type="DATA_PROVIDERType"/>
+	</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="CONTACT_INFOTargetType">
+	<xs:sequence>
+		<xs:element name="METADATAFLOW" type="METADATAFLOWType"/>
+		<xs:element name="CATEGORY" type="CATEGORYType"/>
+		<xs:element name="DATA_PROVIDER" type="DATA_PROVIDERType"/>
+	</xs:sequence>
+</xs:complexType>
+
+<xs:simpleType name="METADATAFLOWType">
+	<xs:restriction base="xs:NMTOKEN">
+		<xs:enumeration value="SDDS">
+			<xs:annotation>
+				<xs:documentation>Special Data Dissemination metadata.</xs:documentation>
+			</xs:annotation>
+		</xs:enumeration>
+		<xs:enumeration value="GDDS">
+			<xs:annotation>
+				<xs:documentation>General Data Dissemination metadata.</xs:documentation>
+			</xs:annotation>
+		</xs:enumeration>
+	</xs:restriction>
+</xs:simpleType>
+
+<xs:simpleType name="CATEGORYType">
+	<xs:restriction base="xs:NMTOKEN">
+		<xs:enumeration value="EXT_DEBT">
+			<xs:annotation>
+				<xs:documentation>External Debt</xs:documentation>
+			</xs:annotation>
+		</xs:enumeration>
+		<xs:enumeration value="SNA">
+			<xs:annotation>
+				<xs:documentation>National Accounts</xs:documentation>
+			</xs:annotation>
+		</xs:enumeration>
+	</xs:restriction>
+</xs:simpleType>
+
+<xs:simpleType name="DATA_PROVIDERType">
+	<xs:restriction base="xs:NMTOKEN">
+		<xs:enumeration value="ECB">
+			<xs:annotation>
+				<xs:documentation>European Central Bank</xs:documentation>
+			</xs:annotation>
+		</xs:enumeration>
+		<xs:enumeration value="MX">
+			<xs:annotation>
+				<xs:documentation>Banco de Mexico</xs:documentation>
+			</xs:annotation>
+		</xs:enumeration>
+	</xs:restriction>
+</xs:simpleType>
+
+
+</xs:schema>
