@@ -4,17 +4,32 @@ using System.Xml.Linq;
 using System.Xml.Schema;
 using Microsoft.XmlDiffPatch;
 using System.Xml;
+using System.Xml.Xsl;
 
 namespace SDMX.Tests
 {
     internal static class Utility
     {
         internal static bool IsValidMessage(XDocument doc)
-        {            
+        {
+            return IsValidMessage(doc, null);
+        }
+
+        internal static bool IsValidMessage(XDocument doc, XDocument schema)
+        {
             var schemas = new XmlSchemaSet();
 
             schemas.Add("http://www.SDMX.org/resources/SDMXML/schemas/v2_0/message",
-                GetPathFromProjectBase("lib\\SDMXMessage.xsd"));
+                GetPath("lib\\SDMXMessage.xsd"));
+
+            
+            if (schema != null)
+            {
+                using (var reader = schema.CreateReader())
+                {
+                    schemas.Add(null, reader);
+                }
+            }
 
             bool isValid = true;
 
@@ -29,6 +44,23 @@ namespace SDMX.Tests
             });
 
             return isValid;
+        }        
+
+        public static XDocument GetComapctSchema(string dsdPath, string targetNamespace)
+        {
+            var dsd = XDocument.Load(GetPath(dsdPath));
+            var transform = new XslCompiledTransform(true);
+            var param = new XsltArgumentList();
+
+            param.AddParam("Namespace", "", targetNamespace);
+
+            transform.Load(Utility.GetPath("\\lib\\StructureToCompact.xslt"));
+            var schemaDoc = new XDocument();
+            using (var writer = schemaDoc.CreateWriter())
+            {
+                transform.Transform(dsd.CreateReader(), param, writer);
+            }
+            return schemaDoc;
         }
 
         // Display any warnings or errors.
@@ -41,7 +73,7 @@ namespace SDMX.Tests
 
         }
 
-        internal static string GetPathFromProjectBase(string path)
+        internal static string GetPath(string path)
         {
             return "..\\..\\..\\..\\" + path;
         }
