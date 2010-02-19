@@ -7,16 +7,16 @@ using System.Text.RegularExpressions;
 
 namespace SDMX.Parsers
 {
-    internal class KeyMap : ClassMap<ReadOnlyKey>
+    internal class GenericKeyMap : ClassMap<ReadOnlyKey>
     {
         Key key;
-        public KeyMap(DataSet dataSet)
+        public GenericKeyMap(DataSet dataSet)
         {
             key = dataSet.NewKey();
 
             MapCollection(o => o).ToElement("Value", true)
                 .Set(v => key[v.Key] = v.Value)
-                .ClassMap(() => new ValueMap(dataSet.KeyFamily));
+                .ClassMap(() => new GenericValueMap(dataSet.KeyFamily));
         }
 
         protected override ReadOnlyKey Return()

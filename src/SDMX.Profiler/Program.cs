@@ -54,6 +54,19 @@ namespace SDMX.Profiler
 
             //Console.Write("Enter to quit");
             //Console.ReadLine();
+            DataMessage message = new DataMessage();
+            message.Header = GetHeader();
+            message.DataSet = dataSet;
+            message.SaveGeneric(GetPathFromProjectBase("lib\\testg.xml"));
+            message.SaveCompact(GetPathFromProjectBase("lib\\testc.xml"), "uis", "uis.com");
+        }
+
+        private static Header GetHeader()
+        {
+            return new Header((ID)"MSD_HDR", new Party((ID)"UIS"))
+            {
+                Prepared = DateTime.Now
+            };
         }
 
         static string GetPathFromProjectBase(string path)

@@ -6,11 +6,11 @@ using OXM;
 
 namespace SDMX.Parsers
 {
-    internal class DataSetMap : ClassMap<DataSet>
+    internal class GenericDataSetMap : ClassMap<DataSet>
     {
         DataSet _dataSet;
 
-        public DataSetMap(KeyFamily keyFamily)
+        public GenericDataSetMap(KeyFamily keyFamily)
         {
             _dataSet = new DataSet(keyFamily);
 
@@ -25,7 +25,7 @@ namespace SDMX.Parsers
 
             MapCollection(o => o.Series).ToElement(Namespaces.Generic + "Series", false)
                 .Set(v => _dataSet.Series.Add(v))
-                .ClassMap(() => new SeriesMap(_dataSet));
+                .ClassMap(() => new GenericSeriesMap(_dataSet));
         }   
 
         private void VerifyKeyFamilyRef(ID id)

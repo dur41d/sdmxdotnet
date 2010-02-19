@@ -7,13 +7,13 @@ using System.Xml.Linq;
 
 namespace SDMX.Parsers
 {
-    internal class DataMessageMap : RoolElementMap<DataMessage>
+    internal class GenericDataMessageMap : RoolElementMap<DataMessage>
     {
         DataMessage _message = new DataMessage();
 
         public KeyFamily KeyFamily { get; set; }
 
-        public DataMessageMap()
+        public GenericDataMessageMap()
         {
             RegisterNamespace("common", Namespaces.Common);
             RegisterNamespace("generic", Namespaces.Generic);
@@ -26,7 +26,7 @@ namespace SDMX.Parsers
 
             Map(o => o.DataSet).ToElement("DataSet", true)
                 .Set(v => _message.DataSet = v)
-                .ClassMap(() => new DataSetMap(KeyFamily));
+                .ClassMap(() => new GenericDataSetMap(KeyFamily));
         }
 
         public override System.Xml.Linq.XName Name
