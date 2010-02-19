@@ -22,17 +22,17 @@ namespace SDMX.Parsers
                .Converter(new IDConverter());
 
             Map(o => GetParentID(o)).ToAttribute("parentCode", false)
-               .Set(v => SetParentID(v.Value, codeList))
-               .Converter(new NullableIDConverter());
+               .Set(v => SetParentID(v, codeList))
+               .Converter(new IDConverter());
 
             MapCollection(o => o.Description).ToElement("Description", false)
                .Set(v => code.Description.Add(v))
                .ClassMap(() => new InternationalStringMap());
         }
 
-        private ID? GetParentID(Code code)
+        private ID GetParentID(Code code)
         {
-            return code.Parent == null ? null : (ID?)code.Parent.ID;
+            return code.Parent == null ? null : code.Parent.ID;
         }
 
         private void SetParentID(ID parentID, CodeList codeList)

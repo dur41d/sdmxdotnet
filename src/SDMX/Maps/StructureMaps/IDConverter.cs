@@ -20,21 +20,7 @@ namespace SDMX.Parsers
 
         public ID ToObj(string value)
         {
-            return new ID(value);
+            return (ID)value;
         }
-    }
-
-    internal class NullableIDConverter : ISimpleTypeConverter<ID?>
-    {
-        IDConverter converter = new IDConverter();
-        public string ToXml(ID? value)
-        {
-            return !value.HasValue ? null : converter.ToXml(value.Value);
-        }
-
-        public ID? ToObj(string value)
-        {
-            return value == null ? (ID?)null : converter.ToObj(value);
-        }
-    }
+    }   
 }

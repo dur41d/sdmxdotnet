@@ -46,7 +46,7 @@ namespace SDMX
             throw new SDMXException("Multiple found for the cirteria.");
         }
 
-        public CodeList GetCodeList(ID codeListID, ID? agencyID, string version)
+        public CodeList GetCodeList(ID codeListID, ID agencyID, string version)
         {
             return Filter(CodeLists, c => c.ID == codeListID, c => c.AgencyID == agencyID, c => c.Version == version);
         }

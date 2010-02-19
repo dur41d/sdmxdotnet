@@ -24,7 +24,7 @@ namespace SDMX.Parsers
                 .GroupTypeMap(new TempConceptRefMap());
 
             Map(o => TempCodelistRef.Create(o.CodeList)).ToAttributeGroup("codelist")
-                .Set(v => _component.CodeList = message.GetCodeList(v.ID.Value, v.AgencyID, v.Version))
+                .Set(v => _component.CodeList = message.GetCodeList(v.ID, v.AgencyID, v.Version))
                 .GroupTypeMap(new TempCodelistRefMap());           
 
             Map(o => o.TextFormat).ToElement("TextFormat", false)

@@ -12,7 +12,11 @@ namespace SDMX.Tests
         [Test]
         public void Not_null()
         {
-            Assert.Throws<SDMXException>(() => { ID id = null; });
+            Assert.Throws<ArgumentNullException>(() => 
+            {
+                string s = null;
+                ID id = s; 
+            });
         }
 
         [Test]
@@ -20,8 +24,7 @@ namespace SDMX.Tests
         {
             Assert.Throws<SDMXException>(() => { ID id = "   "; });
         }
-
-
+        
         [Test]
         public void Test_equlity_with_null()
         {

@@ -31,7 +31,7 @@ namespace SDMX.Parsers
 
             Map(o => o.Alias).ToSimpleElement("Alias", false)
                 .Set(v => codeListRef.Alias = v)
-                .Converter(new NullableIDConverter());
+                .Converter(new IDConverter());
         }
 
         protected override CodeListRef Return()

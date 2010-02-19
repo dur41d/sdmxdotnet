@@ -131,7 +131,7 @@ namespace SDMX
 
                 if (value is string)
                 {
-                    value = new ID(value as string);
+                    value = ID.Create(value as string);
                 }
 
                 if (value is ID)

@@ -11,12 +11,12 @@ namespace SDMX
         public ID ID { get; set; }
         public ID AgencyID { get; set; }
         public string Version { get; set; }
-        public ID? Alias { get; set; }
+        public ID Alias { get; set; }
 
         public CodeListRef()
         { }
 
-        public CodeListRef(CodeList codeList, ID? alias)
+        public CodeListRef(CodeList codeList, ID alias)
         {
             ID = codeList.ID;
             AgencyID = codeList.AgencyID;
