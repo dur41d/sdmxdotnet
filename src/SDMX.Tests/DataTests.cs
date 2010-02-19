@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using NUnit.Framework;
 using System.Data;
+using System.Xml.Linq;
+using System.Xml;
 
 namespace SDMX.Tests
 {
@@ -73,6 +75,47 @@ namespace SDMX.Tests
             Assert.IsTrue(obs2.Value == (DecimalValue)4.4m);
 
             PrintDataSet(dataSet);
+        }
+
+        [Test]
+        public void Generic_read_write()
+        {
+            string dataPath = Utility.GetPath("lib\\GenericSample2.xml");
+            string dsdPath = Utility.GetPath("lib\\StructureSample.xml");
+            var dsd = StructureMessage.Load(dsdPath);
+            var keyFamily = dsd.KeyFamilies[0];
+
+            var message = DataMessage.LoadGeneric(dataPath, keyFamily);
+
+            var doc = new XDocument();            
+            using (var writer = doc.CreateWriter())
+            {
+                message.WriteGeneric(writer);
+            }
+
+            Assert.IsTrue(Utility.IsValidMessage(doc));
+        }
+
+        [Test]
+        public void Compact_read_write()
+        {
+            string dataPath = Utility.GetPath("lib\\CompactSampleNoGroups.xml");
+            string dsdPath = Utility.GetPath("lib\\StructureSample.xml");
+            var dsd = StructureMessage.Load(dsdPath);
+            var keyFamily = dsd.KeyFamilies[0];
+
+            string ns = "urn:sdmx:org.sdmx.infomodel.keyfamily.KeyFamily=BIS:EXT_DEBT:compact";
+
+            var message = DataMessage.LoadCompact(dataPath, keyFamily, ns);
+
+            var doc = new XDocument();
+            using (var writer = doc.CreateWriter())
+            {
+                message.WriteCompact(writer, "uis", ns);
+            }
+
+            var schema = Utility.GetComapctSchema("lib\\StructureSample.xml", ns);
+            Assert.IsTrue(Utility.IsValidMessage(doc, schema));
         }
 
         private void PrintDataSet(DataSet dataSet)

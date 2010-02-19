@@ -7,22 +7,17 @@ using System.Text.RegularExpressions;
 
 namespace SDMX.Parsers
 {
-    internal class ValueMap : ClassMap<KeyValuePair<ID, IValue>>
+    internal class GenericObsValueMap : ClassMap<IValue>
     {
-        ID id;
         string s, startTime;
         ValueConverter converter = new ValueConverter();
         KeyFamily _keyFamily;
 
-        public ValueMap(KeyFamily keyFamily)
+        public GenericObsValueMap(KeyFamily keyFamily)
         {
             _keyFamily = keyFamily;
-                        
-            Map(o => o.Key).ToAttribute("concept", true)
-                .Set(v => id = v)
-                .Converter(new IDConverter());
 
-            Map(o => converter.Serialize(o.Value, out startTime)).ToAttribute("value", true)
+            Map(o => converter.Serialize(o, out startTime)).ToAttribute("value", true)
                 .Set(v => s = v)
                 .Converter(new StringConverter());
 
@@ -31,11 +26,11 @@ namespace SDMX.Parsers
                 .Converter(new StringConverter());
         }
 
-        protected override KeyValuePair<ID, IValue> Return()
+        protected override IValue Return()
         {
-            var component = _keyFamily.GetComponent(id);
+            var component = _keyFamily.PrimaryMeasure;
             IValue value = converter.Parse(component, s, startTime);
-            return new KeyValuePair<ID, IValue>(id, value);
+            return value;
         }
     }
 }

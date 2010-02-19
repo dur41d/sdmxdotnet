@@ -69,14 +69,14 @@
     <Compile Include="Maps\DataMaps\Compact\CompactObservationMap.cs" />
     <Compile Include="Maps\DataMaps\Compact\CompactSeriesKeyMap.cs" />
     <Compile Include="Maps\DataMaps\Compact\CompactSeriesMap.cs" />
-    <Compile Include="Maps\DataMaps\DataMessageMap.cs" />
-    <Compile Include="Maps\DataMaps\DataSetMap.cs" />
-    <Compile Include="Maps\DataMaps\KeyMap.cs" />
-    <Compile Include="Maps\DataMaps\ObservationMap.cs" />
-    <Compile Include="Maps\DataMaps\ObsValueMap.cs" />
-    <Compile Include="Maps\DataMaps\SeriesMap.cs" />
+    <Compile Include="Maps\DataMaps\Generic\GenericDataMessageMap.cs" />
+    <Compile Include="Maps\DataMaps\Generic\GenericDataSetMap.cs" />
+    <Compile Include="Maps\DataMaps\Generic\GenericKeyMap.cs" />
+    <Compile Include="Maps\DataMaps\Generic\GenericObservationMap.cs" />
+    <Compile Include="Maps\DataMaps\Generic\GenericObsValueMap.cs" />
+    <Compile Include="Maps\DataMaps\Generic\GenericSeriesMap.cs" />
     <Compile Include="Maps\DataMaps\ValueConverter.cs" />
-    <Compile Include="Maps\DataMaps\ValueMap.cs" />
+    <Compile Include="Maps\DataMaps\Generic\GenericValueMap.cs" />
     <Compile Include="Maps\HeaderMap.cs" />
     <Compile Include="Maps\PartyMap.cs" />
     <Compile Include="Maps\StructureMaps\AnnotableArtefactMap.cs" />
@@ -152,7 +152,7 @@
     <Compile Include="InternationalText.cs" />
     <Compile Include="Structure\TextFormat.cs" />
     <Compile Include="Structure\TimeDimension.cs" />
-    <Compile Include="Data\TimePeriod.cs" />
+    <Compile Include="Data\ITimePeriod.cs" />
     <Compile Include="VersionableArtefact.cs" />
   </ItemGroup>
   <ItemGroup>

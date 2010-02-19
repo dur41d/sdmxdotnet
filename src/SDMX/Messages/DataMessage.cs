@@ -22,7 +22,7 @@ namespace SDMX
 
         public static DataMessage ReadGeneric(XmlReader reader, KeyFamily keyFamily)
         {
-            var map = new DataMessageMap();
+            var map = new GenericDataMessageMap();
             map.KeyFamily = keyFamily;
             return Read(reader, keyFamily, map);
         }
@@ -46,7 +46,7 @@ namespace SDMX
 
         public void WriteGeneric(XmlWriter writer)
         {
-            var map = new DataMessageMap();
+            var map = new GenericDataMessageMap();
             if (DataSet != null)
             {
                 map.KeyFamily = DataSet.KeyFamily;
