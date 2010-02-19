@@ -124,7 +124,7 @@ namespace SDMX.Parsers
         {
             startTime = null;
             var yearMonth = (YearMonthTimePeriod)value;
-            return "{0}-{1}".F(yearMonth.Year, yearMonth.Month);
+            return "{0}-{1:00}".F(yearMonth.Year, yearMonth.Month);
         }
     }
 }
