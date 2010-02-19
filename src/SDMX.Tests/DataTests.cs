@@ -13,7 +13,7 @@ namespace SDMX.Tests
         [Test]
         public void Create_new_dataset()
         {
-            string dsdPath = Utility.GetPathFromProjectBase("lib\\StructureSample.xml");
+            string dsdPath = Utility.GetPath("lib\\StructureSample.xml");
             var dsd = StructureMessage.Load(dsdPath);
             var keyFamily = dsd.KeyFamilies[0];
             var dataSet = new DataSet(keyFamily);
@@ -22,7 +22,7 @@ namespace SDMX.Tests
         [Test]
         public void Create_from_datatable()
         {
-            string dsdPath = Utility.GetPathFromProjectBase("lib\\StructureSample.xml");
+            string dsdPath = Utility.GetPath("lib\\StructureSample.xml");
             var dsd = StructureMessage.Load(dsdPath);
             var keyFamily = dsd.KeyFamilies[0];
             var dataSet = new DataSet(keyFamily);            
