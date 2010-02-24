@@ -12,11 +12,11 @@ namespace OXM
 {
     public class MemberCollectionMap<TObj, TProperty>
     {
-        Expression<Func<TObj, IEnumerable<TProperty>>> _collection;        
+        Func<TObj, IEnumerable<TProperty>> _collection;        
         Action<TProperty> _setter;
 
 
-        public MemberCollectionMap(Expression<Func<TObj, IEnumerable<TProperty>>> collection)
+        public MemberCollectionMap(Func<TObj, IEnumerable<TProperty>> collection)
         {
             _collection = collection;
         }

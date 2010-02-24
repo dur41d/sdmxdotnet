@@ -11,6 +11,35 @@ using System.Xml;
 
 namespace OXM
 {
+    internal class NameCounter<T>
+    {
+        Dictionary<T, int> counts = new Dictionary<T, int>();
+
+        public void Increment(T name)
+        {
+            if (counts.ContainsKey(name))
+            {
+                counts[name]++;
+            }
+            else
+            {
+                counts.Add(name, 1);
+            }
+        }
+
+        public int Get(T name)
+        {
+            if (counts.ContainsKey(name))
+            {
+                return counts[name];
+            }
+            else
+            {
+                return 0;
+            }
+        }
+    }
+
     public abstract class ClassMap<T> : IElementMapContainer<T>, IAttributeMapContainer<T>, IElementContentContainer<T>
     {
         internal XNamespace Namespace { get; set; }
@@ -92,33 +121,38 @@ namespace OXM
                     {
                         subReader.ReadStartElement();
 
+                        var counts = new NameCounter<XName>();
                         while (subReader.ReadNextElement())
                         {
                             XName name = subReader.GetXName();
                             var elementMap = _elementMaps.Get(name);                            
                             elementMap.ReadXml(subReader);
+                            counts.Increment(name);  
+                        }
+
+                        foreach (IElementMap<T> elementMap in _elementMaps)
+                        {
+                            int count = counts.Get(elementMap.Name);
+                            if (elementMap.Required && count == 0)
+                            {
+                                throw new OXMException("Element '{0}' is required but was not found'", elementMap.Name);
+                            }
                         }
                     }
-                }
-               
-                
-                foreach (var e in _elementMaps)
-                {
-                    ((IElementMap<T>)e).AssertValid();
-                }
+                }               
             }
 
             return Return();
         }
 
-        protected PropertyMap<T, TProperty> Map<TProperty>(Expression<Func<T, TProperty>> property)
+        protected PropertyMap<T, TProperty> Map<TProperty>(Func<T, TProperty> property)
         {
             var builder = new PropertyMap<T, TProperty>(property);
             builders.Add(builder);
             return builder;
         }
 
-        protected CollectionMap<T, TProperty> MapCollection<TProperty>(Expression<Func<T, IEnumerable<TProperty>>> collection)
+        protected CollectionMap<T, TProperty> MapCollection<TProperty>(Func<T, IEnumerable<TProperty>> collection)
         {
             var builder = new CollectionMap<T, TProperty>(collection);
             builders.Add(builder);

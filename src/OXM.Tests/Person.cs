@@ -12,6 +12,12 @@ namespace OXM.Tests
     {
         public string Name { get; set; }
         public int Age { get; set; }
-        public Address Address { get; set; }
+        public List<Address> Addresses { get; private set; }
+
+        public Person()
+        {
+            Addresses = new List<Address>();
+        }
+
     }
 }

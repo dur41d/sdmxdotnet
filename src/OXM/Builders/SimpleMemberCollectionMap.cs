@@ -14,10 +14,10 @@ namespace OXM
     {
         ISimpleTypeConverter<TProperty> _converter;
         MemberCollectionMap<TObj, TProperty> _memberCollectionMap;
-        Expression<Func<TObj, IEnumerable<TProperty>>> _collection;
+        Func<TObj, IEnumerable<TProperty>> _collection;
 
 
-        public SimpleMemberCollectionMap(Expression<Func<TObj, IEnumerable<TProperty>>> collection)
+        public SimpleMemberCollectionMap(Func<TObj, IEnumerable<TProperty>> collection)
         {
             _memberCollectionMap = new MemberCollectionMap<TObj, TProperty>(collection);
             _collection = collection;

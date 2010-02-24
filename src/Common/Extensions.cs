@@ -14,12 +14,12 @@ namespace Common
             return string.Format(source, args);
         }
 
-        public static TValue GetValueOrDefault<TKey, TValue>(this Dictionary<TKey, TValue> source, TKey key, TValue defaultValue)
-        {
-            TValue result = defaultValue;
-            source.TryGetValue(key, out result);
-            return result;
-        }
+        //public static TValue GetValueOrDefault<TKey, TValue>(this Dictionary<TKey, TValue> source, TKey key, TValue defaultValue)
+        //{
+        //    TValue result = defaultValue;
+        //    source.TryGetValue(key, out result);
+        //    return result;
+        //}
 
         public static void ForEach<T>(this IEnumerable<T> source, Action<T> action)
         {
@@ -29,11 +29,12 @@ namespace Common
 
         public static bool ReadNextElement(this XmlReader reader)
         {
-            while (reader.Read())
+            do
             {
                 if (reader.NodeType == XmlNodeType.Element)
-                    return true;                
-            }
+                    return true;
+            } 
+            while (reader.Read());
 
             return false;
         }

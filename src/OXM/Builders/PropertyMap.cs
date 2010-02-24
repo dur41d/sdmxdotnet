@@ -12,7 +12,8 @@ namespace OXM
 {
     public class PropertyMap<TObj, TProperty> : IMapBuilder<TObj>
     {
-        Expression<Func<TObj, TProperty>> _property;
+        Func<TObj, TProperty> _property;
+        
         XName _name;
         bool _required;
         string _defaultValue;
@@ -27,7 +28,7 @@ namespace OXM
         SimpleMemberMap<TObj, TProperty> _simpleMemberMap;
         AttributeGroupMemberMap<TObj, TProperty> _attributeGroupMap;
         
-        public PropertyMap(Expression<Func<TObj, TProperty>> property)
+        public PropertyMap(Func<TObj, TProperty> property)
         {
             _property = property;
         }

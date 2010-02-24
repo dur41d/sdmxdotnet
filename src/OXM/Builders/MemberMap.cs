@@ -12,11 +12,11 @@ namespace OXM
 {
     public class MemberMap<TObj, TProperty>
     {
-        Expression<Func<TObj, TProperty>> _property;  
+        Func<TObj, TProperty> _property;  
         
         Action<TProperty> _setter;        
 
-        public MemberMap(Expression<Func<TObj, TProperty>> property)
+        public MemberMap(Func<TObj, TProperty> property)
         {
             _property = property;
         }

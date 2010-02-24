@@ -11,14 +11,14 @@ namespace OXM
 {
     internal class Property<TObj, TProperty>
     {
-        private Expression<Func<TObj, TProperty>> _property;
+        //private Expression<Func<TObj, TProperty>> _property;
         private Func<TObj, TProperty> _getter;
         private Action<TProperty> _setter;
 
-        public Property(Expression<Func<TObj, TProperty>> property, Action<TProperty> setter)
+        public Property(Func<TObj, TProperty> property, Action<TProperty> setter)
         {
-            _property = property;
-            _getter = property.Compile();
+            //_property = property;
+            _getter = property;
             _setter = setter;
         }
 
@@ -37,12 +37,12 @@ namespace OXM
 
         public string GetTypeName()
         {
-            return _property.Parameters[0].Type.ToString();
+            return _getter.ToString();
         }
 
         public string GetName()
         {
-            return _property.Body.ToString();
+            return _getter.ToString();
         }
     }
 }
