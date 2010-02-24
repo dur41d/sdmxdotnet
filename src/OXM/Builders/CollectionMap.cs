@@ -12,7 +12,7 @@ namespace OXM
 {
     public class CollectionMap<TObj, TProperty> : IMapBuilder<TObj>
     {
-        Expression<Func<TObj, IEnumerable<TProperty>>> _collection;
+        Func<TObj, IEnumerable<TProperty>> _collection;
         XName _name;
         bool _required;
 
@@ -21,7 +21,7 @@ namespace OXM
         SimpleMemberCollectionMap<TObj, TProperty> _simpleMemberMap;
         ClassMemberCollectionMap<TObj, TProperty> _classMemberMap;
 
-        public CollectionMap(Expression<Func<TObj, IEnumerable<TProperty>>> collection)
+        public CollectionMap(Func<TObj, IEnumerable<TProperty>> collection)
         {
             _collection = collection;
         }

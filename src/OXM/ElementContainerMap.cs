@@ -22,13 +22,6 @@ namespace OXM
 
         public override void ReadXml(XmlReader reader)
         {
-            if (_occurances == 1)
-            {
-                throw new OXMException("Container element '{0}' has already occured and it is not supposed to occure more than once.", Name);
-            }
-            
-            _occurances++;
-
             if (reader.IsEmptyElement)
             {
                 reader.Read();
@@ -39,19 +32,24 @@ namespace OXM
                 {
                     subReader.ReadStartElement();
 
+                    var counts = new NameCounter<XName>();
                     while (subReader.ReadNextElement())
                     {
                         XName name = subReader.GetXName();
                         var elementMap = _elementMaps.Get(name);
                         elementMap.ReadXml(subReader);
+                        counts.Increment(name); 
+                    }
+                    foreach (IElementMap<T> elementMap in _elementMaps)
+                    {
+                        int count = counts.Get(elementMap.Name);
+                        if (elementMap.Required && count == 0)
+                        {
+                            throw new OXMException("Element '{0}' is required but was not found'", elementMap.Name);
+                        }
                     }
                 }
-            }
-
-            foreach (var e in _elementMaps)
-            {
-                ((IElementMap<T>)e).AssertValid();
-            }          
+            }                 
         }
 
         public override void WriteXml(XmlWriter writer, T obj)

@@ -28,8 +28,6 @@ namespace OXM
             
             if (!property.IsDefault())
                 Collection.Set(property);
-
-           _occurances++;
         }
 
         public override void WriteXml(XmlWriter writer, T obj)

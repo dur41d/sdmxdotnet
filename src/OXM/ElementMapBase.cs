@@ -12,26 +12,16 @@ namespace OXM
 {
     internal abstract class ElementMapBase<T> : IElementMap<T>
     {
-        protected XName Name { get; set; }
-        protected bool Required { get; set; }
+        public XName Name { get; protected set; }
+        public bool Required { get; protected set; }
 
         public Action Writing { protected get; set; }
-
-        protected int _occurances;
 
         public ElementMapBase(XName name, bool required)
         {
             Name = name;
             Required = required;
-        }
-
-        public void AssertValid()
-        {
-            if (Required && _occurances == 0)
-            {
-                throw new OXMException("Element '{0}' is required but was not found'", Name);
-            }
-        }
+        }      
 
         public abstract void ReadXml(XmlReader reader);
 

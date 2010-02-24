@@ -15,7 +15,7 @@ namespace OXM
         AttributeGroupTypeMap<TProperty> _groupTypeMap;
         MemberMap<TObj, TProperty> _memberMap;
 
-        public AttributeGroupMemberMap(Expression<Func<TObj, TProperty>> property)
+        public AttributeGroupMemberMap(Func<TObj, TProperty> property)
         {
             _memberMap = new MemberMap<TObj, TProperty>(property);
         }
@@ -52,7 +52,7 @@ namespace OXM
         Func<ClassMap<TProperty>> _classMapFactory;
         MemberMap<TObj, TProperty> _memberMap;
        
-        public ClassMemberMap(Expression<Func<TObj, TProperty>> property)
+        public ClassMemberMap(Func<TObj, TProperty> property)
         {
             _memberMap = new MemberMap<TObj, TProperty>(property);
         }

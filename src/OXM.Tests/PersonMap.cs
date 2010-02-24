@@ -17,20 +17,20 @@ namespace OXM.Tests
 
         public PersonMap()
         {
-            //Map(o => o.Name).ToAttribute("name", true)
-            //    .Set(v => person.Name = v)
-            //    .Converter(new StringConverter());
+            Map(o => o.Name).ToAttribute("name", true)
+                .Set(v => person.Name = v)
+                .Converter(new StringConverter());
 
-            //Map(o => o.Age).ToSimpleElement("age", true)
-            //    .Set(v => person.Age = v)
-            //    .Converter(new Int32Converter());
+            Map(o => o.Age).ToSimpleElement("age", true)
+                .Set(v => person.Age = v)
+                .Converter(new Int32Converter());
 
-            Map(o => new KeyValuePair<string, int>(o.Name, o.Age)).ToAttributeGroup("nameage")
-                .Set(v => { person.Name = v.Key; person.Age = v.Value; })
-                .GroupTypeMap(new NameAgeMap());
+            //Map(o => new KeyValuePair<string, int>(o.Name, o.Age)).ToAttributeGroup("nameage")
+            //    .Set(v => { person.Name = v.Key; person.Age = v.Value; })
+            //    .GroupTypeMap(new NameAgeMap());
 
-            Map(o => o.Address).ToElement(addressNS + "Address", true)
-                .Set(v => person.Address = v)
+            MapCollection(o => o.Addresses).ToElement("Address", true)
+                .Set(v => person.Addresses.Add(v))
                 .ClassMap(() => new AddressMap());
         }
 

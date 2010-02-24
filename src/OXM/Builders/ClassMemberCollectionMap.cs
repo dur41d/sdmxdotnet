@@ -15,7 +15,7 @@ namespace OXM
         Func<ClassMap<TProperty>> _classMapFactory;
         MemberCollectionMap<TObj, TProperty> _memberCollectionMap;
 
-        public ClassMemberCollectionMap(Expression<Func<TObj, IEnumerable<TProperty>>> collection)
+        public ClassMemberCollectionMap(Func<TObj, IEnumerable<TProperty>> collection)
         {
             _memberCollectionMap = new MemberCollectionMap<TObj, TProperty>(collection);
         }

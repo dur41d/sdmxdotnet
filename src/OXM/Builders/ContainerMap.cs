@@ -22,14 +22,14 @@ namespace OXM
             _required = required;
         }
 
-        public PropertyMap<T, TProperty> Map<TProperty>(Expression<Func<T, TProperty>> property)
+        public PropertyMap<T, TProperty> Map<TProperty>(Func<T, TProperty> property)
         {
             var builder = new PropertyMap<T, TProperty>(property);
             builders.Add(builder);
             return builder;
         }
 
-        public CollectionMap<T, TProperty> MapCollection<TProperty>(Expression<Func<T, IEnumerable<TProperty>>> collection)
+        public CollectionMap<T, TProperty> MapCollection<TProperty>(Func<T, IEnumerable<TProperty>> collection)
         {            
             var builder = new CollectionMap<T, TProperty>(collection);
             builders.Add(builder);

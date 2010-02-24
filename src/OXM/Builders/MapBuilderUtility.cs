@@ -14,6 +14,9 @@ namespace OXM
     {
         internal static void QualifyName(ref XName name, XNamespace ns)
         {
+            Contract.AssertNotNull(ns, "ns");
+            Contract.AssertNotNull(name, "name");
+
             if (name.Namespace == XNamespace.None)
             {
                 name = ns + name.LocalName;

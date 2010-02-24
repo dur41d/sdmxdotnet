@@ -15,9 +15,9 @@ namespace OXM
         ISimpleTypeConverter<TProperty> _converter;
         MemberMap<TObj, TProperty> _memberMap;
 
-        Expression<Func<TObj, TProperty>> _prop;
+        Func<TObj, TProperty> _prop;
 
-        public SimpleMemberMap(Expression<Func<TObj, TProperty>> property)
+        public SimpleMemberMap(Func<TObj, TProperty> property)
         {
             _prop = property;
             _memberMap = new MemberMap<TObj, TProperty>(property);

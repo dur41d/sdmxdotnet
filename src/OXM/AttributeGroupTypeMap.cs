@@ -41,7 +41,7 @@ namespace OXM
             _attributesOrder = order;
         }
 
-        protected SimpleMemberMap<T, TProperty> MapAttribute<TProperty>(Expression<Func<T, TProperty>> property, XName attributeName, bool required)
+        protected SimpleMemberMap<T, TProperty> MapAttribute<TProperty>(Func<T, TProperty> property, XName attributeName, bool required)
         {
             var builder = new PropertyMap<T, TProperty>(property);
             builders.Add(builder);

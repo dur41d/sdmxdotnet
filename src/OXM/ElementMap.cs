@@ -34,19 +34,12 @@ namespace OXM
 
         public override void ReadXml(XmlReader reader)
         {
-            if (_occurances == 1)
-            {
-                throw new OXMException("Element '{0}' has already occured and it is not supposed to occure more than once.", Name);
-            }
-
             var classMap = ClassMapFactory();
             classMap.Namespace = Name.Namespace;
             TProperty property = classMap.ReadXml(reader);
 
             if ((object)property != null)
                 Property.Set(property);
-
-            _occurances++;
         }
 
         public override void WriteXml(XmlWriter writer, T obj)

@@ -11,7 +11,8 @@ namespace OXM
 {
     internal interface IElementMap<T> : IMemberMap<T>
     {
-        void AssertValid();
+        XName Name { get; }
+        bool Required { get; }
         Action Writing { set; }
     }
 }

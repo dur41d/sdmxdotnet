@@ -23,7 +23,7 @@ namespace OXM
 
         internal void Add(XName name, IMemberMap<T> map)
         {
-            if (_list.GetValueOrDefault(name, null) != null)
+            if (_list.ContainsKey(name))
             {
                 throw new OXMException("'{0}' has been already mapped.".F(name));
             }
@@ -64,13 +64,12 @@ namespace OXM
         }
 
         internal IMemberMap<T> Get(XName name)
-        {
-            var map = _list.GetValueOrDefault(name, null);
-            if (map == null)
+        {            
+            if (!_list.ContainsKey(name))
             {
                 throw new OXMException("'{0}' is not Mapped.", name);
             }
-            return map;
+            return _list[name];
         }
 
         #region IEnumerable<T> Members
