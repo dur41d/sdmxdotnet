@@ -7,7 +7,7 @@ using System.Text.RegularExpressions;
 
 namespace SDMX.Parsers
 {
-    internal class GenericObsValueMap : ClassMap<IValue>
+    internal class GenericObsValueMap : ClassMap<Value>
     {
         string s, startTime;
         ValueConverter converter = new ValueConverter();
@@ -26,10 +26,10 @@ namespace SDMX.Parsers
                 .Converter(new StringConverter());
         }
 
-        protected override IValue Return()
+        protected override Value Return()
         {
             var component = _keyFamily.PrimaryMeasure;
-            IValue value = converter.Parse(component, s, startTime);
+            Value value = converter.Parse(component, s, startTime);
             return value;
         }
     }

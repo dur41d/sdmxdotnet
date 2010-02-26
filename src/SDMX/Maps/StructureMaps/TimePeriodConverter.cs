@@ -12,37 +12,37 @@ using System.Text.RegularExpressions;
 
 namespace SDMX.Parsers
 {
-    internal class TimePeriodConverter : ISimpleTypeConverter<ITimePeriod>
+    internal class HeaderTimeConverter : ISimpleTypeConverter<TimePeriod>
     {
-        public string ToXml(ITimePeriod value)
+        TimePeriodValueConverter converter = new TimePeriodValueConverter();
+
+        public string ToXml(TimePeriod value)
         {
-            return value == null ? null : value.ToString();
+            string startTime;
+            return value == null ? null : converter.Serialize(value, out startTime);
         }
 
-        public ITimePeriod ToObj(string value)
+        public TimePeriod ToObj(string value)
         {
-            value = value.Trim();
+            string startTime = null;
+            return (TimePeriod)converter.Parse(value, startTime);
+        }
+    }
 
-            if (DateTimeTimePeriod.IsMatch(value))
-            {
-                return DateTimeTimePeriod.Parse(value);
-            }
-            else if (DateTimePeriod.IsMatch(value))
-            {
-                return DateTimePeriod.Parse(value);
-            }
-            else if (YearMonthTimePeriod.IsMatch(value))
-            {
-                return YearMonthTimePeriod.Parse(value);
-            }
-            else if (YearTimePeriod.IsMatch(value))
-            {
-                return YearTimePeriod.Parse(value);
-            }
-            else
-            {
-                throw new SDMXException("Cannot parst value to TimePeriod. Value: '{0}'.", value);
-            }
+    internal class TimePeriodConverter : ISimpleTypeConverter<TimePeriod>
+    {
+        TimePeriodValueConverter converter = new TimePeriodValueConverter();
+      
+        public string ToXml(TimePeriod value)
+        {           
+            string startTime;
+            return value == null ? null : converter.Serialize(value, out startTime);
+        }
+
+        public TimePeriod ToObj(string value)
+        {
+            string startTime = null;
+            return (TimePeriod)converter.Parse(value, startTime);
         }
     }
 }

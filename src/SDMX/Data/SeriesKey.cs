@@ -12,7 +12,7 @@ namespace SDMX
     //    public ID Concept { get; private set; }
     //    public string Value { get; private set; }
     //    public string StartTime { get; set; }
-        
+
     //    public KeyItem(ID key, string value)
     //    {            
     //        Contract.AssertNotNullOrEmpty(() => value);
@@ -21,23 +21,23 @@ namespace SDMX
     //    }
     //}
 
-    public class ReadOnlyKey : IEnumerable<KeyValuePair<ID, IValue>>, IEquatable<ReadOnlyKey>
+    public class ReadOnlyKey : IEnumerable<KeyValuePair<ID, Value>>, IEquatable<ReadOnlyKey>
     {
-        private Dictionary<ID, IValue> _keyValues;
+        private Dictionary<ID, Value> _keyValues;
 
         int _hash;
         string _string;
 
         internal ReadOnlyKey(Key key)
         {
-            _keyValues = new Dictionary<ID, IValue>();
+            _keyValues = new Dictionary<ID, Value>();
             foreach (var item in key)
-            { 
+            {
                 _keyValues[item.Key] = item.Value;
             }
         }
 
-        public virtual IValue this[ID concept]
+        public virtual Value this[ID concept]
         {
             get
             {
@@ -55,7 +55,7 @@ namespace SDMX
 
         #region IEnumerable<KeyValuePair<ID,IValue>> Members
 
-        public IEnumerator<KeyValuePair<ID, IValue>> GetEnumerator()
+        public IEnumerator<KeyValuePair<ID, Value>> GetEnumerator()
         {
             foreach (var item in _keyValues)
                 yield return item;
@@ -105,17 +105,17 @@ namespace SDMX
             return _string;
         }
 
-        #endregion      
+        #endregion
     }
 
-    public class Key : IEnumerable<KeyValuePair<ID, IValue>>, IEquatable<Key>
+    public class Key : IEnumerable<KeyValuePair<ID, Value>>, IEquatable<Key>
     {
-        private Dictionary<ID, IValue> _keyValues;
+        private Dictionary<ID, Value> _keyValues;
         private KeyFamily _keyFamily;
 
         internal Key(KeyFamily keyFamily)
         {
-            _keyValues = new Dictionary<ID, IValue>();
+            _keyValues = new Dictionary<ID, Value>();
             _keyFamily = keyFamily;
         }
 
@@ -127,40 +127,29 @@ namespace SDMX
             }
             set
             {
-                Contract.AssertNotNull(value, "value");
+                Contract.AssertNotNull(value, "value");                               
 
                 if (value is string)
                 {
-                    value = ID.Create(value as string);
+                    value = CodeValue.Create(value as string);
                 }
 
-                if (value is ID)
-                {                    
-                    var dim = _keyFamily.Dimensions.Get(concept);
-                    if (dim == null)
-                    {
-                        throw new SDMXException("Dimension is not found for concept '{0}'.", concept);
-                    }
-                    if (dim.CodeList == null)
-                    {
-                        throw new SDMXException("Dimension '{0}' does not have code list and thus cannot be assigned a value using id '{1}'."
-                            , concept, (ID)value);
-                    }
-                    var code = dim.CodeList.Get((ID)value);
-                    if (code == null)
-                    {
-                        throw new SDMXException("Value '{0}' is not found in the code list of dimension '{1}'.",
-                            (ID)value, concept);
-                    }
-                    value = code;
-                }
-                
-                if (!(value is IValue))
+                if (!(value is Value))
                 {
-                    throw new SDMXException("Value must be IValue or ID type.");
-                }
+                    throw new SDMXException("Key value must be of type 'SDMX.Value'.");
+                }              
+               
+                Value val = (Value)value;                
 
-                _keyValues[concept] = (IValue)value;
+                var dim = _keyFamily.Dimensions.Get(concept);
+                if (dim == null)
+                {
+                    throw new SDMXException("Dimension is not found for concept '{0}'.", concept);
+                }
+                dim.Validate(val);
+
+
+                _keyValues[concept] = val;
             }
         }
 
@@ -174,7 +163,7 @@ namespace SDMX
 
         #region IEnumerable<KeyValuePair<ID,IValue>> Members
 
-        public IEnumerator<KeyValuePair<ID, IValue>> GetEnumerator()
+        public IEnumerator<KeyValuePair<ID, Value>> GetEnumerator()
         {
             foreach (var item in _keyValues)
                 yield return item;
@@ -194,7 +183,7 @@ namespace SDMX
         #region IEquatable<Key> Members
 
         public bool Equals(Key other)
-        {   
+        {
             return GetHashCode() == other.GetHashCode();
         }
 
@@ -213,12 +202,12 @@ namespace SDMX
         {
             var builder = new StringBuilder();
             _keyValues.ForEach(k => builder.AppendFormat("{0}={1},", k.Key, k.Value));
-            return builder.Remove(builder.Length -1, 1).ToString();
+            return builder.Remove(builder.Length - 1, 1).ToString();
         }
 
-        #endregion      
+        #endregion
     }
-    
+
     //public class SeriesKey : IEnumerable<KeyValuePair<ID, IValue>>
     //{
     //    private Dictionary<ID, IValue> _keyValues;
@@ -229,7 +218,7 @@ namespace SDMX
     //        _keyFamily = keyFamily;
     //        _keyValues = new Dictionary<ID, IValue>();            
     //    }    
-                
+
     //    public IValue this[ID id]
     //    {
     //        get

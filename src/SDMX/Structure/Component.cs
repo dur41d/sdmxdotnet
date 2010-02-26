@@ -10,7 +10,17 @@ namespace SDMX
     {
         public Concept Concept { get; set; }
         public CodeList CodeList { get; set; }
-        public ITextFormat TextFormat { get; set; }        
+       
+        public ITextFormat TextFormat
+        {
+            get { return TextFormatImpl; }
+            set { TextFormatImpl = value; }
+        }
+
+        // only used to fake Covariance with TimeDimension        
+        // http://peisker.net/dotnet/covariance.htm
+        protected virtual ITextFormat TextFormatImpl { get; set; }
+        
 
         public int Order { get; set; }
 
@@ -37,7 +47,7 @@ namespace SDMX
         {
             return Concept.ID.ToString();
         }
-      
+
         //public virtual object Parse(string value)
         //{
         //    return Parse(value, null);    
@@ -89,11 +99,11 @@ namespace SDMX
         //    }
         //}
 
-        public virtual bool IsValid(IValue value)
+        public virtual bool IsValid(Value value)
         {
             if (IsCoded)
             {
-                return value is Code && CodeList.Contains((Code)value);
+                return value is CodeValue && CodeList.Contains((CodeValue)value);
             }
             else
             {
@@ -101,11 +111,20 @@ namespace SDMX
             }
         }
 
+        internal void Validate(Value value)
+        {
+            if (!IsValid(value))
+            {
+                throw new SDMXException("Invalid value '{0}' for component '{1}'."
+                            , value, Concept.ID);
+            }
+        }
+
         internal Type GetValueType()
         {
             if (IsCoded)
             {
-                return typeof(Code);
+                return typeof(CodeValue);
             }
             else
             {

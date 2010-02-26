@@ -16,7 +16,7 @@ namespace SDMX.Parsers
         {
             string startTime = null;
             Map(o => converter.Serialize(o.Time, out startTime)).ToAttribute(keyFamily.TimeDimension.Concept.ID.ToString(), true)
-                .Set(v => _obs = series.Create((ITimePeriod)converter.Parse(keyFamily.TimeDimension, v, null)))                
+                .Set(v => _obs = series.Create((TimePeriod)converter.Parse(keyFamily.TimeDimension, v, null)))                
                 .Converter(new StringConverter());
 
             Map(o => converter.Serialize(o.Value, out startTime)).ToAttribute(keyFamily.PrimaryMeasure.Concept.ID.ToString(), true)
@@ -43,7 +43,7 @@ namespace SDMX.Parsers
             }
 
             string st = null;
-            return converter.Serialize((IValue)o.Attributes[_att.Concept.ID], out st);
+            return converter.Serialize((Value)o.Attributes[_att.Concept.ID], out st);
         }
 
         protected override Observation Return()

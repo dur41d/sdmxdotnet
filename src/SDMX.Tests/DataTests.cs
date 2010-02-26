@@ -33,13 +33,13 @@ namespace SDMX.Tests
 
             foreach (DataRow row in dataTable.Rows)
             {
-                var key = dataSet.NewKey();
-                key["FREQ"] = row["freq"];
+                var key = dataSet.NewKey();                
+                key["FREQ"] = row["freq"].ToString();
                 key["JD_TYPE"] = row["jdtype"];
                 key["JD_CATEGORY"] = row["jdcat"];
                 key["VIS_CTY"] = row["city"];
 
-                var time = new YearTimePeriod((int)row["time"]);
+                var time = new YearValue((int)row["time"]);
                 var value = new DecimalValue((decimal)row["value"]);
 
                 var series = dataSet.Series[key];
@@ -69,9 +69,9 @@ namespace SDMX.Tests
             var s = dataSet.Series.ElementAt(0);
             Assert.AreEqual(2, s.Attributes.Count);
             Assert.AreEqual(2, s.Count);
-            var obs2 = s[(YearTimePeriod)1999];
+            var obs2 = s[(YearValue)1999];
             Assert.IsTrue(obs2.Value == (DecimalValue)3.3m);
-            obs2 = s[(YearTimePeriod)2000];
+            obs2 = s[(YearValue)2000];
             Assert.IsTrue(obs2.Value == (DecimalValue)4.4m);
 
             PrintDataSet(dataSet);
@@ -116,6 +116,36 @@ namespace SDMX.Tests
 
             var schema = Utility.GetComapctSchema("lib\\StructureSample.xml", ns);
             Assert.IsTrue(Utility.IsValidMessage(doc, schema));
+        }
+
+        [Test]
+        public void Convert_from_generic_to_compact_and_back()
+        {
+            string dataPath = Utility.GetPath("lib\\GenericSample2.xml");
+            string dsdPath = Utility.GetPath("lib\\StructureSample.xml");
+            var dsd = StructureMessage.Load(dsdPath);
+            var keyFamily = dsd.KeyFamilies[0];
+
+            var message = DataMessage.LoadGeneric(dataPath, keyFamily);
+            message.SaveGeneric(Utility.GetPath("lib\\GenericSample4.xml"));
+
+            string ns = "urn:sdmx:org.sdmx.infomodel.keyfamily.KeyFamily=BIS:EXT_DEBT:compact";
+
+            var compact = new XDocument();
+            using (var writer = compact.CreateWriter())
+            {
+                message.WriteCompact(writer, "uis", ns);
+            }
+
+            DataMessage message2 = null;
+            using (var reader = compact.CreateReader())
+            {
+                message2 = DataMessage.ReadCompact(reader, keyFamily, ns);
+            }
+
+            message2.SaveGeneric(Utility.GetPath("lib\\GenericSample3.xml"));
+
+            Utility.AssertDataMessageEqual(message, message2);
         }
 
         private void PrintDataSet(DataSet dataSet)

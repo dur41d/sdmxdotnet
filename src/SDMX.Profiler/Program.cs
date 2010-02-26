@@ -37,7 +37,7 @@ namespace SDMX.Profiler
 
                             for (int i = 1959; i < 2009; i++)
                             {
-                                var obs = series.Create(new YearTimePeriod(i));
+                                var obs = series.Create(new YearValue(i));
 
                                 obs.Value = new DecimalValue(3.3m);
                                 obs.Attributes["OBS_STATUS"] = "A";

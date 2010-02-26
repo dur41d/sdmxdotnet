@@ -15,7 +15,7 @@ namespace SDMX.Parsers
         {
             string startTime = null;
             Map(o => converter.Serialize(o.Time, out startTime)).ToSimpleElement("Time", true)
-                .Set(v => _obs = series.Create((ITimePeriod)converter.Parse(keyFamily.TimeDimension, v, startTime)))
+                .Set(v => _obs = series.Create((TimePeriod)converter.Parse(keyFamily.TimeDimension, v, startTime)))
                 .Converter(new StringConverter());
 
             Map(o => o.Value).ToElement("ObsValue", true)

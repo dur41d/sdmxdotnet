@@ -17,7 +17,7 @@ namespace SDMX
             Dimensions = new Collection<Dimension>();
             Attributes = new Collection<Attribute>();
             Groups = new Collection<GroupDescriptor>();
-            XMeasures = new Collection<XMeasure>();
+            XMeasures = new Collection<CrossSectionalMeasure>();
         }
 
         public TimeDimension TimeDimension { get; internal set; }
@@ -25,7 +25,7 @@ namespace SDMX
         public Collection<Dimension> Dimensions { get; private set; }
         public Collection<GroupDescriptor> Groups { get; private set; }
         public Collection<Attribute> Attributes { get; private set; }
-        public Collection<XMeasure> XMeasures { get; set; }
+        public Collection<CrossSectionalMeasure> XMeasures { get; set; }
 
         public GroupDescriptor CreateNewGroup(ID groupID)
         {
@@ -103,7 +103,7 @@ namespace SDMX
             }
         }
 
-        internal void ValidateAttribute(ID conceptID, IValue value, AttachmentLevel level)
+        internal void ValidateAttribute(ID conceptID, Value value, AttachmentLevel level)
         {
             var attribute = Attributes.Get(conceptID);
             if (attribute == null)
@@ -120,7 +120,7 @@ namespace SDMX
                 throw new SDMXException("Invalid value for attribute '{0}'. Value: {1}."
                     , conceptID, value);
             }
-        }
+        }     
 
         internal Component GetComponent(ID id)
         {
