@@ -48,8 +48,8 @@ namespace SDMX.Parsers
         ID _agencyID;
         bool _isFinal;
         string _version;
-        ITimePeriod _validTo;
-        ITimePeriod _validFrom;
+        TimePeriod _validTo;
+        TimePeriod _validFrom;
         Uri _uri;
         bool _isExternalReference;
 
@@ -78,12 +78,12 @@ namespace SDMX.Parsers
             _version = version;
         }
 
-        protected override void SetValidTo(ITimePeriod validTo)
+        protected override void SetValidTo(TimePeriod validTo)
         {
             _validTo = validTo;
         }
 
-        protected override void SetValidFrom(ITimePeriod validFrom)
+        protected override void SetValidFrom(TimePeriod validFrom)
         {
             _validFrom = validFrom;
         }

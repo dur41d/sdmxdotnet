@@ -50,12 +50,12 @@ namespace SDMX.Parsers
             hcl.Version = version;
         }
 
-        protected override void SetValidTo(ITimePeriod validTo)
+        protected override void SetValidTo(TimePeriod validTo)
         {
             hcl.ValidTo = validTo;
         }
 
-        protected override void SetValidFrom(ITimePeriod validFrom)
+        protected override void SetValidFrom(TimePeriod validFrom)
         {
             hcl.ValidFrom = validFrom;
         }

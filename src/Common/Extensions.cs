@@ -14,12 +14,12 @@ namespace Common
             return string.Format(source, args);
         }
 
-        //public static TValue GetValueOrDefault<TKey, TValue>(this Dictionary<TKey, TValue> source, TKey key, TValue defaultValue)
-        //{
-        //    TValue result = defaultValue;
-        //    source.TryGetValue(key, out result);
-        //    return result;
-        //}
+        public static TValue GetValueOrDefault<TKey, TValue>(this Dictionary<TKey, TValue> source, TKey key, TValue defaultValue)
+        {
+            TValue result = defaultValue;
+            source.TryGetValue(key, out result);
+            return result;
+        }
 
         public static void ForEach<T>(this IEnumerable<T> source, Action<T> action)
         {
@@ -53,21 +53,24 @@ namespace Common
             XName name = ns + localName;
             return name;
         }
+
+        public static bool Equals<T>(this T x, T y, Func<bool> equals) where T : IEquatable<T>
+        {
+            if (object.Equals(y, null)) return false;
+            return equals();
+        }
+
     }
 
-    //internal class Equality<T> where T : class
-    //{ 
-    //    public static bool Equal(T x, T y)
+    //public class Equality<T> where T : class, IEquatable<T>
+    //{
+    //    public static bool Equals(T x, T y, Func<bool> equals)
     //    {
-    //        if (object.ReferenceEquals(x, y))
-    //            return true;
-
-    //        if ((object)x == null || (object)y == null)
-    //            return false;
-
-    //        return x.Equals(y);
+    //        if (object.Equals(y, null)) return false;
+    //        return equals();
     //    }
     //}
+
 
 
 }

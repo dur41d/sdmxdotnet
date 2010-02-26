@@ -7,9 +7,9 @@ using Common;
 
 namespace SDMX
 {
-    public class AttributeValueCollection : IEnumerable<KeyValuePair<ID, IValue>>
+    public class AttributeValueCollection : IEnumerable<KeyValuePair<ID, Value>>
     {
-        private Dictionary<ID, IValue> values = new Dictionary<ID, IValue>();
+        private Dictionary<ID, Value> values = new Dictionary<ID, Value>();
         private KeyFamily _keyFamily;
         private AttachmentLevel _attachmentLevel;
 
@@ -23,7 +23,7 @@ namespace SDMX
         {
             get
             {
-                return values.GetValueOrDefault(concept, null);                
+                return values.GetValueOrDefault(concept, null);
             }
             set
             {
@@ -31,41 +31,18 @@ namespace SDMX
 
                 if (value is string)
                 {
-                    value = ID.Create(value as string);
+                    value = CodeValue.Create(value as string);
                 }
 
-                if (value is ID)
+                if (!(value is Value))
                 {
-                    var att = _keyFamily.Attributes.Get(concept);
-                    if (att == null)
-                    {
-                        throw new SDMXException("Attribute is not found for concept '{0}'.", concept);
-                    }
-                    if (att.CodeList == null)
-                    {
-                        throw new SDMXException("Attribute '{0}' does not have code list and thus cannot be assigned a value using id '{1}'."
-                            , concept, (ID)value);
-                    }
-                    var code = att.CodeList.Get((ID)value);
-                    if (code == null)
-                    {
-                        throw new SDMXException("Value '{0}' is not found in the code list of attribute '{1}'.",
-                            (ID)value, concept);
-                    }
-                    value = code;
-                }
-                else
-                {
-                    if (!(value is IValue))
-                    {
-                        throw new SDMXException("Value must be IValue or ID type.");
-                    }
-                    _keyFamily.ValidateAttribute(concept, (IValue)value, _attachmentLevel);
+                    throw new SDMXException("Key value must be of type 'SDMX.Value'.");
                 }
 
-               
+                Value val = (Value)value;
 
-                values[concept] = (IValue)value;
+                _keyFamily.ValidateAttribute(concept, val, _attachmentLevel);
+                values[concept] = val;
             }
         }
 
@@ -73,10 +50,10 @@ namespace SDMX
         {
             get { return values.Count; }
         }
-    
+
         #region IEnumerable Members
 
-        public IEnumerator<KeyValuePair<ID, IValue>> GetEnumerator()
+        public IEnumerator<KeyValuePair<ID, Value>> GetEnumerator()
         {
             foreach (var item in values)
                 yield return item;

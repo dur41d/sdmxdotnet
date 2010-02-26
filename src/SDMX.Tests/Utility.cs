@@ -5,6 +5,8 @@ using System.Xml.Schema;
 using Microsoft.XmlDiffPatch;
 using System.Xml;
 using System.Xml.Xsl;
+using Common;
+using NUnit.Framework;
 
 namespace SDMX.Tests
 {
@@ -95,6 +97,41 @@ namespace SDMX.Tests
             bool result = diff.Compare(doc1, doc2);
 
             return result;
+        }
+
+        internal static void AssertDataMessageEqual(DataMessage message, DataMessage message2)
+        {
+            foreach (var series in message.DataSet.Series)
+            {
+                var series2 = message2.DataSet.Series[series.Key];
+                if (series2 == null)
+                {
+                    throw new Exception("Series with key not found '{0}'.".F(series.Key));                    
+                }
+                foreach (var att in series.Attributes)
+                {
+                    var att2 = series2.Attributes[att.Key];
+                    Assert.IsNotNull(att2, "Attribute not found '{0}'.", att.Key);
+                    Assert.AreEqual(att.Value, att2);
+                }
+
+                foreach (var obs in series)
+                {
+                    var obs2 = series2[obs.Time];
+                    if (obs2 == null)
+                    {
+                        throw new Exception("Observation not found '{0}'.".F(obs.Time));
+                    }
+                    Assert.AreEqual(obs.Value, obs2.Value);
+
+                    foreach (var att in obs.Attributes)
+                    {
+                        var att2 = obs2.Attributes[att.Key];
+                        Assert.IsNotNull(att2, "Attribute not found '{0}'.", att.Key);
+                        Assert.AreEqual(att.Value, att2);
+                    }
+                }
+            }
         }
     }
 }

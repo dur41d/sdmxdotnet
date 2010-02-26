@@ -105,22 +105,22 @@ namespace OXM
         }
     }
 
-    public class DateTimeConverter : ISimpleTypeConverter<DateTime>
+    public class DateTimeConverter : ISimpleTypeConverter<DateTimeOffset>
     {
-        public string ToXml(DateTime value)
+        public string ToXml(DateTimeOffset value)
         {
             return value.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ssK");
         }
 
-        public DateTime ToObj(string value)
+        public DateTimeOffset ToObj(string value)
         {
-            return XmlConvert.ToDateTime(value, XmlDateTimeSerializationMode.RoundtripKind);
+            return XmlConvert.ToDateTimeOffset(value);
         }
     }
 
-    public class NullableDateTimeConverter : ISimpleTypeConverter<DateTime?>
+    public class NullableDateTimeConverter : ISimpleTypeConverter<DateTimeOffset?>
     {
-        public string ToXml(DateTime? value)
+        public string ToXml(DateTimeOffset? value)
         {
             if (!value.HasValue)
                 return null;
@@ -128,12 +128,12 @@ namespace OXM
             return value.Value.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ssK");
         }
 
-        public DateTime? ToObj(string value)
+        public DateTimeOffset? ToObj(string value)
         {
             if (value == null)
                 return null;
 
-            return XmlConvert.ToDateTime(value, XmlDateTimeSerializationMode.RoundtripKind);
+            return XmlConvert.ToDateTime(value);
         }
     }
 

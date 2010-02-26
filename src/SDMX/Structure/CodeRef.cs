@@ -15,8 +15,8 @@ namespace SDMX
         public ID LevelRef { get; set; }
         public ID NodeAliasID { get; set; }
         public string Version { get; set; }
-        public ITimePeriod ValidFrom { get; set; }
-        public ITimePeriod ValidTo { get; set; }
+        public TimePeriod ValidFrom { get; set; }
+        public TimePeriod ValidTo { get; set; }
         public CodeRef Parent { get; internal set; }
 
         public IEnumerable<CodeRef> Children

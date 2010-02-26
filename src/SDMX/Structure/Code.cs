@@ -2,10 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Common;
 
 namespace SDMX
 {
-    public class Code : IdentifiableArtefact, IValue, IEquatable<Code>
+    public class Code : IdentifiableArtefact
     {
         public Code(ID id)
             : base(id)
@@ -22,33 +23,33 @@ namespace SDMX
             }
         }     
 
-        #region IEquatable<Code> Members
+        //#region IEquatable<Code> Members
 
-        public bool Equals(Code other)
-        {
-            return CodeList.Equals(other.CodeList)
-                && ID.Equals(other.ID);
-        }
+        //public bool Equals(Code other)
+        //{
+        //    return CodeList.Equals(other.CodeList)
+        //        && ID.Equals(other.ID);
+        //}
 
-        public override bool Equals(object obj)
-        {
-            if (!(obj is Code)) return false;
-            return Equals((Code)obj);
-        }
+        //public override bool Equals(object obj)
+        //{
+        //    if (!(obj is Code)) return false;
+        //    return Equals((Code)obj);
+        //}
 
-        public override int GetHashCode()
-        {
-            return 37
-                ^ ID.GetHashCode()
-                ^ CodeList.GetHashCode();
-        }
+        //public override int GetHashCode()
+        //{
+        //    return 37
+        //        ^ ID.GetHashCode()
+        //        ^ CodeList.GetHashCode();
+        //}
 
-        public override string ToString()
-        {
-            //return string.Format("{0}.{1}", CodeList, ID);
-            return ID.ToString();
-        }
+        //public override string ToString()
+        //{
+        //    //return string.Format("{0}.{1}", CodeList, ID);
+        //    return ID.ToString();
+        //}
 
-        #endregion
+        //#endregion
     }
 }

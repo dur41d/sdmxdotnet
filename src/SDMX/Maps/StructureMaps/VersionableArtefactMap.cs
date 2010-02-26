@@ -10,8 +10,8 @@ namespace SDMX.Parsers
         where T : VersionableArtefact
     {
         protected abstract void SetVersion(string version);
-        protected abstract void SetValidTo(ITimePeriod validTo);
-        protected abstract void SetValidFrom(ITimePeriod validFrom);
+        protected abstract void SetValidTo(TimePeriod validTo);
+        protected abstract void SetValidFrom(TimePeriod validFrom);
 
         
         public VersionableArtefactMap()

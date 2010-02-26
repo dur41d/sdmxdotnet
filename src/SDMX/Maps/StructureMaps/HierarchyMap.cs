@@ -29,12 +29,12 @@ namespace SDMX.Parsers
             _hierarchy.Version = version;
         }
 
-        protected override void SetValidTo(ITimePeriod validTo)
+        protected override void SetValidTo(TimePeriod validTo)
         {
             _hierarchy.ValidTo = validTo;
         }
 
-        protected override void SetValidFrom(ITimePeriod validFrom)
+        protected override void SetValidFrom(TimePeriod validFrom)
         {
             _hierarchy.ValidFrom = validFrom;
         }

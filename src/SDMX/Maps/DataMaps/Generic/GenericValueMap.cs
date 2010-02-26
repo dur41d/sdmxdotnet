@@ -7,7 +7,7 @@ using System.Text.RegularExpressions;
 
 namespace SDMX.Parsers
 {
-    internal class GenericValueMap : ClassMap<KeyValuePair<ID, IValue>>
+    internal class GenericValueMap : ClassMap<KeyValuePair<ID, Value>>
     {
         ID id;
         string s, startTime;
@@ -31,11 +31,11 @@ namespace SDMX.Parsers
                 .Converter(new StringConverter());
         }
 
-        protected override KeyValuePair<ID, IValue> Return()
+        protected override KeyValuePair<ID, Value> Return()
         {
             var component = _keyFamily.GetComponent(id);
-            IValue value = converter.Parse(component, s, startTime);
-            return new KeyValuePair<ID, IValue>(id, value);
+            Value value = converter.Parse(component, s, startTime);
+            return new KeyValuePair<ID, Value>(id, value);
         }
     }
 }

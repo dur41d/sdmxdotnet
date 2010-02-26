@@ -9,7 +9,7 @@ namespace SDMX
 {   
     public class Series : AnnotableArtefact, IEnumerable<Observation>
     {
-        private Dictionary<ITimePeriod, Observation> _observations = new Dictionary<ITimePeriod, Observation>();
+        private Dictionary<TimePeriod, Observation> _observations = new Dictionary<TimePeriod, Observation>();
         
         public DataSet DataSet { get; internal set; }
         public ReadOnlyKey Key { get; internal set; }
@@ -25,7 +25,7 @@ namespace SDMX
             Attributes = new AttributeValueCollection(dataSet.KeyFamily, AttachmentLevel.Series);
         }
 
-        public Observation this[ITimePeriod timePeriod]
+        public Observation this[TimePeriod timePeriod]
         {
             get
             {
@@ -34,7 +34,7 @@ namespace SDMX
             }
         }
 
-        public Observation Create(ITimePeriod time)
+        public Observation Create(TimePeriod time)
         {
             Contract.AssertNotNull(time, "time");
            

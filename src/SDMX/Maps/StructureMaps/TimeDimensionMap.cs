@@ -44,7 +44,7 @@ namespace SDMX.Parsers
         {
             if (_timeDimension.CodeList == null && _timeDimension.TextFormat == null)
             {
-                _timeDimension.TextFormat = new YearMonthTextFormat();
+                _timeDimension.TextFormat = new TimePeriodTextFormat();
             }
             return _timeDimension;
         }

@@ -6,17 +6,17 @@ using Common;
 
 namespace SDMX
 {   
-    public class XMeasure : Component, Item
+    public class CrossSectionalMeasure : Component, Item
     {
         public ID Dimension { get; set; }
         public ID Code { get; set; }
 
-        public XMeasure(Concept concept)
+        public CrossSectionalMeasure(Concept concept)
             : base(concept)
         {
         }
 
-        public XMeasure(Concept concept, CodeList codeList)
+        public CrossSectionalMeasure(Concept concept, CodeList codeList)
             : base(concept, codeList)
         {
         }

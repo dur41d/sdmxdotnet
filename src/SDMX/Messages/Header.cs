@@ -11,7 +11,7 @@ namespace SDMX
         public bool Test { get; set; }
         public bool Truncated { get; set; }
         public InternationalText Name { get; private set; }
-        public DateTime Prepared { get; set; }
+        public DateTimeOffset Prepared { get; set; }
         public IList<Party> Senders { get; private set; }
         public IList<Party> Receivers { get; private set; }
         public ID KeyFamilyID { get; set; }
@@ -19,9 +19,9 @@ namespace SDMX
         public ID DataSetAgencyID { get; set; }
         public ID DataSetID { get; set; }
         public DataSetAction DataSetAction { get; set; }
-        public DateTime? Extracted { get; set; }
-        public DateTime? ReportingBegin { get; set; }
-        public DateTime? ReportingEnd { get; set; }
+        public DateTimeOffset? Extracted { get; set; }
+        public DateTimeOffset? ReportingBegin { get; set; }
+        public DateTimeOffset? ReportingEnd { get; set; }
         public InternationalText Source { get; private set; }
 
         public Header(ID id)

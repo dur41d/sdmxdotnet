@@ -9,18 +9,18 @@ namespace SDMX
     public class Observation : AnnotableArtefact, IAttachableArtefact
     {
         public Series Series { get; private set; }
-        public ITimePeriod Time { get; private set; }
+        public TimePeriod Time { get; private set; }
         public AttributeValueCollection Attributes { get; private set; }
 
-        internal Observation(Series series, ITimePeriod time)
+        internal Observation(Series series, TimePeriod time)
         {
             Series = series;
             Time = time;
             Attributes = new AttributeValueCollection(series.DataSet.KeyFamily, AttachmentLevel.Observation);
         }
 
-        private IValue _value;
-        public IValue Value 
+        private Value _value;
+        public Value Value 
         {
             get
             {
