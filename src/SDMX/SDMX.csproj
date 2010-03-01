@@ -64,10 +64,9 @@
     <Compile Include="Data\ValueTypes\Value.cs" />
     <Compile Include="Data\SeriesCollection.cs" />
     <Compile Include="Data\SeriesKeyBuilder.cs" />
-    <Compile Include="Data\ValueTypes\Quarterly.cs" />
+    <Compile Include="Data\ValueTypes\Quarter.cs" />
     <Compile Include="Data\ValueTypes\QuarterlyValue.cs" />
     <Compile Include="Data\ValueTypes\StringValue.cs" />
-    <Compile Include="Data\ValueTypes\TimeValue.cs" />
     <Compile Include="Data\ValueTypes\Triannual.cs" />
     <Compile Include="Data\ValueTypes\TriannualValue.cs" />
     <Compile Include="Data\ValueTypes\Weekly.cs" />

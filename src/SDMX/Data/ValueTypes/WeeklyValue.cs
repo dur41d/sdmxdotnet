@@ -7,17 +7,22 @@ using System.Text.RegularExpressions;
 
 namespace SDMX
 {
-    public class WeeklyValue : TimePeriod
+    public class WeeklyValue : TimePeriod, IEquatable<WeeklyValue>
     {
         int _year;
-        Weekly _week;
+        Week _week;
 
         public int Year
         {
             get { return _year; }
         }
 
-        public WeeklyValue(int year, Weekly week)
+        public Week Week
+        {
+            get { return _week; }
+        }
+
+        public WeeklyValue(int year, Week week)
         {
             // use date time to validate the integer
             var dateTime = new DateTime(year, 1, 1);
@@ -29,5 +34,34 @@ namespace SDMX
         {
             return string.Format("{0}-{1}", _year, _week);
         }
+
+        #region IEquatable<WeeklyValue> Members
+
+        public override int GetHashCode()
+        {
+            return _year.HashWith(_week);
+        }
+
+        public override bool Equals(object other)
+        {
+            return Equals(other as WeeklyValue);
+        }
+
+        public bool Equals(WeeklyValue other)
+        {
+            return this.Equals(other, () => _year.Equals(other._year) && _week.Equals(other._week));
+        }
+
+        public static bool operator ==(Value x, WeeklyValue y)
+        {
+            return object.Equals(x, y);
+        }
+
+        public static bool operator !=(Value x, WeeklyValue y)
+        {
+            return !object.Equals(x, y);
+        }
+
+        #endregion
     }
 }

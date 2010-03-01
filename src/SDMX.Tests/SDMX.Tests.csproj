@@ -52,6 +52,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CodeListTests.cs" />
+    <Compile Include="ValueTests.cs" />
     <Compile Include="DataTests.cs" />
     <Compile Include="GenericDataTests.cs" />
     <Compile Include="IDTests.cs" />
@@ -62,6 +63,7 @@
     <Compile Include="StructureTests.cs" />
     <Compile Include="TimePeriodConverterTests.cs" />
     <Compile Include="Utility.cs" />
+    <Compile Include="ValueTestUtility.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Common\Common.csproj">

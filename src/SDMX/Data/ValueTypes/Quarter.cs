@@ -7,10 +7,11 @@ using System.Text.RegularExpressions;
 
 namespace SDMX
 {
-    public enum Triannual
+    public enum Quarter
     {
-        T1 = 1,
-        T2,
-        T3
+        Q1 = 1,
+        Q2,
+        Q3,
+        Q4
     }
 }

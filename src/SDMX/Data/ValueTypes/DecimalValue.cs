@@ -38,26 +38,23 @@ namespace SDMX
         }
 
         public override bool Equals(object other)
-        {
-            if (!(other is DecimalValue)) return false;
-            return Equals((DecimalValue)other);
+        {            
+            return Equals(other as DecimalValue);
         }
 
         public bool Equals(DecimalValue other)
         {
-            return _value.Equals(other._value);
+            return this.Equals(other, () => _value.Equals(other._value));
         }
 
         public static bool operator ==(Value x, DecimalValue y)
         {
-            if (x == null) return y == null;
-            return x.Equals(y);
+            return object.Equals(x, y);
         }
 
         public static bool operator !=(Value x, DecimalValue y)
-        {
-            if (x == null) return y != null;
-            return !x.Equals(y);
+        {            
+            return !object.Equals(x, y);
         }
 
         #endregion
