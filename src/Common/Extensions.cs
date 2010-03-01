@@ -7,6 +7,14 @@ using System.Xml.Linq;
 
 namespace Common
 {
+    public static class Hash
+    {
+        public static int HashWith<T, U>(this T value, U other)
+        {
+            return 37 ^ value.GetHashCode() ^ other.GetHashCode();
+        }
+    }
+    
     public static class Extensions
     {
         public static string F(this string source, params object[] args)

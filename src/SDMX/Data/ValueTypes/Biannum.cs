@@ -7,7 +7,7 @@ using System.Text.RegularExpressions;
 
 namespace SDMX
 {
-    public enum Biannual
+    public enum Biannum
     {
         B1 = 1,
         B2

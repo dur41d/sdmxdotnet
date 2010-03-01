@@ -7,6 +7,48 @@ using NUnit.Framework;
 namespace SDMX.Tests
 {
     [TestFixture]
+    public class DateTimeValueTests
+    {
+        [Test]
+        public void Create()
+        {
+            var x = new DateTimeValue(new DateTimeOffset(2000, 1, 1, 1, 1, 1, new TimeSpan()));
+            var x2 = new DateTimeValue(new DateTimeOffset(1999, 1, 1, 1, 1, 1, new TimeSpan()));
+        }
+
+        [Test]
+        public void Equlity()
+        {
+            var x = new DateTimeValue(new DateTimeOffset(2000, 1, 1, 1, 1, 1, new TimeSpan()));
+            var y = new DateTimeValue(new DateTimeOffset(1999, 1, 1, 1, 1, 1, new TimeSpan()));
+            ValueTestUtility.TestEquality(x, x);
+            ValueTestUtility.TestUnequlity(x, y);
+            ValueTestUtility.TestComarisonWithNull(x);
+        }
+    }    
+
+    [TestFixture]
+    public class DateValueTests
+    {
+        [Test]
+        public void Create()
+        {
+            var x = new DateValue(new DateTimeOffset(2000, 1, 1, 1, 1, 1, new TimeSpan()));
+            var x2 = new DateValue(new DateTimeOffset(1999, 1, 1, 1, 1, 1, new TimeSpan()));           
+        }
+
+        [Test]
+        public void Equlity()
+        {
+            var x = new DateValue(new DateTimeOffset(2000, 1, 1, 1, 1, 1, new TimeSpan()));
+            var y = new DateValue(new DateTimeOffset(1999, 1, 1, 1, 1, 1, new TimeSpan()));           
+            ValueTestUtility.TestEquality(x, x);
+            ValueTestUtility.TestUnequlity(x, y);
+            ValueTestUtility.TestComarisonWithNull(x);
+        }
+    }    
+
+    [TestFixture]
     public class YearMonthValueTests
     {
         [Test]
@@ -25,9 +67,9 @@ namespace SDMX.Tests
         {
             var x = new YearMonthValue(1999, 3);
             var y = new YearMonthValue(2000, 3);
-            ValueTestUtil.TestEquality(x, x);
-            ValueTestUtil.TestUnequlity(x, y);
-            ValueTestUtil.TestComarisonWithNull(x);
+            ValueTestUtility.TestEquality(x, x);
+            ValueTestUtility.TestUnequlity(x, y);
+            ValueTestUtility.TestComarisonWithNull(x);
         }
     }    
 
@@ -46,129 +88,109 @@ namespace SDMX.Tests
         [Test]
         public void Equlity()
         {
-            ValueTestUtil.TestEquality((YearValue)1999, (YearValue)1999);
-            ValueTestUtil.TestUnequlity((YearValue)1999, (YearValue)2000);
-            ValueTestUtil.TestComarisonWithNull((YearValue)1999);
+            ValueTestUtility.TestEquality((YearValue)1999, (YearValue)1999);
+            ValueTestUtility.TestUnequlity((YearValue)1999, (YearValue)2000);
+            ValueTestUtility.TestComarisonWithNull((YearValue)1999);
         }        
-    }    
-    
+    }
+
     [TestFixture]
-    public class CodeValueTests
+    public class QuarterlyValueTests
     {
         [Test]
         public void Create()
         {
-            var x = CodeValue.Create("SomeID");
-            x = (CodeValue)"SomeID2";
-            var id = ID.Create("ID3");
-            x = (CodeValue)id;
+            var x = new QuarterlyValue(2000, Quarter.Q1);
+            var y = new QuarterlyValue(2000, Quarter.Q2);
+            Assert.AreEqual(2000, x.Year);
+            Assert.AreEqual(Quarter.Q1, x.Quarter);
+            Assert.AreEqual(2000, y.Year);
+            Assert.AreEqual(Quarter.Q2, y.Quarter);
         }
 
         [Test]
         public void Equlity()
         {
-            ValueTestUtil.TestEquality((CodeValue)"ID1", (CodeValue)"ID1");
-            ValueTestUtil.TestUnequlity((CodeValue)"ID1", (CodeValue)"ID2");
-            ValueTestUtil.TestComarisonWithNull((CodeValue)"ID1");
+            var x = new QuarterlyValue(2000, Quarter.Q1);
+            var y = new QuarterlyValue(2000, Quarter.Q2);
+            ValueTestUtility.TestEquality(x, x);
+            ValueTestUtility.TestUnequlity(x, y);
+            ValueTestUtility.TestComarisonWithNull(x);
         }
-    }
+    }    
 
-    public static class ValueTestUtil
+    [TestFixture]
+    public class BiannualValueTests
     {
-        public static void TestEquality<T>(T a, T b) where T : Value
+        [Test]
+        public void Create()
         {
-            T x = a;
-            T y = b;
-            object oy = y;
-            object ox = x;
-            Value ix = x;
-            Value iy = y;
-
-            Assert.IsTrue(x.Equals(y));
-            Assert.IsTrue(x.Equals(oy));
-            Assert.IsTrue(x.Equals(iy));
-            Assert.IsTrue(ox.Equals(y));
-            Assert.IsTrue(ox.Equals(oy));
-            Assert.IsTrue(ox.Equals(iy));
-            Assert.IsTrue(ix.Equals(y));
-            Assert.IsTrue(ix.Equals(oy));
-            Assert.IsTrue(ix.Equals(iy));
-
-            Assert.IsTrue(x == y);
-            Assert.IsTrue(x == oy);
-            Assert.IsTrue(x == iy);
-            Assert.IsTrue(ix == y);
-            Assert.IsTrue(ix == oy);
-            Assert.IsTrue(ix == iy);
+            var year = new BiannualValue(2000, Biannum.B1);
+            var year2 = new BiannualValue(2001, Biannum.B1);
+            Assert.AreEqual(2000, year.Year);
+            Assert.AreEqual(Biannum.B1, year.Annum);
+            Assert.AreEqual(2000, year.Year);
+            Assert.AreEqual(Biannum.B1, year2.Annum);
         }
 
-        public static void TestUnequlity<T>(T a, T b) where T : Value
+        [Test]
+        public void Equlity()
         {
-            T x = a;
-            T y = b;
-            object oy = y;
-            object ox = x;
-            Value ix = x;
-            Value iy = y;
-
-            Assert.IsFalse(x.Equals(y));
-            Assert.IsFalse(x.Equals(oy));
-            Assert.IsFalse(x.Equals(iy));
-            Assert.IsFalse(ox.Equals(y));
-            Assert.IsFalse(ox.Equals(oy));
-            Assert.IsFalse(ox.Equals(iy));
-            Assert.IsFalse(ix.Equals(y));
-            Assert.IsFalse(ix.Equals(oy));
-            Assert.IsFalse(ix.Equals(iy));
-
-            Assert.IsTrue(x != y);
-            Assert.IsTrue(x != oy);
-            Assert.IsTrue(x != iy);
-            Assert.IsTrue(ix != y);
-            Assert.IsTrue(ix != oy);
-            Assert.IsTrue(ix != iy);
-        }
-
-        public static void TestComarisonWithNull<T>(T a) where T : Value
-        {
-            T x = a;
-            T y = null;
-            object oy = y;
-            object ox = x;
-            Value ix = x;
-            Value iy = y;
-
-            Assert.IsFalse(x.Equals(y));
-            Assert.IsFalse(x.Equals(oy));
-            Assert.IsFalse(x.Equals(iy));
-            Assert.IsFalse(ox.Equals(y));
-            Assert.IsFalse(ox.Equals(oy));
-            Assert.IsFalse(ox.Equals(iy));
-            Assert.IsFalse(ix.Equals(y));
-            Assert.IsFalse(ix.Equals(oy));
-            Assert.IsFalse(ix.Equals(iy));
-
-            Assert.IsTrue(x != y);
-            Assert.IsTrue(x != oy);
-            Assert.IsTrue(x != iy);
-            Assert.IsTrue(ix != y);
-            Assert.IsTrue(ix != oy);
-            Assert.IsTrue(ix != iy);
-
-            x = null;
-            y = a;
-
-            oy = y;
-            ox = x;
-            ix = x;
-            iy = y;
-
-            Assert.IsTrue(x != y);
-            Assert.IsTrue(x != oy);
-            Assert.IsTrue(x != iy);
-            Assert.IsTrue(ix != y);
-            Assert.IsTrue(ix != oy);
-            Assert.IsTrue(ix != iy);
+            var x = new BiannualValue(2000, Biannum.B1);
+            var y = new BiannualValue(2001, Biannum.B1);
+            ValueTestUtility.TestEquality(x, x);
+            ValueTestUtility.TestUnequlity(x, y);
+            ValueTestUtility.TestComarisonWithNull(x);
         }
     }
+
+    [TestFixture]
+    public class TriannualValueTests
+    {
+        [Test]
+        public void Create()
+        {
+            var year = new TriannualValue(2000, Triannum.T1);
+            var year2 = new TriannualValue(2001, Triannum.T2);
+            Assert.AreEqual(2000, year.Year);
+            Assert.AreEqual(Triannum.T1, year.Annum);
+            Assert.AreEqual(2001, year2.Year);
+            Assert.AreEqual(Triannum.T2, year2.Annum);
+        }
+
+        [Test]
+        public void Equlity()
+        {
+            var x = new TriannualValue(2000, Triannum.T1);
+            var y = new TriannualValue(2001, Triannum.T2);
+            ValueTestUtility.TestEquality(x, x);
+            ValueTestUtility.TestUnequlity(x, y);
+            ValueTestUtility.TestComarisonWithNull(x);
+        }
+    }
+
+    [TestFixture]
+    public class WeeklyValueTests
+    {
+        [Test]
+        public void Create()
+        {
+            var year = new WeeklyValue(2000, Week.W1);
+            var year2 = new WeeklyValue(2001, Week.W32);
+            Assert.AreEqual(2000, year.Year);
+            Assert.AreEqual(Week.W1, year.Week);
+            Assert.AreEqual(2001, year2.Year);
+            Assert.AreEqual(Week.W32, year2.Week);
+        }
+
+        [Test]
+        public void Equlity()
+        {
+            var x = new WeeklyValue(2000, Week.W1);
+            var y = new WeeklyValue(2001, Week.W32);
+            ValueTestUtility.TestEquality(x, x);
+            ValueTestUtility.TestUnequlity(x, y);
+            ValueTestUtility.TestComarisonWithNull(x);
+        }
+    }    
 }

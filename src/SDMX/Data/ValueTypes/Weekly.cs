@@ -7,7 +7,7 @@ using System.Text.RegularExpressions;
 
 namespace SDMX
 {
-    public enum Weekly
+    public enum Week
     {
         W1 = 1,
         W2,
