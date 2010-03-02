@@ -48,7 +48,9 @@
     <Compile Include="AnnotableArtefact.cs" />
     <Compile Include="Annotation.cs" />
     <Compile Include="Data\AttributeValue.cs" />
-    <Compile Include="Data\ValueTypes\Biannual.cs" />
+    <Compile Include="Data\Key.cs" />
+    <Compile Include="Data\ReadOnlyKey.cs" />
+    <Compile Include="Data\ValueTypes\Biannum.cs" />
     <Compile Include="Data\ValueTypes\BiannualValue.cs" />
     <Compile Include="Data\ValueTypes\CodeValue.cs" />
     <Compile Include="Data\DimensionValue.cs" />
@@ -67,7 +69,7 @@
     <Compile Include="Data\ValueTypes\Quarter.cs" />
     <Compile Include="Data\ValueTypes\QuarterlyValue.cs" />
     <Compile Include="Data\ValueTypes\StringValue.cs" />
-    <Compile Include="Data\ValueTypes\Triannual.cs" />
+    <Compile Include="Data\ValueTypes\Triannum.cs" />
     <Compile Include="Data\ValueTypes\TriannualValue.cs" />
     <Compile Include="Data\ValueTypes\Weekly.cs" />
     <Compile Include="Data\ValueTypes\WeeklyValue.cs" />
@@ -167,13 +169,12 @@
     <Compile Include="Structure\Hierarchy.cs" />
     <Compile Include="Structure\KeyFamily.cs" />
     <Compile Include="Data\Observation.cs" />
-    <Compile Include="Data\ObservationValue.cs" />
     <Compile Include="Structure\Level.cs" />
     <Compile Include="Structure\PrimaryMeasure.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Exceptions.cs" />
     <Compile Include="Data\Series.cs" />
-    <Compile Include="Data\SeriesKey.cs" />
+    <Compile Include="Data\IDValuePair.cs" />
     <Compile Include="InternationalText.cs" />
     <Compile Include="Structure\TextFormats\DateTextFormat.cs" />
     <Compile Include="Structure\TextFormats\DateTimeTextFormat.cs" />

@@ -17,13 +17,13 @@ namespace SDMX.Profiler
             //Console.Write("Enter to start");
             //Console.ReadLine();
 
-            foreach (var freq in keyFamily.Dimensions.Get("FREQ").CodeList)
+            foreach (var freq in keyFamily.Dimensions.TryGet("FREQ").CodeList)
             {
-                foreach (var jdtype in keyFamily.Dimensions.Get("JD_TYPE").CodeList)
+                foreach (var jdtype in keyFamily.Dimensions.TryGet("JD_TYPE").CodeList)
                 {
-                    foreach (var jdcat in keyFamily.Dimensions.Get("JD_CATEGORY").CodeList)
+                    foreach (var jdcat in keyFamily.Dimensions.TryGet("JD_CATEGORY").CodeList)
                     {
-                        foreach (var city in keyFamily.Dimensions.Get("VIS_CTY").CodeList)
+                        foreach (var city in keyFamily.Dimensions.TryGet("VIS_CTY").CodeList)
                         {
                             var key = dataSet.NewKey();
                             key["FREQ"] = freq;

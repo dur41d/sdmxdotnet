@@ -7,6 +7,17 @@ using System.Xml.Linq;
 
 namespace Common
 {
+    public static class Continuation
+    {
+        public static void Do<T>(this IEnumerable<T> source, Action<T> action)
+        {
+            foreach (var i in source)
+            {
+                action(i);
+            }
+        }
+    }
+
     public static class Hash
     {
         public static int HashWith<T, U>(this T value, U other)

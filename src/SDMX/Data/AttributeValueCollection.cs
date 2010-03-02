@@ -7,7 +7,7 @@ using Common;
 
 namespace SDMX
 {
-    public class AttributeValueCollection : IEnumerable<KeyValuePair<ID, Value>>
+    public class AttributeValueCollection : IEnumerable<IDValuePair>
     {
         private Dictionary<ID, Value> values = new Dictionary<ID, Value>();
         private KeyFamily _keyFamily;
@@ -53,10 +53,10 @@ namespace SDMX
 
         #region IEnumerable Members
 
-        public IEnumerator<KeyValuePair<ID, Value>> GetEnumerator()
+        public IEnumerator<IDValuePair> GetEnumerator()
         {
             foreach (var item in values)
-                yield return item;
+                yield return new IDValuePair(item.Key, item.Value);
         }
 
         IEnumerator IEnumerable.GetEnumerator()

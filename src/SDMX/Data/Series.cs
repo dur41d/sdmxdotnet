@@ -23,22 +23,35 @@ namespace SDMX
             Key = key;
             DataSet = dataSet;
             Attributes = new AttributeValueCollection(dataSet.KeyFamily, AttachmentLevel.Series);
+        }     
+
+        public Observation TryGet(TimePeriod timePeriod)
+        {
+            Contract.AssertNotNull(timePeriod, "timePeriod");
+            return _observations.GetValueOrDefault(timePeriod, null);
         }
 
-        public Observation this[TimePeriod timePeriod]
+        public Observation Get(TimePeriod timePeriod)
         {
-            get
+            Contract.AssertNotNull(timePeriod, "timePeriod");
+            Observation obs;
+            if (!_observations.TryGetValue(timePeriod, out obs))
             {
-                Contract.AssertNotNull(timePeriod, "timePeriod");
-                return _observations.GetValueOrDefault(timePeriod, null);
+                throw new SDMXException("Observation with time '{0}' not found. Use TryGet or Contains instead.", timePeriod);
             }
+            return obs;
         }
 
-        public Observation Create(TimePeriod time)
+        public Observation Create(TimePeriod timePeriod)
         {
-            Contract.AssertNotNull(time, "time");
-           
-            return new Observation(this, time);
+            Contract.AssertNotNull(timePeriod, "timePeriod");           
+            return new Observation(this, timePeriod);
+        }
+
+        public bool Contains(TimePeriod timePeriod)
+        {
+            Contract.AssertNotNull(timePeriod, "timePeriod");
+            return _observations.ContainsKey(timePeriod);
         }
      
         public void Add(Observation obs)
@@ -53,12 +66,12 @@ namespace SDMX
             {
                 throw new SDMXException("Observation value is null. Observation must have a value to be added to a series.");
             }
-            if (this[obs.Time] != null)
+            if (_observations.ContainsKey(obs.Time))
             {
                 throw new SDMXException("Observation {0} already exists for series {1}.", obs.Time, Key);
             }
             DataSet.KeyFamily.AssertHasManatoryAttributes(obs.Attributes, AttachmentLevel.Observation);
-            _observations[obs.Time] = obs;
+            _observations.Add(obs.Time, obs);
         }
 
         public int Count

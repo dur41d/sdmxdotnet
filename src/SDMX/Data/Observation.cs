@@ -28,10 +28,7 @@ namespace SDMX
             }
             set
             {
-                if (!Series.DataSet.KeyFamily.PrimaryMeasure.IsValid(value))
-                {
-                    throw new SDMXException("The value is not valid for the primary measure of the key family. Value: '{0}'.", value);
-                }
+                Series.DataSet.KeyFamily.PrimaryMeasure.Validate(value);
 
                 _value = value;
             }

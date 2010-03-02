@@ -16,39 +16,36 @@ namespace SDMX
             _dataSet = dataSet;
         }
 
-        public Series this[Key key]
-        {
-            get
-            {
-                Contract.AssertNotNull(key, "key");
-                return _collection.GetValueOrDefault(new ReadOnlyKey(key), null);
-            }
-        }
-
-        public Series this[ReadOnlyKey key]
-        {
-            get
-            {
-                Contract.AssertNotNull(key, "key");
-                return _collection.GetValueOrDefault(key, null);
-            }
-        }
-
-        public Series Create(Key key)
+        public Series TryGet(ReadOnlyKey key)
         {
             Contract.AssertNotNull(key, "key");
+            return _collection.GetValueOrDefault(key, null);
+        }  
 
-            return new Series(_dataSet, new ReadOnlyKey(key));    
-        }
+        public Series Get(ReadOnlyKey key)
+        {
+            Contract.AssertNotNull(key, "key");
+            Series series;
+            if (!_collection.TryGetValue(key, out series))
+            {
+                throw new SDMXException("Series with key '{0}' not found. Use TryGet or Contains instead.", key);
+            }
+            return series;
+        }       
 
         public Series Create(ReadOnlyKey key)
         {
             Contract.AssertNotNull(key, "key");
-
             return new Series(_dataSet, key);
         }
-     
-        
+
+        public bool Contains(ReadOnlyKey key)
+        {
+            Contract.AssertNotNull(key, "key");
+            return _collection.ContainsKey(key);
+        }
+
+
         public void Add(Series series)
         {
             if (series == null)
@@ -63,7 +60,7 @@ namespace SDMX
             {
                 throw new SDMXException("The series is empty. Series must have at least one observation to be added.");
             }
-            if (this[series.Key] != null)
+            if (_collection.ContainsKey(series.Key))
             {
                 throw new SDMXException("Series already exists: {0}.", series.Key);
             }
@@ -80,8 +77,8 @@ namespace SDMX
             }
         }
 
-       
-      
+
+
 
         #region IEnumerable<Series> Members
 

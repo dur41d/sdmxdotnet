@@ -32,6 +32,10 @@ namespace SDMX.Parsers
 
         protected override PrimaryMeasure Return()
         {
+            if (_measure.CodeList == null && _measure.TextFormat == null)
+            {
+                _measure.TextFormat = new DecimalTextFormat();
+            }
             return _measure;
         }
     }

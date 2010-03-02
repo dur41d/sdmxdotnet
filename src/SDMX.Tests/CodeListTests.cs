@@ -12,7 +12,7 @@ namespace SDMX.Tests
         [Test]
         public void CreateCodeList()
         {
-            var codelist = new CodeList(new InternationalString(Language.English, "Countries"), (ID)"CL_COUNTRY", (ID)"UIS");
+            var codelist = new CodeList(new InternationalString(Language.English, "Countries"), "CL_COUNTRY", "UIS");
             
 
             codelist.Add(new Code((ID)"CAN"));
