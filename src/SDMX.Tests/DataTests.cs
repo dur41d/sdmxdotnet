@@ -42,7 +42,7 @@ namespace SDMX.Tests
                 var time = new YearValue((int)row["time"]);
                 var value = new DecimalValue((decimal)row["value"]);
 
-                var series = dataSet.Series[key];
+                var series = dataSet.Series.TryGet(key);
                 bool add = false;
                 if (series == null)
                 {
@@ -69,9 +69,9 @@ namespace SDMX.Tests
             var s = dataSet.Series.ElementAt(0);
             Assert.AreEqual(2, s.Attributes.Count);
             Assert.AreEqual(2, s.Count);
-            var obs2 = s[(YearValue)1999];
+            var obs2 = s.Get((YearValue)1999);
             Assert.IsTrue(obs2.Value == (DecimalValue)3.3m);
-            obs2 = s[(YearValue)2000];
+            obs2 = s.Get((YearValue)2000);
             Assert.IsTrue(obs2.Value == (DecimalValue)4.4m);
 
             PrintDataSet(dataSet);
@@ -167,7 +167,7 @@ namespace SDMX.Tests
         {
             foreach (var att in atts)
             {
-                Console.Write("{0}={1} ", att.Key, att.Value);
+                Console.Write("{0}={1} ", att.ID, att.Value);
             }
             Console.WriteLine();
         }

@@ -24,7 +24,7 @@ namespace SDMX.Parsers
 
             MapContainer("Attributes", false)
                .MapCollection(o => o.Attributes).ToElement("Value", false)
-                   .Set(v => _obs.Attributes[v.Key] = v.Value)
+                   .Set(v => _obs.Attributes[v.ID] = v.Value)
                    .ClassMap(() => new GenericValueMap(keyFamily));
                 
         }

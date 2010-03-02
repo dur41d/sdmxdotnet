@@ -52,17 +52,17 @@ namespace SDMX
             }
             foreach (var keyItem in key)
             {
-                var dim = Dimensions.Get((ID)keyItem.Key);
+                var dim = Dimensions.TryGet(keyItem.ID);
                 if (dim == null)
                 {
-                    reason = string.Format("Dimension is not found for key item '{0}'.", keyItem.Key);
+                    reason = string.Format("Dimension is not found for key item '{0}'.", keyItem.ID);
                     return false;
                 }                
                 
                 if (!dim.IsValid(keyItem.Value))
                 {
                     reason = "Invalid value '{0}' for key '{1}'."
-                        .F(keyItem.Value, keyItem.Key);
+                        .F(keyItem.Value, keyItem.ID);
                     return false;
                 }
             }
@@ -105,7 +105,7 @@ namespace SDMX
 
         internal void ValidateAttribute(ID conceptID, Value value, AttachmentLevel level)
         {
-            var attribute = Attributes.Get(conceptID);
+            var attribute = Attributes.TryGet(conceptID);
             if (attribute == null)
             {
                 throw new SDMXException("Invalid attribute '{0}'.", conceptID);
@@ -124,10 +124,10 @@ namespace SDMX
 
         internal Component GetComponent(ID id)
         {
-            Component com = Dimensions.Get(id);
+            Component com = Dimensions.TryGet(id);
             if (com == null)
             {
-                com = Attributes.Get(id);                
+                com = Attributes.TryGet(id);                
             }
 
             if (com == null)

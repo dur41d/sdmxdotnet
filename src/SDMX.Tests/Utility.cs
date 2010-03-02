@@ -103,31 +103,23 @@ namespace SDMX.Tests
         {
             foreach (var series in message.DataSet.Series)
             {
-                var series2 = message2.DataSet.Series[series.Key];
-                if (series2 == null)
-                {
-                    throw new Exception("Series with key not found '{0}'.".F(series.Key));                    
-                }
+                var series2 = message2.DataSet.Series.Get(series.Key);               
                 foreach (var att in series.Attributes)
                 {
-                    var att2 = series2.Attributes[att.Key];
-                    Assert.IsNotNull(att2, "Attribute not found '{0}'.", att.Key);
+                    var att2 = series2.Attributes[att.ID];
+                    Assert.IsNotNull(att2, "Attribute not found '{0}'.", att.ID);
                     Assert.AreEqual(att.Value, att2);
                 }
 
                 foreach (var obs in series)
                 {
-                    var obs2 = series2[obs.Time];
-                    if (obs2 == null)
-                    {
-                        throw new Exception("Observation not found '{0}'.".F(obs.Time));
-                    }
+                    var obs2 = series2.Get(obs.Time);                    
                     Assert.AreEqual(obs.Value, obs2.Value);
 
                     foreach (var att in obs.Attributes)
                     {
-                        var att2 = obs2.Attributes[att.Key];
-                        Assert.IsNotNull(att2, "Attribute not found '{0}'.", att.Key);
+                        var att2 = obs2.Attributes[att.ID];
+                        Assert.IsNotNull(att2, "Attribute not found '{0}'.", att.ID);
                         Assert.AreEqual(att.Value, att2);
                     }
                 }

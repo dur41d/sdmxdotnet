@@ -37,7 +37,7 @@ namespace SDMX
         {
             Contract.AssertNotNull(conceptID, "conceptID");
 
-            var dimension = KeyFamily.Dimensions.Get(conceptID);
+            var dimension = KeyFamily.Dimensions.TryGet(conceptID);
             dimensions.Add(conceptID, dimension);
         }
 

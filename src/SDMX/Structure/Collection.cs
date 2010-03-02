@@ -21,18 +21,32 @@ namespace SDMX
             items.Add(item.ID, item);
         }      
 
-        public T Get(ID conceptID)
+        public T TryGet(ID conceptID)
         {
+            Contract.AssertNotNull(conceptID, "conceptID");
             return items.GetValueOrDefault(conceptID, default(T));
         }
 
+        public T Get(ID conceptID)
+        {
+            Contract.AssertNotNull(conceptID, "conceptID");
+            T value = default(T);
+            if (!items.TryGetValue(conceptID, out value))
+            {
+                throw new SDMXException("Item not found for concept id '{0}'. Use TryGet or Contains instead.", conceptID);
+            }
+            return value;
+        }
+
         public void Remove(ID conceptID)
-        {            
+        {
+            Contract.AssertNotNull(conceptID, "conceptID");
             items.Remove(conceptID);
         }
 
         public bool Contains(ID conceptID)
-        {            
+        {
+            Contract.AssertNotNull(conceptID, "conceptID");
             return items.ContainsKey(conceptID);
         }
 

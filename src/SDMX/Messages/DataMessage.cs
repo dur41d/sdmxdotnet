@@ -28,8 +28,10 @@ namespace SDMX
         }
 
         public static DataMessage LoadGeneric(string fileName, KeyFamily keyFamily)
-        {
-            return ExecuteReader(fileName, reader => ReadGeneric(reader, keyFamily));
+        {            
+            DataMessage message = null;
+            CreateReader(fileName).Do(reader => message = ReadGeneric(reader, keyFamily));
+            return message;
         }
       
         public static DataMessage ReadCompact(XmlReader reader, KeyFamily keyFamily, string targetNamespace)
@@ -41,7 +43,9 @@ namespace SDMX
 
         public static DataMessage LoadCompact(string fileName, KeyFamily keyFamily, string targetNamespace)
         {
-            return ExecuteReader(fileName, reader => ReadCompact(reader, keyFamily, targetNamespace));
+            DataMessage message = null;
+            CreateReader(fileName).Do(reader => message = ReadCompact(reader, keyFamily, targetNamespace));
+            return message;
         }      
 
         public void WriteGeneric(XmlWriter writer)
@@ -68,12 +72,12 @@ namespace SDMX
 
         public void SaveGeneric(string fileName)
         {
-            ExecuteWriter(fileName, writer => WriteGeneric(writer));
+            CreateWriter(fileName).Do(writer => WriteGeneric(writer));
         }
 
         public void SaveCompact(string fileName, string prefix, string targetNamespace)
         {
-            ExecuteWriter(fileName, writer => WriteCompact(writer, prefix, targetNamespace));
+            CreateWriter(fileName).Do(writer => WriteCompact(writer, prefix, targetNamespace));
         }
 
         private static DataMessage Read(XmlReader reader, KeyFamily keyFamily, RoolElementMap<DataMessage> map)
@@ -90,24 +94,22 @@ namespace SDMX
             map.WriteXml(writer, this);
         }
 
-        private static DataMessage ExecuteReader(string fileName, Func<XmlReader, DataMessage> read)
+        private static IEnumerable<XmlReader> CreateReader(string fileName)
         {
-            Contract.AssertNotNullOrEmpty(fileName, "fileName");
-            DataMessage message;
+            Contract.AssertNotNullOrEmpty(fileName, "fileName");            
             using (var reader = XmlReader.Create(fileName))
             {
-                message = read(reader);
+                yield return reader;
             }
-            return message;
         }
 
-        private void ExecuteWriter(string fileName, Action<XmlWriter> write)
+        private IEnumerable<XmlWriter> CreateWriter(string fileName)
         {
             Contract.AssertNotNullOrEmpty(fileName, "fileName");
             var settings = new XmlWriterSettings() { Indent = true };
             using (var writer = XmlWriter.Create(fileName, settings))
             {
-                write(writer);
+                yield return writer;
             }
         }
 
