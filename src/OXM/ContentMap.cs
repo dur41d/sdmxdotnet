@@ -9,17 +9,28 @@ using Common;
 using System.Xml;
 
 namespace OXM
-{    
-    internal class ContentMap<T, TProperty> : SimpleTypeMap<T, TProperty>
-    {
-        protected override void WriteValue(XmlWriter writer, string value)
+{
+    internal class ContentMap<T, TProperty> : IMemberMap<T>
+    { 
+        internal Property<T, TProperty> Property { get; set; }
+        internal ISimpleTypeConverter<TProperty> Converter { get; set; }
+
+        public void ReadXml(XmlReader reader)
         {
-            writer.WriteString(value);
+            string xmlValue = reader.ReadElementContentAsString();
+
+            if (xmlValue != null)
+            {
+                TProperty property = Converter.ToObj(xmlValue);
+                Property.Set(property);
+            }
         }
 
-        protected override string ReadValue(XmlReader reader)
+        public void WriteXml(XmlWriter writer, T obj)
         {
-            return reader.ReadElementContentAsString();
+            TProperty property = Property.Get(obj);
+            string xmlValue = Converter.ToXml(property);
+            writer.WriteString(xmlValue);
         }
     }
 }

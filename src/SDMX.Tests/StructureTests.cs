@@ -16,6 +16,7 @@ namespace SDMX.Tests
     public class StructureTests
     {
         [Test]
+        [Ignore]
         public void StructureSampleTest()
         {
             string dsdPath = Utility.GetPath("lib\\StructureSample.xml");
@@ -40,6 +41,7 @@ namespace SDMX.Tests
         }
 
         [Test]
+        [Ignore]
         public void WBDSD()
         {
             string dsdPath = Utility.GetPath("lib\\DSD_WB.xml");
@@ -66,6 +68,7 @@ namespace SDMX.Tests
         }
      
         [Test]
+        [Ignore]
         public void HeirarchicalCodeListSample()
         {
             string dsdPath = Utility.GetPath("lib\\HeirarchicalCodeListSample.xml");
@@ -83,6 +86,7 @@ namespace SDMX.Tests
         }
 
         [Test]
+        [Ignore]
         public void WBDSD_HierarchicalCodeList()
         {
             // load the DSD

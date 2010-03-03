@@ -19,7 +19,7 @@ namespace SDMX
             _attachmentLevel = attachmentLevel;
         }
 
-        public object this[ID concept]
+        public Value this[ID concept]
         {
             get
             {
@@ -28,21 +28,8 @@ namespace SDMX
             set
             {
                 Contract.AssertNotNull(value, "value");
-
-                if (value is string)
-                {
-                    value = CodeValue.Create(value as string);
-                }
-
-                if (!(value is Value))
-                {
-                    throw new SDMXException("Key value must be of type 'SDMX.Value'.");
-                }
-
-                Value val = (Value)value;
-
-                _keyFamily.ValidateAttribute(concept, val, _attachmentLevel);
-                values[concept] = val;
+                _keyFamily.ValidateAttribute(concept, value, _attachmentLevel);
+                values[concept] = value;
             }
         }
 

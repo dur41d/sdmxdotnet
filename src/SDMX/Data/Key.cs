@@ -18,7 +18,7 @@ namespace SDMX
             _keyFamily = keyFamily;
         }
 
-        public virtual object this[ID concept]
+        public virtual Value this[ID concept]
         {
             get
             {
@@ -27,28 +27,9 @@ namespace SDMX
             set
             {
                 Contract.AssertNotNull(value, "value");
-
-                if (value is string)
-                {
-                    value = CodeValue.Create(value as string);
-                }
-
-                if (!(value is Value))
-                {
-                    throw new SDMXException("Key value must be of type 'SDMX.Value'.");
-                }
-
-                Value val = (Value)value;
-
-                var dim = _keyFamily.Dimensions.TryGet(concept);
-                if (dim == null)
-                {
-                    throw new SDMXException("Dimension is not found for concept '{0}'.", concept);
-                }
-                dim.Validate(val);
-
-
-                _keyValues[concept] = val;
+                var dim = _keyFamily.Dimensions.Get(concept);
+                dim.Validate(value);
+                _keyValues[concept] = value;
             }
         }
 

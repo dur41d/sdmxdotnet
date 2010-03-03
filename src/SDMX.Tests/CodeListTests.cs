@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using NUnit.Framework;
+using System.Xml.Linq;
 
 namespace SDMX.Tests
 {
@@ -12,8 +13,7 @@ namespace SDMX.Tests
         [Test]
         public void CreateCodeList()
         {
-            var codelist = new CodeList(new InternationalString(Language.English, "Countries"), "CL_COUNTRY", "UIS");
-            
+            var codelist = new CodeList(new InternationalString(Language.English, "Countries"), "CL_COUNTRY", "UIS");            
 
             codelist.Add(new Code((ID)"CAN"));
             codelist.Add(new Code((ID)"USA"));
@@ -22,7 +22,11 @@ namespace SDMX.Tests
             message.Header = BuildHeader();
             message.CodeLists.Add(codelist);
 
-            message.Save(@"c:\temp\newcodelist.xml");
+            var doc = new XDocument();
+            using (var writer = doc.CreateWriter())
+            {
+                message.WriteXml(writer);
+            }
         }
 
 
