@@ -34,10 +34,10 @@ namespace SDMX.Tests
             foreach (DataRow row in dataTable.Rows)
             {
                 var key = dataSet.NewKey();                
-                key["FREQ"] = row["freq"].ToString();
-                key["JD_TYPE"] = row["jdtype"];
-                key["JD_CATEGORY"] = row["jdcat"];
-                key["VIS_CTY"] = row["city"];
+                key["FREQ"] = (CodeValue)(string)row["freq"];
+                key["JD_TYPE"] = (CodeValue)(string)row["jdtype"];
+                key["JD_CATEGORY"] = (CodeValue)(string)row["jdcat"];
+                key["VIS_CTY"] = (CodeValue)(string)row["city"];
 
                 var time = new YearValue((int)row["time"]);
                 var value = new DecimalValue((decimal)row["value"]);
@@ -47,15 +47,15 @@ namespace SDMX.Tests
                 if (series == null)
                 {
                     series = dataSet.Series.Create(key);
-                    series.Attributes["TIME_FORMAT"] = "P1Y";
-                    series.Attributes["COLLECTION"] = "A";
+                    series.Attributes["TIME_FORMAT"] = (CodeValue)"P1Y";
+                    series.Attributes["COLLECTION"] = (CodeValue)"A";
                     add = true;
                 }
 
                 var obs = series.Create(time);               
 
                 obs.Value = value;
-                obs.Attributes["OBS_STATUS"] = "A";
+                obs.Attributes["OBS_STATUS"] = (CodeValue)"A";
 
                 series.Add(obs);
 
@@ -126,8 +126,7 @@ namespace SDMX.Tests
             var dsd = StructureMessage.Load(dsdPath);
             var keyFamily = dsd.KeyFamilies[0];
 
-            var message = DataMessage.LoadGeneric(dataPath, keyFamily);
-            message.SaveGeneric(Utility.GetPath("lib\\GenericSample4.xml"));
+            var message = DataMessage.LoadGeneric(dataPath, keyFamily);            
 
             string ns = "urn:sdmx:org.sdmx.infomodel.keyfamily.KeyFamily=BIS:EXT_DEBT:compact";
 
@@ -141,9 +140,7 @@ namespace SDMX.Tests
             using (var reader = compact.CreateReader())
             {
                 message2 = DataMessage.ReadCompact(reader, keyFamily, ns);
-            }
-
-            message2.SaveGeneric(Utility.GetPath("lib\\GenericSample3.xml"));
+            }            
 
             Utility.AssertDataMessageEqual(message, message2);
         }

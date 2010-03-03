@@ -78,7 +78,6 @@
     <Compile Include="SimpleElementClassMap.cs" />
     <Compile Include="SimpleElements.cs" />
     <Compile Include="SimpleTypeConverter.cs" />
-    <Compile Include="SimpleTypeMap.cs" />
     <Compile Include="ContentMap.cs" />
   </ItemGroup>
   <ItemGroup>

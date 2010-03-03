@@ -26,21 +26,21 @@ namespace SDMX.Profiler
                         foreach (var city in keyFamily.Dimensions.TryGet("VIS_CTY").CodeList)
                         {
                             var key = dataSet.NewKey();
-                            key["FREQ"] = freq;
-                            key["JD_TYPE"] = jdtype;
-                            key["JD_CATEGORY"] = jdcat;
-                            key["VIS_CTY"] = city;
+                            key["FREQ"] = (CodeValue)freq;
+                            key["JD_TYPE"] = (CodeValue)jdtype;
+                            key["JD_CATEGORY"] = (CodeValue)jdcat;
+                            key["VIS_CTY"] = (CodeValue)city;
                             var timer1 = DateTime.Now;
                             var series = dataSet.Series.Create(key);
-                            series.Attributes["TIME_FORMAT"] = "P1Y";
-                            series.Attributes["COLLECTION"] = "A";
+                            series.Attributes["TIME_FORMAT"] = (CodeValue)"P1Y";
+                            series.Attributes["COLLECTION"] = (CodeValue)"A";
 
                             for (int i = 1959; i < 2009; i++)
                             {
                                 var obs = series.Create(new YearValue(i));
 
                                 obs.Value = new DecimalValue(3.3m);
-                                obs.Attributes["OBS_STATUS"] = "A";
+                                obs.Attributes["OBS_STATUS"] = (CodeValue)"A";
 
                                 timer1 = DateTime.Now;
                                 series.Add(obs);                                
