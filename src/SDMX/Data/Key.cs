@@ -11,6 +11,8 @@ namespace SDMX
     {
         private Dictionary<ID, Value> _keyValues;
         private KeyFamily _keyFamily;
+        private int _hash;
+        private string _toString;
 
         internal Key(KeyFamily keyFamily)
         {
@@ -64,25 +66,32 @@ namespace SDMX
 
         public bool Equals(Key other)
         {
-            return GetHashCode() == other.GetHashCode();
+            return this.Equals(other, () => GetHashCode() == other.GetHashCode());
         }
 
         public override bool Equals(object obj)
-        {
-            if (!(obj is Key)) return false;
-            return Equals((Key)obj);
+        {           
+            return Equals(obj as Key);
         }
 
         public override int GetHashCode()
         {
-            return ToString().GetHashCode();
+            if (_hash == 0)
+            {
+                _hash = ToString().GetHashCode();
+            }
+            return _hash;
         }
 
         public override string ToString()
         {
-            var builder = new StringBuilder();
-            _keyValues.ForEach(k => builder.AppendFormat("{0}={1},", k.Key, k.Value));
-            return builder.Remove(builder.Length - 1, 1).ToString();
+            if (_toString == null)
+            {
+                var builder = new StringBuilder();
+                _keyValues.ForEach(k => builder.AppendFormat("{0}={1},", k.Key, k.Value));
+                _toString = builder.Remove(builder.Length - 1, 1).ToString();
+            }
+            return _toString;
         }
 
         #endregion

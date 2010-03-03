@@ -38,11 +38,7 @@ namespace SDMX
                 return _keyValues.Count;
             }
         }
-
-        public static implicit operator ReadOnlyKey(Key key)
-        {
-            return new ReadOnlyKey(key);
-        }
+    
 
         #region IEnumerable<KeyItem> Members
 
@@ -64,13 +60,12 @@ namespace SDMX
 
         public bool Equals(ReadOnlyKey other)
         {
-            return GetHashCode() == other.GetHashCode();
+            return this.Equals(other, () => GetHashCode() == other.GetHashCode());
         }
 
         public override bool Equals(object obj)
-        {
-            if (!(obj is ReadOnlyKey)) return false;
-            return Equals((ReadOnlyKey)obj);
+        {            
+            return Equals(obj as ReadOnlyKey);
         }
 
         public override int GetHashCode()
