@@ -1,13 +1,11 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using NUnit.Framework;
-using Common;
-using System.Globalization;
 
-namespace SDMX.Tests
-{   
+namespace Common.Tests
+{
     [TestFixture]
     public class ContractTests
     {
