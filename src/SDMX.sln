@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 10.00
-# Visual Studio 2008
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SDMX_ML.Framework", "SDMX_ML.Framework\SDMX_ML.Framework.csproj", "{B5A1E424-12DB-4B6B-96F5-C7899EDABE07}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SDMX.Tests", "SDMX.Tests\SDMX.Tests.csproj", "{31750F4E-5778-433D-9C2A-98971C45B051}"

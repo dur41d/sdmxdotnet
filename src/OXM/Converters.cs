@@ -133,7 +133,7 @@ namespace OXM
             if (value == null)
                 return null;
 
-            return XmlConvert.ToDateTime(value);
+            return XmlConvert.ToDateTime(value, XmlDateTimeSerializationMode.RoundtripKind);
         }
     }
 
