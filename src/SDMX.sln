@@ -1,8 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SDMX_ML.Framework", "SDMX_ML.Framework\SDMX_ML.Framework.csproj", "{B5A1E424-12DB-4B6B-96F5-C7899EDABE07}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SDMX.Tests", "SDMX.Tests\SDMX.Tests.csproj", "{31750F4E-5778-433D-9C2A-98971C45B051}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SDMX", "SDMX\SDMX.csproj", "{8729DEDD-51EA-41DB-BF49-89297BB56D54}"
@@ -23,10 +21,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{B5A1E424-12DB-4B6B-96F5-C7899EDABE07}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B5A1E424-12DB-4B6B-96F5-C7899EDABE07}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B5A1E424-12DB-4B6B-96F5-C7899EDABE07}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B5A1E424-12DB-4B6B-96F5-C7899EDABE07}.Release|Any CPU.Build.0 = Release|Any CPU
 		{31750F4E-5778-433D-9C2A-98971C45B051}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{31750F4E-5778-433D-9C2A-98971C45B051}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{31750F4E-5778-433D-9C2A-98971C45B051}.Release|Any CPU.ActiveCfg = Release|Any CPU
