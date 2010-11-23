@@ -7,7 +7,7 @@ using Common;
 
 namespace SDMX.Parsers
 {
-    public class AnnotationMap : ClassMap<Annotation>
+    internal class AnnotationMap : ClassMap<Annotation>
     {
         Annotation annotation = new Annotation();
 

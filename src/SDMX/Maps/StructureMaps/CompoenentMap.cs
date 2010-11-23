@@ -9,8 +9,8 @@ using Common;
 using OXM;
 
 namespace SDMX.Parsers
-{   
-    public abstract class CompoenentMap<T> : AnnotableArtefactMap<T>
+{
+    internal abstract class CompoenentMap<T> : AnnotableArtefactMap<T>
             where T : Component
     {
         protected abstract T Create(Concept conecpt);

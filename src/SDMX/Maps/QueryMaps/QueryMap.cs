@@ -2,7 +2,7 @@ using OXM;
 
 namespace SDMX.Parsers
 {
-    public class QueryMap : ClassMap<Query>
+    internal class QueryMap : ClassMap<Query>
     {
         Query _query = new Query();
 

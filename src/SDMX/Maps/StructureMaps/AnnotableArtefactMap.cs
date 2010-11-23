@@ -7,7 +7,7 @@ using Common;
 
 namespace SDMX.Parsers
 {
-    public abstract class AnnotableArtefactMap<T> : ClassMap<T> where T : AnnotableArtefact
+    internal abstract class AnnotableArtefactMap<T> : ClassMap<T> where T : AnnotableArtefact
     {
         protected abstract void AddAnnotation(Annotation annotation);
         

@@ -6,11 +6,6 @@ using Common;
 
 namespace SDMX
 {
-    public interface Item
-    {
-        ID ID { get; }
-    }
-
     public class Collection<T> : IEnumerable<T> where T : Item
     {
         private Dictionary<ID, T> items = new Dictionary<ID, T>();

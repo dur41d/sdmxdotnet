@@ -10,8 +10,7 @@ using OXM;
 
 namespace SDMX.Parsers
 {
-
-    public class DimensionMap : CompoenentMap<Dimension>
+    internal class DimensionMap : CompoenentMap<Dimension>
     {
         Dimension _dimension;
         

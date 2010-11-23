@@ -10,7 +10,7 @@ using OXM;
 
 namespace SDMX.Parsers
 {
-    public class CrossSectionalAttachmentLevelMap : AttributeGroupTypeMap<CrossSectionalAttachmentLevel>
+    internal class CrossSectionalAttachmentLevelMap : AttributeGroupTypeMap<CrossSectionalAttachmentLevel>
     {        
         bool dataSet, group, section, observation;
 
