@@ -7,7 +7,7 @@ using System.Xml.Linq;
 
 namespace SDMX.Parsers
 {
-    public class CompactSeriesKeyMap : AttributeGroupTypeMap<ReadOnlyKey>
+    internal class CompactSeriesKeyMap : AttributeGroupTypeMap<ReadOnlyKey>
     {
         Key _key;
         ValueConverter converter = new ValueConverter();

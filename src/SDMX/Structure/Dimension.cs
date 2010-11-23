@@ -5,7 +5,6 @@ using System.Text;
 
 namespace SDMX
 {
-
     public class Dimension : Component, Item
     {
         public bool IsMeasureDimension { get; set; }

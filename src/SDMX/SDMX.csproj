@@ -82,8 +82,6 @@
     <Compile Include="ID.cs" />
     <Compile Include="IdentifiableArtefact.cs" />
     <Compile Include="InternationalString.cs" />
-    <Compile Include="Item.cs" />
-    <Compile Include="ItemScheme.cs" />
     <Compile Include="MaintainableArtefact.cs" />
     <Compile Include="Maps\ContactMap.cs" />
     <Compile Include="Maps\DataMaps\ValueConverters\CodeValueConverter.cs" />
@@ -174,6 +172,7 @@
     <Compile Include="Query\IQuery.cs" />
     <Compile Include="Query\KeyFamilyCriterion.cs" />
     <Compile Include="Query\OrCriterion.cs" />
+    <Compile Include="Query\Query.cs" />
     <Compile Include="Query\TimeCriterion.cs" />
     <Compile Include="Query\TimePeriodCriterion.cs" />
     <Compile Include="Structure\AssignmentStatus.cs" />
@@ -196,12 +195,13 @@
     <Compile Include="Structure\GroupDescriptor.cs" />
     <Compile Include="Structure\HierarchicalCodeList.cs" />
     <Compile Include="Structure\Hierarchy.cs" />
+    <Compile Include="Structure\Item.cs" />
     <Compile Include="Structure\KeyFamily.cs" />
     <Compile Include="Data\Observation.cs" />
     <Compile Include="Structure\Level.cs" />
     <Compile Include="Structure\PrimaryMeasure.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Exceptions.cs" />
+    <Compile Include="SDMXException.cs" />
     <Compile Include="Data\Series.cs" />
     <Compile Include="Data\IDValuePair.cs" />
     <Compile Include="InternationalText.cs" />

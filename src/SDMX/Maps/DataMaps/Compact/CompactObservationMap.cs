@@ -7,7 +7,7 @@ using System.Xml.Linq;
 
 namespace SDMX.Parsers
 {
-    public class CompactObservationMap : ClassMap<Observation>
+    internal class CompactObservationMap : ClassMap<Observation>
     {
         Observation _obs;
         ValueConverter converter = new ValueConverter();
