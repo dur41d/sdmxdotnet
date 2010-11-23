@@ -7,7 +7,7 @@ using OXM;
 
 namespace SDMX.Parsers
 {
-    public abstract class IdentifiableArtefactMap<T> : AnnotableArtefactMap<T> where T : IdentifiableArtefact
+    internal abstract class IdentifiableArtefactMap<T> : AnnotableArtefactMap<T> where T : IdentifiableArtefact
     {   
         protected abstract void SetID(ID id);
         protected abstract void SetUri(Uri uri);

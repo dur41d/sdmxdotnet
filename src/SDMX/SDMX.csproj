@@ -51,17 +51,11 @@
   <ItemGroup>
     <Compile Include="AnnotableArtefact.cs" />
     <Compile Include="Annotation.cs" />
-    <Compile Include="Data\AttributeValue.cs" />
     <Compile Include="Data\Key.cs" />
     <Compile Include="Data\ReadOnlyKey.cs" />
     <Compile Include="Data\ValueTypes\Biannum.cs" />
     <Compile Include="Data\ValueTypes\BiannualValue.cs" />
     <Compile Include="Data\ValueTypes\CodeValue.cs" />
-    <Compile Include="Data\DimensionValue.cs" />
-    <Compile Include="Data\GroupKey.cs" />
-    <Compile Include="Data\GroupKeyBuilder.cs" />
-    <Compile Include="Data\GroupValue.cs" />
-    <Compile Include="Data\GroupValueCollection.cs" />
     <Compile Include="Data\IAttachableArtefact.cs" />
     <Compile Include="Data\ValueTypes\DateTimeValue.cs" />
     <Compile Include="Data\ValueTypes\DateValue.cs" />
@@ -69,7 +63,6 @@
     <Compile Include="Data\ValueTypes\IntegerValue.cs" />
     <Compile Include="Data\ValueTypes\Value.cs" />
     <Compile Include="Data\SeriesCollection.cs" />
-    <Compile Include="Data\SeriesKeyBuilder.cs" />
     <Compile Include="Data\ValueTypes\Quarter.cs" />
     <Compile Include="Data\ValueTypes\QuarterlyValue.cs" />
     <Compile Include="Data\ValueTypes\StringValue.cs" />
@@ -131,7 +124,6 @@
     <Compile Include="Maps\StructureMaps\CrossSectionalAttachmentLevelMap.cs" />
     <Compile Include="Maps\StructureMaps\CrossSectionalMeasureMap.cs" />
     <Compile Include="Maps\StructureMaps\DimensionMap.cs" />
-    <Compile Include="Maps\StructureMaps\GenericDataSetParser.cs" />
     <Compile Include="Maps\StructureMaps\GroupDescriptorMap.cs" />
     <Compile Include="Maps\StructureMaps\HierarchicalCodeListMap.cs" />
     <Compile Include="Maps\StructureMaps\HierarchyMap.cs" />
@@ -139,10 +131,8 @@
     <Compile Include="Maps\StructureMaps\IdentifiableArtefactMap.cs" />
     <Compile Include="Maps\StructureMaps\InternationalStringMap.cs" />
     <Compile Include="Maps\StructureMaps\KeyFamilyMap.cs" />
-    <Compile Include="Maps\StructureMaps\KeyFamilyParser.cs" />
     <Compile Include="Maps\StructureMaps\LanguageMap.cs" />
     <Compile Include="Maps\StructureMaps\MaintainableArtefactMap.cs" />
-    <Compile Include="Maps\StructureMaps\MeasureMap.cs" />
     <Compile Include="Maps\Namespaces.cs" />
     <Compile Include="Maps\StructureMaps\PrimaryMeasureMap.cs" />
     <Compile Include="Maps\QueryMaps\QueryMap.cs" />
@@ -181,7 +171,6 @@
     <Compile Include="Data\AttributeValueCollection.cs" />
     <Compile Include="Structure\Code.cs" />
     <Compile Include="Structure\CodeList.cs" />
-    <Compile Include="Data\ComponenetValues.cs" />
     <Compile Include="Structure\CodeListRef.cs" />
     <Compile Include="Structure\CodeRef.cs" />
     <Compile Include="Structure\Collection.cs" />
