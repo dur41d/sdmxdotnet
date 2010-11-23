@@ -7,8 +7,7 @@ using Common;
 
 namespace SDMX.Parsers
 {
-    
-    public class KeyFamilyMap : MaintainableArtefactMap<KeyFamily>
+    internal class KeyFamilyMap : MaintainableArtefactMap<KeyFamily>
     {
         KeyFamily _keyFamily;
         

@@ -6,7 +6,7 @@ using OXM;
 
 namespace SDMX.Parsers
 {
-    public abstract class VersionableArtefactMap<T> : IdentifiableArtefactMap<T> 
+    internal abstract class VersionableArtefactMap<T> : IdentifiableArtefactMap<T> 
         where T : VersionableArtefact
     {
         protected abstract void SetVersion(string version);
