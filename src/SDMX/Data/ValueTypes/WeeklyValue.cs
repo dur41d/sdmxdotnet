@@ -7,7 +7,7 @@ using System.Text.RegularExpressions;
 
 namespace SDMX
 {
-    public class WeeklyValue : TimePeriod, IEquatable<WeeklyValue>
+    public class WeeklyValue : TimePeriod, IEquatable<WeeklyValue>, IYearValue
     {
         int _year;
         Week _week;

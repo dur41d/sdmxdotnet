@@ -61,6 +61,7 @@
     <Compile Include="Data\ValueTypes\DateValue.cs" />
     <Compile Include="Data\ValueTypes\DecimalValue.cs" />
     <Compile Include="Data\ValueTypes\IntegerValue.cs" />
+    <Compile Include="Data\ValueTypes\IYearValue.cs" />
     <Compile Include="Data\ValueTypes\Value.cs" />
     <Compile Include="Data\SeriesCollection.cs" />
     <Compile Include="Data\ValueTypes\Quarter.cs" />
@@ -148,10 +149,12 @@
     <Compile Include="Messages\DataMessage.cs" />
     <Compile Include="Messages\DataSetAction.cs" />
     <Compile Include="Messages\Header.cs" />
-    <Compile Include="Messages\Message.cs" />
+    <Compile Include="Messages\IMessage.cs" />
+    <Compile Include="Messages\MessageBase.cs" />
     <Compile Include="Messages\Party.cs" />
     <Compile Include="Messages\QueryMessage.cs" />
     <Compile Include="Messages\StructureMessage.cs" />
+    <Compile Include="Messages\Validator.cs" />
     <Compile Include="Query\AndCriterion.cs" />
     <Compile Include="Query\AttributeCriterion.cs" />
     <Compile Include="Query\DataQuery.cs" />
@@ -221,6 +224,42 @@
     <None Include="BasicHeirarchy.cd" />
     <None Include="Maps\BasicMapping.cd" />
     <None Include="Messages\StructureMessage.cd" />
+    <EmbeddedResource Include="Schemas\SDMXCommon.xsd">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Schemas\SDMXCompactData.xsd">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Schemas\SDMXCrossSectionalData.xsd">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Schemas\SDMXGenericData.xsd">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Schemas\SDMXGenericMetadata.xsd">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Schemas\SDMXMessage.xsd">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Schemas\SDMXMetadataReport.xsd">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Schemas\SDMXQuery.xsd">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Schemas\SDMXRegistry.xsd">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Schemas\SDMXStructure.xsd">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Schemas\SDMXUtilityData.xsd">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Schemas\xml.xsd">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <None Include="Structure\KeyFamily.cd" />
   </ItemGroup>
   <ItemGroup />

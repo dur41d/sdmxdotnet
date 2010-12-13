@@ -7,7 +7,7 @@ using System.Text.RegularExpressions;
 
 namespace SDMX
 {
-    public class QuarterlyValue : TimePeriod, IEquatable<QuarterlyValue>
+    public class QuarterlyValue : TimePeriod, IEquatable<QuarterlyValue>, IYearValue
     {
         int _year;
         Quarter _quarter;

@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace SDMX
 {
-    public interface ICriteriaGroup : ICriterion
+    public interface ICriteriaContainer : ICriterion
     {
         void Add(ICriterion criterion);
         void Remove(ICriterion criterion);

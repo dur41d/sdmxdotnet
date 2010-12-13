@@ -29,6 +29,8 @@ namespace SDMX.Parsers
                 return null;
             else if (format is DecimalTextFormat)
                 return TextType.Double;
+            else if (format is TimePeriodTextFormat)
+                return TextType.ObservationalTimePeriod;
             else
                 throw new SDMXException("Unsupported text format: '{0}'.", format);
         }
@@ -42,6 +44,8 @@ namespace SDMX.Parsers
                     return new StringTextFormat();
                 case TextType.Double:
                     return new DecimalTextFormat();
+                case TextType.ObservationalTimePeriod:
+                    return new TimePeriodTextFormat();
                 default:
                     throw new SDMXException("Unsupported text type '{0}'", textType);
             }

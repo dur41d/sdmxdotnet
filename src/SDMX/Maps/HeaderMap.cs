@@ -17,7 +17,7 @@ namespace SDMX.Parsers
                 .Set(v => header = new Header(v))
                 .Converter(new IDConverter());
 
-            Map(o => o.Test).ToSimpleElement("Test", false)
+            Map(o => o.Test).ToSimpleElement("Test", true)
                 .Set(v => header.Test = v)
                 .Converter(new BooleanConverter());
 

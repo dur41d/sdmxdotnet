@@ -15,6 +15,7 @@ namespace OXM
         public static bool IsDefault<T>(this T value)
         {
             if (typeof(T).IsEnum) return false;
+            if (typeof(T) == typeof(bool)) return false;
 
             if ((object)value == null) return true;
             return value.Equals(default(T));

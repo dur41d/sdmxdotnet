@@ -8,6 +8,12 @@ using Common;
 
 namespace OXM
 {
+    public interface IRootElementMap<T>
+    {
+         void WriteXml(XmlWriter writer, T obj);
+         T ReadXml(XmlReader reader);
+    }
+
     public abstract class RoolElementMap<T> : ClassMap<T>
     {
         public abstract XName Name { get; }

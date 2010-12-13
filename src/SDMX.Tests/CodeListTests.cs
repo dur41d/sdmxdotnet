@@ -26,7 +26,7 @@ namespace SDMX.Tests
             var doc = new XDocument();
             using (var writer = doc.CreateWriter())
             {
-                message.WriteXml(writer);
+                message.Write(writer);
             }
         }
 
