@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace SDMX
 {
-    public class OrCriterion : ICriteriaGroup
+    public class OrCriterion : ICriteriaContainer
     {
         List<ICriterion> _list = new List<ICriterion>();
 

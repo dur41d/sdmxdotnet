@@ -7,10 +7,15 @@ using System.Text.RegularExpressions;
 
 namespace SDMX
 {
-    public class DateValue : TimePeriod
+    public class DateValue : TimePeriod, IYearValue
     {
         DateTimeOffset _value;
         string _toString;
+
+        public int Year
+        {
+            get { return _value.Year; }
+        }
 
         public DateValue(DateTimeOffset dateTime)
         {

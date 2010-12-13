@@ -17,6 +17,7 @@ namespace SDMX.Tests
             return IsValidMessage(doc, null);
         }
 
+        // TODO: use the Message.Validate() method and remove this one
         internal static bool IsValidMessage(XDocument doc, XDocument schema)
         {
             var schemas = new XmlSchemaSet();
@@ -63,16 +64,6 @@ namespace SDMX.Tests
                 transform.Transform(dsd.CreateReader(), param, writer);
             }
             return schemaDoc;
-        }
-
-        // Display any warnings or errors.
-        private static void ValidationCallBack(object sender, ValidationEventArgs args)
-        {
-            if (args.Severity == XmlSeverityType.Warning)
-                Console.WriteLine("\tWarning: Matching schema not found.  No validation occurred." + args.Message);
-            else
-                Console.WriteLine("\tValidation error: " + args.Message);
-
         }
 
         internal static string GetPath(string path)

@@ -41,30 +41,32 @@ namespace SDMX.Tests
         }
 
         [Test]
-        [Ignore]
-        public void WBDSD()
+        public void LoadWriteLoad()
         {
-            string dsdPath = Utility.GetPath("lib\\DSD_WB.xml");
+            string dsdPath = Utility.GetPath("lib\\StructureSample.xml");
+            var message = StructureMessage.Load(dsdPath);
 
-            StructureMessageMap map = new StructureMessageMap();
+            message.Header.Test = false;
 
-            StructureMessage message;
-            using (var reader = XmlReader.Create(dsdPath))
-            {
-                message = map.ReadXml(reader);
-            }
-            message.Header.Name[Language.English] = "New Name";
+            var stream = new MemoryStream();
+            message.Write(stream);            
 
-            var sb = new StringBuilder();
-            var settings = new XmlWriterSettings() { Indent = true };
-            using (var writer = XmlWriter.Create(sb, settings))
-            {
-                map.WriteXml(writer, message);
-            }
 
-            var doc = XDocument.Parse(sb.ToString());
-            doc.Save(@"c:\temp\dsdsample.xml");
-            Assert.IsTrue(Utility.IsValidMessage(doc));
+
+            stream.Position = 0;
+
+            var doc = new XDocument();
+            using (var writer = doc.CreateWriter())
+                message.Write(writer);
+
+            Console.Write(doc);
+
+            Assert.IsTrue(Validator.ValidateMessageXml(stream, w => Console.WriteLine(w), e => Console.WriteLine(e)));
+
+            stream.Position = 0;
+
+            var message2 = StructureMessage.Read(stream);
+
         }
      
         [Test]

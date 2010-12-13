@@ -56,6 +56,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CodeListTests.cs" />
+    <Compile Include="KeyFamilyTests.cs" />
+    <Compile Include="ValidatorTests.cs" />
     <Compile Include="QueryTests.cs" />
     <Compile Include="ValueTests.cs" />
     <Compile Include="DataTests.cs" />

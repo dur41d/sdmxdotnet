@@ -7,7 +7,7 @@ using System.Text.RegularExpressions;
 
 namespace SDMX
 {
-    public class YearMonthValue : TimePeriod, IEquatable<YearMonthValue>
+    public class YearMonthValue : TimePeriod, IEquatable<YearMonthValue>, IYearValue
     {
         DateTimeOffset _value;
         string _toString;

@@ -70,12 +70,65 @@ namespace SDMX
             return true;
         }
 
+        // TODO: remove isValid and make all the api use Validate
         public void ValidateSeriesKey(ReadOnlyKey key)
         {
             string reason;
             if (!IsValidSeriesKey(key, out reason))
             {
                 throw new SDMXException("Invalid series key. reason: {0}, key: {1}", reason, key.ToString());
+            }
+        }
+
+        public bool ValidateDataQuery(DataQuery query)
+        {
+            Contract.AssertNotNull(query, "query");
+
+            foreach (var criterion in GetCriteria(query.Criterion))
+            {
+                if (criterion is DimensionCriterion)
+                {
+                    var c = criterion as DimensionCriterion;
+                    // TODO: remove TryGet and make Get return null to simplify the api
+                    var dim = Dimensions.TryGet(c.Name);
+
+                    if (dim == null) 
+                        return false;
+
+                    if (!dim.IsValid((CodeValue)c.Value))
+                        return false;
+                }
+                else if (criterion is AttributeCriterion)
+                {
+                    var c = criterion as AttributeCriterion;
+
+                    var att = Attributes.TryGet(c.Name);
+
+                    if (att == null)
+                        return false;
+
+                    if (!att.IsValid((CodeValue)c.Value))
+                        return false;
+
+                    //if (att.AttachementLevel != c.AttachmentLevel)
+                    //    return false;
+                }
+            }
+
+            return true;
+        }
+
+        private IEnumerable<ICriterion> GetCriteria(ICriterion criterion)
+        {
+            if (criterion is ICriteriaContainer)
+            {
+                foreach (var item in ((ICriteriaContainer)criterion).Criteria)
+                    foreach (var c in GetCriteria(item))
+                        yield return c;
+            }
+            else
+            {
+                yield return criterion;
             }
         }
 

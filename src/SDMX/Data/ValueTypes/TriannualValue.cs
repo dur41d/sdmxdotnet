@@ -7,7 +7,7 @@ using System.Text.RegularExpressions;
 
 namespace SDMX
 {
-    public class TriannualValue : TimePeriod, IEquatable<TriannualValue>
+    public class TriannualValue : TimePeriod, IEquatable<TriannualValue>, IYearValue
     {
         int _year;
         Triannum _annum;

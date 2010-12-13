@@ -9,15 +9,9 @@ using OXM;
 
 namespace SDMX
 {
-    public enum DataFormat
+    public class DataMessage : IMessage
     {
-        Generic,
-        Compact,
-        Utility
-    }
-
-    public class DataMessage : Message
-    {
+        public Header Header { get; set; }
         public DataSet DataSet { get; set; }
 
         public static DataMessage ReadGeneric(XmlReader reader, KeyFamily keyFamily)
@@ -113,5 +107,9 @@ namespace SDMX
             }
         }
 
+        public override string ToString()
+        {
+            return Header.ToString();
+        }
     }
 }

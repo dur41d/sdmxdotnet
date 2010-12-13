@@ -39,7 +39,7 @@ namespace OXM
             }
         }
     }
-
+   
     public abstract class ClassMap<T> : IElementMapContainer<T>, IAttributeMapContainer<T>, IElementContentContainer<T>
     {
         internal XNamespace Namespace { get; set; }
