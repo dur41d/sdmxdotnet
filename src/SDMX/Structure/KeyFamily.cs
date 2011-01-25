@@ -182,6 +182,14 @@ namespace SDMX
             {
                 com = Attributes.TryGet(id);                
             }
+            if (com == null && id == TimeDimension.Concept.ID)
+            {
+                return TimeDimension;
+            }
+            if (com == null && id == PrimaryMeasure.Concept.ID)
+            {
+                return PrimaryMeasure;
+            }
 
             if (com == null)
             {

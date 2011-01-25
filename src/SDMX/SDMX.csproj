@@ -51,6 +51,9 @@
   <ItemGroup>
     <Compile Include="AnnotableArtefact.cs" />
     <Compile Include="Annotation.cs" />
+    <Compile Include="Data\CompactDataReader.cs" />
+    <Compile Include="Data\DataReader.cs" />
+    <Compile Include="Data\GenerictDataReader.cs" />
     <Compile Include="Data\Key.cs" />
     <Compile Include="Data\ReadOnlyKey.cs" />
     <Compile Include="Data\ValueTypes\Biannum.cs" />
