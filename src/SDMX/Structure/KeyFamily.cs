@@ -42,44 +42,6 @@ namespace SDMX
             }
         }
 
-        internal bool IsValidSeriesKey(ReadOnlyKey key, out string reason)
-        {
-            reason = null;            
-            if (key.Count != Dimensions.Count)
-            {                
-                reason = string.Format("Key items count ({0}) is differnt than the dimension count ({1}).", key.Count, Dimensions.Count);
-                return false;
-            }
-            foreach (var keyItem in key)
-            {
-                var dim = Dimensions.TryGet(keyItem.Id);
-                if (dim == null)
-                {
-                    reason = string.Format("Dimension is not found for key item '{0}'.", keyItem.Id);
-                    return false;
-                }                
-                
-                if (!dim.IsValid(keyItem.Value))
-                {
-                    reason = "Invalid value '{0}' for key '{1}'."
-                        .F(keyItem.Value, keyItem.Id);
-                    return false;
-                }
-            }
-
-            return true;
-        }
-
-        // TODO: remove isValid and make all the api use Validate
-        public void ValidateSeriesKey(ReadOnlyKey key)
-        {
-            string reason;
-            if (!IsValidSeriesKey(key, out reason))
-            {
-                throw new SDMXException("Invalid series key. reason: {0}, key: {1}", reason, key.ToString());
-            }
-        }
-
         public bool ValidateDataQuery(DataQuery query)
         {
             Contract.AssertNotNull(query, "query");
@@ -131,30 +93,7 @@ namespace SDMX
                 yield return criterion;
             }
         }
-
-        internal void Validate(Observation obs)
-        {
-            if (obs == null)
-            {
-                throw new SDMXException("Observation is null.");
-            }
-
-            AssertHasManatoryAttributes(obs.Attributes, AttachmentLevel.Observation);
-        }
-
-        internal void AssertHasManatoryAttributes(AttributeValueCollection attributeValues, AttachmentLevel level)
-        {
-            foreach (var attribute in Attributes.Where(
-                a => a.AssignmentStatus == AssignmentStatus.Mandatory
-                && a.AttachementLevel == level))
-            {
-                if (attributeValues[attribute.Concept.Id] == null)
-                {
-                    throw new SDMXException("Value for attribute '{0}' is mandatory for the attachment level '{1}' but found missing."
-                        , attribute.Concept.Id, level);
-                }
-            }
-        }
+       
 
         internal void ValidateAttribute(Id conceptId, Value value, AttachmentLevel level)
         {

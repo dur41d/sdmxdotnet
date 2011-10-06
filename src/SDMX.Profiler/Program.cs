@@ -9,56 +9,56 @@ namespace SDMX.Profiler
     {
         static void Main(string[] args)
         {            
-            string dsdPath = GetPathFromProjectBase("lib\\StructureSample.xml");
-            var dsd = StructureMessage.Load(dsdPath);
-            var keyFamily = dsd.KeyFamilies[0];
-            var dataSet = new DataSet(keyFamily);
+            //string dsdPath = GetPathFromProjectBase("lib\\StructureSample.xml");
+            //var dsd = StructureMessage.Load(dsdPath);
+            //var keyFamily = dsd.KeyFamilies[0];
+            //var dataSet = new DataSet(keyFamily);
                      
-            //Console.Write("Enter to start");
-            //Console.ReadLine();
+            ////Console.Write("Enter to start");
+            ////Console.ReadLine();
 
-            foreach (var freq in keyFamily.Dimensions.TryGet("FREQ").CodeList)
-            {
-                foreach (var jdtype in keyFamily.Dimensions.TryGet("JD_TYPE").CodeList)
-                {
-                    foreach (var jdcat in keyFamily.Dimensions.TryGet("JD_CATEGORY").CodeList)
-                    {
-                        foreach (var city in keyFamily.Dimensions.TryGet("VIS_CTY").CodeList)
-                        {
-                            var key = dataSet.NewKey();
-                            key["FREQ"] = (CodeValue)freq;
-                            key["JD_TYPE"] = (CodeValue)jdtype;
-                            key["JD_CATEGORY"] = (CodeValue)jdcat;
-                            key["VIS_CTY"] = (CodeValue)city;
-                            var timer1 = DateTime.Now;
-                            var series = dataSet.Series.Create(key);
-                            series.Attributes["TIME_FORMAT"] = (CodeValue)"P1Y";
-                            series.Attributes["COLLECTION"] = (CodeValue)"A";
+            //foreach (var freq in keyFamily.Dimensions.TryGet("FREQ").CodeList)
+            //{
+            //    foreach (var jdtype in keyFamily.Dimensions.TryGet("JD_TYPE").CodeList)
+            //    {
+            //        foreach (var jdcat in keyFamily.Dimensions.TryGet("JD_CATEGORY").CodeList)
+            //        {
+            //            foreach (var city in keyFamily.Dimensions.TryGet("VIS_CTY").CodeList)
+            //            {
+            //                var key = dataSet.NewKey();
+            //                key["FREQ"] = (CodeValue)freq;
+            //                key["JD_TYPE"] = (CodeValue)jdtype;
+            //                key["JD_CATEGORY"] = (CodeValue)jdcat;
+            //                key["VIS_CTY"] = (CodeValue)city;
+            //                var timer1 = DateTime.Now;
+            //                var series = dataSet.Series.Create(key);
+            //                series.Attributes["TIME_FORMAT"] = (CodeValue)"P1Y";
+            //                series.Attributes["COLLECTION"] = (CodeValue)"A";
 
-                            for (int i = 1959; i < 2009; i++)
-                            {
-                                var obs = series.Create(new YearValue(i));
+            //                for (int i = 1959; i < 2009; i++)
+            //                {
+            //                    var obs = series.Create(new YearValue(i));
 
-                                obs.Value = new DecimalValue(3.3m);
-                                obs.Attributes["OBS_STATUS"] = (CodeValue)"A";
+            //                    obs.Value = new DecimalValue(3.3m);
+            //                    obs.Attributes["OBS_STATUS"] = (CodeValue)"A";
 
-                                timer1 = DateTime.Now;
-                                series.Add(obs);                                
-                            }
+            //                    timer1 = DateTime.Now;
+            //                    series.Add(obs);                                
+            //                }
 
-                            dataSet.Series.Add(series);
-                        }
-                    }
-                }
-            }
+            //                dataSet.Series.Add(series);
+            //            }
+            //        }
+            //    }
+            //}
 
-            //Console.Write("Enter to quit");
-            //Console.ReadLine();
-            DataMessage message = new DataMessage();
-            message.Header = GetHeader();
-            message.DataSet = dataSet;
-            message.SaveGeneric(GetPathFromProjectBase("lib\\testg.xml"));
-            message.SaveCompact(GetPathFromProjectBase("lib\\testc.xml"), "uis", "uis.com");
+            ////Console.Write("Enter to quit");
+            ////Console.ReadLine();
+            //DataMessage message = new DataMessage();
+            //message.Header = GetHeader();
+            //message.DataSet = dataSet;
+            //message.SaveGeneric(GetPathFromProjectBase("lib\\testg.xml"));
+            //message.SaveCompact(GetPathFromProjectBase("lib\\testc.xml"), "uis", "uis.com");
         }
 
         private static Header GetHeader()
