@@ -47,14 +47,14 @@ namespace SDMX
             return this.Equals(other, () => _value.Equals(other._value));
         }
 
-        public static bool operator ==(Value x, DecimalValue y)
+        public static bool operator ==(DecimalValue x, DecimalValue y)
         {
-            return object.Equals(x, y);
+            return Extensions.Equals(x, y);
         }
 
-        public static bool operator !=(Value x, DecimalValue y)
-        {            
-            return !object.Equals(x, y);
+        public static bool operator !=(DecimalValue x, DecimalValue y)
+        {
+            return !(x == y);
         }
 
         #endregion

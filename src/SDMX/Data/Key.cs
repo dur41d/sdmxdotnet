@@ -7,20 +7,20 @@ using System.Collections;
 
 namespace SDMX
 {
-    public class Key : IEnumerable<IDValuePair>, IEquatable<Key>
+    public class Key : IEnumerable<IdValuePair>, IEquatable<Key>
     {
-        private Dictionary<ID, Value> _keyValues;
+        private Dictionary<Id, Value> _keyValues;
         private KeyFamily _keyFamily;
         private int _hash;
         private string _toString;
 
         internal Key(KeyFamily keyFamily)
         {
-            _keyValues = new Dictionary<ID, Value>();
+            _keyValues = new Dictionary<Id, Value>();
             _keyFamily = keyFamily;
         }
 
-        public virtual Value this[ID concept]
+        public virtual Value this[Id concept]
         {
             get
             {
@@ -45,10 +45,10 @@ namespace SDMX
 
         #region IEnumerable<KeyItem> Members
 
-        public IEnumerator<IDValuePair> GetEnumerator()
+        public IEnumerator<IdValuePair> GetEnumerator()
         {
             foreach (var item in _keyValues)
-                yield return new IDValuePair(item.Key, item.Value);
+                yield return new IdValuePair(item.Key, item.Value);
         }
 
         #endregion

@@ -52,14 +52,14 @@ namespace SDMX
             return this.Equals(other, () => _year.Equals(other._year) && _quarter.Equals(other._quarter));
         }
 
-        public static bool operator ==(Value x, QuarterlyValue y)
+        public static bool operator ==(QuarterlyValue x, QuarterlyValue y)
         {
-            return object.Equals(x, y);
+            return Extensions.Equals(x, y);
         }
 
-        public static bool operator !=(Value x, QuarterlyValue y)
+        public static bool operator !=(QuarterlyValue x, QuarterlyValue y)
         {
-            return !object.Equals(x, y);
+            return !(x == y);
         }
 
         #endregion

@@ -28,7 +28,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Lib", "Lib", "{27BAA588-57A
 		..\lib\GenericMetadataSample.xml = ..\lib\GenericMetadataSample.xml
 		..\lib\GenericMetadataSample2.xml = ..\lib\GenericMetadataSample2.xml
 		..\lib\GenericSample.xml = ..\lib\GenericSample.xml
-		..\lib\GenericSample2.xml = ..\lib\GenericSample2.xml
 		..\lib\HeirarchicalCodeListSample.xml = ..\lib\HeirarchicalCodeListSample.xml
 		..\lib\IMF_CONTACT_MetadataReport.xsd = ..\lib\IMF_CONTACT_MetadataReport.xsd
 		..\lib\MDG_DSD.xml = ..\lib\MDG_DSD.xml

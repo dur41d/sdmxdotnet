@@ -3,19 +3,15 @@ using System.Linq;
 using System.Xml;
 using Common;
 using SDMX.Parsers;
+using System.Text;
 
 namespace SDMX
 {
     public class CompactDataReader : DataReader
     {
         public CompactDataReader(XmlReader xmlReader, KeyFamily keyFamily)
-        {
-            Contract.AssertNotNull(xmlReader, "xmlReader");
-            Contract.AssertNotNull(keyFamily, "keyFamily");
-
-            _xmlReader = xmlReader;
-            KeyFamily = keyFamily;
-        }
+            : base(xmlReader, keyFamily)
+        { }
 
         public override bool Read()
         {
@@ -24,12 +20,18 @@ namespace SDMX
                 if (!_xmlReader.IsStartElement())
                     continue;
 
-                if (_xmlReader.LocalName == "Header")
-                {
+                var group = KeyFamily.Groups.TryGet(_xmlReader.LocalName);
 
-                    var map = new OXM.FragmentMap<Header>(Namespaces.Message + "Header", new HeaderMap());
-                    Value = map.ReadXml(_xmlReader);
-                    return true;
+                if (group != null)
+                {   
+                    var dict = new Dictionary<string, object>();
+                    while (_xmlReader.MoveToNextAttribute())
+                    {
+                        var component = KeyFamily.GetComponent(_xmlReader.LocalName);
+                        dict[_xmlReader.LocalName] = _converter.Parse(component, _xmlReader.Value, null);
+                    }
+
+                    ReadGroupValues(group, dict);
                 }
                 else if (_xmlReader.LocalName == "Series")
                 {
@@ -39,10 +41,12 @@ namespace SDMX
                         var component = KeyFamily.GetComponent(_xmlReader.LocalName);
                         _record[_xmlReader.LocalName] = _converter.Parse(component, _xmlReader.Value, null);
                     }
+
+                    SetGroupValues();
                 }
                 else if (_xmlReader.LocalName == "Obs")
                 {
-                    ClearObsValues();
+                    ClearObsAttributes();
 
                     while (_xmlReader.MoveToNextAttribute())
                     {
@@ -50,7 +54,6 @@ namespace SDMX
                         _record[_xmlReader.LocalName] = _converter.Parse(component, _xmlReader.Value, null);
                     }
 
-                    Value = null;
                     return true;
                 }
             }

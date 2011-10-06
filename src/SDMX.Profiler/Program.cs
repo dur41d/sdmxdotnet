@@ -63,7 +63,7 @@ namespace SDMX.Profiler
 
         private static Header GetHeader()
         {
-            return new Header((ID)"MSD_HDR", new Party((ID)"UIS"))
+            return new Header((Id)"MSD_HDR", new Party((Id)"UIS"))
             {
                 Prepared = DateTime.Now
             };

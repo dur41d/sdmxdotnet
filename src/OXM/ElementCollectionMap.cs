@@ -38,7 +38,7 @@ namespace OXM
             {
                 if (Required)
                 {
-                    throw new OXMException("Element Collection '{0}' is required but its value is null. Collection: ({1}).{2}"
+                    throw new ParseException("Element Collection '{0}' is required but its value is null. Collection: ({1}).{2}"
                         , Name, Collection.GetTypeName(), Collection.GetName());
                 }
             }          
@@ -46,7 +46,7 @@ namespace OXM
             {
                 if (Required && values.Count() == 0)
                 {
-                    throw new OXMException("Element Collection '{0}' is required but the collection is empty. Collection: ({1}).{2}"
+                    throw new ParseException("Element Collection '{0}' is required but the collection is empty. Collection: ({1}).{2}"
                         , Name, Collection.GetTypeName(), Collection.GetName());
                 }
 

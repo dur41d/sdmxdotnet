@@ -16,9 +16,9 @@ namespace SDMX.Parsers
         {             
         }     
         
-        public ID ID { get; set; }
+        public Id Id { get; set; }
         public string Version { get; set; }
-        public ID AgencyID { get; set; }
+        public Id AgencyId { get; set; }
         public TempConceptSchemeRef SchemeRef { get; set; }
 
         internal static TempConceptRef Create(Concept concept)
@@ -27,9 +27,9 @@ namespace SDMX.Parsers
                 return null;
 
             TempConceptRef conceptRef = new TempConceptRef();
-            conceptRef.ID = concept.ID;
+            conceptRef.Id = concept.Id;
             conceptRef.Version = concept.Version;
-            conceptRef.AgencyID = concept.AgencyID;
+            conceptRef.AgencyId = concept.AgencyId;
             conceptRef.SchemeRef = TempConceptSchemeRef.Create(concept.ConceptScheme);
 
             return conceptRef;
@@ -47,16 +47,16 @@ namespace SDMX.Parsers
                 return null;
 
             TempConceptSchemeRef schemeRef = new TempConceptSchemeRef();
-            schemeRef.ID = scheme.ID;
+            schemeRef.Id = scheme.Id;
             schemeRef.Version = scheme.Version;
-            schemeRef.AgencyID = scheme.AgencyID;
+            schemeRef.AgencyId = scheme.AgencyId;
 
             return schemeRef;
         }
         
-        public ID ID { get; set; }
+        public Id Id { get; set; }
         public string Version { get; set; }
-        public ID AgencyID { get; set; }
+        public Id AgencyId { get; set; }
     }
     
     public class TempConceptRefMap : AttributeGroupTypeMap<TempConceptRef>
@@ -67,25 +67,25 @@ namespace SDMX.Parsers
         {
             conceptRef.SchemeRef = new TempConceptSchemeRef();
 
-            MapAttribute(o => o.ID, "conceptRef", true)
-                .Set(v => conceptRef.ID = v)
-                .Converter(new IDConverter());
+            MapAttribute(o => o.Id, "conceptRef", true)
+                .Set(v => conceptRef.Id = v)
+                .Converter(new IdConverter());
 
             MapAttribute(o => o.Version, "conceptVersion", false)
                 .Set(v => conceptRef.Version = v)
                 .Converter(new StringConverter());
 
-            MapAttribute(o => o.AgencyID, "conceptAgency", false)
-                .Set(v => conceptRef.AgencyID = v)
-                .Converter(new IDConverter());
+            MapAttribute(o => o.AgencyId, "conceptAgency", false)
+                .Set(v => conceptRef.AgencyId = v)
+                .Converter(new IdConverter());
 
-            MapAttribute(o => conceptRef.SchemeRef.ID, "conceptSchemeRef", false)
-                .Set(v => conceptRef.SchemeRef.ID = v)
-                .Converter(new IDConverter());
+            MapAttribute(o => conceptRef.SchemeRef.Id, "conceptSchemeRef", false)
+                .Set(v => conceptRef.SchemeRef.Id = v)
+                .Converter(new IdConverter());
 
-            MapAttribute(o => conceptRef.SchemeRef.AgencyID, "conceptSchemeAgency", false)
-               .Set(v => conceptRef.SchemeRef.AgencyID = v)
-               .Converter(new IDConverter());
+            MapAttribute(o => conceptRef.SchemeRef.AgencyId, "conceptSchemeAgency", false)
+               .Set(v => conceptRef.SchemeRef.AgencyId = v)
+               .Converter(new IdConverter());
         }
 
         protected override TempConceptRef Return()

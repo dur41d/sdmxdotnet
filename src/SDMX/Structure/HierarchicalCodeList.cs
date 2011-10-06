@@ -11,13 +11,13 @@ namespace SDMX
         private List<CodeListRef> codeListRefs = new List<CodeListRef>();
         private List<Hierarchy> hierarchies = new List<Hierarchy>();
 
-        public HierarchicalCodeList(ID id, ID agencyID)
-            : base(id, agencyID)
+        public HierarchicalCodeList(Id id, Id agencyId)
+            : base(id, agencyId)
         {
         }
 
-        public HierarchicalCodeList(InternationalString name, ID id, ID agencyID)
-            : this(id, agencyID)
+        public HierarchicalCodeList(InternationalString name, Id id, Id agencyId)
+            : this(id, agencyId)
         {
             Name.Add(name);
         }
@@ -30,7 +30,7 @@ namespace SDMX
             }
         }
 
-        public void AddCodeList(CodeList codeList, ID alias)
+        public void AddCodeList(CodeList codeList, Id alias)
         {
             Contract.AssertNotNull(codeList, "codeList");
 
@@ -40,8 +40,8 @@ namespace SDMX
         public void AddCodeList(CodeListRef codelistRef)
         {
             Contract.AssertNotNull(codelistRef, "codelistRef");
-            Contract.AssertNotNull(codelistRef.ID, "codelistRef.ID");
-            Contract.AssertNotNull(codelistRef.AgencyID, "codelistRef.AgencyID");
+            Contract.AssertNotNull(codelistRef.Id, "codelistRef.Id");
+            Contract.AssertNotNull(codelistRef.AgencyId, "codelistRef.AgencyId");
             Contract.AssertNotNull(codelistRef.Alias, "codelistRef.Alias");
 
             if (codeListRefs.Exists(c => c == codelistRef))
@@ -67,13 +67,13 @@ namespace SDMX
             {
                 if (codeRef.CodeListRef.Alias == null)
                 {
-                    var codeListRef = codeListRefs.Where(c => c.ID == codeRef.CodeListRef.ID
-                        && c.AgencyID == codeRef.CodeListRef.AgencyID).FirstOrDefault();
+                    var codeListRef = codeListRefs.Where(c => c.Id == codeRef.CodeListRef.Id
+                        && c.AgencyId == codeRef.CodeListRef.AgencyId).FirstOrDefault();
 
                     if (codeListRef == null)
                     {
-                        string message = "Code list ref is not found in the hierarchical code list for code '{0}' CodeListID '{1}', CodeListAgency '{2}'. Use AddCodeList to add the code list before adding the code associated with it.";
-                        throw new SDMXException(message, codeRef.CodeID, codeRef.CodeListRef.ID, codeRef.CodeListRef.AgencyID);
+                        string message = "Code list ref is not found in the hierarchical code list for code '{0}' CodeListId '{1}', CodeListAgency '{2}'. Use AddCodeList to add the code list before adding the code associated with it.";
+                        throw new SDMXException(message, codeRef.CodeId, codeRef.CodeListRef.Id, codeRef.CodeListRef.AgencyId);
                     }
 
                     codeRef.CodeListRef.Alias = codeListRef.Alias;
@@ -85,7 +85,7 @@ namespace SDMX
         {
             get
             {
-                return new Uri(string.Format("{0}.hierarchicalcodelist={1}:{2}[{3}]".F(UrnPrefix, AgencyID, ID, Version)));
+                return new Uri(string.Format("{0}.hierarchicalcodelist={1}:{2}[{3}]".F(UrnPrefix, AgencyId, Id, Version)));
             }
         }
 

@@ -7,9 +7,9 @@ using Common;
 
 namespace SDMX
 {
-    public class AttributeValueCollection : IEnumerable<IDValuePair>
+    public class AttributeValueCollection : IEnumerable<IdValuePair>
     {
-        private Dictionary<ID, Value> values = new Dictionary<ID, Value>();
+        private Dictionary<Id, Value> values = new Dictionary<Id, Value>();
         private KeyFamily _keyFamily;
         private AttachmentLevel _attachmentLevel;
 
@@ -19,7 +19,7 @@ namespace SDMX
             _attachmentLevel = attachmentLevel;
         }
 
-        public Value this[ID concept]
+        public Value this[Id concept]
         {
             get
             {
@@ -40,10 +40,10 @@ namespace SDMX
 
         #region IEnumerable Members
 
-        public IEnumerator<IDValuePair> GetEnumerator()
+        public IEnumerator<IdValuePair> GetEnumerator()
         {
             foreach (var item in values)
-                yield return new IDValuePair(item.Key, item.Value);
+                yield return new IdValuePair(item.Key, item.Value);
         }
 
         IEnumerator IEnumerable.GetEnumerator()

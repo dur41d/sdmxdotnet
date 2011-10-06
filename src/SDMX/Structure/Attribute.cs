@@ -18,8 +18,10 @@ namespace SDMX
         public bool IsTimeFormat { get; set; }
         public CrossSectionalAttachmentLevel CrossSectionalAttachmentLevel { get; set; }
 
-        private IList<ID> _attachmentMeasures = new List<ID>();
-        public IList<ID> AttachmentMeasures
+        public override ITextFormat DefaultTextFormat { get { return new StringTextFormat(); } }
+
+        private IList<Id> _attachmentMeasures = new List<Id>();
+        public IList<Id> AttachmentMeasures
         {
             get
             {
@@ -27,8 +29,8 @@ namespace SDMX
             }
         }
 
-        private IList<ID> _attachmentGroups = new List<ID>();
-        public IList<ID> AttachmentGroups
+        private IList<Id> _attachmentGroups = new List<Id>();
+        public IList<Id> AttachmentGroups
         {
             get
             {
@@ -48,9 +50,9 @@ namespace SDMX
 
         #region Item Members
 
-        ID Item.ID
+        Id Item.Id
         {
-            get { return Concept.ID; }
+            get { return Concept.Id; }
         }
 
         #endregion

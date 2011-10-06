@@ -8,8 +8,8 @@ namespace SDMX
 {
     public class Concept : MaintainableArtefact
     {        
-        public Concept(InternationalString name, ID id, ID agencyID)
-            : base(id, agencyID)
+        public Concept(InternationalString name, Id id, Id agencyId)
+            : base(id, agencyId)
         {
             Name.Add(name);
         }
@@ -22,7 +22,7 @@ namespace SDMX
         {
             get
             {
-                return new Uri(string.Format("{0}.conceptScheme.Concept={1}:{2}.{3}[{4}]".F(UrnPrefix, ConceptScheme.AgencyID, ConceptScheme.ID, ID, ConceptScheme.Version)));
+                return new Uri(string.Format("{0}.conceptScheme.Concept={1}:{2}.{3}[{4}]".F(UrnPrefix, ConceptScheme.AgencyId, ConceptScheme.Id, Id, ConceptScheme.Version)));
             }
         }
     }

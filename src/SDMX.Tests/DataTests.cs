@@ -164,7 +164,7 @@ namespace SDMX.Tests
         {
             foreach (var att in atts)
             {
-                Console.Write("{0}={1} ", att.ID, att.Value);
+                Console.Write("{0}={1} ", att.Id, att.Value);
             }
             Console.WriteLine();
         }

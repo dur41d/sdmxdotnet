@@ -8,6 +8,6 @@ namespace SDMX
 {
     public interface Item
     {
-        ID ID { get; }
+        Id Id { get; }
     }
 }

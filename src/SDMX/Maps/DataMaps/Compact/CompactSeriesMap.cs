@@ -24,8 +24,8 @@ namespace SDMX.Parsers
             {
                 var _att = attribute;
                 bool required = attribute.AssignmentStatus == AssignmentStatus.Mandatory;
-                Map(o => converter.Serialize((Value)o.Attributes[_att.Concept.ID], out startTime)).ToAttribute(_att.Concept.ID.ToString(), required)
-                    .Set(v => _series.Attributes[_att.Concept.ID] = converter.Parse(_att, v, null))
+                Map(o => converter.Serialize((Value)o.Attributes[_att.Concept.Id], out startTime)).ToAttribute(_att.Concept.Id.ToString(), required)
+                    .Set(v => _series.Attributes[_att.Concept.Id] = converter.Parse(_att, v, null))
                     .Converter(new StringConverter());
             }
 

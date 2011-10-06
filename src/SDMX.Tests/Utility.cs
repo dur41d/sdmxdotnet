@@ -97,8 +97,8 @@ namespace SDMX.Tests
                 var series2 = message2.DataSet.Series.Get(series.Key);               
                 foreach (var att in series.Attributes)
                 {
-                    var att2 = series2.Attributes[att.ID];
-                    Assert.IsNotNull(att2, "Attribute not found '{0}'.", att.ID);
+                    var att2 = series2.Attributes[att.Id];
+                    Assert.IsNotNull(att2, "Attribute not found '{0}'.", att.Id);
                     Assert.AreEqual(att.Value, att2);
                 }
 
@@ -109,8 +109,8 @@ namespace SDMX.Tests
 
                     foreach (var att in obs.Attributes)
                     {
-                        var att2 = obs2.Attributes[att.ID];
-                        Assert.IsNotNull(att2, "Attribute not found '{0}'.", att.ID);
+                        var att2 = obs2.Attributes[att.Id];
+                        Assert.IsNotNull(att2, "Attribute not found '{0}'.", att.Id);
                         Assert.AreEqual(att.Value, att2);
                     }
                 }

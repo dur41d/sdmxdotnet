@@ -16,5 +16,7 @@ namespace SDMX
             : base(concept, codeList)
         {
         }
+
+        public override ITextFormat DefaultTextFormat { get { return new StringTextFormat(); } }
     }
 }

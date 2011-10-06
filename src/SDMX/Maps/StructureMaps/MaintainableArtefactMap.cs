@@ -9,15 +9,15 @@ namespace SDMX.Parsers
     internal abstract class MaintainableArtefactMap<T> : VersionableArtefactMap<T>
         where T : MaintainableArtefact
     {
-        protected abstract void SetAgencyID(ID  agencyId);
+        protected abstract void SetAgencyId(Id  agencyId);
         protected abstract void SetIsFinal(bool isFinal);
         protected abstract void SetIsExternalReference(bool isExternalReference);
 
         public MaintainableArtefactMap()
         {
-            Map(o => o.AgencyID).ToAttribute("agencyID", true)
-                .Set(v => SetAgencyID(v))
-                .Converter(new IDConverter());
+            Map(o => o.AgencyId).ToAttribute("agencyID", true)
+                .Set(v => SetAgencyId(v))
+                .Converter(new IdConverter());
 
             Map<bool?>(o => o.IsFinal ? o.IsFinal : (bool?)null).ToAttribute("isFinal", false)
                 .Set(v => SetIsFinal(v.Value))

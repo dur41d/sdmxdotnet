@@ -10,8 +10,8 @@ namespace SDMX
 {
     public class KeyFamily : MaintainableArtefact
     {
-        public KeyFamily(InternationalString name, ID id, ID agencyID)
-            : base(id, agencyID)
+        public KeyFamily(InternationalString name, Id id, Id agencyId)
+            : base(id, agencyId)
         {
             Name.Add(name);
             Dimensions = new Collection<Dimension>();
@@ -27,9 +27,9 @@ namespace SDMX
         public Collection<Attribute> Attributes { get; private set; }
         public Collection<CrossSectionalMeasure> XMeasures { get; set; }
 
-        public GroupDescriptor CreateNewGroup(ID groupID)
+        public GroupDescriptor CreateNewGroup(Id groupId)
         {
-            var group = new GroupDescriptor(groupID, this);
+            var group = new GroupDescriptor(groupId, this);
             Groups.Add(group);
             return group;
         }
@@ -38,7 +38,7 @@ namespace SDMX
         {
             get 
             {
-                return new Uri(string.Format("{0}.keyfamily.KeyFamily={1}:{2}[{3}]".F(UrnPrefix, AgencyID, ID, Version)));
+                return new Uri(string.Format("{0}.keyfamily.KeyFamily={1}:{2}[{3}]".F(UrnPrefix, AgencyId, Id, Version)));
             }
         }
 
@@ -52,17 +52,17 @@ namespace SDMX
             }
             foreach (var keyItem in key)
             {
-                var dim = Dimensions.TryGet(keyItem.ID);
+                var dim = Dimensions.TryGet(keyItem.Id);
                 if (dim == null)
                 {
-                    reason = string.Format("Dimension is not found for key item '{0}'.", keyItem.ID);
+                    reason = string.Format("Dimension is not found for key item '{0}'.", keyItem.Id);
                     return false;
                 }                
                 
                 if (!dim.IsValid(keyItem.Value))
                 {
                     reason = "Invalid value '{0}' for key '{1}'."
-                        .F(keyItem.Value, keyItem.ID);
+                        .F(keyItem.Value, keyItem.Id);
                     return false;
                 }
             }
@@ -148,45 +148,45 @@ namespace SDMX
                 a => a.AssignmentStatus == AssignmentStatus.Mandatory
                 && a.AttachementLevel == level))
             {
-                if (attributeValues[attribute.Concept.ID] == null)
+                if (attributeValues[attribute.Concept.Id] == null)
                 {
                     throw new SDMXException("Value for attribute '{0}' is mandatory for the attachment level '{1}' but found missing."
-                        , attribute.Concept.ID, level);
+                        , attribute.Concept.Id, level);
                 }
             }
         }
 
-        internal void ValidateAttribute(ID conceptID, Value value, AttachmentLevel level)
+        internal void ValidateAttribute(Id conceptId, Value value, AttachmentLevel level)
         {
-            var attribute = Attributes.TryGet(conceptID);
+            var attribute = Attributes.TryGet(conceptId);
             if (attribute == null)
             {
-                throw new SDMXException("Invalid attribute '{0}'.", conceptID);
+                throw new SDMXException("Invalid attribute '{0}'.", conceptId);
             }
             if (attribute.AttachementLevel != level)
             {
                 throw new SDMXException("Attribute '{0}' has attachment level '{1}' but was attached to level '{2}'."
-                    , conceptID, attribute.AttachementLevel, level);
+                    , conceptId, attribute.AttachementLevel, level);
             }
             if (!attribute.IsValid(value))
             {
                 throw new SDMXException("Invalid value for attribute '{0}'. Value: {1}."
-                    , conceptID, value);
+                    , conceptId, value);
             }
         }     
 
-        internal Component GetComponent(ID id)
+        internal Component GetComponent(Id id)
         {
             Component com = Dimensions.TryGet(id);
             if (com == null)
             {
                 com = Attributes.TryGet(id);                
             }
-            if (com == null && id == TimeDimension.Concept.ID)
+            if (com == null && id == TimeDimension.Concept.Id)
             {
                 return TimeDimension;
             }
-            if (com == null && id == PrimaryMeasure.Concept.ID)
+            if (com == null && id == PrimaryMeasure.Concept.Id)
             {
                 return PrimaryMeasure;
             }

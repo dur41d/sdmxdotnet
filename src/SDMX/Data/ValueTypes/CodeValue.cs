@@ -8,15 +8,15 @@ namespace SDMX
 {
     public class CodeValue : Value
     {
-        ID _value;
-        static Dictionary<ID, CodeValue> codes = new Dictionary<ID, CodeValue>();
+        Id _value;
+        static Dictionary<Id, CodeValue> codes = new Dictionary<Id, CodeValue>();
 
-        private CodeValue(ID value)
+        private CodeValue(Id value)
         {
             _value = value;
         }
 
-        public static CodeValue Create(ID id)
+        public static CodeValue Create(Id id)
         {
             CodeValue result = null;
             if (!codes.TryGetValue(id, out result))
@@ -37,19 +37,19 @@ namespace SDMX
             return value.ToString();
         }
 
-        public static explicit operator CodeValue(ID id)
+        public static explicit operator CodeValue(Id id)
         {
             return CodeValue.Create(id);
         }
 
-        public static explicit operator ID(CodeValue value)
+        public static explicit operator Id(CodeValue value)
         {
             return value._value;
         }
 
         public static explicit operator CodeValue(Code code)
         {
-            return CodeValue.Create(code.ID);
+            return CodeValue.Create(code.Id);
         }
 
         public override string ToString()

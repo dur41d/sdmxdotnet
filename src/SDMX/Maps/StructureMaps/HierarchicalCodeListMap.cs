@@ -11,7 +11,7 @@ namespace SDMX.Parsers
     internal class HierarchicalCodeListMap : MaintainableArtefactMap<HierarchicalCodeList>
     {
         HierarchicalCodeList hcl;
-        ID _id;
+        Id _id;
 
         public HierarchicalCodeListMap()
         {
@@ -25,12 +25,12 @@ namespace SDMX.Parsers
 
         }
 
-        protected override void SetID(ID id)
+        protected override void SetId(Id id)
         {
             _id = id;
         }
 
-        protected override void SetAgencyID(ID agencyId)
+        protected override void SetAgencyId(Id agencyId)
         {
             hcl = new HierarchicalCodeList(_id, agencyId);
         }

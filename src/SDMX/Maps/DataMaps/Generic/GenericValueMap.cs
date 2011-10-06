@@ -7,9 +7,9 @@ using System.Text.RegularExpressions;
 
 namespace SDMX.Parsers
 {
-    internal class GenericValueMap : ClassMap<IDValuePair>
+    internal class GenericValueMap : ClassMap<IdValuePair>
     {
-        ID id;
+        Id id;
         string s, startTime;
         ValueConverter converter = new ValueConverter();
         KeyFamily _keyFamily;
@@ -18,9 +18,9 @@ namespace SDMX.Parsers
         {
             _keyFamily = keyFamily;
                         
-            Map(o => o.ID).ToAttribute("concept", true)
+            Map(o => o.Id).ToAttribute("concept", true)
                 .Set(v => id = v)
-                .Converter(new IDConverter());
+                .Converter(new IdConverter());
 
             Map(o => converter.Serialize(o.Value, out startTime)).ToAttribute("value", true)
                 .Set(v => s = v)
@@ -31,11 +31,11 @@ namespace SDMX.Parsers
                 .Converter(new StringConverter());
         }
 
-        protected override IDValuePair Return()
+        protected override IdValuePair Return()
         {
             var component = _keyFamily.GetComponent(id);
             Value value = converter.Parse(component, s, startTime);
-            return new IDValuePair(id, value);
+            return new IdValuePair(id, value);
         }
     }
 }

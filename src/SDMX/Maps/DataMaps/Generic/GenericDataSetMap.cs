@@ -14,9 +14,9 @@ namespace SDMX.Parsers
         {
             _dataSet = new DataSet(keyFamily);
 
-            Map(o => o.KeyFamily.ID).ToSimpleElement(Namespaces.Generic + "KeyFamilyRef", true)
+            Map(o => o.KeyFamily.Id).ToSimpleElement(Namespaces.Generic + "KeyFamilyRef", true)
                 .Set(id => VerifyKeyFamilyRef(id))
-                .Converter(new IDConverter());
+                .Converter(new IdConverter());
 
             //MapContainer(Namespaces.Generic + "Attributes", false)
             //    .MapCollection(o => GetKeyValues(o.Attributes)).ToElement("Value", false)
@@ -28,11 +28,11 @@ namespace SDMX.Parsers
                 .ClassMap(() => new GenericSeriesMap(_dataSet));
         }   
 
-        private void VerifyKeyFamilyRef(ID id)
+        private void VerifyKeyFamilyRef(Id id)
         {
-            if (id != _dataSet.KeyFamily.ID)
+            if (id != _dataSet.KeyFamily.Id)
             {
-                throw new SDMXException("KeyFamilyRef '{0}' is not the same as the dataset key family id '{1}'", id, _dataSet.KeyFamily.ID);
+                throw new SDMXException("KeyFamilyRef '{0}' is not the same as the dataset key family id '{1}'", id, _dataSet.KeyFamily.Id);
             }
         }
 

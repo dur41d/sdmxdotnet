@@ -8,13 +8,6 @@ namespace SDMX
     [global::System.Serializable]
     public class SDMXException : Exception
     {
-        //
-        // For guidelines regarding the creation of new exception types, see
-        //    http://msdn.microsoft.com/library/default.asp?url=/library/en-us/cpgenref/html/cpconerrorraisinghandlingguidelines.asp
-        // and
-        //    http://msdn.microsoft.com/library/default.asp?url=/library/en-us/dncscol/html/csharp07192001.asp
-        //
-
         public SDMXException() { }
         public SDMXException(string message) : base(message) { }
         public SDMXException(string message, Exception inner) : base(message, inner) { }
@@ -25,7 +18,11 @@ namespace SDMX
 
         public SDMXException(string format, params object[] args)
             : base(string.Format(format, args))
+        { }
+
+        public static void Throw(string format, params object[] args)
         {
+            throw new SDMXException(format, args);
         }
 
     }

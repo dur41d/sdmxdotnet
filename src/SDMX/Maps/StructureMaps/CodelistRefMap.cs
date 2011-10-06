@@ -17,13 +17,13 @@ namespace SDMX.Parsers
             Map<Uri>(o => null).ToSimpleElement("URN", false)
                 .Converter(new UriConverter());
 
-            Map(o => o.AgencyID).ToSimpleElement("AgencyID", false)
-                .Set(v => codeListRef.AgencyID = v)
-                .Converter(new IDConverter());
+            Map(o => o.AgencyId).ToSimpleElement("AgencyID", false)
+                .Set(v => codeListRef.AgencyId = v)
+                .Converter(new IdConverter());
 
-            Map(o => o.ID).ToSimpleElement("CodelistID", false)
-                .Set(v => codeListRef.ID = v)
-                .Converter(new IDConverter());
+            Map(o => o.Id).ToSimpleElement("CodelistID", false)
+                .Set(v => codeListRef.Id = v)
+                .Converter(new IdConverter());
 
             Map(o => o.Version).ToSimpleElement("Version", false)
                 .Set(v => codeListRef.Version = v)
@@ -31,7 +31,7 @@ namespace SDMX.Parsers
 
             Map(o => o.Alias).ToSimpleElement("Alias", false)
                 .Set(v => codeListRef.Alias = v)
-                .Converter(new IDConverter());
+                .Converter(new IdConverter());
         }
 
         protected override CodeListRef Return()

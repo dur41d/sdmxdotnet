@@ -60,15 +60,15 @@ namespace SDMX
 
             if (obs.Series != this)
             {
-                throw new SDMXException("This observation wasn't created for this series and thus cannot be added to it.");
+                SDMXException.Throw("This observation wasn't created for this series and thus cannot be added to it.");
             }
             if (obs.Value == null)
             {
-                throw new SDMXException("Observation value is null. Observation must have a value to be added to a series.");
+                SDMXException.Throw("Observation value is null. Observation must have a value to be added to a series.");
             }
             if (_observations.ContainsKey(obs.Time))
             {
-                throw new SDMXException("Observation {0} already exists for series {1}.", obs.Time, Key);
+                SDMXException.Throw("Observation {0} already exists for series {1}.", obs.Time, Key);
             }
             DataSet.KeyFamily.AssertHasManatoryAttributes(obs.Attributes, AttachmentLevel.Observation);
             _observations.Add(obs.Time, obs);

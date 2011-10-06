@@ -7,14 +7,14 @@ namespace SDMX
 {
     public abstract class IdentifiableArtefact : AnnotableArtefact
     {
-        public IdentifiableArtefact(ID id)
+        public IdentifiableArtefact(Id id)
         {
-            ID = id;
+            Id = id;
             Name = new InternationalText();
             Description = new InternationalText();
         }
         
-        public ID ID { get; private set; }
+        public Id Id { get; private set; }
         public Uri Uri { get; set; }        
         public InternationalText Name { get; set; }
         public InternationalText Description { get; set; }

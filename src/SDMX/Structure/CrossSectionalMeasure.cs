@@ -8,8 +8,10 @@ namespace SDMX
 {   
     public class CrossSectionalMeasure : Component, Item
     {
-        public ID Dimension { get; set; }
-        public ID Code { get; set; }
+        public Id Dimension { get; set; }
+        public Id Code { get; set; }
+
+        public override ITextFormat DefaultTextFormat { get { return new StringTextFormat(); } }
 
         public CrossSectionalMeasure(Concept concept)
             : base(concept)
@@ -23,9 +25,9 @@ namespace SDMX
 
         #region Item Members
 
-        ID Item.ID
+        Id Item.Id
         {
-            get { return Concept.ID; }
+            get { return Concept.Id; }
         }
 
         #endregion

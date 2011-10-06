@@ -9,14 +9,14 @@ namespace SDMX.Parsers
 {
     public class InternationalStringMap : ClassMap<InternationalString>
     {        
-        Language lang;
+        string lang;
         string value;
 
         public InternationalStringMap()
         {
             Map(o => o.Language).ToAttribute(XNamespace.Xml + "lang", false, "en")
                 .Set(v => lang = v)
-                .Converter(new LanguageConverter());
+                .Converter(new StringConverter());
 
             Map(o => o.Value).ToContent()
                 .Set(v => value = v)

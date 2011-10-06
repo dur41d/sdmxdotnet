@@ -8,10 +8,10 @@ namespace SDMX
 {
     public class CodeList : MaintainableArtefact, IEnumerable<Code>
     {
-        Dictionary<ID, Code> codes = new Dictionary<ID, Code>();
+        Dictionary<Id, Code> codes = new Dictionary<Id, Code>();
         
-        public CodeList(InternationalString name, ID id, ID agencyID)
-            : base(id, agencyID)
+        public CodeList(InternationalString name, Id id, Id agencyId)
+            : base(id, agencyId)
         {
             Name.Add(name);
         }
@@ -20,40 +20,40 @@ namespace SDMX
         {            
             Contract.AssertNotNull(code, "code");
             code.CodeList = this;
-            codes.Add(code.ID, code);
+            codes.Add(code.Id, code);
         }
 
         public void Remove(Code code)
         {
             Contract.AssertNotNull(code, "code");
-            codes.Remove(code.ID);
+            codes.Remove(code.Id);
         }
 
-        public Code Get(ID codeID)
+        public Code Get(Id codeId)
         {
-            return codes.GetValueOrDefault(codeID, null);
+            return codes.GetValueOrDefault(codeId, null);
         }
 
         public Code Get(CodeValue code)
         {
-            return codes.GetValueOrDefault((ID)code, null);
+            return codes.GetValueOrDefault((Id)code, null);
         }
 
-        public bool Contains(ID codeID)
+        public bool Contains(Id codeId)
         {
-            return codes.ContainsKey(codeID);
+            return codes.ContainsKey(codeId);
         }
 
         public bool Contains(CodeValue code)
         {
-            return codes.ContainsKey((ID)code);
+            return codes.ContainsKey((Id)code);
         }
         
         public override Uri Urn
         {
             get 
             {
-                return new Uri(string.Format("{0}.codelist={1}:{2}[{3}]".F(UrnPrefix, AgencyID, ID, Version)));
+                return new Uri(string.Format("{0}.codelist={1}:{2}[{3}]".F(UrnPrefix, AgencyId, Id, Version)));
             }
         }
 

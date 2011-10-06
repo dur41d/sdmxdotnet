@@ -69,11 +69,11 @@ namespace SDMX.Parsers
 
             MapCollection(o => o.AttachmentGroups).ToSimpleElement("AttachmentGroup", false)
                 .Set(v => _attribute.AttachmentGroups.Add(v))
-                .Converter(new IDConverter());
+                .Converter(new IdConverter());
 
             MapCollection(o => o.AttachmentMeasures).ToSimpleElement("AttachmentMeasure", false)
                 .Set(v => _attribute.AttachmentMeasures.Add(v))
-                .Converter(new IDConverter());
+                .Converter(new IdConverter());
         }      
 
 

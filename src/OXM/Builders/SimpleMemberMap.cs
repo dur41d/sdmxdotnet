@@ -44,7 +44,7 @@ namespace OXM
             if (_converter == null)
             {
                 var prop = new Property<TObj, TProperty>(_prop, null);
-                throw new OXMException("Converter is not set for property ({0}).{1}.", prop.GetTypeName(), prop.GetName());
+                throw new ParseException("Converter is not set for property ({0}).{1}.", prop.GetTypeName(), prop.GetName());
             }
 
             return _converter;

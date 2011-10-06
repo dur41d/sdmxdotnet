@@ -41,7 +41,7 @@ namespace OXM
         {
             if (_classMapFactory == null)
             {
-                throw new OXMException("Class map is not set for property.");
+                throw new ParseException("Class map is not set for property.");
             }
 
             return _classMapFactory;

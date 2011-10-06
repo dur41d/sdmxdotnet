@@ -24,17 +24,17 @@ namespace SDMX.Parsers
             else
             {
                 var codelistRef = new TempCodelistRef();
-                codelistRef.ID = codelist.ID;
+                codelistRef.Id = codelist.Id;
                 codelistRef.Version = codelist.Version;
-                codelistRef.AgencyID = codelist.AgencyID;
+                codelistRef.AgencyId = codelist.AgencyId;
 
                 return codelistRef;
             }          
         }      
 
-        public ID ID { get; set; }
+        public Id Id { get; set; }
         public string Version { get; set; }
-        public ID AgencyID { get; set; }
+        public Id AgencyId { get; set; }
     }
 
 
@@ -44,22 +44,22 @@ namespace SDMX.Parsers
 
         public TempCodelistRefMap()
         {
-            MapAttribute(o => o.ID, "codelist", false)
-                .Set(v => codelistRef.ID = v)
-                .Converter(new IDConverter());
+            MapAttribute(o => o.Id, "codelist", false)
+                .Set(v => codelistRef.Id = v)
+                .Converter(new IdConverter());
 
             MapAttribute(o => o.Version, "codelistVersion", false)
                .Set(v => codelistRef.Version = v)
                .Converter(new StringConverter());
 
-            MapAttribute(o => o.AgencyID, "codelistAgency", false)
-               .Set(v => codelistRef.AgencyID = v)
-               .Converter(new IDConverter());
+            MapAttribute(o => o.AgencyId, "codelistAgency", false)
+               .Set(v => codelistRef.AgencyId = v)
+               .Converter(new IdConverter());
         }
 
         protected override TempCodelistRef Return()
         {
-            if (codelistRef.ID == null)
+            if (codelistRef.Id == null)
                 return null;
 
             return codelistRef;

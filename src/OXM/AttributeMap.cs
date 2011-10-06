@@ -54,7 +54,7 @@ namespace OXM
             {
                 if (_required)
                 {
-                    throw new OXMException("Attribute '{0}' for element '{1}' is required but was not found.", _name, reader.GetXName());
+                    ParseException.Throw(reader, "Attribute '{0}' for element '{1}' is required but was not found.", _name, reader.GetXName());
                 }
                 else if (_hasDefault)
                 {
@@ -78,7 +78,7 @@ namespace OXM
                 // if the attribute is required through an exception otherwise do nothing
                 if (_required)
                 {
-                    throw new OXMException("Attribute '{0}' is required but its value is null.", _name);
+                    throw new ParseException("Attribute '{0}' is required but its value is null.", _name);
                 }
             }
             else

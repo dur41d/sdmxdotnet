@@ -9,16 +9,16 @@ namespace SDMX.Parsers
 {
     internal abstract class IdentifiableArtefactMap<T> : AnnotableArtefactMap<T> where T : IdentifiableArtefact
     {   
-        protected abstract void SetID(ID id);
+        protected abstract void SetId(Id id);
         protected abstract void SetUri(Uri uri);
         protected abstract void SetName(InternationalString name);
         protected abstract void SetDescription(InternationalString description);
 
         public IdentifiableArtefactMap()
         {
-            Map(o => o.ID).ToAttribute("id", true)
-                .Set(v => SetID(v))
-                .Converter(new IDConverter());
+            Map(o => o.Id).ToAttribute("id", true)
+                .Set(v => SetId(v))
+                .Converter(new IdConverter());
 
             Map(o => o.Uri).ToAttribute("uri", false)
                 .Set(v => SetUri(v))

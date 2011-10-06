@@ -10,6 +10,7 @@ namespace SDMX
     {
         public Concept Concept { get; set; }
         public CodeList CodeList { get; set; }
+        public abstract ITextFormat DefaultTextFormat { get; }
        
         public ITextFormat TextFormat
         {
@@ -25,14 +26,14 @@ namespace SDMX
         public int Order { get; set; }
 
         public Component(Concept concept)
-        {
-            this.Concept = concept;
-        }
+            : this(concept, null)
+        { }
 
         public Component(Concept concept, CodeList codeList)
         {
             this.Concept = concept;
             this.CodeList = codeList;
+            this.TextFormat = DefaultTextFormat;
         }
 
         public bool IsCoded
@@ -45,7 +46,7 @@ namespace SDMX
 
         public override string ToString()
         {
-            return Concept.ID.ToString();
+            return Concept.Id.ToString();
         }
 
         //public virtual object Parse(string value)
@@ -57,7 +58,7 @@ namespace SDMX
         //{
         //    if (IsCoded)
         //    {
-        //        return CodeList.Get((ID)value);
+        //        return CodeList.Get((Id)value);
         //    }
         //    else
         //    {
@@ -71,7 +72,7 @@ namespace SDMX
         //    reason = null;
         //    if (IsCoded)
         //    {
-        //        var code = CodeList.Get((ID)s);
+        //        var code = CodeList.Get((Id)s);
         //        if (code == null)
         //        {
         //            reason = string.Format("Code not found for value '{0}'.", s);
@@ -90,7 +91,7 @@ namespace SDMX
         //{
         //    if (IsCoded)
         //    {
-        //        s = null; //((ID)value).ToString();
+        //        s = null; //((Id)value).ToString();
         //        startTime = null;
         //    }
         //    else
@@ -116,7 +117,7 @@ namespace SDMX
             if (!IsValid(value))
             {
                 throw new SDMXException("Invalid value '{0}' for component '{1}'."
-                            , value, Concept.ID);
+                            , value, Concept.Id);
             }
         }
 

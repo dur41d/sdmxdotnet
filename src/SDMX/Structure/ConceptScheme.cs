@@ -10,9 +10,10 @@ namespace SDMX
     {
         private List<Concept> concepts = new List<Concept>();        
       
-        public ConceptScheme(ID id, ID agencyID)
-            : base(id, agencyID)
+        public ConceptScheme(InternationalString name, Id id, Id agencyId)
+            : base(id, agencyId)
         {
+            Name.Add(name);
         }
 
         public void Add(Concept concept)
@@ -28,16 +29,16 @@ namespace SDMX
             concepts.Remove(concept);
         }
 
-        public Concept Get(ID conceptID)
+        public Concept Get(Id conceptId)
         {            
-            return concepts.Where(c => c.ID == conceptID).Single();
+            return concepts.Where(c => c.Id == conceptId).Single();
         }
 
         public override Uri Urn
         {
             get
             {
-                return new Uri(string.Format("{0}.conceptScheme={1}:{2}[{3}]".F(UrnPrefix, AgencyID, ID, Version)));
+                return new Uri(string.Format("{0}.conceptScheme={1}:{2}[{3}]".F(UrnPrefix, AgencyId, Id, Version)));
             }
         }
        

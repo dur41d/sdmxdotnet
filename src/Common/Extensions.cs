@@ -73,9 +73,16 @@ namespace Common
             return name;
         }
 
+        public static bool Equals<T>(this T x, T y) where T : IEquatable<T>
+        {
+            if (object.ReferenceEquals(x, y)) return true;
+            if (object.ReferenceEquals(x, null) || object.ReferenceEquals(y, null)) return false;
+            return x.Equals(y);
+        }
+
         public static bool Equals<T>(this T x, T y, Func<bool> equals) where T : IEquatable<T>
         {
-            if (object.Equals(y, null)) return false;
+            if (object.ReferenceEquals(y, null)) return false;
             return equals();
         }
 

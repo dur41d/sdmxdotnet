@@ -10,30 +10,29 @@ namespace SDMX
     /// <summary>
     /// A structure to restrict data to this pattern: ([A-Z]|[a-z]|\*|@|[0-9]|_|$|\-)*
     /// </summary>
-    public class ID
+    public class Id : IEquatable<Id>, IEquatable<string>
     {   
         private string _value;
         static Regex regex = new Regex("^([A-Z]|[a-z]|\\*|@|[0-9]|_|$|\\-)*$", RegexOptions.Compiled);
 
-        private ID(string id)
+        private Id(string id)
         {           
             _value = id;
         }
 
-        public static ID Create(string id)
+        public static Id Create(string id)
         {            
-            ID result = null;
+            Id result = null;
             if (!ids.TryGetValue(id, out result))
             {
                 Validate(id);
-                result = new ID(id);
+                result = new Id(id);
                 ids.Add(id, result);                
             }
             return result;
         }
 
-        static Dictionary<string, ID> ids = new Dictionary<string, ID>();
-
+        static Dictionary<string, Id> ids = new Dictionary<string, Id>();
 
         public static bool IsValid(string id)
         {
@@ -45,7 +44,7 @@ namespace SDMX
         {
             if (!IsValid(id))
             {
-                throw new SDMXException("Invalid ID value '{0}'".F(id));
+                throw new SDMXException("Invalid Id value '{0}'".F(id));
             }    
         }
 
@@ -59,9 +58,31 @@ namespace SDMX
             return _value.GetHashCode();
         }
 
-        public static implicit operator ID(string id)
+        public static implicit operator Id(string id)
         {
             return Create(id);
-        }       
+        }
+
+        public static implicit operator string(Id id)
+        {
+            return id._value;
+        }
+
+        public override bool Equals(object obj)
+        {
+            return Equals(obj as Id);
+        }
+
+        public bool Equals(string other)
+        {
+            return _value == other;
+        }
+
+        public bool Equals(Id other)
+        {
+            if (other == null) return false;
+
+            return _value == other._value;
+        }
     }
 }

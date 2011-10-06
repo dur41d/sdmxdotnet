@@ -6,6 +6,7 @@ using Common;
 using SDMX.Parsers;
 using System.Xml;
 using System.IO;
+using Linq.Expressions;
 
 namespace SDMX
 { 
@@ -13,6 +14,7 @@ namespace SDMX
     {
         public IList<CodeList> CodeLists { get; private set; }
         public IList<Concept> Concepts { get; private set; }
+        public IList<ConceptScheme> ConceptSchemes { get; private set; }
         public IList<KeyFamily> KeyFamilies { get; private set; }
         public IList<HierarchicalCodeList> HierarchicalCodeLists { get; private set; }
 
@@ -20,42 +22,57 @@ namespace SDMX
         {
             CodeLists = new List<CodeList>();
             Concepts = new List<Concept>();
+            ConceptSchemes = new List<ConceptScheme>();
             KeyFamilies = new List<KeyFamily>();
             HierarchicalCodeLists = new List<HierarchicalCodeList>();
         }
 
-
-        private T Filter<T>(IEnumerable<T> list, params Func<T, bool>[] predicates)
+        public CodeList FindCodeList(Id codeListId, Id agencyId, string version)
         {
-            IEnumerable<T> filtered = list;
-            foreach (var perdicate in predicates)
-            {
-                filtered = filtered.Where(perdicate);
-                int count = filtered.Count();
+            var where = ExpressionExtensions.True<CodeList>();
 
-                if (count == 0)
-                {
-                    throw new SDMXException("not found.");
-                }
-                else if (count == 1)
-                {
-                    return filtered.Single();
-                }                
+            where = where.And(i => i.Id == codeListId);
+            if (agencyId != null) where.And(i => i.AgencyId == agencyId);
+            if (version != null) where.And(i => i.Version == version);
+            var exp = where.Compile();
+
+            return CodeLists.Where(exp).SingleOrDefault();
+        }
+
+
+
+        public Concept GetConcept(Id coneceptSchemeId, Id coneceptSchemeAgencyId, string coneceptSchemeVersion, 
+            Id conceptId, Id conceptAgencyId, string conceptVersion)
+        {
+            IEnumerable<Concept> list = null;
+
+            if (coneceptSchemeId != null)
+            {
+                var where = ExpressionExtensions.True<ConceptScheme>();
+                where = where.And(i => i.Id == coneceptSchemeId);
+                if (coneceptSchemeAgencyId != null) where.And(i => i.AgencyId == coneceptSchemeAgencyId);
+                if (coneceptSchemeVersion != null) where.And(i => i.Version == coneceptSchemeVersion);
+                var exp = where.Compile();
+
+                list = ConceptSchemes.Where(exp).SingleOrDefault();
+            }
+            else
+            {
+                list = Concepts;
             }
 
-            throw new SDMXException("Multiple found for the cirteria.");
-        }
+            if (list != null)
+            {
+                var where2 = ExpressionExtensions.True<Concept>();
+                where2 = where2.And(i => i.Id == conceptId);
+                if (conceptAgencyId != null) where2.And(i => i.AgencyId == conceptAgencyId);
+                if (conceptVersion != null) where2.And(i => i.Version == conceptVersion);
+                var exp2 = where2.Compile();
 
-        public CodeList GetCodeList(ID codeListID, ID agencyID, string version)
-        {
-            return Filter(CodeLists, c => c.ID == codeListID, c => c.AgencyID == agencyID, c => c.Version == version);
-        }
+                return list.Where(exp2).SingleOrDefault();
+            }
 
-      
-        
-        public Concept GetConcept(ID conceptID, ID agencyID, string version)
-        {
-            return Filter(Concepts, c => c.ID == conceptID, c => c.AgencyID == agencyID, c => c.Version == version);
+            return null;
         }
 
         protected override StructureMessage GetThis()

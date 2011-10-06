@@ -38,10 +38,15 @@ namespace SDMX.Parsers
                   .Set(v => _message.HierarchicalCodeLists.Add(v))
                   .ClassMap(() => new HierarchicalCodeListMap());
 
-            MapContainer("Concepts", false)
-                .MapCollection(o => o.Concepts).ToElement(Namespaces.Structure + "Concept", false)
+            var concepts = MapContainer("Concepts", false);
+
+            concepts.MapCollection(o => o.Concepts).ToElement(Namespaces.Structure + "Concept", false)
                     .Set(v => _message.Concepts.Add(v))
                     .ClassMap(() => new ConceptMap());
+
+            concepts.MapCollection(o => o.ConceptSchemes).ToElement(Namespaces.Structure + "ConceptScheme", false)
+                    .Set(v => _message.ConceptSchemes.Add(v))
+                    .ClassMap(() => new ConceptSchemeMap());
 
             MapContainer("KeyFamilies", false)
                 .MapCollection(o => o.KeyFamilies).ToElement(Namespaces.Structure + "KeyFamily", false)

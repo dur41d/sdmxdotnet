@@ -7,13 +7,13 @@ namespace SDMX
 {
     public abstract class MaintainableArtefact : VersionableArtefact, IEquatable<MaintainableArtefact>
     {
-        public MaintainableArtefact(ID id, ID agencyID)
+        public MaintainableArtefact(Id id, Id agencyId)
             : base(id)
         {
-            AgencyID = agencyID;
+            AgencyId = agencyId;
         }
         
-        public ID AgencyID { get; private set; }
+        public Id AgencyId { get; private set; }
         public bool IsFinal { get; set; }
         public bool IsExternalReference { get; set; }
 
@@ -21,8 +21,8 @@ namespace SDMX
 
         public bool Equals(MaintainableArtefact other)
         {
-            return AgencyID.Equals(other.AgencyID)
-                && ID.Equals(other.ID)
+            return AgencyId.Equals(other.AgencyId)
+                && Id.Equals(other.Id)
                 && Version.Equals(other.Version);
         }
 
@@ -35,14 +35,14 @@ namespace SDMX
         public override int GetHashCode()
         {
             return 37
-                ^ ID.GetHashCode()
-                ^ AgencyID.GetHashCode()
+                ^ Id.GetHashCode()
+                ^ AgencyId.GetHashCode()
                 ^ Version.GetHashCode();
         }
 
         public override string ToString()
         {
-            return string.Format("{0}.{1}[{2}]", AgencyID, ID, Version);
+            return string.Format("{0}.{1}[{2}]", AgencyId, Id, Version);
         }
 
         #endregion
