@@ -13,9 +13,9 @@ namespace SDMX.Parsers
 
         public PartyMap()
         {
-            Map(o => o.ID).ToAttribute("id", true)
+            Map(o => o.Id).ToAttribute("id", true)
                 .Set(v => party = new Party(v))
-                .Converter(new IDConverter());
+                .Converter(new IdConverter());
 
             MapCollection(o => o.Name).ToElement("Name", false)
                 .Set(v => party.Name.Add(v))

@@ -22,8 +22,8 @@ namespace SDMX.Parsers
                 .ClassMap(() => new CodeMap(_codeList));
         }
 
-        ID _id;
-        ID _agencyID;
+        Id _id;
+        Id _agencyId;
         bool _isFinal;
         string _version;
         TimePeriod _validTo;
@@ -31,12 +31,12 @@ namespace SDMX.Parsers
         Uri _uri;
         bool _isExternalReference;
 
-        protected override void SetAgencyID(ID agencyId)
+        protected override void SetAgencyId(Id agencyId)
         {
-            _agencyID = agencyId;
+            _agencyId = agencyId;
         }
 
-        protected override void SetID(ID id)
+        protected override void SetId(Id id)
         {
             _id = id;
         }
@@ -75,7 +75,7 @@ namespace SDMX.Parsers
         {
             if (_codeList == null)
             {
-                _codeList = new CodeList(name, _id, _agencyID);
+                _codeList = new CodeList(name, _id, _agencyId);
                 _codeList.IsFinal = _isFinal;
                 _codeList.Version = _version;
                 _codeList.ValidFrom = _validFrom;

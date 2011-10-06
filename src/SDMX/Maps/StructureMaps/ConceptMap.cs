@@ -17,9 +17,9 @@ namespace SDMX.Parsers
             AttributesOrder("id", "agencyID", "version", "uri", "isExternalReference", "validFrom", "validTo");
             ElementsOrder("Name", "Description", "TextFormat", "Annotations");
 
-            Map(o => o.AgencyID).ToAttribute("agencyID", true)
-                .Set(v => _agencyID = v)
-                .Converter(new IDConverter());
+            Map(o => o.AgencyId).ToAttribute("agencyID", false)
+                .Set(v => _agencyId = v)
+                .Converter(new IdConverter());
 
             Map<bool?>(o => o.IsExternalReference ? true : (bool?)null).ToAttribute("isExternalReference", false)
                .Set(v => _isExternalReference = v.Value)
@@ -30,15 +30,15 @@ namespace SDMX.Parsers
                 .ClassMap(() => new TextFormatMap());
         }
 
-        ID _id;
-        ID _agencyID;
+        Id _id;
+        Id _agencyId;
         string _version;
         TimePeriod _validTo;
         TimePeriod _validFrom;
         Uri _uri;
         bool _isExternalReference;       
 
-        protected override void SetID(ID id)
+        protected override void SetId(Id id)
         {
             _id = id;
         }
@@ -67,7 +67,7 @@ namespace SDMX.Parsers
         {
             if (_concept == null)
             {
-                _concept = new Concept(name, _id, _agencyID);
+                _concept = new Concept(name, _id, _agencyId);
                 _concept.Version = _version;
                 _concept.ValidFrom = _validFrom;
                 _concept.ValidTo = _validTo;

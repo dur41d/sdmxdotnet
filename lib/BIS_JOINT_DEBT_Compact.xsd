@@ -54,6 +54,8 @@
 	<xs:complexType name="ObsType">
 		<xs:complexContent>
 			<xs:extension base="compact:ObsType">
+        <!-- TIME_PERIOD is renamed to TIME because that is the the name of the time dimension in the StructureSample.xml
+            and if the scheme is regenarated from the StructureToCompact.xsl it would be TIME and not TimePeriod-->
 				<xs:attribute name="TIME" type="common:TimePeriodType" use="optional"/>
 				<xs:attribute name="OBS_VALUE" type="xs:double" use="optional"/>
 				<xs:attribute name="OBS_CONF" type="CL_BIS_OBS_CONF" use="optional"/>

@@ -15,7 +15,7 @@ namespace SDMX.Parsers
             key = dataSet.NewKey();
 
             MapCollection(o => o).ToElement("Value", true)
-                .Set(v => key[v.ID] = v.Value)
+                .Set(v => key[v.Id] = v.Value)
                 .ClassMap(() => new GenericValueMap(dataSet.KeyFamily));
         }
 

@@ -11,16 +11,16 @@ using System.Xml;
 
 namespace SDMX.Parsers
 {
-    internal class IDConverter : ISimpleTypeConverter<ID>
+    internal class IdConverter : ISimpleTypeConverter<Id>
     {
-        public string ToXml(ID value)
+        public string ToXml(Id value)
         {
             return value.ToString();
         }
 
-        public ID ToObj(string value)
+        public Id ToObj(string value)
         {
-            return (ID)value;
+            return (Id)value;
         }
     }   
 }

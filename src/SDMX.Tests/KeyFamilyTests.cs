@@ -12,7 +12,6 @@ using System.Xml.Serialization;
 
 namespace SDMX.Tests
 {
-
     [TestFixture]
     public class KeyFamilyTests
     {

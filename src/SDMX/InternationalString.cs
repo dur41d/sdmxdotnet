@@ -2,22 +2,18 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Common;
 
 namespace SDMX
 {
-    public enum Language
+    public class InternationalString : IEquatable<InternationalString>
     {
-        English
-    }
+        public string Language { get; private set; }
+        public string Value { get; private set; }
 
-    public struct InternationalString : IEquatable<InternationalString>
-    {
-        public readonly Language Language;
-        public readonly string Value;
-
-        public InternationalString(Language language, string value)
+        public InternationalString(string lang, string value)
         {
-            Language = language;
+            Language = lang;
             Value = value;
         }
 
@@ -32,15 +28,17 @@ namespace SDMX
         }
 
         public override bool Equals(object other)
-        {
-            if (!(other is InternationalString)) return false;
-            return Equals((InternationalString)other);
+        {           
+            return Equals(other as InternationalString);
         }
 
         public bool Equals(InternationalString other)
         {
-            return Language.Equals(other.Language) &&
-                Value.Equals(other.Value);
+            return this.Equals(other, () =>
+            {
+                return Language.Equals(other.Language)
+                    && Value.Equals(other.Value);
+            });
         }       
 
         public static implicit operator string(InternationalString iString)
@@ -50,12 +48,12 @@ namespace SDMX
 
         public static bool operator ==(InternationalString x, InternationalString y)
         {
-            return x.Equals(y);
+            return Extensions.Equals(x, y);
         }
 
         public static bool operator !=(InternationalString x, InternationalString y)
         {
-            return !x.Equals(y);
+            return !(x == y);
         }      
     }
 }

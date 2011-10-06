@@ -21,11 +21,11 @@ namespace SDMX.Parsers
 
             Map(o => o.CodeListRef.Alias).ToSimpleElement("CodelistAliasRef", true)
                 .Set(v => codeRef.CodeListRef = GetCodeListRef(hierarchicalCodeList, v))
-                .Converter(new IDConverter());
+                .Converter(new IdConverter());
 
-            Map(o => o.CodeID).ToSimpleElement("CodeID", true)
-                .Set(v => codeRef.CodeID = v)
-                .Converter(new IDConverter());
+            Map(o => o.CodeId).ToSimpleElement("CodeID", true)
+                .Set(v => codeRef.CodeId = v)
+                .Converter(new IdConverter());
 
             MapCollection(o => o.Children).ToElement("CodeRef", false)
                 .Set(v => codeRef.Add(v))
@@ -33,11 +33,11 @@ namespace SDMX.Parsers
 
             // ignored
             Map(o => o.LevelRef).ToSimpleElement("LevelRef", false)
-                .Converter(new IDConverter());
+                .Converter(new IdConverter());
 
             // ignored
-            Map(o => o.NodeAliasID).ToSimpleElement("NodeAliasID", false)
-                .Converter(new IDConverter());
+            Map(o => o.NodeAliasId).ToSimpleElement("NodeAliasID", false)
+                .Converter(new IdConverter());
 
             Map(o => o.Version).ToSimpleElement("Version", false)
                 .Set(v => codeRef.Version = v)
@@ -52,7 +52,7 @@ namespace SDMX.Parsers
                 .Converter(new TimePeriodConverter());
         }
 
-        private CodeListRef GetCodeListRef(HierarchicalCodeList hierarchicalCodeList, ID alias)
+        private CodeListRef GetCodeListRef(HierarchicalCodeList hierarchicalCodeList, Id alias)
         {
             return hierarchicalCodeList.CodeListRefs.Where(c => c.Alias == alias).Single();
         }

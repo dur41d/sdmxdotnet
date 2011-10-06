@@ -58,7 +58,7 @@ namespace OXM
             {
                 if (((IAttributeMap)GroupTypeMap).Required)
                 {
-                    throw new OXMException("Attribute group '{0}' contains required attributes but its property is null. Property: ({1}).{2}"
+                    throw new ParseException("Attribute group '{0}' contains required attributes but its property is null. Property: ({1}).{2}"
                         , _groupName, Property.GetTypeName(), Property.GetName());
                 }
             }

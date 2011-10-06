@@ -13,9 +13,9 @@ namespace SDMX.Parsers
 
         public HeaderMap()
         {
-            Map(o => o.ID).ToSimpleElement("ID", true)
+            Map(o => o.Id).ToSimpleElement("ID", true)
                 .Set(v => header = new Header(v))
-                .Converter(new IDConverter());
+                .Converter(new IdConverter());
 
             Map(o => o.Test).ToSimpleElement("Test", true)
                 .Set(v => header.Test = v)
@@ -41,21 +41,21 @@ namespace SDMX.Parsers
                 .Set(v => header.Receivers.Add(v))
                 .ClassMap(() => new PartyMap());
 
-            Map(o => o.KeyFamilyID).ToSimpleElement("KeyFamilyRef", false)
-                .Set(v => header.KeyFamilyID = v)
-                .Converter(new IDConverter());
+            Map(o => o.KeyFamilyId).ToSimpleElement("KeyFamilyRef", false)
+                .Set(v => header.KeyFamilyId = v)
+                .Converter(new IdConverter());
 
-            Map(o => o.KeyFamilyAgencyID).ToSimpleElement("KeyFamilyAgency", false)
-                .Set(v => header.KeyFamilyAgencyID = v)
-                .Converter(new IDConverter());
+            Map(o => o.KeyFamilyAgencyId).ToSimpleElement("KeyFamilyAgency", false)
+                .Set(v => header.KeyFamilyAgencyId = v)
+                .Converter(new IdConverter());
 
-            Map(o => o.DataSetAgencyID).ToSimpleElement("DataSetAgency", false)
-                .Set(v => header.DataSetAgencyID = v)
-                .Converter(new IDConverter());
+            Map(o => o.DataSetAgencyId).ToSimpleElement("DataSetAgency", false)
+                .Set(v => header.DataSetAgencyId = v)
+                .Converter(new IdConverter());
 
-            Map(o => o.DataSetID).ToSimpleElement("DataSetID", false)
-                .Set(v => header.DataSetID = v)
-                .Converter(new IDConverter());
+            Map(o => o.DataSetId).ToSimpleElement("DataSetID", false)
+                .Set(v => header.DataSetId = v)
+                .Converter(new IdConverter());
 
             Map<DataSetAction?>(o => o.DataSetAction == DataSetAction.None ? (DataSetAction?)null : o.DataSetAction)
                 .ToSimpleElement("DataSetAction", false)

@@ -7,7 +7,7 @@ namespace SDMX
 {
     public abstract class VersionableArtefact : IdentifiableArtefact
     {
-        public VersionableArtefact(ID id)
+        public VersionableArtefact(Id id)
             : base(id)
         {   
         }

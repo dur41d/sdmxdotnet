@@ -12,17 +12,17 @@ namespace SDMX.Tests
         [Test]
         public void Create()
         {
-            var x = CodeValue.Create("SomeID");
-            x = (CodeValue)"SomeID2";
-            var id = ID.Create("ID3");
+            var x = CodeValue.Create("SomeId");
+            x = (CodeValue)"SomeId2";
+            var id = Id.Create("Id3");
             x = (CodeValue)id;
         }
 
         [Test]
         public void Equlity()
         {
-            var x = (CodeValue)"ID1";
-            var y = (CodeValue)"ID2";
+            var x = (CodeValue)"Id1";
+            var y = (CodeValue)"Id2";
             ValueTestUtility.TestEquality(x, x);
             ValueTestUtility.TestUnequlity(x, y);
             ValueTestUtility.TestComarisonWithNull(x);

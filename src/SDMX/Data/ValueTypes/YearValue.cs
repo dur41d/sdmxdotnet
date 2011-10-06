@@ -60,8 +60,6 @@ namespace SDMX
             return new YearValue(input);
         }
 
-        #region IEquatable<DecimalValue> Members
-
         public override int GetHashCode()
         {
             return _value.GetHashCode();
@@ -79,14 +77,12 @@ namespace SDMX
 
         public static bool operator ==(YearValue x, object y)
         {
-            return object.Equals(x, y);
+            return Extensions.Equals(x, y);
         }
 
         public static bool operator !=(YearValue x, object y)
         {
-            return !object.Equals(x, y);
+            return !(x == y);
         }
-
-        #endregion
     }
 }

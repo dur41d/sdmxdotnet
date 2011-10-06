@@ -57,7 +57,7 @@ namespace OXM
 
             if (!reader.NameEquals(Name))
             {
-                throw new OXMException("The first element name is '{0}:{1}' and the expected name is '{2}'."
+                throw new ParseException("The first element name is '{0}:{1}' and the expected name is '{2}'."
                     , reader.NamespaceURI, reader.Name, Name);
             }
 

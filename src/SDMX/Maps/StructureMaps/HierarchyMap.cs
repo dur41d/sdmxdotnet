@@ -39,7 +39,7 @@ namespace SDMX.Parsers
             _hierarchy.ValidFrom = validFrom;
         }
 
-        protected override void SetID(ID id)
+        protected override void SetId(Id id)
         {
             _hierarchy = new Hierarchy(id);
         }

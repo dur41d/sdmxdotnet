@@ -76,7 +76,7 @@
     <Compile Include="Data\ValueTypes\WeeklyValue.cs" />
     <Compile Include="Data\ValueTypes\YearMonthValue.cs" />
     <Compile Include="Data\ValueTypes\YearValue.cs" />
-    <Compile Include="ID.cs" />
+    <Compile Include="Id.cs" />
     <Compile Include="IdentifiableArtefact.cs" />
     <Compile Include="InternationalString.cs" />
     <Compile Include="MaintainableArtefact.cs" />
@@ -125,6 +125,7 @@
     <Compile Include="Maps\StructureMaps\CodeRefMap.cs" />
     <Compile Include="Maps\StructureMaps\CompoenentMap.cs" />
     <Compile Include="Maps\StructureMaps\ConceptMap.cs" />
+    <Compile Include="Maps\StructureMaps\ConceptSchemeMap.cs" />
     <Compile Include="Maps\StructureMaps\CrossSectionalAttachmentLevelMap.cs" />
     <Compile Include="Maps\StructureMaps\CrossSectionalMeasureMap.cs" />
     <Compile Include="Maps\StructureMaps\DimensionMap.cs" />

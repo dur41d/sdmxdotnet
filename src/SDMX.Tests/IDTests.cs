@@ -8,7 +8,7 @@ namespace SDMX.Tests
 {
 
     [TestFixture]
-    public class IDTests
+    public class IdTests
     {
         [Test]
         public void Not_null()
@@ -16,20 +16,20 @@ namespace SDMX.Tests
             Assert.Throws<ArgumentNullException>(() => 
             {
                 string s = null;
-                ID id = s; 
+                Id id = s; 
             });
         }
 
         [Test]
         public void Not_empty_string()
         {
-            Assert.Throws<SDMXException>(() => { ID id = "   "; });
+            Assert.Throws<SDMXException>(() => { Id id = "   "; });
         }
         
         [Test]
         public void Test_equlity_with_null()
         {
-            ID id1 = "D_S";
+            Id id1 = "D_S";
 
             Assert.IsFalse(id1 == null);
             Assert.IsTrue(id1 != null);
@@ -38,8 +38,8 @@ namespace SDMX.Tests
         [Test]
         public void Test_equlity()
         {
-            ID id1 = "D_S";
-            ID id2 = "D_S";
+            Id id1 = "D_S";
+            Id id2 = "D_S";
 
             Assert.IsTrue(id1 == id2);
         }

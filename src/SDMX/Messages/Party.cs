@@ -7,13 +7,13 @@ namespace SDMX
 {
     public class Party
     {
-        public ID ID { get; set; }
+        public Id Id { get; set; }
         public InternationalText Name { get; private set; }
         public IList<Contact> Contacts { get; private set; }
 
-        public Party(ID id)
+        public Party(Id id)
         {
-            ID = id;
+            Id = id;
             Contacts = new List<Contact>();
             Name = new InternationalText();
         }

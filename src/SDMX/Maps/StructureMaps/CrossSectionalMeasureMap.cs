@@ -23,11 +23,11 @@ namespace SDMX.Parsers
 
             Map(o => o.Dimension).ToAttribute("measureDimension", true)
                 .Set(v => _measure.Dimension = v)
-                .Converter(new IDConverter());
+                .Converter(new IdConverter());
 
             Map(o => o.Code).ToAttribute("code", true)
                 .Set(v => _measure.Code = v)
-                .Converter(new IDConverter());
+                .Converter(new IdConverter());
         }      
 
         protected override CrossSectionalMeasure Create(Concept conecpt)

@@ -17,12 +17,12 @@ namespace SDMX
         // TODO: Add support to Levels. I don't really understand them yet
         // public IList<Level> Levels { get; private set; }
 
-        public Hierarchy(ID id)
+        public Hierarchy(Id id)
             : base(id)
         {            
         }
 
-        public Hierarchy(ID id, CodeRef root)
+        public Hierarchy(Id id, CodeRef root)
             : this(id)
         {
             Contract.AssertNotNull(root, "root");
@@ -30,7 +30,7 @@ namespace SDMX
             Root = root;
         }
 
-        public Hierarchy(InternationalString name, ID id, CodeRef root)
+        public Hierarchy(InternationalString name, Id id, CodeRef root)
             : this(id, root)
         {
             Name.Add(name);
@@ -40,7 +40,7 @@ namespace SDMX
         {
             get
             {
-                return new Uri(string.Format("{0}.hierarchicalcodelist.hierarchy={1}:{2}.{3}[{4}]".F(UrnPrefix, HierarchicalCodeList.AgencyID, HierarchicalCodeList.ID, ID, HierarchicalCodeList.Version)));
+                return new Uri(string.Format("{0}.hierarchicalcodelist.hierarchy={1}:{2}.{3}[{4}]".F(UrnPrefix, HierarchicalCodeList.AgencyId, HierarchicalCodeList.Id, Id, HierarchicalCodeList.Version)));
             }
         }
 

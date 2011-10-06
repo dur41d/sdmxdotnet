@@ -8,10 +8,10 @@ namespace SDMX
 {  
     public class GroupDescriptor : AnnotableArtefact, Item
     {
-        private Dictionary<ID, Dimension> dimensions = new Dictionary<ID, Dimension>();
+        private Dictionary<Id, Dimension> dimensions = new Dictionary<Id, Dimension>();
         
-        public ID ID { get; set; }                
-        public ID AttachmentConstraintRef { get; set; }
+        public Id Id { get; set; }                
+        public Id AttachmentConstraintRef { get; set; }
         public InternationalText Description { get; private set; }
         public KeyFamily KeyFamily { get; private set; }
 
@@ -23,27 +23,27 @@ namespace SDMX
             }
         }
         
-        internal GroupDescriptor(ID id, KeyFamily keyFamily)
+        internal GroupDescriptor(Id id, KeyFamily keyFamily)
         {            
             Contract.AssertNotNull(id, "id");
             Contract.AssertNotNull(keyFamily, "keyFamily");
 
-            ID = id;
+            Id = id;
             KeyFamily = keyFamily;
             Description = new InternationalText();
         }
 
-        public void AddDimension(ID conceptID)
+        public void AddDimension(Id conceptId)
         {
-            Contract.AssertNotNull(conceptID, "conceptID");
+            Contract.AssertNotNull(conceptId, "conceptId");
 
-            var dimension = KeyFamily.Dimensions.TryGet(conceptID);
-            dimensions.Add(conceptID, dimension);
+            var dimension = KeyFamily.Dimensions.TryGet(conceptId);
+            dimensions.Add(conceptId, dimension);
         }
 
-        public void RemoveDimension(ID conceptID)
+        public void RemoveDimension(Id conceptId)
         {
-            dimensions.Remove(conceptID);
+            dimensions.Remove(conceptId);
         }
     }
 }

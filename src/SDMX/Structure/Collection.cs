@@ -8,41 +8,41 @@ namespace SDMX
 {
     public class Collection<T> : IEnumerable<T> where T : Item
     {
-        private Dictionary<ID, T> items = new Dictionary<ID, T>();
+        private Dictionary<Id, T> items = new Dictionary<Id, T>();
 
         public void Add(T item)
         {
             Contract.AssertNotNull(item, "item");
-            items.Add(item.ID, item);
+            items.Add(item.Id, item);
         }      
 
-        public T TryGet(ID conceptID)
+        public T TryGet(Id id)
         {
-            Contract.AssertNotNull(conceptID, "conceptID");
-            return items.GetValueOrDefault(conceptID, default(T));
+            Contract.AssertNotNull(id, "id");
+            return items.GetValueOrDefault(id, default(T));
         }
 
-        public T Get(ID conceptID)
+        public T Get(Id id)
         {
-            Contract.AssertNotNull(conceptID, "conceptID");
+            Contract.AssertNotNull(id, "id");
             T value = default(T);
-            if (!items.TryGetValue(conceptID, out value))
+            if (!items.TryGetValue(id, out value))
             {
-                throw new SDMXException("Item not found for concept id '{0}'. Use TryGet or Contains instead.", conceptID);
+                throw new SDMXException("Item not found for concept id '{0}'. Use TryGet or Contains instead.", id);
             }
             return value;
         }
 
-        public void Remove(ID conceptID)
+        public void Remove(Id id)
         {
-            Contract.AssertNotNull(conceptID, "conceptID");
-            items.Remove(conceptID);
+            Contract.AssertNotNull(id, "id");
+            items.Remove(id);
         }
 
-        public bool Contains(ID conceptID)
+        public bool Contains(Id id)
         {
-            Contract.AssertNotNull(conceptID, "conceptID");
-            return items.ContainsKey(conceptID);
+            Contract.AssertNotNull(id, "id");
+            return items.ContainsKey(id);
         }
 
         public int Count

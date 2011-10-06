@@ -14,10 +14,10 @@ namespace SDMX.Tests
         [Test]
         public void CreateCodeList()
         {
-            var codelist = new CodeList(new InternationalString(Language.English, "Countries"), "CL_COUNTRY", "UIS");            
+            var codelist = new CodeList(new InternationalString("en", "Countries"), "CL_COUNTRY", "UIS");            
 
-            codelist.Add(new Code((ID)"CAN"));
-            codelist.Add(new Code((ID)"USA"));
+            codelist.Add(new Code("CAN"));
+            codelist.Add(new Code("USA"));
 
             var message = new StructureMessage();
             message.Header = BuildHeader();
@@ -33,7 +33,7 @@ namespace SDMX.Tests
 
         private Header BuildHeader()
         {
-            return new Header((ID)"MSD_HDR", new Party((ID)"UIS")) 
+            return new Header("MSD_HDR", new Party("UIS")) 
                 { 
                     Prepared = DateTime.Now
                 };

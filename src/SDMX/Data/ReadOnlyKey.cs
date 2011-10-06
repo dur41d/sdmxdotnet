@@ -7,23 +7,23 @@ using System.Collections;
 
 namespace SDMX
 {
-    public class ReadOnlyKey : IEnumerable<IDValuePair>, IEquatable<ReadOnlyKey>
+    public class ReadOnlyKey : IEnumerable<IdValuePair>, IEquatable<ReadOnlyKey>
     {
-        private Dictionary<ID, Value> _keyValues;
+        private Dictionary<Id, Value> _keyValues;
 
         int _hash;
         string _string;
 
         internal ReadOnlyKey(Key key)
         {
-            _keyValues = new Dictionary<ID, Value>();
+            _keyValues = new Dictionary<Id, Value>();
             foreach (var item in key)
             {
-                _keyValues[item.ID] = item.Value;
+                _keyValues[item.Id] = item.Value;
             }
         }
 
-        public virtual Value this[ID concept]
+        public virtual Value this[Id concept]
         {
             get
             {
@@ -42,10 +42,10 @@ namespace SDMX
 
         #region IEnumerable<KeyItem> Members
 
-        public IEnumerator<IDValuePair> GetEnumerator()
+        public IEnumerator<IdValuePair> GetEnumerator()
         {
             foreach (var item in _keyValues)
-                yield return new IDValuePair(item.Key, item.Value);
+                yield return new IdValuePair(item.Key, item.Value);
         }
 
         IEnumerator IEnumerable.GetEnumerator()

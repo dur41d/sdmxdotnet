@@ -20,8 +20,8 @@ namespace SDMX.Parsers
             foreach (var dim in dataSet.KeyFamily.Dimensions)
             {
                 var anchor = dim;
-                MapAttribute(o => converter.Serialize(o[anchor.Concept.ID], out startTime), anchor.Concept.ID.ToString(), true)
-                    .Set(v => _key[anchor.Concept.ID] = converter.Parse(anchor, v, null))
+                MapAttribute(o => converter.Serialize(o[anchor.Concept.Id], out startTime), anchor.Concept.Id.ToString(), true)
+                    .Set(v => _key[anchor.Concept.Id] = converter.Parse(anchor, v, null))
                     .Converter(new StringConverter());
             }
         }

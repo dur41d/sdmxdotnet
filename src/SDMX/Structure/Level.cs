@@ -7,7 +7,7 @@ namespace SDMX
 {
     public class Level : IdentifiableArtefact
     {
-        public Level(int order, ID id)
+        public Level(int order, Id id)
             : base(id)
         {
             if (order <= 0)

@@ -8,18 +8,18 @@ namespace SDMX
 {
     public class CodeListRef : IEquatable<CodeListRef>
     {
-        public ID ID { get; set; }
-        public ID AgencyID { get; set; }
+        public Id Id { get; set; }
+        public Id AgencyId { get; set; }
         public string Version { get; set; }
-        public ID Alias { get; set; }
+        public Id Alias { get; set; }
 
         public CodeListRef()
         { }
 
-        public CodeListRef(CodeList codeList, ID alias)
+        public CodeListRef(CodeList codeList, Id alias)
         {
-            ID = codeList.ID;
-            AgencyID = codeList.AgencyID;
+            Id = codeList.Id;
+            AgencyId = codeList.AgencyId;
             Version = codeList.Version;
             Alias = alias;
         }
@@ -30,7 +30,7 @@ namespace SDMX
         {
             get
             {
-                return new Uri(string.Format("{0}.codelist={1}:{2}[{3}]".F(UrnPrefix, AgencyID, ID, Version)));
+                return new Uri(string.Format("{0}.codelist={1}:{2}[{3}]".F(UrnPrefix, AgencyId, Id, Version)));
             }
         }
 
@@ -41,7 +41,7 @@ namespace SDMX
 
         public override int GetHashCode()
         {
-            return ID.GetHashCode();
+            return Id.GetHashCode();
         }
 
         public override bool Equals(object other)
@@ -53,8 +53,8 @@ namespace SDMX
         {
             if (other == null) return false;
 
-            return ID.Equals(other.ID) &&
-                AgencyID.Equals(other.AgencyID) &&
+            return Id.Equals(other.Id) &&
+                AgencyId.Equals(other.AgencyId) &&
                 Version.Equals(other.Version) &&
                 Alias.Equals(other.Alias);
         }

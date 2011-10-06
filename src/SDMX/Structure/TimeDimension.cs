@@ -9,6 +9,8 @@ namespace SDMX
     {
         public CrossSectionalAttachmentLevel CrossSectionalAttachmentLevel { get; set; }
 
+        public override ITextFormat DefaultTextFormat { get { return new TimePeriodTextFormat();} }
+
         public new ITimePeriodTextFormat TextFormat
         {
             get { return (ITimePeriodTextFormat)TextFormatImpl; }

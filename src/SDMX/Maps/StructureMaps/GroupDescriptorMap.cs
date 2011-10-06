@@ -15,17 +15,17 @@ namespace SDMX.Parsers
         {
             ElementsOrder("DimensionRef", "AttachmentConstraintRef", "Description", "Annotations");
 
-            Map(o => o.ID).ToAttribute("id", true)
+            Map(o => o.Id).ToAttribute("id", true)
                 .Set(v => _group = keyFamily.CreateNewGroup(v))
-                .Converter(new IDConverter());
+                .Converter(new IdConverter());
 
-            MapCollection(o => o.Dimensions.Select(d => d.Concept.ID)).ToSimpleElement("DimensionRef", true)
+            MapCollection(o => o.Dimensions.Select(d => d.Concept.Id)).ToSimpleElement("DimensionRef", true)
                 .Set(v => _group.AddDimension(v))
-                .Converter(new IDConverter());
+                .Converter(new IdConverter());
 
             Map(o => o.AttachmentConstraintRef).ToSimpleElement("AttachmentConstraintRef", false)
                 .Set(v => _group.AttachmentConstraintRef = v)
-                .Converter(new IDConverter());
+                .Converter(new IdConverter());
 
             MapCollection(o => o.Description).ToElement("Description", false)
                 .Set(v => _group.Description.Add(v))

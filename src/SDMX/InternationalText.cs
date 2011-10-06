@@ -8,40 +8,40 @@ namespace SDMX
 {
     public class InternationalText : IEnumerable<InternationalString>
     {
-        private Dictionary<Language, string> localizedStrings = new Dictionary<Language, string>();
+        private Dictionary<string, string> _localizedStrings = new Dictionary<string, string>();
         
         public void Add(InternationalString iString)
         {
-            localizedStrings.Add(iString.Language, iString.Value);
+            _localizedStrings.Add(iString.Language, iString.Value);
         }
 
-        public void Remove(Language language)
+        public void Remove(string language)
         {
-            localizedStrings.Remove(language);   
+            _localizedStrings.Remove(language);
         }       
         
-        public string this[Language language]
+        public string this[string language]
         {
             get
             {
-                string text = localizedStrings.GetValueOrDefault(language, null);
+                string text = _localizedStrings.GetValueOrDefault(language, null);
                 return text;
             }
             set
             {
-                localizedStrings[language] = value;
+                _localizedStrings[language] = value;
             }
         }
 
         public override string ToString()
         {
-            if (localizedStrings.Where(i => i.Key == Language.English).Any())
+            if (_localizedStrings.ContainsKey("en"))
             {
-                return this[Language.English];
+                return this["en"];
             }
-            else if (localizedStrings.Count > 0)
+            else if (_localizedStrings.Count > 0)
             {
-                return localizedStrings[0];
+                return _localizedStrings.First().Value;
             }
             else
             {
@@ -49,25 +49,17 @@ namespace SDMX
             }
         }
 
-        #region IEnumerable<InternationalString> Members
-
         public IEnumerator<InternationalString> GetEnumerator()
         {
-            foreach (var item in localizedStrings)
+            foreach (var item in _localizedStrings)
             {
                 yield return new InternationalString(item.Key, item.Value);
             }
         }
 
-        #endregion
-
-        #region IEnumerable Members
-
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
         }
-
-        #endregion
     }
 }

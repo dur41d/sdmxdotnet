@@ -17,28 +17,28 @@ namespace SDMX.Parsers
             AttributesOrder("value", "parentCode");
             ElementsOrder("Description", "Annotations");
 
-            Map(o => o.ID).ToAttribute("value", true)
+            Map(o => o.Id).ToAttribute("value", true)
                .Set(v => code = new Code(v))
-               .Converter(new IDConverter());
+               .Converter(new IdConverter());
 
-            Map(o => GetParentID(o)).ToAttribute("parentCode", false)
-               .Set(v => SetParentID(v, codeList))
-               .Converter(new IDConverter());
+            Map(o => GetParentId(o)).ToAttribute("parentCode", false)
+               .Set(v => SetParentId(v, codeList))
+               .Converter(new IdConverter());
 
             MapCollection(o => o.Description).ToElement("Description", false)
                .Set(v => code.Description.Add(v))
                .ClassMap(() => new InternationalStringMap());
         }
 
-        private ID GetParentID(Code code)
+        private Id GetParentId(Code code)
         {
-            return code.Parent == null ? null : code.Parent.ID;
+            return code.Parent == null ? null : code.Parent.Id;
         }
 
-        private void SetParentID(ID parentID, CodeList codeList)
+        private void SetParentId(Id parentId, CodeList codeList)
         {
-            if (parentID != null)
-                code.Parent = codeList.Get(parentID);
+            if (parentId != null)
+                code.Parent = codeList.Get(parentId);
         }
 
         protected override void AddAnnotation(Annotation annotation)

@@ -9,7 +9,7 @@ namespace SDMX
 {
     public class DataSet : AnnotableArtefact, IAttachableArtefact
     {
-        //private Dictionary<ID, GroupValueCollection> groups = new Dictionary<ID, GroupValueCollection>();
+        //private Dictionary<Id, GroupValueCollection> groups = new Dictionary<Id, GroupValueCollection>();
 
         internal KeyFamily KeyFamily { get; private set; }     
         public AttributeValueCollection Attributes { get; private set; }
@@ -23,22 +23,22 @@ namespace SDMX
         
         public SeriesCollection Series { get; private set; }
 
-        //public GroupValueCollection Group(ID groupID)
+        //public GroupValueCollection Group(Id groupId)
         //{
-        //    Contract.AssertNotNull(() => groupID);
+        //    Contract.AssertNotNull(() => groupId);
 
-        //    var groupCollection = groups.GetValueOrDefault(groupID, null);
+        //    var groupCollection = groups.GetValueOrDefault(groupId, null);
         //    if (groupCollection == null)
         //    {
-        //        var groupDescriptor = KeyFamily.Groups.Where(g => g.ID == groupID).SingleOrDefault();
+        //        var groupDescriptor = KeyFamily.Groups.Where(g => g.Id == groupId).SingleOrDefault();
         //        if (groupDescriptor == null)
         //        {
-        //            throw new SDMXException("Invalid group ID '{0}'", groupID);
+        //            throw new SDMXException("Invalid group Id '{0}'", groupId);
         //        }
 
         //        groupCollection = new GroupValueCollection(this, groupDescriptor);
 
-        //        groups.Add(groupID, groupCollection);
+        //        groups.Add(groupId, groupCollection);
         //    }
 
         //    return groupCollection;

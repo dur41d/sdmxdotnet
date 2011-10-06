@@ -10,12 +10,12 @@ namespace SDMX
     {
         public static bool operator ==(Value x, object y)
         {
-            return object.Equals(x, y);
+            return Extensions.Equals(x, y);
         }
 
         public static bool operator !=(Value x, object y)
         {
-            return !object.Equals(x, y);
+            return !(x == y);
         }
        
         public override int GetHashCode()

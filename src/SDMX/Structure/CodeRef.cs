@@ -11,9 +11,9 @@ namespace SDMX
         List<CodeRef> _children = new List<CodeRef>();
 
         public CodeListRef CodeListRef { get; internal set; }        
-        public ID CodeID { get; set; }
-        public ID LevelRef { get; set; }
-        public ID NodeAliasID { get; set; }
+        public Id CodeId { get; set; }
+        public Id LevelRef { get; set; }
+        public Id NodeAliasId { get; set; }
         public string Version { get; set; }
         public TimePeriod ValidFrom { get; set; }
         public TimePeriod ValidTo { get; set; }
@@ -34,7 +34,7 @@ namespace SDMX
         {
             Contract.AssertNotNull(code, "code");
 
-            CodeID = code.ID;
+            CodeId = code.Id;
             CodeListRef = new CodeListRef(code.CodeList, null);
         }
       
@@ -91,7 +91,7 @@ namespace SDMX
         {
             get
             {                
-                return new Uri(string.Format("{0}.codelist={1}[{2}]".F(UrnPrefix, CodeID, Version)));
+                return new Uri(string.Format("{0}.codelist={1}[{2}]".F(UrnPrefix, CodeId, Version)));
             }
         }
 

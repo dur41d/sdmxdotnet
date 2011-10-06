@@ -14,6 +14,8 @@ namespace SDMX
         public bool IsNonObservationTimeDimension { get; set; }
         public bool IsIdentityDimension { get; set; }
         public CrossSectionalAttachmentLevel CrossSectionalAttachmentLevel { get; set; }
+
+        public override ITextFormat DefaultTextFormat { get { return new StringTextFormat(); } }
         
         public Dimension(Concept concept)
             : base(concept)
@@ -28,9 +30,9 @@ namespace SDMX
 
         #region Item Members
 
-        ID Item.ID
+        Id Item.Id
         {
-            get { return Concept.ID; }
+            get { return Concept.Id; }
         }
 
         #endregion

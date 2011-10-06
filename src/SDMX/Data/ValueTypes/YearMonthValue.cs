@@ -49,8 +49,6 @@ namespace SDMX
             return _toString;
         }
 
-        #region IEquatable<YearMonthValue> Members
-
         public override bool Equals(object obj)
         {
             return Equals(obj as YearMonthValue);
@@ -66,16 +64,14 @@ namespace SDMX
             return _value.GetHashCode();
         }
 
-        public static bool operator ==(YearMonthValue x, object y)
+        public static bool operator ==(YearMonthValue x, YearMonthValue y)
         {
-            return object.Equals(x, y);
+            return Extensions.Equals(x, y);
         }
 
-        public static bool operator !=(YearMonthValue x, object y)
+        public static bool operator !=(YearMonthValue x, YearMonthValue y)
         {
-            return !object.Equals(x, y);
+            return !(x == y);
         }
-
-        #endregion
     }
 }

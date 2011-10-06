@@ -9,54 +9,70 @@ namespace SDMX
     public class GenericDataReader : DataReader
     {
         public GenericDataReader(XmlReader xmlReader, KeyFamily keyFamily)
-        {
-            Contract.AssertNotNull(xmlReader, "xmlReader");
-            Contract.AssertNotNull(keyFamily, "keyFamily");
-
-            _xmlReader = xmlReader;
-            KeyFamily = keyFamily;
-        }
+            : base(xmlReader, keyFamily)
+        { }
 
         public override bool Read()
         {
-            Value = null;
-
             while (_xmlReader.Read())
             {
-                if (_xmlReader.LocalName == "Header" && _xmlReader.IsStartElement())
+                if (_xmlReader.LocalName == "Group" && _xmlReader.IsStartElement())
                 {
+                    string groupID = _xmlReader.GetAttribute("type");
 
-                    var map = new OXM.FragmentMap<Header>(Namespaces.Message + "Header", new HeaderMap());
-                    Value = map.ReadXml(_xmlReader);
-                    return true;
-                }
-                else if (_xmlReader.LocalName == "Series" && _xmlReader.IsStartElement())
+                    if (groupID == null)
+                    {
+                        var xml = _xmlReader as IXmlLineInfo;
+                        throw new SDMXException("Parse error at ({0},{1}): Group is missing type attribute.", xml.LineNumber, xml.LinePosition);
+                    }
+
+                    var group = KeyFamily.Groups.Get(groupID);
+                    var dict = new Dictionary<string, object>();
+                    while (_xmlReader.Read() && _xmlReader.LocalName != "Series")
+                    {
+                        if (_xmlReader.LocalName == "Value" && _xmlReader.IsStartElement())
+                        {
+                            string concept = _xmlReader.GetAttribute("concept");
+                            string value = _xmlReader.GetAttribute("value");
+                            string startTime = _xmlReader.GetAttribute("startTime");
+                            var component = KeyFamily.GetComponent(concept);
+                            dict[concept] = _converter.Parse(component, value, startTime);
+                        }
+                    }
+
+                    ReadGroupValues(group, dict);
+                } 
+
+
+                if (_xmlReader.LocalName == "Series" && _xmlReader.IsStartElement())
                 {
                     _record.Clear();
                 }               
                 else if (_xmlReader.LocalName == "Obs" && _xmlReader.IsStartElement())
                 {                    
-                    ClearObsValues();
+                    ClearObsAttributes();
                 }
                 else if (_xmlReader.LocalName == "Time" && _xmlReader.IsStartElement())
                 {
-                    string value = _xmlReader.ReadElementContentAsString();
-                    _record[KeyFamily.TimeDimension.Concept.ID.ToString()] = _converter.Parse(KeyFamily.TimeDimension, value, null);
+                    string value = _xmlReader.ReadString();
+                    _record[KeyFamily.TimeDimension.Concept.Id.ToString()] = _converter.Parse(KeyFamily.TimeDimension, value, null);
                 }
                 else if (_xmlReader.LocalName == "ObsValue" && _xmlReader.IsStartElement())
                 {
                     string value = _xmlReader.GetAttribute("value");
-                    _record[KeyFamily.PrimaryMeasure.Concept.ID.ToString()] = _converter.Parse(KeyFamily.PrimaryMeasure, value, null);
+                    _record[KeyFamily.PrimaryMeasure.Concept.Id.ToString()] = _converter.Parse(KeyFamily.PrimaryMeasure, value, null);
                 }
                 else if (_xmlReader.LocalName == "Value" && _xmlReader.IsStartElement())
                 {
                     string concept = _xmlReader.GetAttribute("concept");
                     string value = _xmlReader.GetAttribute("value");
+                    string startTime = _xmlReader.GetAttribute("startTime");
                     var component = KeyFamily.GetComponent(concept);
-                    _record[concept] = _converter.Parse(component, value, null);
+                    _record[concept] = _converter.Parse(component, value, startTime);
                 }
                 else if (_xmlReader.LocalName == "Obs" && !_xmlReader.IsStartElement()) // end of Obs tag
-                {   
+                {
+                    SetGroupValues();
                     return true;
                 }
             }

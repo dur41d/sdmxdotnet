@@ -50,7 +50,7 @@ namespace OXM
             {
                 if (Required)
                 {
-                    throw new OXMException("Element '{0}' is required but its property value is null. Property: ({1}).{2}"
+                    throw new ParseException("Element '{0}' is required but its property value is null. Property: ({1}).{2}"
                         , Name, Property.GetTypeName(), Property.GetName());
                 }
             }
