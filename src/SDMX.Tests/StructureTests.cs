@@ -59,7 +59,7 @@ namespace SDMX.Tests
             using (var writer = doc.CreateWriter())
                 message.Write(writer);
 
-            Console.Write(doc);
+            // Console.Write(doc);
 
             Assert.IsTrue(Validator.ValidateMessageXml(stream, w => Console.WriteLine(w), e => Console.WriteLine(e)));
 

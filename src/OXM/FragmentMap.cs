@@ -44,7 +44,7 @@ namespace OXM
 
             if (!reader.NameEquals(_name))
             {
-                throw new ParseException("The first element name is '{0}:{1}' and the expected name is '{2}'."
+                ParseException.Throw(reader, typeof(T), "The first element name is '{0}:{1}' and the expected name is '{2}'."
                     , reader.NamespaceURI, reader.Name, _name);
             }
 
