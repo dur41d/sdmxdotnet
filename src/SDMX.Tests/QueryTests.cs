@@ -43,7 +43,7 @@ namespace SDMX.Tests
             }
 
             Assert.IsTrue(Utility.IsValidMessage(doc));
-            Console.Write(doc.ToString());
+            //Console.Write(doc.ToString());
             doc.Save(Utility.GetPath("lib\\QuerySample2.xml"));
         }
     }

@@ -125,7 +125,7 @@ namespace OXM
                         while (subReader.ReadNextElement())
                         {
                             XName name = subReader.GetXName();
-                            var elementMap = _elementMaps.Get(name, reader, this.GetType());                            
+                            var elementMap = _elementMaps.Get(name, reader, typeof(T));                            
                             elementMap.ReadXml(subReader);
                             counts.Increment(name);  
                         }
@@ -135,7 +135,7 @@ namespace OXM
                             int count = counts.Get(elementMap.Name);
                             if (elementMap.Required && count == 0)
                             {
-                                throw new ParseException("Element '{0}' is required but was not found'", elementMap.Name);
+                                ParseException.Throw(subReader, typeof(T), "Element '{0}' is required but was not found.", elementMap.Name);
                             }
                         }
                     }
@@ -200,7 +200,7 @@ namespace OXM
         {
             if (_contentMap != null)
             {
-                throw new ParseException("Element content has already been mapped.");
+                throw new ParseException("Element content is mapped more than once in {0}.", this.GetType().Name);
             }
             _contentMap = map;
         }

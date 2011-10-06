@@ -36,7 +36,7 @@ namespace OXM
                     while (subReader.ReadNextElement())
                     {
                         XName name = subReader.GetXName();
-                        var elementMap = _elementMaps.Get(name, reader, this.GetType());
+                        var elementMap = _elementMaps.Get(name, reader, typeof(T));
                         elementMap.ReadXml(subReader);
                         counts.Increment(name); 
                     }
@@ -45,7 +45,7 @@ namespace OXM
                         int count = counts.Get(elementMap.Name);
                         if (elementMap.Required && count == 0)
                         {
-                            throw new ParseException("Element '{0}' is required but was not found'", elementMap.Name);
+                            ParseException.Throw(subReader, typeof(T), "Element '{0}' is required but was not found.", elementMap.Name);
                         }
                     }
                 }

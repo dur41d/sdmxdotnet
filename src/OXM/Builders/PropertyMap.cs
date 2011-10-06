@@ -48,7 +48,7 @@ namespace OXM
         {
             if (String.IsNullOrEmpty(defaultValue))
             {
-                throw new ParseException("defaultValue cannot be null or empty.");
+                throw new ParseException("defaultValue cannot be null or empty. ObjectType '{0}' PropertyType '{1}'.", typeof(TObj).Name, typeof(TProperty).Name);
             }
 
             isAttribute = true;

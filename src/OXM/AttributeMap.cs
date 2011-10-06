@@ -54,7 +54,7 @@ namespace OXM
             {
                 if (_required)
                 {
-                    ParseException.Throw(reader, "Attribute '{0}' for element '{1}' is required but was not found.", _name, reader.GetXName());
+                    ParseException.Throw(reader, typeof(T), "Attribute '{0}' for element '{1}' is required but was not found.", _name, reader.GetXName());
                 }
                 else if (_hasDefault)
                 {
