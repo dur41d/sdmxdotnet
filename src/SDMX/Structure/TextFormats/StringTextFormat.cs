@@ -18,5 +18,11 @@ namespace SDMX
         {
             return typeof(StringValue);
         }
+
+        public bool TryParse(string s, string startTime, out object value)
+        {            
+            value = s;
+            return true;
+        }
     }
 }

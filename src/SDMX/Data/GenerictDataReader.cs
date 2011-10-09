@@ -14,6 +14,8 @@ namespace SDMX
 
         public override bool Read()
         {
+            CheckDisposed();
+
             while (_xmlReader.Read())
             {
                 if (_xmlReader.LocalName == "Group" && _xmlReader.IsStartElement())
@@ -36,7 +38,7 @@ namespace SDMX
                             string value = _xmlReader.GetAttribute("value");
                             string startTime = _xmlReader.GetAttribute("startTime");
                             var component = KeyFamily.GetComponent(concept);
-                            dict[concept] = _converter.Parse(component, value, startTime);
+                            dict[concept] = component.Parse(value, startTime);
                         }
                     }
 
@@ -55,12 +57,12 @@ namespace SDMX
                 else if (_xmlReader.LocalName == "Time" && _xmlReader.IsStartElement())
                 {
                     string value = _xmlReader.ReadString();
-                    _record[KeyFamily.TimeDimension.Concept.Id.ToString()] = _converter.Parse(KeyFamily.TimeDimension, value, null);
+                    _record[KeyFamily.TimeDimension.Concept.Id.ToString()] = KeyFamily.TimeDimension.Parse(value, null);
                 }
                 else if (_xmlReader.LocalName == "ObsValue" && _xmlReader.IsStartElement())
                 {
                     string value = _xmlReader.GetAttribute("value");
-                    _record[KeyFamily.PrimaryMeasure.Concept.Id.ToString()] = _converter.Parse(KeyFamily.PrimaryMeasure, value, null);
+                    _record[KeyFamily.PrimaryMeasure.Concept.Id.ToString()] = KeyFamily.PrimaryMeasure.Parse(value, null);
                 }
                 else if (_xmlReader.LocalName == "Value" && _xmlReader.IsStartElement())
                 {
@@ -68,7 +70,7 @@ namespace SDMX
                     string value = _xmlReader.GetAttribute("value");
                     string startTime = _xmlReader.GetAttribute("startTime");
                     var component = KeyFamily.GetComponent(concept);
-                    _record[concept] = _converter.Parse(component, value, startTime);
+                    _record[concept] = component.Parse(value, startTime);
                 }
                 else if (_xmlReader.LocalName == "Obs" && !_xmlReader.IsStartElement()) // end of Obs tag
                 {

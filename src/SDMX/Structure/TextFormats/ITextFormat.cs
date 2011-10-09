@@ -11,5 +11,6 @@ namespace SDMX
     {
         bool IsValid(Value value);
         Type GetValueType();
+        bool TryParse(string s, string startTime, out object value);
     }
 }

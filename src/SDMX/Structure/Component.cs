@@ -49,54 +49,53 @@ namespace SDMX
             return Concept.Id.ToString();
         }
 
-        //public virtual object Parse(string value)
-        //{
-        //    return Parse(value, null);    
-        //}
+        public virtual object Parse(string value)
+        {
+            return Parse(value, null);
+        }
 
-        //public virtual object Parse(string value, string startTime)
+        public virtual object Parse(string s, string startTime)
+        {
+            object value = null;
+            if (!TryParse(s, startTime, out value))
+                throw new SDMXException("Cannot parse s='{0}' startTime='{1}' for Component id '{2}'.", s, startTime, Concept.Id);
+
+            return value;
+        }
+
+        public virtual bool TryParse(string s, string startTime, out object value)
+        {
+            value = null;
+            
+            if (IsCoded)
+            {
+                var code = CodeList.Get((Id)s);
+                if (code == null)
+                {
+                    value = null;
+                    return false;
+                }
+                value = code;
+                return true;
+            }
+            else
+            {
+                return TextFormat.TryParse(s, startTime, out value);
+            }
+        }
+
+        //public virtual void Serialize(object value, out string s, out string startTime)
         //{
         //    if (IsCoded)
         //    {
-        //        return CodeList.Get((Id)value);
-        //    }
-        //    else
-        //    {
-        //        throw new Exception("non coded components are not supported yet.");
-        //    }
-        //}       
 
-        //public virtual bool TryParse(string s, string startTime, out IValue value, out string reason)
-        //{
-        //    value = null;
-        //    reason = null;
-        //    if (IsCoded)
-        //    {
-        //        var code = CodeList.Get((Id)s);
-        //        if (code == null)
-        //        {
-        //            reason = string.Format("Code not found for value '{0}'.", s);
-        //            return false;
-        //        }
-        //        value = code;
-        //        return true;
-        //    }
-        //    else
-        //    {
-        //        return TextFormat.TryParse(s, startTime, out value, out reason);
-        //    }
-        //}
 
-        //public virtual void Serialize(IValue value, out string s, out string startTime)
-        //{
-        //    if (IsCoded)
-        //    {
-        //        s = null; //((Id)value).ToString();
+        //        s = ((Id)value).ToString();
         //        startTime = null;
         //    }
         //    else
-        //    {   
-        //       TextFormat.Serialize(value, out s, out startTime);               
+        //    {
+        //        TextFormat.Serialize(value, out s, out startTime);
         //    }
         //}
 
