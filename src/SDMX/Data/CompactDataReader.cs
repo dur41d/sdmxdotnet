@@ -15,6 +15,8 @@ namespace SDMX
 
         public override bool Read()
         {
+            CheckDisposed();
+
             while (_xmlReader.Read())
             {
                 if (!_xmlReader.IsStartElement())
@@ -28,7 +30,7 @@ namespace SDMX
                     while (_xmlReader.MoveToNextAttribute())
                     {
                         var component = KeyFamily.GetComponent(_xmlReader.LocalName);
-                        dict[_xmlReader.LocalName] = _converter.Parse(component, _xmlReader.Value, null);
+                        dict[_xmlReader.LocalName] = component.Parse(_xmlReader.Value, null);
                     }
 
                     ReadGroupValues(group, dict);
@@ -39,7 +41,7 @@ namespace SDMX
                     while (_xmlReader.MoveToNextAttribute())
                     {
                         var component = KeyFamily.GetComponent(_xmlReader.LocalName);
-                        _record[_xmlReader.LocalName] = _converter.Parse(component, _xmlReader.Value, null);
+                        _record[_xmlReader.LocalName] = component.Parse(_xmlReader.Value, null);
                     }
 
                     SetGroupValues();
@@ -51,7 +53,7 @@ namespace SDMX
                     while (_xmlReader.MoveToNextAttribute())
                     {
                         var component = KeyFamily.GetComponent(_xmlReader.LocalName);
-                        _record[_xmlReader.LocalName] = _converter.Parse(component, _xmlReader.Value, null);
+                        _record[_xmlReader.LocalName] = component.Parse(_xmlReader.Value, null);
                     }
 
                     return true;

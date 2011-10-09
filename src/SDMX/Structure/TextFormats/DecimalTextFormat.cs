@@ -18,5 +18,17 @@ namespace SDMX
         {
             return typeof(DecimalValue);
         }
+
+        public bool TryParse(string s, string startTime, out object value)
+        {
+            decimal result = 0;
+            value = null;
+            if (!decimal.TryParse(s, out result))
+            {
+                return false;
+            }
+            value = result;
+            return true;
+        }
     }
 }

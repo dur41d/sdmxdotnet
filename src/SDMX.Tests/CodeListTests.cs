@@ -7,7 +7,6 @@ using System.Xml.Linq;
 
 namespace SDMX.Tests
 {
-
     [TestFixture]
     public class CodeListTests
     {
