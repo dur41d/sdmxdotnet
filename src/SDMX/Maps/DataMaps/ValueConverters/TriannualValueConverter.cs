@@ -1,11 +1,12 @@
-using System;
+﻿using System;
 using System.Text.RegularExpressions;
+using SDMX.Parsers;
 
 namespace SDMX.Parsers
 {
-    internal class YearMonthValueConverter : ITimePeriodConverter
+    internal class TriannaulValueConverter : ITimePeriodConverter
     {
-        const string p = @"^(?<Sign>[-|+]?)(?<Year>\d{4})-(?<Month>\d{2})(?<Z>Z)?(?:(?<ZoneSign>[+-])(?<ZoneHour>\d{2}):(?<ZoneMinute>\d{2}))?$";
+        private const string p = @"^(?<Year>\d{4})-T(?<Triannum>[1-3])$";
         static Regex pattern = new Regex(p, RegexOptions.Compiled);
 
         public object Parse(string str, string startTime)
@@ -13,12 +14,11 @@ namespace SDMX.Parsers
             var match = pattern.Match(str);
             if (!match.Success)
             {
-                throw new SDMXException("Invalid year month value '{0}'.", str);
+                throw new SDMXException("Invalid date value '{0}'.", str);
             }
             int year = int.Parse(match.Groups["Year"].Value);
-            int month = int.Parse(match.Groups["Month"].Value);
-            TimeSpan offset = TimePeriodUtility.ParseTimeOffset(match);
-            return new YearMonthValue(new DateTimeOffset(year, month, 1, 1, 1, 1, offset));
+            int triannum = int.Parse(match.Groups["Triannum"].Value);
+            return new TriannualValue(year, (Triannum)triannum);
         }
 
         public bool IsValid(string str)
@@ -28,11 +28,11 @@ namespace SDMX.Parsers
 
         public string Serialize(object obj, out string startTime)
         {
-            if (!(obj is YearMonthValue))
+            if (!(obj is TriannualValue))
                 throw new SDMXException("Cannot serialize object of type: {0}.", obj.GetType());
 
             startTime = null;
-            return ((YearMonthValue)obj).ToString();
+            return ((TriannualValue)obj).ToString();
         }
     }
 }

@@ -10,6 +10,7 @@ namespace SDMX
     public class DateTimeValue : TimePeriod, IYearValue
     {
         DateTimeOffset _value;
+        string _toString;
 
         public int Year
         {
@@ -39,7 +40,14 @@ namespace SDMX
 
         public override string ToString()
         {
-            return _value.ToString("yyyy-MM-ddThh:mm:ss.FFFFFFFK");
+            if (_toString == null)
+            {
+                if (_value.Offset.Ticks == 0)
+                    _toString = _value.ToString("yyyy-MM-ddTHH:mm:ss.FFFFFFF");
+                else
+                    _toString = _value.ToString("yyyy-MM-ddTHH:mm:ss.FFFFFFFK");
+            }
+            return _toString;
         }
     }
 }
