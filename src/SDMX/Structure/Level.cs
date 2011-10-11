@@ -19,7 +19,7 @@ namespace SDMX
 
 
         public int Order { get; private set; }
-        public ITextFormat CodingType { get; set; }
+        public TextFormat CodingType { get; set; }
 
         public override Uri Urn
         {

@@ -32,9 +32,9 @@ namespace SDMX.Parsers
                 .ClassMap(() => new TextFormatMap());
         }
 
-        void SetTextFormat(ITextFormat value)
+        void SetTextFormat(TextFormat value)
         {
-            if (typeof(T) == typeof(TimeDimension) && !(value is ITimePeriodTextFormat))
+            if (typeof(T) == typeof(TimeDimension) && !(value is TimePeriodTextFormatBase))
             {
                 throw new SDMXException("The text format for TimeDimension must be of time specific type (ObservationalTimePeriod, DateTime, Date, etc) but was found to be of type '{0}'.", value.GetType());
             }

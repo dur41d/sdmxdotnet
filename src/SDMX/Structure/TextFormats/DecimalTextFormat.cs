@@ -1,34 +1,18 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using Common;
+using SDMX.Parsers;
 
 namespace SDMX
 {
-    public class DecimalTextFormat : ITextFormat
+    public class DecimalTextFormat : TextFormat
     {
-        public bool IsValid(Value value)
-        {
-            return value is DecimalValue;
-        }
+        static IValueConverter _converter = new DecimalValueConverter();
 
-        public Type GetValueType()
-        {
-            return typeof(DecimalValue);
-        }
+        internal override IValueConverter Converter { get { return _converter; } }
 
-        public bool TryParse(string s, string startTime, out object value)
+        public override bool IsValid(object obj)
         {
-            decimal result = 0;
-            value = null;
-            if (!decimal.TryParse(s, out result))
-            {
-                return false;
-            }
-            value = result;
-            return true;
+            var value = obj as decimal?;
+            return value != null;
         }
     }
 }

@@ -7,9 +7,9 @@ using OXM;
 
 namespace SDMX.Parsers
 {
-    internal class TextFormatMap : ClassMap<ITextFormat>
+    internal class TextFormatMap : ClassMap<TextFormat>
     {
-        ITextFormat format;
+        TextFormat format;
 
         public TextFormatMap()
         {
@@ -18,24 +18,24 @@ namespace SDMX.Parsers
                 .Converter(new EnumConverter<TextType?>());
         }
 
-        protected override ITextFormat Return()
+        protected override TextFormat Return()
         {
             return format;
         }
 
-        private TextType? GetTextType(ITextFormat format)
+        private TextType? GetTextType(TextFormat format)
         {
             if (format is StringTextFormat)
                 return null;
             else if (format is DecimalTextFormat)
                 return TextType.Double;
-            else if (format is TimePeriodTextFormat)
+            else if (format is TimePeriodTextFormatBase)
                 return TextType.ObservationalTimePeriod;
             else
                 throw new SDMXException("Unsupported text format: '{0}'.", format);
         }
 
-        private ITextFormat GetTextFormat(TextType textType)
+        private TextFormat GetTextFormat(TextType textType)
         {
             switch (textType)
             { 

@@ -9,17 +9,17 @@ namespace SDMX
     {
         public CrossSectionalAttachmentLevel CrossSectionalAttachmentLevel { get; set; }
 
-        public override ITextFormat DefaultTextFormat { get { return new TimePeriodTextFormat();} }
+        public override TextFormat DefaultTextFormat { get { return new TimePeriodTextFormat();} }
 
-        public new ITimePeriodTextFormat TextFormat
+        public new TimePeriodTextFormatBase TextFormat
         {
-            get { return (ITimePeriodTextFormat)TextFormatImpl; }
+            get { return (TimePeriodTextFormatBase)TextFormatImpl; }
             set { TextFormatImpl = value; }
         }
 
         // only used to fake Covariance with Component
         // http://peisker.net/dotnet/covariance.htm
-        protected override ITextFormat TextFormatImpl
+        protected override TextFormat TextFormatImpl
         {
             get
             {
@@ -27,11 +27,11 @@ namespace SDMX
             }
             set
             {
-                if (!(value is ITimePeriodTextFormat))
+                if (!(value is TimePeriodTextFormatBase))
                 {
                     throw new SDMXException("The text format for TimeDimension must be of type 'ITimePeriodTextFormat' but was found to be of type '{0}'.", value.GetType());
                 }
-                base.TextFormatImpl = (ITimePeriodTextFormat)value;
+                base.TextFormatImpl = (TimePeriodTextFormatBase)value;
             }
         }
 

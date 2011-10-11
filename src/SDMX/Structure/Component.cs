@@ -10,9 +10,9 @@ namespace SDMX
     {
         public Concept Concept { get; set; }
         public CodeList CodeList { get; set; }
-        public abstract ITextFormat DefaultTextFormat { get; }
+        public abstract TextFormat DefaultTextFormat { get; }
        
-        public ITextFormat TextFormat
+        public TextFormat TextFormat
         {
             get { return TextFormatImpl; }
             set { TextFormatImpl = value; }
@@ -20,7 +20,7 @@ namespace SDMX
 
         // only used to fake Covariance with TimeDimension        
         // http://peisker.net/dotnet/covariance.htm
-        protected virtual ITextFormat TextFormatImpl { get; set; }
+        protected virtual TextFormat TextFormatImpl { get; set; }
         
 
         public int Order { get; set; }
@@ -56,54 +56,27 @@ namespace SDMX
 
         public virtual object Parse(string s, string startTime)
         {
-            object value = null;
-            if (!TryParse(s, startTime, out value))
-                throw new SDMXException("Cannot parse s='{0}' startTime='{1}' for Component id '{2}'.", s, startTime, Concept.Id);
-
-            return value;
-        }
-
-        public virtual bool TryParse(string s, string startTime, out object value)
-        {
-            value = null;
-            
             if (IsCoded)
             {
-                var code = CodeList.Get((Id)s);
+                var code = CodeList.Get(s);
                 if (code == null)
                 {
-                    value = null;
-                    return false;
+                    throw new SDMXException("Cannot parse s='{0}' startTime='{1}' for Component id '{2}'.", s, startTime, Concept.Id);
                 }
-                value = code;
-                return true;
+                return code.Id.ToString();
             }
             else
             {
-                return TextFormat.TryParse(s, startTime, out value);
+                return TextFormat.Parse(s, startTime);
             }
         }
 
-        //public virtual void Serialize(object value, out string s, out string startTime)
-        //{
-        //    if (IsCoded)
-        //    {
-
-
-        //        s = ((Id)value).ToString();
-        //        startTime = null;
-        //    }
-        //    else
-        //    {
-        //        TextFormat.Serialize(value, out s, out startTime);
-        //    }
-        //}
-
-        public virtual bool IsValid(Value value)
+        public virtual bool IsValid(object value)
         {
             if (IsCoded)
             {
-                return value is CodeValue && CodeList.Contains((CodeValue)value);
+                string id = value as string;
+                return id != null && CodeList.Contains(id);
             }
             else
             {
@@ -117,18 +90,6 @@ namespace SDMX
             {
                 throw new SDMXException("Invalid value '{0}' for component '{1}'."
                             , value, Concept.Id);
-            }
-        }
-
-        internal Type GetValueType()
-        {
-            if (IsCoded)
-            {
-                return typeof(CodeValue);
-            }
-            else
-            {
-                return TextFormat.GetValueType();
             }
         }
     }

@@ -4,7 +4,7 @@ namespace SDMX
 {
     public class TimePeriodCriterion : ITimeCriterion
     {
-        public TimePeriod StartTime { get; set; }
-        public TimePeriod EndTime { get; set; }
+        public string StartTime { get; set; }
+        public string EndTime { get; set; }
     }
 }

@@ -77,15 +77,14 @@
     <Compile Include="InternationalString.cs" />
     <Compile Include="MaintainableArtefact.cs" />
     <Compile Include="Maps\ContactMap.cs" />
-    <Compile Include="Maps\DataMaps\ValueConverters\CodeValueConverter.cs" />
     <Compile Include="Maps\DataMaps\ValueConverters\DateTimeValueConverter.cs" />
     <Compile Include="Maps\DataMaps\ValueConverters\DateValueConverter.cs" />
     <Compile Include="Maps\DataMaps\ValueConverters\DecimalValueConverter.cs" />
     <Compile Include="Maps\DataMaps\ValueConverters\ITimePeriodConverter.cs" />
     <Compile Include="Maps\DataMaps\ValueConverters\IValueConverter.cs" />
     <Compile Include="Maps\DataMaps\ValueConverters\StringValueConverter.cs" />
+    <Compile Include="Maps\DataMaps\ValueConverters\TimePeriodUtility.cs" />
     <Compile Include="Maps\DataMaps\ValueConverters\TimePeriodValueConverter.cs" />
-    <Compile Include="Maps\DataMaps\ValueConverters\TimeValueConverter.cs" />
     <Compile Include="Maps\DataMaps\ValueConverters\ValueConverter.cs" />
     <Compile Include="Maps\DataMaps\ValueConverters\YearMonthValueConverter.cs" />
     <Compile Include="Maps\DataMaps\ValueConverters\YearValueConverter.cs" />
@@ -151,6 +150,7 @@
     <Compile Include="Query\DimensionCriterion.cs" />
     <Compile Include="Query\ICriterion.cs" />
     <Compile Include="Query\IQuery.cs" />
+    <Compile Include="Query\ITimeCriterion.cs" />
     <Compile Include="Query\KeyFamilyCriterion.cs" />
     <Compile Include="Query\OrCriterion.cs" />
     <Compile Include="Query\Query.cs" />
@@ -183,10 +183,10 @@
     <Compile Include="Structure\TextFormats\DateTextFormat.cs" />
     <Compile Include="Structure\TextFormats\DateTimeTextFormat.cs" />
     <Compile Include="Structure\TextFormats\DecimalTextFormat.cs" />
-    <Compile Include="Structure\TextFormats\ITextFormat.cs" />
+    <Compile Include="Structure\TextFormats\TextFormat.cs" />
     <Compile Include="Structure\TextFormats\ITimePeriodTextFormat.cs" />
     <Compile Include="Structure\TextFormats\StringTextFormat.cs" />
-    <Compile Include="Structure\TextFormats\TimeTextFormat.cs" />
+    <Compile Include="Structure\TextFormats\TimePeriodTextFormat.cs" />
     <Compile Include="Structure\TextFormats\YearMonthTextFormat.cs" />
     <Compile Include="Structure\TextFormats\YearTextFormat.cs" />
     <Compile Include="Structure\TimeDimension.cs" />

@@ -7,7 +7,7 @@ using Common;
 
 namespace SDMX
 {
-    public interface ITimePeriodTextFormat : ITextFormat
+    public abstract class TimePeriodTextFormatBase : TextFormat
     {
     }
 }

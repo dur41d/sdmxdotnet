@@ -15,7 +15,7 @@ namespace SDMX
         public bool IsIdentityDimension { get; set; }
         public CrossSectionalAttachmentLevel CrossSectionalAttachmentLevel { get; set; }
 
-        public override ITextFormat DefaultTextFormat { get { return new StringTextFormat(); } }
+        public override TextFormat DefaultTextFormat { get { return new StringTextFormat(); } }
         
         public Dimension(Concept concept)
             : base(concept)
