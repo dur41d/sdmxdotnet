@@ -4,21 +4,21 @@ namespace SDMX.Parsers
 {
     internal class ITimeCriterionMap : ClassMap<ITimeCriterion>
     {
-        TimePeriod _time, _startTime, _endTime;
+        string _time, _startTime, _endTime;
 
         public ITimeCriterionMap()
         {
-            Map(o => o is TimeCriterion ? ((TimeCriterion)o).Time : (TimePeriod)null).ToSimpleElement("Time", false)
+            Map(o => o is TimeCriterion ? ((TimeCriterion)o).Time : null).ToSimpleElement("Time", false)
                 .Set(v => _time = v)
-                .Converter(new TimePeriodConverter());
+                .Converter(new StringConverter());
 
-            Map(o => o is TimePeriodCriterion ? ((TimePeriodCriterion)o).StartTime : (TimePeriod)null).ToSimpleElement("StartTime", false)
+            Map(o => o is TimePeriodCriterion ? ((TimePeriodCriterion)o).StartTime : null).ToSimpleElement("StartTime", false)
                 .Set(v => _startTime = v)
-                .Converter(new TimePeriodConverter());
+                .Converter(new StringConverter());
 
-            Map(o => o is TimePeriodCriterion ? ((TimePeriodCriterion)o).EndTime : (TimePeriod)null).ToSimpleElement("EndTime", false)
+            Map(o => o is TimePeriodCriterion ? ((TimePeriodCriterion)o).EndTime : null).ToSimpleElement("EndTime", false)
                .Set(v => _endTime = v)
-               .Converter(new TimePeriodConverter());
+               .Converter(new StringConverter());
         }
 
         protected override ITimeCriterion Return()

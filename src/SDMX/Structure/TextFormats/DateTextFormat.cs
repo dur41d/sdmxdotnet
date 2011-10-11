@@ -8,46 +8,16 @@ using SDMX.Parsers;
 
 namespace SDMX
 {
-    public class DateTextFormat : ITimePeriodTextFormat
+    public class DateTextFormat : TimePeriodTextFormatBase
     {
-        const string p = @"^(?<Sign>[-|+]?)(?<Year>\d{4})-(?<Month>\d{2})-(?<Day>\d{2})(?<Z>Z)?(?:(?<ZoneSign>[+-])(?<ZoneHour>\d{2}):(?<ZoneMinute>\d{2}))?$";
-        static Regex pattern = new Regex(p, RegexOptions.Compiled);
+        static IValueConverter _converter = new DateValueConverter();
 
-        public bool IsValid(Value value)
+        internal override IValueConverter Converter { get { return _converter; } }
+
+        public override bool IsValid(object obj)
         {
-            return value is DateValue;
+            var value = obj as DateTimeOffset?;
+            return value != null;
         }
-
-        public Type GetValueType()
-        {
-            return typeof(DateValue);
-        }
-
-        public bool TryParse(string s, string startTime, out object value)
-        {
-            value = null;
-            var match = pattern.Match(s);
-            if (!match.Success)
-            {
-                return false;
-            }
-            int year = int.Parse(match.Groups["Year"].Value);
-            int month = int.Parse(match.Groups["Month"].Value);
-            int day = int.Parse(match.Groups["Day"].Value);
-            TimeSpan offset = TimePeriodUtility.ParseTimeOffset(match);
-            value = new DateTimeOffset(year, month, day, 0, 0, 0, 0, offset);
-            return true;
-        }
-
-        public bool IsValid(string str)
-        {
-            return pattern.IsMatch(str);
-        }
-
-        //public string Serialize(object value, out string startTime)
-        //{
-        //    startTime = null;
-        //    return value.ToString();
-        //}
     }
 }

@@ -18,7 +18,7 @@ namespace SDMX
         public bool IsTimeFormat { get; set; }
         public CrossSectionalAttachmentLevel CrossSectionalAttachmentLevel { get; set; }
 
-        public override ITextFormat DefaultTextFormat { get { return new StringTextFormat(); } }
+        public override TextFormat DefaultTextFormat { get { return new StringTextFormat(); } }
 
         private IList<Id> _attachmentMeasures = new List<Id>();
         public IList<Id> AttachmentMeasures

@@ -1,28 +1,18 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using Common;
+using SDMX.Parsers;
 
 namespace SDMX
 {
-    public class StringTextFormat : ITextFormat
+    public class StringTextFormat : TextFormat
     {
-        public bool IsValid(Value value)
-        {
-            return value is StringValue;
-        }
+        static IValueConverter _converter = new StringValueConverter();
 
-        public Type GetValueType()
-        {
-            return typeof(StringValue);
-        }
+        internal override IValueConverter Converter { get { return _converter; } }
 
-        public bool TryParse(string s, string startTime, out object value)
-        {            
-            value = s;
-            return true;
+        public override bool IsValid(object obj)
+        {
+            var value = obj as string;
+            return value != null;
         }
     }
 }

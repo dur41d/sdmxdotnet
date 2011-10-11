@@ -57,7 +57,7 @@ namespace SDMX
                     if (dim == null) 
                         return false;
 
-                    if (!dim.IsValid((CodeValue)c.Value))
+                    if (!dim.IsValid(c.Value))
                         return false;
                 }
                 else if (criterion is AttributeCriterion)
@@ -69,7 +69,7 @@ namespace SDMX
                     if (att == null)
                         return false;
 
-                    if (!att.IsValid((CodeValue)c.Value))
+                    if (!att.IsValid(c.Value))
                         return false;
 
                     //if (att.AttachementLevel != c.AttachmentLevel)

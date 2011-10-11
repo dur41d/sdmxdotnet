@@ -11,7 +11,7 @@ namespace SDMX
         public Id Dimension { get; set; }
         public Id Code { get; set; }
 
-        public override ITextFormat DefaultTextFormat { get { return new StringTextFormat(); } }
+        public override TextFormat DefaultTextFormat { get { return new StringTextFormat(); } }
 
         public CrossSectionalMeasure(Concept concept)
             : base(concept)

@@ -29,20 +29,20 @@ namespace SDMX.Parsers
     //    }
     //}
 
-    //internal class TimePeriodConverter : ISimpleTypeConverter<TimePeriod>
-    //{
-    //    TimePeriodValueConverter converter = new TimePeriodValueConverter();
-      
-    //    public string ToXml(TimePeriod value)
-    //    {           
-    //        string startTime;
-    //        return value == null ? null : converter.Serialize(value, out startTime);
-    //    }
+    internal class TimePeriodConverter : ISimpleTypeConverter<TimePeriod>
+    {
+        TimePeriodValueConverter converter = new TimePeriodValueConverter();
 
-    //    public TimePeriod ToObj(string value)
-    //    {
-    //        string startTime = null;
-    //        return (TimePeriod)converter.Parse(value, startTime);
-    //    }
-    //}
+        public string ToXml(TimePeriod value)
+        {
+            string startTime;
+            return value == null ? null : converter.Serialize(value, out startTime);
+        }
+
+        public TimePeriod ToObj(string value)
+        {
+            string startTime = null;
+            return (TimePeriod)converter.Parse(value, startTime);
+        }
+    }
 }

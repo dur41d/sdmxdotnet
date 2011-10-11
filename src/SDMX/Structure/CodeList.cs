@@ -34,21 +34,11 @@ namespace SDMX
             return codes.GetValueOrDefault(codeId, null);
         }
 
-        public Code Get(CodeValue code)
-        {
-            return codes.GetValueOrDefault((Id)code, null);
-        }
-
         public bool Contains(Id codeId)
         {
             return codes.ContainsKey(codeId);
         }
 
-        public bool Contains(CodeValue code)
-        {
-            return codes.ContainsKey((Id)code);
-        }
-        
         public override Uri Urn
         {
             get 

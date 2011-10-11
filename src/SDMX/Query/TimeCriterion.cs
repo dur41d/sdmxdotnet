@@ -1,12 +1,9 @@
-using System.Collections.Generic;
+using System;
 
 namespace SDMX
 {
-    public interface ITimeCriterion : ICriterion
-    { }
-
     public class TimeCriterion : ITimeCriterion
     {
-        public TimePeriod Time { get; set; }
+        public string Time { get; set; }
     }
 }
