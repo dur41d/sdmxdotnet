@@ -1,10 +1,5 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using OXM;
 using System.Text.RegularExpressions;
-using Common;
 
 namespace SDMX.Parsers
 {
@@ -15,7 +10,24 @@ namespace SDMX.Parsers
 
         public object Parse(string str, string startTime)
         {
-            return DateTimeOffset.Parse(str);
+            var match = pattern.Match(str);
+            if (!match.Success)
+            {
+                throw new SDMXException("Invalid date value '{0}'.", str);
+            }
+            int year = int.Parse(match.Groups["Year"].Value);
+            int month = int.Parse(match.Groups["Month"].Value);
+            int day = int.Parse(match.Groups["Day"].Value);
+            int hour = int.Parse(match.Groups["Hour"].Value);
+            int minute = int.Parse(match.Groups["Minute"].Value);
+            int second = int.Parse(match.Groups["Second"].Value);
+
+            string ticks = match.Groups["Ticks"].Value;
+            int millisecond = 0;
+            if (ticks != "")
+                millisecond = int.Parse(ticks.Substring(1));
+            TimeSpan offset = TimePeriodUtility.ParseTimeOffset(match);
+            return new DateTimeValue(new DateTimeOffset(year, month, day, hour, minute, second, millisecond, offset));
         }
 
         public bool IsValid(string str)
@@ -25,9 +37,11 @@ namespace SDMX.Parsers
 
         public string Serialize(object obj, out string startTime)
         {
+            if (!(obj is DateTimeValue))
+                throw new SDMXException("Cannot serialize object of type: {0}.", obj.GetType());
+
             startTime = null;
-            var value = (DateTimeOffset)obj;
-            return value.ToString("yyyy-MM-ddThh:mm:ss.FFFFFFFK");
+            return ((DateTimeValue)obj).ToString();
         }
     }
 }

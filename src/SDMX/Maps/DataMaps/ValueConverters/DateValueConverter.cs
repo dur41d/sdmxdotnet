@@ -1,10 +1,5 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using OXM;
 using System.Text.RegularExpressions;
-using Common;
 
 namespace SDMX.Parsers
 {
@@ -24,7 +19,7 @@ namespace SDMX.Parsers
             int month = int.Parse(match.Groups["Month"].Value);
             int day = int.Parse(match.Groups["Day"].Value);
             TimeSpan offset = TimePeriodUtility.ParseTimeOffset(match);
-            return new DateTimeOffset(year, month, day, 0, 0, 0, 0, offset);
+            return new DateValue(new DateTimeOffset(year, month, day, 0, 0, 0, 0, offset));
         }
 
         public bool IsValid(string str)
@@ -34,16 +29,11 @@ namespace SDMX.Parsers
 
         public string Serialize(object obj, out string startTime)
         {
+            if (!(obj is DateValue))
+                throw new SDMXException("Cannot serialize object of type: {0}.", obj.GetType());
+
             startTime = null;
-            string result = null;
-            var value = (DateTimeOffset)obj;
-
-            if (value.Offset.Ticks == 0)
-                result = value.ToString("yyyy-MM-dd");
-            else
-                result = value.ToString("yyyy-MM-ddK");
-
-            return result;
+            return ((DateValue)obj).ToString();
         }
     }
 }
