@@ -19,17 +19,25 @@ namespace SDMX.Parsers
 
         public CompoenentMap(StructureMessage message)
         {
-            Map(o => TempConceptRef.Create(o.Concept)).ToAttributeGroup("conceptRef")
+            Map(o => ConceptRef.Create(o.Concept)).ToAttributeGroup("conceptRef")
                 .Set(v => _component = Create(GetCocept(message, v)))
-                .GroupTypeMap(new TempConceptRefMap());
+                .GroupTypeMap(new ConceptRefMap());
 
             Map(o => TempCodelistRef.Create(o.CodeList)).ToAttributeGroup("codelist")
                 .Set(v => _component.CodeList = GetCodeList(message, v))
                 .GroupTypeMap(new TempCodelistRefMap());           
 
-            Map(o => o.TextFormat).ToElement("TextFormat", false)
+            Map(o => GetTextFormat(o)).ToElement("TextFormat", false)
                 .Set(v => SetTextFormat(v))
                 .ClassMap(() => new TextFormatMap());
+        }
+
+        TextFormat GetTextFormat(Component compoenent)
+        {
+            if (compoenent.TextFormat.Equals(compoenent.DefaultTextFormat))
+                return null;
+            else
+                return compoenent.TextFormat;
         }
 
         void SetTextFormat(TextFormat value)
@@ -56,7 +64,7 @@ namespace SDMX.Parsers
             return codelist;
         }
 
-        Concept GetCocept(StructureMessage message, TempConceptRef v)
+        Concept GetCocept(StructureMessage message, ConceptRef v)
         {
             var concept = message.GetConcept(v.SchemeRef.Id, v.SchemeRef.AgencyId, v.SchemeRef.Version, v.Id, v.AgencyId, v.Version);
 

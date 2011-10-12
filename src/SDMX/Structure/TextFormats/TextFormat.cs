@@ -8,7 +8,7 @@ using SDMX.Parsers;
 
 namespace SDMX
 {
-    public abstract class TextFormat
+    public abstract class TextFormat : IEquatable<TextFormat>
     {
         public abstract bool IsValid(object value);
 
@@ -23,5 +23,7 @@ namespace SDMX
         { 
             return Converter.Serialize(obj, out startTime);
         }
+
+        public abstract bool Equals(TextFormat other);
     }
 }

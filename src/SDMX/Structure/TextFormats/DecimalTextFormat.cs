@@ -14,5 +14,10 @@ namespace SDMX
             var value = obj as decimal?;
             return value != null;
         }
+
+        public override bool Equals(TextFormat other)
+        {
+            return other is DecimalTextFormat;
+        }
     }
 }

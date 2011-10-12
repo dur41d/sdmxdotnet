@@ -13,5 +13,10 @@ namespace SDMX
         {
             return obj is YearValue;
         }
+
+        public override bool Equals(TextFormat other)
+        {
+            return other is YearTextFormat;
+        }
     }
 }

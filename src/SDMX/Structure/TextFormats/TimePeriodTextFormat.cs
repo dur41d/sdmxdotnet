@@ -17,6 +17,11 @@ namespace SDMX
 
         }
 
+        public override bool Equals(TextFormat other)
+        {
+            return other is TimePeriodTextFormat;
+        }
+
         //public override object Parse(string s, string startTime)
         //{
         //    var value = _converter.Parse(s, startTime);
