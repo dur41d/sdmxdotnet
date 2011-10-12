@@ -7,10 +7,10 @@ using System.Text.RegularExpressions;
 
 namespace SDMX
 {
-    public class TriannualValue : TimePeriod, IEquatable<TriannualValue>
+    public class Quarterly : TimePeriod, IEquatable<Quarterly>
     {
         int _year;
-        Triannum _annum;
+        Quarter _quarter;
 
         public override int Year { get { return _year; } }
         public override int Month { get { return 1; } }
@@ -21,52 +21,52 @@ namespace SDMX
         public override int Millisecond { get { return 0; } }
         public override TimeSpan Offset { get { return TimeSpan.FromTicks(0); } }
 
-        public Triannum Annum
+        public Quarter Quarter
         {
-            get { return _annum; }
+            get { return _quarter; }
         }
 
-        public TriannualValue(int year, Triannum annum)
+        public Quarterly(int year, Quarter quarter)
         {
             // use date time to validate the integer
             var dateTime = new DateTime(year, 1, 1);
             _year = dateTime.Year;
-            _annum = annum;
+            _quarter = quarter;
         }
 
         public override string ToString()
         {
-            return string.Format("{0}-{1}", _year, _annum);
+            return string.Format("{0}-{1}", _year, _quarter);
         }
 
-        #region IEquatable<TriannualValue> Members
+        #region IEquatable<QuarterlyValue> Members
 
         public override int GetHashCode()
         {
-            return _year.HashWith(_annum);
+            return _year.HashWith(_quarter);
         }
 
         public override bool Equals(object other)
         {
-            return Equals(other as TriannualValue);
+            return Equals(other as Quarterly);
         }
 
         public override bool Equals(TimePeriod other)
         {
-            return Equals(other as TriannualValue);
+            return Equals(other as Quarterly);
         }
 
-        public bool Equals(TriannualValue other)
+        public bool Equals(Quarterly other)
         {
-            return this.Equals(other, () => _year.Equals(other._year) && _annum.Equals(other._annum));
+            return this.Equals(other, () => _year.Equals(other._year) && _quarter.Equals(other._quarter));
         }
 
-        public static bool operator ==(TriannualValue x, TriannualValue y)
+        public static bool operator ==(Quarterly x, Quarterly y)
         {
             return Extensions.Equals(x, y);
         }
 
-        public static bool operator !=(TriannualValue x, TriannualValue y)
+        public static bool operator !=(Quarterly x, Quarterly y)
         {
             return !(x == y);
         }

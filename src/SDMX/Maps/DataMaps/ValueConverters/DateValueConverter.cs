@@ -19,7 +19,7 @@ namespace SDMX.Parsers
             int month = int.Parse(match.Groups["Month"].Value);
             int day = int.Parse(match.Groups["Day"].Value);
             TimeSpan offset = TimePeriodUtility.ParseTimeOffset(match);
-            return new DateValue(new DateTimeOffset(year, month, day, 0, 0, 0, 0, offset));
+            return new Date(new DateTimeOffset(year, month, day, 0, 0, 0, 0, offset));
         }
 
         public bool IsValid(string str)
@@ -29,11 +29,11 @@ namespace SDMX.Parsers
 
         public string Serialize(object obj, out string startTime)
         {
-            if (!(obj is DateValue))
+            if (!(obj is Date))
                 throw new SDMXException("Cannot serialize object of type: {0}.", obj.GetType());
 
             startTime = null;
-            return ((DateValue)obj).ToString();
+            return ((Date)obj).ToString();
         }
     }
 }

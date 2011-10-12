@@ -7,7 +7,7 @@ using System.Text.RegularExpressions;
 
 namespace SDMX
 {
-    public class DateValue : TimePeriod, IEquatable<DateValue>
+    public class Date : TimePeriod, IEquatable<Date>
     {
         DateTimeOffset _value;
         string _toString;
@@ -21,7 +21,7 @@ namespace SDMX
         public override int Millisecond { get { return _value.Millisecond; } }
         public override TimeSpan Offset { get { return _value.Offset; } }
 
-        public DateValue(DateTimeOffset dateTime)
+        public Date(DateTimeOffset dateTime)
         {
             _value = new DateTimeOffset(dateTime.Year, dateTime.Month, dateTime.Day, 0, 0, 0, dateTime.Offset);
         }
@@ -37,28 +37,28 @@ namespace SDMX
             return _toString;
         }
 
-        public static implicit operator DateTimeOffset(DateValue input)
+        public static implicit operator DateTimeOffset(Date input)
         {
             Contract.AssertNotNull(input, "input");
             return input._value;
         }
 
-        public static implicit operator DateValue(DateTimeOffset input)
+        public static implicit operator Date(DateTimeOffset input)
         {
-            return new DateValue(input);
+            return new Date(input);
         }
 
         public override bool Equals(object other)
         {
-            return Equals(other as DateValue);
+            return Equals(other as Date);
         }
 
         public override bool Equals(TimePeriod other)
         {
-            return Equals(other as DateValue);
+            return Equals(other as Date);
         }
 
-        public bool Equals(DateValue other)
+        public bool Equals(Date other)
         {
             return this.Equals(other, () => _value.Equals(other._value));
         }

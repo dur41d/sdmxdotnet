@@ -33,15 +33,15 @@ namespace SDMX.Tests
         [Test]
         public void Create()
         {
-            var x = new DateValue(new DateTimeOffset(2000, 1, 1, 1, 1, 1, new TimeSpan()));
-            var x2 = new DateValue(new DateTimeOffset(1999, 1, 1, 1, 1, 1, new TimeSpan()));           
+            var x = new Date(new DateTimeOffset(2000, 1, 1, 1, 1, 1, new TimeSpan()));
+            var x2 = new Date(new DateTimeOffset(1999, 1, 1, 1, 1, 1, new TimeSpan()));           
         }
 
         [Test]
         public void Equlity()
         {
-            var x = new DateValue(new DateTimeOffset(2000, 1, 1, 1, 1, 1, new TimeSpan()));
-            var y = new DateValue(new DateTimeOffset(1999, 1, 1, 1, 1, 1, new TimeSpan()));           
+            var x = new Date(new DateTimeOffset(2000, 1, 1, 1, 1, 1, new TimeSpan()));
+            var y = new Date(new DateTimeOffset(1999, 1, 1, 1, 1, 1, new TimeSpan()));           
             ValueTestUtility.TestEquality(x, x);
             ValueTestUtility.TestUnequlity(x, y);
             ValueTestUtility.TestComarisonWithNull(x);
@@ -54,8 +54,8 @@ namespace SDMX.Tests
         [Test]
         public void Create()
         {
-            var x = new YearMonthValue(1999, 3);
-            var x2 = new YearMonthValue(new DateTimeOffset(1999, 1, 1, 1, 1, 1, new TimeSpan()));
+            var x = new YearMonth(1999, 3);
+            var x2 = new YearMonth(new DateTimeOffset(1999, 1, 1, 1, 1, 1, new TimeSpan()));
             Assert.AreEqual(1999, x.Year);
             Assert.AreEqual(3, x.Month);
             Assert.AreEqual(1999, x2.Year);
@@ -65,8 +65,8 @@ namespace SDMX.Tests
         [Test]
         public void Equlity()
         {
-            var x = new YearMonthValue(1999, 3);
-            var y = new YearMonthValue(2000, 3);
+            var x = new YearMonth(1999, 3);
+            var y = new YearMonth(2000, 3);
             ValueTestUtility.TestEquality(x, x);
             ValueTestUtility.TestUnequlity(x, y);
             ValueTestUtility.TestComarisonWithNull(x);
@@ -100,8 +100,8 @@ namespace SDMX.Tests
         [Test]
         public void Create()
         {
-            var x = new QuarterlyValue(2000, Quarter.Q1);
-            var y = new QuarterlyValue(2000, Quarter.Q2);
+            var x = new Quarterly(2000, Quarter.Q1);
+            var y = new Quarterly(2000, Quarter.Q2);
             Assert.AreEqual(2000, x.Year);
             Assert.AreEqual(Quarter.Q1, x.Quarter);
             Assert.AreEqual(2000, y.Year);
@@ -111,8 +111,8 @@ namespace SDMX.Tests
         [Test]
         public void Equlity()
         {
-            var x = new QuarterlyValue(2000, Quarter.Q1);
-            var y = new QuarterlyValue(2000, Quarter.Q2);
+            var x = new Quarterly(2000, Quarter.Q1);
+            var y = new Quarterly(2000, Quarter.Q2);
             ValueTestUtility.TestEquality(x, x);
             ValueTestUtility.TestUnequlity(x, y);
             ValueTestUtility.TestComarisonWithNull(x);
@@ -125,8 +125,8 @@ namespace SDMX.Tests
         [Test]
         public void Create()
         {
-            var year = new BiannualValue(2000, Biannum.B1);
-            var year2 = new BiannualValue(2001, Biannum.B1);
+            var year = new Biannual(2000, Biannum.B1);
+            var year2 = new Biannual(2001, Biannum.B1);
             Assert.AreEqual(2000, year.Year);
             Assert.AreEqual(Biannum.B1, year.Annum);
             Assert.AreEqual(2000, year.Year);
@@ -136,8 +136,8 @@ namespace SDMX.Tests
         [Test]
         public void Equlity()
         {
-            var x = new BiannualValue(2000, Biannum.B1);
-            var y = new BiannualValue(2001, Biannum.B1);
+            var x = new Biannual(2000, Biannum.B1);
+            var y = new Biannual(2001, Biannum.B1);
             ValueTestUtility.TestEquality(x, x);
             ValueTestUtility.TestUnequlity(x, y);
             ValueTestUtility.TestComarisonWithNull(x);
@@ -150,8 +150,8 @@ namespace SDMX.Tests
         [Test]
         public void Create()
         {
-            var year = new TriannualValue(2000, Triannum.T1);
-            var year2 = new TriannualValue(2001, Triannum.T2);
+            var year = new Triannual(2000, Triannum.T1);
+            var year2 = new Triannual(2001, Triannum.T2);
             Assert.AreEqual(2000, year.Year);
             Assert.AreEqual(Triannum.T1, year.Annum);
             Assert.AreEqual(2001, year2.Year);
@@ -161,8 +161,8 @@ namespace SDMX.Tests
         [Test]
         public void Equlity()
         {
-            var x = new TriannualValue(2000, Triannum.T1);
-            var y = new TriannualValue(2001, Triannum.T2);
+            var x = new Triannual(2000, Triannum.T1);
+            var y = new Triannual(2001, Triannum.T2);
             ValueTestUtility.TestEquality(x, x);
             ValueTestUtility.TestUnequlity(x, y);
             ValueTestUtility.TestComarisonWithNull(x);
@@ -175,8 +175,8 @@ namespace SDMX.Tests
         [Test]
         public void Create()
         {
-            var year = new WeeklyValue(2000, Week.W1);
-            var year2 = new WeeklyValue(2001, Week.W32);
+            var year = new Weekly(2000, Week.W1);
+            var year2 = new Weekly(2001, Week.W32);
             Assert.AreEqual(2000, year.Year);
             Assert.AreEqual(Week.W1, year.Week);
             Assert.AreEqual(2001, year2.Year);
@@ -186,8 +186,8 @@ namespace SDMX.Tests
         [Test]
         public void Equlity()
         {
-            var x = new WeeklyValue(2000, Week.W1);
-            var y = new WeeklyValue(2001, Week.W32);
+            var x = new Weekly(2000, Week.W1);
+            var y = new Weekly(2001, Week.W32);
             ValueTestUtility.TestEquality(x, x);
             ValueTestUtility.TestUnequlity(x, y);
             ValueTestUtility.TestComarisonWithNull(x);
