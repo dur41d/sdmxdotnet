@@ -44,41 +44,5 @@ namespace SDMX.Parsers
             var converter = registry[type];
             return converter.Serialize(obj, out startTime);
         }
-
-        //ITimePeriodConverter GetConverter(object obj)
-        //{ 
-        //    var value = obj as DateTimeOffset?;
-        //    if (value == null)
-        //    {
-        //        throw new SDMXException("Only object of type DateTimeOffset are supported for time value. Type={0}.", obj.GetType());
-        //    }
-
-        //    if (value.Value.Year > 0
-        //        && value.Value.Month > 0
-        //        && value.Value.Day > 0
-        //        && value.Value.Hour > 0)
-        //    {
-        //        return registry[typeof(DateTimeValueConverter)];
-        //    }
-        //    else if (value.Value.Year > 0
-        //        && value.Value.Month > 0
-        //        && value.Value.Day > 0)
-        //    {
-        //        return registry[typeof(DateValueConverter)];
-        //    }
-        //    else if (value.Value.Year > 0
-        //        && value.Value.Month > 0)
-        //    {
-        //        return registry[typeof(YearMonthValueConverter)];
-        //    }
-        //    else if (value.Value.Year > 0)
-        //    {
-        //        return registry[typeof(YearValueConverter)];
-        //    }
-        //    else
-        //    {
-        //        throw new SDMXException("Cannot figure out converter for DateTimeOffset value: {0}.", value.Value.ToString());
-        //    }
-        //}
     }
 }

@@ -5,7 +5,7 @@ namespace SDMX.Parsers
 {
     internal class YearMonthValueConverter : ITimePeriodConverter
     {
-        const string p = @"^(?<Sign>[-|+]?)(?<Year>\d{4})-(?<Month>\d{2})(?<Z>Z)?(?:(?<ZoneSign>[+-])(?<ZoneHour>\d{2}):(?<ZoneMinute>\d{2}))?$";
+        const string p = @"^(?<Sign>[-|+]?)(?<Year>\d{4})-(?<Month>\d{1,2})(?<Z>Z)?(?:(?<ZoneSign>[+-])(?<ZoneHour>\d{2}):(?<ZoneMinute>\d{2}))?$";
         static Regex pattern = new Regex(p, RegexOptions.Compiled);
 
         public object Parse(string str, string startTime)
@@ -18,7 +18,7 @@ namespace SDMX.Parsers
             int year = int.Parse(match.Groups["Year"].Value);
             int month = int.Parse(match.Groups["Month"].Value);
             TimeSpan offset = TimePeriodUtility.ParseTimeOffset(match);
-            return new YearMonthValue(new DateTimeOffset(year, month, 1, 1, 1, 1, offset));
+            return new YearMonthValue(new DateTimeOffset(year, month, 1, 0, 0, 0, offset));
         }
 
         public bool IsValid(string str)

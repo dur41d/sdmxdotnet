@@ -16,8 +16,7 @@ namespace SDMX
 
         public override bool IsValid(object obj)
         {
-            var value = obj as DateTimeOffset?;
-            return value != null;
+            return obj is DateValue;
         }
     }
 }

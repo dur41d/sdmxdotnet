@@ -7,14 +7,14 @@ using System.Text.RegularExpressions;
 
 namespace SDMX
 {
-    public abstract class TimePeriod : Value
+    public abstract class TimePeriod : Value, IEquatable<TimePeriod>
     {
-        public static bool operator ==(TimePeriod x, object y)
+        public static bool operator ==(TimePeriod x, TimePeriod y)
         {
             return Extensions.Equals(x, y);
         }
 
-        public static bool operator !=(TimePeriod x, object y)
+        public static bool operator !=(TimePeriod x, TimePeriod y)
         {
             return !(x == y);
         }
@@ -26,8 +26,19 @@ namespace SDMX
 
         public override bool Equals(object obj)
         {
-            return base.Equals(obj);
+            return Equals(obj as TimePeriod);
         }
+
+        public abstract bool Equals(TimePeriod other);
+
+        public abstract int Year { get; }
+        public abstract int Month { get; }
+        public abstract int Day { get; }
+        public abstract int Hour { get; }
+        public abstract int Minute { get; }
+        public abstract int Second { get; }
+        public abstract int Millisecond { get; }
+        public abstract TimeSpan Offset { get; }
     }
 
 }

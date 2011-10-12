@@ -7,15 +7,19 @@ using System.Text.RegularExpressions;
 
 namespace SDMX
 {
-    public class BiannualValue : TimePeriod, IEquatable<BiannualValue>, IYearValue
+    public class BiannualValue : TimePeriod, IEquatable<BiannualValue>
     {
         int _year;
         Biannum _annum;
 
-        public int Year
-        {
-            get { return _year; }
-        }
+        public override int Year { get { return _year; } }
+        public override int Month { get { return 1; } }
+        public override int Day { get { return 1; } }
+        public override int Hour { get { return 0; } }
+        public override int Minute { get { return 0; } }
+        public override int Second { get { return 0; } }
+        public override int Millisecond { get { return 0; } }
+        public override TimeSpan Offset { get { return TimeSpan.FromTicks(0); } }
 
         public Biannum Annum
         {
@@ -43,6 +47,11 @@ namespace SDMX
         }
 
         public override bool Equals(object other)
+        {
+            return Equals(other as BiannualValue);
+        }
+
+        public override bool Equals(TimePeriod other)
         {
             return Equals(other as BiannualValue);
         }
