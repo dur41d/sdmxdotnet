@@ -58,6 +58,7 @@
     <Compile Include="DataReaderTests.cs" />
     <Compile Include="InternationalTextTests.cs" />
     <Compile Include="KeyFamilyTests.cs" />
+    <Compile Include="TextFormatTests.cs" />
     <Compile Include="ValidatorTests.cs" />
     <Compile Include="QueryTests.cs" />
     <Compile Include="ValueTests.cs" />

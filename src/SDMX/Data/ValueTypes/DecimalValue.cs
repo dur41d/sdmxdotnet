@@ -1,62 +1,62 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Common;
+//using System;
+//using System.Collections.Generic;
+//using System.Linq;
+//using System.Text;
+//using Common;
 
-namespace SDMX
-{
-    public class DecimalValue : Value, IEquatable<DecimalValue>
-    {
-        decimal _value;
+//namespace SDMX
+//{
+//    public class DecimalValue : Value, IEquatable<DecimalValue>
+//    {
+//        decimal _value;
 
-        public DecimalValue(decimal value)
-        {
-            _value = value;
-        }
+//        public DecimalValue(decimal value)
+//        {
+//            _value = value;
+//        }
 
-        public static explicit operator DecimalValue(decimal value)
-        {
-            return new DecimalValue(value);
-        }
+//        public static explicit operator DecimalValue(decimal value)
+//        {
+//            return new DecimalValue(value);
+//        }
 
-        public static explicit operator decimal(DecimalValue value)
-        {
-            return value._value;
-        }
+//        public static explicit operator decimal(DecimalValue value)
+//        {
+//            return value._value;
+//        }
 
-        public override string ToString()
-        {
-            return _value.ToString();
-        }
+//        public override string ToString()
+//        {
+//            return _value.ToString();
+//        }
 
-        #region IEquatable<DecimalValue> Members
+//        #region IEquatable<DecimalValue> Members
 
-        public override int GetHashCode()
-        {
-            return _value.GetHashCode();
-        }
+//        public override int GetHashCode()
+//        {
+//            return _value.GetHashCode();
+//        }
 
-        public override bool Equals(object other)
-        {            
-            return Equals(other as DecimalValue);
-        }
+//        public override bool Equals(object other)
+//        {            
+//            return Equals(other as DecimalValue);
+//        }
 
-        public bool Equals(DecimalValue other)
-        {
-            return this.Equals(other, () => _value.Equals(other._value));
-        }
+//        public bool Equals(DecimalValue other)
+//        {
+//            return this.Equals(other, () => _value.Equals(other._value));
+//        }
 
-        public static bool operator ==(DecimalValue x, DecimalValue y)
-        {
-            return Extensions.Equals(x, y);
-        }
+//        public static bool operator ==(DecimalValue x, DecimalValue y)
+//        {
+//            return Extensions.Equals(x, y);
+//        }
 
-        public static bool operator !=(DecimalValue x, DecimalValue y)
-        {
-            return !(x == y);
-        }
+//        public static bool operator !=(DecimalValue x, DecimalValue y)
+//        {
+//            return !(x == y);
+//        }
 
-        #endregion
-    }
-}
+//        #endregion
+//    }
+//}

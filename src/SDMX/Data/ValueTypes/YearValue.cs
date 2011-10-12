@@ -7,20 +7,19 @@ using System.Text.RegularExpressions;
 
 namespace SDMX
 {
-    public class YearValue : TimePeriod, IEquatable<YearValue>, IYearValue
+    public class YearValue : TimePeriod, IEquatable<YearValue>
     {
         DateTimeOffset _value;
         private string _toString;
 
-        public int Year
-        {
-            get { return _value.Year; }
-        }
-
-        public TimeSpan Offset
-        {
-            get { return _value.Offset; }
-        }
+        public override int Year { get { return _value.Year; } }
+        public override int Month { get { return _value.Month; } }
+        public override int Day { get { return _value.Day; } }
+        public override int Hour { get { return _value.Hour; } }
+        public override int Minute { get { return _value.Minute; } }
+        public override int Second { get { return _value.Second; } }
+        public override int Millisecond { get { return _value.Millisecond; } }
+        public override TimeSpan Offset { get { return _value.Offset; } }
 
         public YearValue(DateTimeOffset dateTime)
         {
@@ -44,13 +43,13 @@ namespace SDMX
             return _toString;
         }
 
-        public static explicit operator DateTimeOffset(YearValue input)
+        public static implicit operator DateTimeOffset(YearValue input)
         {
             Contract.AssertNotNull(input, "input");
             return input._value;
         }
 
-        public static explicit operator YearValue(DateTimeOffset input)
+        public static implicit operator YearValue(DateTimeOffset input)
         {
             return new YearValue(input);
         }
@@ -66,6 +65,11 @@ namespace SDMX
         }
 
         public override bool Equals(object other)
+        {
+            return Equals(other as YearValue);
+        }
+
+        public override bool Equals(TimePeriod other)
         {
             return Equals(other as YearValue);
         }

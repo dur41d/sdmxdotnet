@@ -14,9 +14,14 @@ namespace SDMX
 
         internal abstract IValueConverter Converter { get; }
 
-        public object Parse(string s, string startTime)
+        public virtual object Parse(string s, string startTime)
         {
             return Converter.Parse(s, startTime);
+        }
+
+        public virtual string Serialize(object obj, out string startTime)
+        { 
+            return Converter.Serialize(obj, out startTime);
         }
     }
 }
