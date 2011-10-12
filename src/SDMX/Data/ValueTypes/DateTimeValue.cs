@@ -7,6 +7,13 @@ using System.Text.RegularExpressions;
 
 namespace SDMX
 {
+    /// <summary>
+    /// The SDMX equivalent of DateTimeOffset.
+    /// </summary>
+    /// <remarks>
+    /// The class is created because SDMX definition of time different than the .NET one.
+    /// The TimePeriod class is the base class of all the time values in SDMX.
+    /// </remarks>
     public class DateTimeValue : TimePeriod, IEquatable<DateTimeValue>
     {
         DateTimeOffset _value;

@@ -18,7 +18,7 @@ namespace SDMX.Parsers
             }
             int year = int.Parse(match.Groups["Year"].Value);
             int quarter = int.Parse(match.Groups["Quarter"].Value);
-            return new QuarterlyValue(year, (Quarter)quarter);
+            return new Quarterly(year, (Quarter)quarter);
         }
 
         public bool IsValid(string str)
@@ -28,11 +28,11 @@ namespace SDMX.Parsers
 
         public string Serialize(object obj, out string startTime)
         {
-            if (!(obj is QuarterlyValue))
+            if (!(obj is Quarterly))
                 throw new SDMXException("Cannot serialize object of type: {0}.", obj.GetType());
 
             startTime = null;
-            return ((QuarterlyValue)obj).ToString();
+            return ((Quarterly)obj).ToString();
         }
     }
 }

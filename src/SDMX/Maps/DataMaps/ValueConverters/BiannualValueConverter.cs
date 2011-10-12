@@ -18,7 +18,7 @@ namespace SDMX.Parsers
             }
             int year = int.Parse(match.Groups["Year"].Value);
             int biannum = int.Parse(match.Groups["Biannum"].Value);
-            return new BiannualValue(year, (Biannum)biannum);
+            return new Biannual(year, (Biannum)biannum);
         }
 
         public bool IsValid(string str)
@@ -28,11 +28,11 @@ namespace SDMX.Parsers
 
         public string Serialize(object obj, out string startTime)
         {
-            if (!(obj is BiannualValue))
+            if (!(obj is Biannual))
                 throw new SDMXException("Cannot serialize object of type: {0}.", obj.GetType());
 
             startTime = null;
-            return ((BiannualValue)obj).ToString();
+            return ((Biannual)obj).ToString();
         }
     }
 }

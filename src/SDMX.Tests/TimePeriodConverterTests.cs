@@ -54,23 +54,23 @@ namespace SDMX.Tests
 
             string value = "2001-10-16+02:00";
             var time = converter.ToObj(value);
-            Assert.IsTrue(time is DateValue);
+            Assert.IsTrue(time is Date);
             Assert.AreEqual("2001-10-16+02:00", time.ToString());
 
             value = "2001-10-26Z";
             time = converter.ToObj(value);
-            Assert.IsTrue(time is DateValue);
+            Assert.IsTrue(time is Date);
             Assert.AreEqual("2001-10-26", time.ToString());
 
 
             value = "2001-10-26+00:00";
             time = converter.ToObj(value);
-            Assert.IsTrue(time is DateValue);
+            Assert.IsTrue(time is Date);
             Assert.AreEqual("2001-10-26", time.ToString());
 
             value = "2001-10-26";
             time = converter.ToObj(value);
-            Assert.IsTrue(time is DateValue);
+            Assert.IsTrue(time is Date);
             Assert.AreEqual("2001-10-26", time.ToString());
         }
 
@@ -81,22 +81,22 @@ namespace SDMX.Tests
 
             string value = "2001-10+02:00";
             var time = converter.ToObj(value);
-            Assert.IsTrue(time is YearMonthValue);
+            Assert.IsTrue(time is YearMonth);
             Assert.AreEqual("2001-10+02:00", time.ToString());
 
             value = "2001-10Z";
             time = converter.ToObj(value);
-            Assert.IsTrue(time is YearMonthValue);
+            Assert.IsTrue(time is YearMonth);
             Assert.AreEqual("2001-10", time.ToString());
 
             value = "2001-10+00:00";
             time = converter.ToObj(value);
-            Assert.IsTrue(time is YearMonthValue);
+            Assert.IsTrue(time is YearMonth);
             Assert.AreEqual("2001-10", time.ToString());
 
             value = "2001-10";
             time = converter.ToObj(value);
-            Assert.IsTrue(time is YearMonthValue);
+            Assert.IsTrue(time is YearMonth);
             Assert.AreEqual("2001-10", time.ToString());
         }
 
@@ -133,12 +133,12 @@ namespace SDMX.Tests
 
             string value = "2001-W2";
             var time = converter.ToObj(value);
-            Assert.IsTrue(time is WeeklyValue);
+            Assert.IsTrue(time is Weekly);
             Assert.AreEqual(value, time.ToString());
 
             value = "1999-W51";
             time = converter.ToObj(value);
-            Assert.IsTrue(time is WeeklyValue);
+            Assert.IsTrue(time is Weekly);
             Assert.AreEqual(value, time.ToString());
         }
 
@@ -149,12 +149,12 @@ namespace SDMX.Tests
 
             string value = "2001-Q1";
             var time = converter.ToObj(value);
-            Assert.IsTrue(time is QuarterlyValue);
+            Assert.IsTrue(time is Quarterly);
             Assert.AreEqual(value, time.ToString());
 
             value = "1999-Q3";
             time = converter.ToObj(value);
-            Assert.IsTrue(time is QuarterlyValue);
+            Assert.IsTrue(time is Quarterly);
             Assert.AreEqual(value, time.ToString());
         }
 
@@ -165,12 +165,12 @@ namespace SDMX.Tests
 
             string value = "2001-B1";
             var time = converter.ToObj(value);
-            Assert.IsTrue(time is BiannualValue);
+            Assert.IsTrue(time is Biannual);
             Assert.AreEqual(value, time.ToString());
 
             value = "1999-B2";
             time = converter.ToObj(value);
-            Assert.IsTrue(time is BiannualValue);
+            Assert.IsTrue(time is Biannual);
             Assert.AreEqual(value, time.ToString());
         }
 
@@ -181,12 +181,12 @@ namespace SDMX.Tests
 
             string value = "2001-T1";
             var time = converter.ToObj(value);
-            Assert.IsTrue(time is TriannualValue);
+            Assert.IsTrue(time is Triannual);
             Assert.AreEqual(value, time.ToString());
 
             value = "1999-T2";
             time = converter.ToObj(value);
-            Assert.IsTrue(time is TriannualValue);
+            Assert.IsTrue(time is Triannual);
             Assert.AreEqual(value, time.ToString());
         }
     }

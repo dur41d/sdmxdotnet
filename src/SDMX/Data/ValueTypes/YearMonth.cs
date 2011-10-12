@@ -7,7 +7,7 @@ using System.Text.RegularExpressions;
 
 namespace SDMX
 {
-    public class YearMonthValue : TimePeriod, IEquatable<YearMonthValue>
+    public class YearMonth : TimePeriod, IEquatable<YearMonth>
     {
         DateTimeOffset _value;
         string _toString;
@@ -21,12 +21,12 @@ namespace SDMX
         public override int Millisecond { get { return _value.Millisecond; } }
         public override TimeSpan Offset { get { return _value.Offset; } }
 
-        public YearMonthValue(int year, int month)
+        public YearMonth(int year, int month)
         {
             _value = new DateTimeOffset(year, month, 1, 0, 0, 0, new TimeSpan());
         }
 
-        public YearMonthValue(DateTimeOffset value)
+        public YearMonth(DateTimeOffset value)
         {
             _value = value;
         }
@@ -45,15 +45,15 @@ namespace SDMX
 
         public override bool Equals(object obj)
         {
-            return Equals(obj as YearMonthValue);
+            return Equals(obj as YearMonth);
         }
 
         public override bool Equals(TimePeriod other)
         {
-            return Equals(other as YearMonthValue);
+            return Equals(other as YearMonth);
         }
 
-        public bool Equals(YearMonthValue other)
+        public bool Equals(YearMonth other)
         {
             return this.Equals(other, () => _value.Year == other.Year && _value.Month == other.Month);
         }
@@ -63,23 +63,23 @@ namespace SDMX
             return _value.GetHashCode();
         }
 
-        public static implicit operator DateTimeOffset(YearMonthValue input)
+        public static implicit operator DateTimeOffset(YearMonth input)
         {
             Contract.AssertNotNull(input, "input");
             return input._value;
         }
 
-        public static implicit operator YearMonthValue(DateTimeOffset input)
+        public static implicit operator YearMonth(DateTimeOffset input)
         {
-            return new YearMonthValue(input);
+            return new YearMonth(input);
         }
 
-        public static bool operator ==(YearMonthValue x, YearMonthValue y)
+        public static bool operator ==(YearMonth x, YearMonth y)
         {
             return Extensions.Equals(x, y);
         }
 
-        public static bool operator !=(YearMonthValue x, YearMonthValue y)
+        public static bool operator !=(YearMonth x, YearMonth y)
         {
             return !(x == y);
         }

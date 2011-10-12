@@ -7,59 +7,70 @@ using System.Text.RegularExpressions;
 
 namespace SDMX
 {
-    public enum Week
+    public class Weekly : TimePeriod, IEquatable<Weekly>
     {
-        W1 = 1,
-        W2,
-        W3,
-        W4,
-        W5,
-        W6,
-        W7,
-        W8,
-        W9,
-        W10,
-        W11,
-        W12,
-        W13,
-        W14,
-        W15,
-        W16,
-        W17,
-        W18,
-        W19,
-        W20,
-        W21,
-        W22,
-        W23,
-        W24,
-        W25,
-        W26,
-        W27,
-        W28,
-        W29,
-        W30,
-        W31,
-        W32,
-        W33,
-        W34,
-        W35,
-        W36,
-        W37,
-        W38,
-        W39,
-        W40,
-        W41,
-        W42,
-        W43,
-        W44,
-        W45,
-        W46,
-        W47,
-        W48,
-        W49,
-        W50,
-        W51,
-        W52
+        int _year;
+        Week _week;
+
+        public override int Year { get { return _year; } }
+        public override int Month { get { return 1; } }
+        public override int Day { get { return 1; } }
+        public override int Hour { get { return 0; } }
+        public override int Minute { get { return 0; } }
+        public override int Second { get { return 0; } }
+        public override int Millisecond { get { return 0; } }
+        public override TimeSpan Offset { get { return TimeSpan.FromTicks(0); } }
+
+        public Week Week
+        {
+            get { return _week; }
+        }
+
+        public Weekly(int year, Week week)
+        {
+            // use date time to validate the integer
+            var dateTime = new DateTime(year, 1, 1);
+            _year = dateTime.Year;
+            _week = week;
+        }
+
+        public override string ToString()
+        {
+            return string.Format("{0}-{1}", _year, _week);
+        }
+
+        #region IEquatable<WeeklyValue> Members
+
+        public override int GetHashCode()
+        {
+            return _year.HashWith(_week);
+        }
+
+        public override bool Equals(object other)
+        {
+            return Equals(other as Weekly);
+        }
+
+        public override bool Equals(TimePeriod other)
+        {
+            return Equals(other as Weekly);
+        }
+
+        public bool Equals(Weekly other)
+        {
+            return this.Equals(other, () => _year.Equals(other._year) && _week.Equals(other._week));
+        }
+
+        public static bool operator ==(Weekly x, Weekly y)
+        {
+            return Extensions.Equals(x, y);
+        }
+
+        public static bool operator !=(Weekly x, Weekly y)
+        {
+            return !(x == y);
+        }
+
+        #endregion
     }
 }

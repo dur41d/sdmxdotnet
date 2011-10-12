@@ -16,7 +16,7 @@ namespace SDMX
 
         public override bool IsValid(object obj)
         {
-            return obj is DateValue;
+            return obj is Date;
         }
     }
 }

@@ -7,10 +7,10 @@ using System.Text.RegularExpressions;
 
 namespace SDMX
 {
-    public class WeeklyValue : TimePeriod, IEquatable<WeeklyValue>
+    public class Biannual : TimePeriod, IEquatable<Biannual>
     {
         int _year;
-        Week _week;
+        Biannum _annum;
 
         public override int Year { get { return _year; } }
         public override int Month { get { return 1; } }
@@ -21,56 +21,55 @@ namespace SDMX
         public override int Millisecond { get { return 0; } }
         public override TimeSpan Offset { get { return TimeSpan.FromTicks(0); } }
 
-        public Week Week
+        public Biannum Annum
         {
-            get { return _week; }
+            get { return _annum; }
         }
 
-        public WeeklyValue(int year, Week week)
+        public Biannual(int year, Biannum annum)
         {
             // use date time to validate the integer
             var dateTime = new DateTime(year, 1, 1);
             _year = dateTime.Year;
-            _week = week;
+            _annum = annum;
         }
 
         public override string ToString()
         {
-            return string.Format("{0}-{1}", _year, _week);
+            return string.Format("{0}-{1}", _year, _annum);
         }
 
-        #region IEquatable<WeeklyValue> Members
+        #region IEquatable<BiannualValue> Members
 
         public override int GetHashCode()
         {
-            return _year.HashWith(_week);
+            return _year.HashWith(_annum);
         }
 
         public override bool Equals(object other)
         {
-            return Equals(other as WeeklyValue);
+            return Equals(other as Biannual);
         }
 
         public override bool Equals(TimePeriod other)
         {
-            return Equals(other as WeeklyValue);
+            return Equals(other as Biannual);
         }
 
-        public bool Equals(WeeklyValue other)
+        public bool Equals(Biannual other)
         {
-            return this.Equals(other, () => _year.Equals(other._year) && _week.Equals(other._week));
+            return this.Equals(other, () => _year.Equals(other._year) && _annum.Equals(other._annum));
         }
 
-        public static bool operator ==(WeeklyValue x, WeeklyValue y)
+        public static bool operator ==(Biannual x, Biannual y)
         {
             return Extensions.Equals(x, y);
         }
 
-        public static bool operator !=(WeeklyValue x, WeeklyValue y)
+        public static bool operator !=(Biannual x, Biannual y)
         {
             return !(x == y);
         }
-
         #endregion
     }
 }

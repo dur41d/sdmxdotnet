@@ -10,13 +10,13 @@ namespace SDMX.Parsers
         static TimePeriodValueConverter()
         {
             // Order is important. From the most restrictive (year) to the least restrictive (datetime)
-            registry.Add(typeof(WeeklyValue), new WeeklyValueConverter());
-            registry.Add(typeof(QuarterlyValue), new QuarterlyValueConverter());
-            registry.Add(typeof(BiannualValue), new BiannualValueConverter());
-            registry.Add(typeof(TriannualValue), new TriannaulValueConverter());
+            registry.Add(typeof(Weekly), new WeeklyValueConverter());
+            registry.Add(typeof(Quarterly), new QuarterlyValueConverter());
+            registry.Add(typeof(Biannual), new BiannualValueConverter());
+            registry.Add(typeof(Triannual), new TriannaulValueConverter());
             registry.Add(typeof(YearValue), new YearValueConverter());
-            registry.Add(typeof(YearMonthValue), new YearMonthValueConverter());
-            registry.Add(typeof(DateValue), new DateValueConverter());
+            registry.Add(typeof(YearMonth), new YearMonthValueConverter());
+            registry.Add(typeof(Date), new DateValueConverter());
             registry.Add(typeof(DateTimeValue), new DateTimeValueConverter());
         }
 

@@ -18,7 +18,7 @@ namespace SDMX.Parsers
             }
             int year = int.Parse(match.Groups["Year"].Value);
             int triannum = int.Parse(match.Groups["Triannum"].Value);
-            return new TriannualValue(year, (Triannum)triannum);
+            return new Triannual(year, (Triannum)triannum);
         }
 
         public bool IsValid(string str)
@@ -28,11 +28,11 @@ namespace SDMX.Parsers
 
         public string Serialize(object obj, out string startTime)
         {
-            if (!(obj is TriannualValue))
+            if (!(obj is Triannual))
                 throw new SDMXException("Cannot serialize object of type: {0}.", obj.GetType());
 
             startTime = null;
-            return ((TriannualValue)obj).ToString();
+            return ((Triannual)obj).ToString();
         }
     }
 }

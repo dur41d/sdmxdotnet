@@ -3,15 +3,16 @@ using SDMX.Parsers;
 
 namespace SDMX
 {
-    public class YearMonthTextFormat : TimePeriodTextFormatBase
+    public class IntegerTextFormat : TextFormat
     {
-        static IValueConverter _converter = new YearMonthValueConverter();
+        static IValueConverter _converter = new IntegerValueConverter();
 
         internal override IValueConverter Converter { get { return _converter; } }
 
         public override bool IsValid(object obj)
         {
-            return obj is YearMonth;
+            var value = obj as int?;
+            return value != null;
         }
     }
 }

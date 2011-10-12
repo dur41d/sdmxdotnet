@@ -95,7 +95,7 @@ namespace SDMX
         }
        
 
-        internal void ValidateAttribute(Id conceptId, Value value, AttachmentLevel level)
+        internal void ValidateAttribute(Id conceptId, object value, AttachmentLevel level)
         {
             var attribute = Attributes.TryGet(conceptId);
             if (attribute == null)

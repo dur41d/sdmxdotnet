@@ -47,6 +47,21 @@ namespace SDMX.Tests
         }
 
         [Test]
+        public void IntegerTextFormat()
+        {
+            var textFormat = new IntegerTextFormat();
+
+            string s = "1";
+            object obj = textFormat.Parse(s, null);
+            Assert.IsNotNull(obj);
+            Assert.IsTrue(obj is int);
+            string startTime = null;
+            string s2 = textFormat.Serialize(obj, out startTime);
+            Assert.IsNull(startTime);
+            Assert.AreEqual("1", s2);
+        }
+
+        [Test]
         public void DecimalTextFormat_IsValid()
         {
             var textFormat = new DecimalTextFormat();
@@ -94,7 +109,7 @@ namespace SDMX.Tests
             string s = "2009-1";
             object obj = textFormat.Parse(s, null);
             Assert.IsNotNull(obj);
-            Assert.IsTrue(obj is YearMonthValue);
+            Assert.IsTrue(obj is YearMonth);
             string startTime = null;
             string s2 = textFormat.Serialize(obj, out startTime);
             Assert.IsNull(startTime);
@@ -109,7 +124,7 @@ namespace SDMX.Tests
             string s = "2009-1-1";
             object obj = textFormat.Parse(s, null);
             Assert.IsNotNull(obj);
-            Assert.IsTrue(obj is DateValue);
+            Assert.IsTrue(obj is Date);
             string startTime = null;
             string s2 = textFormat.Serialize(obj, out startTime);
             Assert.IsNull(startTime);

@@ -7,7 +7,7 @@ using System.Text.RegularExpressions;
 
 namespace SDMX
 {
-    public abstract class TimePeriod : Value, IEquatable<TimePeriod>
+    public abstract class TimePeriod : IEquatable<TimePeriod>
     {
         public static bool operator ==(TimePeriod x, TimePeriod y)
         {

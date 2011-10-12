@@ -84,7 +84,7 @@ namespace SDMX
             }
         }
 
-        internal void Validate(Value value)
+        internal void Validate(object value)
         {
             if (!IsValid(value))
             {
