@@ -18,5 +18,10 @@ namespace SDMX
         {
             return obj is Date;
         }
+
+        public override bool Equals(TextFormat other)
+        {
+            return other is DateTextFormat;
+        }
     }
 }

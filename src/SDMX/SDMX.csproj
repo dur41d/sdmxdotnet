@@ -113,7 +113,9 @@
     <Compile Include="Maps\StructureMaps\CodeRefMap.cs" />
     <Compile Include="Maps\StructureMaps\CompoenentMap.cs" />
     <Compile Include="Maps\StructureMaps\ConceptMap.cs" />
+    <Compile Include="Maps\StructureMaps\ConceptRefMap.cs" />
     <Compile Include="Maps\StructureMaps\ConceptSchemeMap.cs" />
+    <Compile Include="Maps\StructureMaps\ConceptSchemeRef.cs" />
     <Compile Include="Maps\StructureMaps\CrossSectionalAttachmentLevelMap.cs" />
     <Compile Include="Maps\StructureMaps\CrossSectionalMeasureMap.cs" />
     <Compile Include="Maps\StructureMaps\DimensionMap.cs" />
@@ -132,7 +134,7 @@
     <Compile Include="Maps\QueryMaps\QueryMessageMap.cs" />
     <Compile Include="Maps\StructureMaps\StructureMessageMap.cs" />
     <Compile Include="Maps\StructureMaps\TempCodelistRefMap.cs" />
-    <Compile Include="Maps\StructureMaps\TempConceptRefMap.cs" />
+    <Compile Include="Maps\StructureMaps\ConceptRef.cs" />
     <Compile Include="Maps\StructureMaps\TextFormatMap.cs" />
     <Compile Include="Maps\StructureMaps\TimeDimensionMap.cs" />
     <Compile Include="Maps\StructureMaps\TimePeriodConverter.cs" />

@@ -14,5 +14,10 @@ namespace SDMX
             var value = obj as string;
             return value != null;
         }
+
+        public override bool Equals(TextFormat other)
+        {
+            return other is StringTextFormat;
+        }
     }
 }
