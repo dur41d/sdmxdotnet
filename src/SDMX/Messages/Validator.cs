@@ -9,6 +9,21 @@ namespace SDMX
     {
         private static XmlSchemaSet _schemas;
 
+        public static bool ValidateXml(string fileName)
+        {
+            return ValidateXml(XmlReader.Create(fileName), null, null);
+        }
+        
+        public static bool ValidateXml(Stream stream)
+        {
+            return ValidateXml(XmlReader.Create(stream), null, null);
+        }
+
+        public static bool ValidateXml(XmlReader reader)
+        {
+            return ValidateXml(reader, null, null);
+        }
+
         public static bool ValidateXml(string fileName, Action<string> warning, Action<string> error)
         {
             return ValidateXml(XmlReader.Create(fileName), warning, error);
