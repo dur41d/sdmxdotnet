@@ -16,6 +16,7 @@ namespace SDMX.Tests
     public class StructureTests
     {
         [Test]
+        [Ignore]
         public void bop_its_tot()
         {
             var message = StructureMessage.Load(@"c:\temp\bop_its_tot.dsd.xml");
@@ -36,7 +37,8 @@ namespace SDMX.Tests
             var doc = new XDocument();
             using (var writer = doc.CreateWriter())
                 map.WriteXml(writer, message);
-            Assert.IsTrue(Utility.IsValidMessage(doc));
+            using (var reader = doc.CreateReader())
+                Assert.IsTrue(MessageValidator.ValidateXml(reader));
         }
 
         [Test]
@@ -65,7 +67,9 @@ namespace SDMX.Tests
         {
             string dsdPath = Utility.GetPath("lib\\HeirarchicalCodeListSample.xml");
             var sample = XDocument.Load(dsdPath);
-            Utility.IsValidMessage(sample);
+
+            using (var reader = sample.CreateReader())
+                Assert.IsTrue(MessageValidator.ValidateXml(reader));
 
             StructureMessageMap map = new StructureMessageMap();
 
@@ -74,7 +78,9 @@ namespace SDMX.Tests
             message.Save(Utility.GetPath("lib\\HeirarchicalCodeListSample2.xml"));         
 
             var doc = XDocument.Load(Utility.GetPath("lib\\HeirarchicalCodeListSample2.xml"));
-            Assert.IsTrue(Utility.IsValidMessage(doc));
+
+            using (var reader = doc.CreateReader())
+                Assert.IsTrue(MessageValidator.ValidateXml(reader));
         }
 
         [Test]
@@ -128,8 +134,9 @@ namespace SDMX.Tests
 
             string messageText = dsd.ToString();
 
-            var doc = XDocument.Parse(messageText);
-            Assert.IsTrue(Utility.IsValidMessage(doc));
+            var doc = XDocument.Parse(messageText); 
+            using (var reader = doc.CreateReader())
+                Assert.IsTrue(MessageValidator.ValidateXml(reader));
         }
         
         [Test]

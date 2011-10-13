@@ -8,26 +8,26 @@ namespace SDMX.Tests
     [TestFixture]
     public class QueryTests
     {
-        //[Test]
-        //public void ApiDesign()
-        //{
-        //    var query = new DataQuery();
-        //    var and = new AndCriterion();
-        //    and.Add(new DimensionCriterion() { Name = "JD_CATEGORY", Value = "A" });
-        //    and.Add(new DimensionCriterion() { Name = "FREQ", Value = "A" });
-        //    and.Add(new DimensionCriterion() { Name = "FREQ", Value = "M" });
+        [Test]
+        public void ApiDesign()
+        {
+            var query = new DataQuery();
+            var and = new AndCriterion();
+            and.Add(new DimensionCriterion() { Name = "JD_CATEGORY", Value = "A" });
+            and.Add(new DimensionCriterion() { Name = "FREQ", Value = "A" });
+            and.Add(new DimensionCriterion() { Name = "FREQ", Value = "M" });
 
-        //    and.Add(new TimePeriodCriterion() 
-        //        { 
-        //            StartTime = new DateValue(new DateTime(2000, 1, 1)), 
-        //            EndTime = new DateValue(new DateTime(2000, 12, 31)) 
-        //        });
-        //    var or = new OrCriterion();
-        //    or.Add(new DataSetCriterion() { Name = "JD014" });
-        //    and.Add(or);
+            and.Add(new TimePeriodCriterion()
+                {
+                    StartTime = new Date(new DateTime(2000, 1, 1)),
+                    EndTime = new Date(new DateTime(2000, 12, 31))
+                });
+            var or = new OrCriterion();
+            or.Add(new DataSetCriterion() { Name = "JD014" });
+            and.Add(or);
 
-        //    query.Criterion = and;
-        //}
+            query.Criterion = and;
+        }
 
         [Test]
         public void ParseQuerySample()
@@ -42,9 +42,10 @@ namespace SDMX.Tests
                 message.Write(writer);
             }
 
-            Assert.IsTrue(Utility.IsValidMessage(doc));
+            using (var reader = doc.CreateReader())
+                Assert.IsTrue(MessageValidator.ValidateXml(reader));
             //Console.Write(doc.ToString());
-            doc.Save(Utility.GetPath("lib\\QuerySample2.xml"));
+            //doc.Save(Utility.GetPath("lib\\QuerySample2.xml"));
         }
     }
 }
