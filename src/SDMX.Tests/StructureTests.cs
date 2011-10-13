@@ -16,27 +16,26 @@ namespace SDMX.Tests
     public class StructureTests
     {
         [Test]
-        [Ignore]
+        public void bop_its_tot()
+        {
+            var message = StructureMessage.Load(@"c:\temp\bop_its_tot.dsd.xml");
+            message.Save(@"c:\temp\bop_its_tot.dsd2.xml");
+            message = StructureMessage.Load(@"c:\temp\bop_its_tot.dsd2.xml");
+            message.Save(@"c:\temp\bop_its_tot.dsd3.xml");
+        }
+
+        [Test]
         public void StructureSampleTest()
         {
             string dsdPath = Utility.GetPath("lib\\StructureSample.xml");
 
             StructureMessageMap map = new StructureMessageMap();
 
-            StructureMessage message;
-            using (var reader = XmlReader.Create(dsdPath))
-            {
-                message = map.ReadXml(reader);
-            }
+            StructureMessage message = StructureMessage.Load(dsdPath);
 
-            var output = new StringBuilder();
-            var settings = new XmlWriterSettings() { Indent = true };
-            using (var writer = XmlWriter.Create(output, settings))
-            {
+            var doc = new XDocument();
+            using (var writer = doc.CreateWriter())
                 map.WriteXml(writer, message);
-            }
-
-            var doc = XDocument.Parse(output.ToString());
             Assert.IsTrue(Utility.IsValidMessage(doc));
         }
 
@@ -46,27 +45,18 @@ namespace SDMX.Tests
             string dsdPath = Utility.GetPath("lib\\StructureSample.xml");
             var message = StructureMessage.Load(dsdPath);
 
-            message.Header.Test = false;
-
-            var stream = new MemoryStream();
-            message.Write(stream);            
-
-
-
-            stream.Position = 0;
-
             var doc = new XDocument();
             using (var writer = doc.CreateWriter())
                 message.Write(writer);
 
             // Console.Write(doc);
 
-            Assert.IsTrue(Validator.ValidateMessageXml(stream, w => Console.WriteLine(w), e => Console.WriteLine(e)));
+            using (var reader = doc.CreateReader())
+                Assert.IsTrue(MessageValidator.ValidateXml(reader, w => Console.WriteLine(w), e => Console.WriteLine(e)));
 
-            stream.Position = 0;
-
-            var message2 = StructureMessage.Read(stream);
-
+            StructureMessage message2 = null;
+            using (var reader = doc.CreateReader())
+                message2 = StructureMessage.Read(reader);
         }
      
         [Test]

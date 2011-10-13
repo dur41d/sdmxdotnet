@@ -12,7 +12,7 @@ namespace SDMX.Tests
 {
     [TestFixture]
     public class DataReaderTests
-    {      
+    {
         [Test]
         public void ReadCompact()
         {

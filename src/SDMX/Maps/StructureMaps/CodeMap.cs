@@ -25,9 +25,10 @@ namespace SDMX.Parsers
                .Set(v => SetParentId(v, codeList))
                .Converter(new IdConverter());
 
-            MapCollection(o => o.Description).ToElement("Description", false)
+            int count = 0;
+            MapCollection(o => { count = o.Description.Count(); return o.Description; }).ToElement("Description", false)
                .Set(v => code.Description.Add(v))
-               .ClassMap(() => new InternationalStringMap());
+               .ClassMap(() => new InternationalStringMap(count));
         }
 
         private Id GetParentId(Code code)

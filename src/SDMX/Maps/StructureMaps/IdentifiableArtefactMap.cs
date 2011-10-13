@@ -24,13 +24,15 @@ namespace SDMX.Parsers
                 .Set(v => SetUri(v))
                 .Converter(new UriConverter());
 
-            MapCollection(o => o.Name).ToElement("Name", true)
+            int count = 0;
+            MapCollection(o => { count = o.Name.Count(); return o.Name; }).ToElement("Name", true)
                 .Set(v => SetName(v))
-                .ClassMap(() => new InternationalStringMap());
+                .ClassMap(() => new InternationalStringMap(count));
 
-            MapCollection(o => o.Description).ToElement("Description", false)
+            int desCount = 0;
+            MapCollection(o => { desCount = o.Description.Count(); return o.Description; }).ToElement("Description", false)
                .Set(v => SetDescription(v))
-               .ClassMap(() => new InternationalStringMap());
+               .ClassMap(() => new InternationalStringMap(desCount));
         }
     }
 }

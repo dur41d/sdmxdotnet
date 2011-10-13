@@ -27,9 +27,10 @@ namespace SDMX.Parsers
                .Set(p => annotation.Url = p)
                .Converter(new UriConverter());
 
-            MapCollection(o => o.Text).ToElement("AnnotationText", false)
+            int count = 0;
+            MapCollection(o => { count = o.Text.Count(); return o.Text; }).ToElement("AnnotationText", false)
                 .Set(v =>  annotation.Text.Add(v))
-                .ClassMap(() => new InternationalStringMap());
+                .ClassMap(() => new InternationalStringMap(count));
         }     
 
         protected override Annotation Return()

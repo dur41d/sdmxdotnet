@@ -27,9 +27,10 @@ namespace SDMX.Parsers
                 .Set(v => _group.AttachmentConstraintRef = v)
                 .Converter(new IdConverter());
 
-            MapCollection(o => o.Description).ToElement("Description", false)
+            int count = 0;
+            MapCollection(o => { count = o.Description.Count(); return o.Description; }).ToElement("Description", false)
                 .Set(v => _group.Description.Add(v))
-                .ClassMap(() => new InternationalStringMap());
+                .ClassMap(() => new InternationalStringMap(count));
         }
 
         protected override void AddAnnotation(Annotation annotation)

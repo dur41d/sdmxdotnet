@@ -17,6 +17,7 @@ namespace OXM
         XName _name;
         bool _required;
         string _defaultValue;
+        bool _writeDefault;
         
         // for AttributeGroup
         bool _groupHasDefault;
@@ -46,16 +47,22 @@ namespace OXM
 
         public SimpleMemberMap<TObj, TProperty> ToAttribute(XName name, bool required, string defaultValue)
         {
+            return ToAttribute(name, required, defaultValue, false);
+        }
+
+        public SimpleMemberMap<TObj, TProperty> ToAttribute(XName name, bool required, string defaultValue, bool writeDefault)
+        {
             if (String.IsNullOrEmpty(defaultValue))
             {
                 throw new ParseException("defaultValue cannot be null or empty. ObjectType '{0}' PropertyType '{1}'.", typeof(TObj).Name, typeof(TProperty).Name);
             }
 
             isAttribute = true;
-            
+
             _name = name;
             _required = required;
             _defaultValue = defaultValue;
+            _writeDefault = writeDefault;
 
             _simpleMemberMap = new SimpleMemberMap<TObj, TProperty>(_property);
             return _simpleMemberMap;
@@ -119,15 +126,7 @@ namespace OXM
             if (map is IAttributeMapContainer<TObj> && isAttribute)
             {
                 AttributeMap<TObj, TProperty> attributeMap;
-                if (_defaultValue == null)
-                {
-                    attributeMap = new AttributeMap<TObj, TProperty>(_name, _required, null, false);
-                }
-                else
-                {
-                    attributeMap = new AttributeMap<TObj, TProperty>(_name, _required, _defaultValue, true);
-                }
-
+                attributeMap = new AttributeMap<TObj, TProperty>(_name, _required, _defaultValue, _writeDefault);
                 ((IAttributeMapContainer<TObj>)map).AddAttributeMap(_name, attributeMap);
                 attributeMap.Property = _simpleMemberMap.GetProperty();
                 attributeMap.Converter = _simpleMemberMap.GetConverter();

@@ -120,6 +120,7 @@
     <Compile Include="Maps\StructureMaps\CrossSectionalMeasureMap.cs" />
     <Compile Include="Maps\StructureMaps\DimensionMap.cs" />
     <Compile Include="Maps\StructureMaps\GroupDescriptorMap.cs" />
+    <Compile Include="Maps\StructureMaps\HeaderTimeConverter.cs" />
     <Compile Include="Maps\StructureMaps\HierarchicalCodeListMap.cs" />
     <Compile Include="Maps\StructureMaps\HierarchyMap.cs" />
     <Compile Include="Maps\StructureMaps\IdConverter.cs" />
@@ -129,6 +130,7 @@
     <Compile Include="Maps\StructureMaps\LanguageMap.cs" />
     <Compile Include="Maps\StructureMaps\MaintainableArtefactMap.cs" />
     <Compile Include="Maps\Namespaces.cs" />
+    <Compile Include="Maps\StructureMaps\NullableHeaderTimeConverter.cs" />
     <Compile Include="Maps\StructureMaps\PrimaryMeasureMap.cs" />
     <Compile Include="Maps\QueryMaps\QueryMap.cs" />
     <Compile Include="Maps\QueryMaps\QueryMessageMap.cs" />

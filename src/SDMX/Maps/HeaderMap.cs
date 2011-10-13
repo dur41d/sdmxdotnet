@@ -25,13 +25,14 @@ namespace SDMX.Parsers
                 .Set(v => header.Truncated = v.Value)
                 .Converter(new NullableBooleanConverter());
 
-            MapCollection(o => o.Name).ToElement("Name", false)
+            int count = 0;
+            MapCollection(o => { count = o.Name.Count(); return o.Name; }).ToElement("Name", false)
                 .Set(v => header.Name.Add(v))
-                .ClassMap(() => new InternationalStringMap());
+                .ClassMap(() => new InternationalStringMap(count));
 
             Map(o => o.Prepared).ToSimpleElement("Prepared", true)
                 .Set(v => header.Prepared = v)
-                .Converter(new DateTimeConverter());
+                .Converter(new HeaderTimeConverter());
 
             MapCollection(o => o.Senders).ToElement("Sender", true)
                 .Set(v => header.Senders.Add(v))
@@ -68,15 +69,16 @@ namespace SDMX.Parsers
 
             Map(o => o.ReportingBegin).ToSimpleElement("ReportingBegin", false)
                .Set(v => header.ReportingBegin = v)
-               .Converter(new NullableDateTimeConverter());
+               .Converter(new NullableHeaderTimeConverter());
 
             Map(o => o.ReportingEnd).ToSimpleElement("ReportingEnd", false)
                .Set(v => header.ReportingEnd = v)
-               .Converter(new NullableDateTimeConverter());
+               .Converter(new NullableHeaderTimeConverter());
 
-            MapCollection(o => o.Source).ToElement("Source", false)
+            int sourceCount = 0;
+            MapCollection(o => { sourceCount = o.Source.Count(); return o.Source; }).ToElement("Source", false)
                 .Set(v => header.Source.Add(v))
-                .ClassMap(() => new InternationalStringMap());
+                .ClassMap(() => new InternationalStringMap(sourceCount));
         }
 
         protected override Header Return()
