@@ -13,17 +13,20 @@ namespace SDMX.Parsers
         
         public ContactMap()
         {
-            MapCollection(o => o.Name).ToElement("Name", false)
+            int nameCount = 0;
+            MapCollection(o => { nameCount = o.Name.Count(); return o.Name; }).ToElement("Name", false)
                 .Set(v => contact.Name.Add(v))
-                .ClassMap(() => new InternationalStringMap());
+                .ClassMap(() => new InternationalStringMap(nameCount));
 
-            MapCollection(o => o.Department).ToElement("Department", false)
+            int depCount = 0;
+            MapCollection(o => { depCount = o.Department.Count(); return o.Department; }).ToElement("Department", false)
                 .Set(v => contact.Department.Add(v))
-                .ClassMap(() => new InternationalStringMap());
+                .ClassMap(() => new InternationalStringMap(depCount));
 
-            MapCollection(o => o.Role).ToElement("Role", false)
+            int roleCount = 0;
+            MapCollection(o => { roleCount = o.Role.Count(); return o.Role; }).ToElement("Role", false)
                 .Set(v => contact.Role.Add(v))
-                .ClassMap(() => new InternationalStringMap());
+                .ClassMap(() => new InternationalStringMap(roleCount));
 
             MapCollection(o => o.TelephoneList).ToSimpleElement("Telephone", false)
                 .Set(v => contact.TelephoneList.Add(v))

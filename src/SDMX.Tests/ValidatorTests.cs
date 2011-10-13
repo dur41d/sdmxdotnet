@@ -12,11 +12,11 @@ namespace SDMX.Tests
         {
             string path = Utility.GetPath("lib\\StructureSample.xml");
             var fileStream = File.OpenRead(path);
-            Assert.IsTrue(Validator.ValidateMessageXml(fileStream, null, null));
+            Assert.IsTrue(MessageValidator.ValidateXml(fileStream, null, null));
 
             path = Utility.GetPath("lib\\QuerySample.xml");
             fileStream = File.OpenRead(path);
-            Assert.IsTrue(Validator.ValidateMessageXml(fileStream, w => Console.WriteLine(w), e => Console.WriteLine(e)));
+            Assert.IsTrue(MessageValidator.ValidateXml(fileStream, w => Console.WriteLine(w), e => Console.WriteLine(e)));
         }
     }
 }

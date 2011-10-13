@@ -21,16 +21,18 @@ namespace OXM
         private bool _required;
         private string _default;
         private bool _hasDefault;
+        private bool _writeDefault;
 
         internal Property<T, TProperty> Property { get; set; }
         internal ISimpleTypeConverter<TProperty> Converter { get; set; }
 
-        public AttributeMap(XName name, bool required, string defaultValue, bool hasDefault)
+        public AttributeMap(XName name, bool required, string defaultValue, bool writeDefault)
         {
             _name = name;
             _required = required;
             _default = defaultValue;
-            _hasDefault = hasDefault;            
+            _hasDefault = defaultValue != null;
+            _writeDefault = writeDefault;
         }
 
         public bool Required
@@ -84,9 +86,13 @@ namespace OXM
             else
             {
                 string xmlValue = Converter.ToXml(property);
+                
+
+                // write the attribute if it's writeDefault is true or it's required or if it's value
+                // is not equal to the default value.
                 // if the attribute is optional and the its value is equal to the default value 
-                // then don't add it to the element for compactness
-                if (_required || !(_hasDefault && _default.Equals(xmlValue)))
+                // then don't write it for compactness
+                if (_writeDefault || _required || !(_hasDefault && _default.Equals(xmlValue)))
                 {
                     writer.WriteAttributeString(_name.LocalName, _name.NamespaceName, xmlValue);
                 }

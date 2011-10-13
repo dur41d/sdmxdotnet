@@ -17,9 +17,10 @@ namespace SDMX.Parsers
                 .Set(v => party = new Party(v))
                 .Converter(new IdConverter());
 
-            MapCollection(o => o.Name).ToElement("Name", false)
+            int count = 0;
+            MapCollection(o => { count = o.Name.Count(); return o.Name; }).ToElement("Name", false)
                 .Set(v => party.Name.Add(v))
-                .ClassMap(() => new InternationalStringMap());
+                .ClassMap(() => new InternationalStringMap(count));
 
             MapCollection(o => o.Contacts).ToElement("Contact", false)
                 .Set(v => party.Contacts.Add(v))

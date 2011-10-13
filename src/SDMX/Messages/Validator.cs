@@ -5,11 +5,21 @@ using System.Xml.Schema;
 
 namespace SDMX
 {
-    public class Validator
+    public class MessageValidator
     {
-        private static XmlSchemaSet _schemas;       
+        private static XmlSchemaSet _schemas;
 
-        public static bool ValidateMessageXml(Stream stream, Action<string> warning, Action<string> error)
+        public static bool ValidateXml(string fileName, Action<string> warning, Action<string> error)
+        {
+            return ValidateXml(XmlReader.Create(fileName), warning, error);
+        }
+        
+        public static bool ValidateXml(Stream stream, Action<string> warning, Action<string> error)
+        {
+            return ValidateXml(XmlReader.Create(stream), warning, error);
+        }
+
+        public static bool ValidateXml(XmlReader reader, Action<string> warning, Action<string> error)
         {
             bool isValid = true;
 
@@ -27,8 +37,8 @@ namespace SDMX
                     error(args.Message);
             };
 
-            var reader = XmlReader.Create(stream, settings);
-            while (reader.Read()) ;
+            var r = XmlReader.Create(reader, settings);
+            while (r.Read()) ;
 
             return isValid;
         }
