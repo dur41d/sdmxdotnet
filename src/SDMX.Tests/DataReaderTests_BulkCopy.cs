@@ -23,8 +23,8 @@ namespace SDMX.Tests
                 reader.Cast("TIME", i => ((YearMonth)i).DateTime);
 
 
-                //foreach (DataColumn col in ((IDataReader)reader).GetSchemaTable().Columns)
-                //    Console.WriteLine(col.ColumnName);
+                foreach (DataColumn col in ((IDataReader)reader).GetSchemaTable().Columns)
+                    Console.WriteLine("{0}: {1}", col.ColumnName, col.DataType);
 
                 CreateTable();
                 using (SqlBulkCopy bulkCopy = new SqlBulkCopy(_connectionString))

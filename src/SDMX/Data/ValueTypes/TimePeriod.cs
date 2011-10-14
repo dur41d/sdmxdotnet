@@ -30,15 +30,6 @@ namespace SDMX
         }
 
         public abstract bool Equals(TimePeriod other);
-
-        public abstract int Year { get; }
-        public abstract int Month { get; }
-        public abstract int Day { get; }
-        public abstract int Hour { get; }
-        public abstract int Minute { get; }
-        public abstract int Second { get; }
-        public abstract int Millisecond { get; }
-        public abstract TimeSpan Offset { get; }
     }
 
 }

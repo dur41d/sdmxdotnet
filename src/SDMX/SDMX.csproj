@@ -53,6 +53,7 @@
     <Compile Include="Annotation.cs" />
     <Compile Include="Data\CompactDataReader.cs" />
     <Compile Include="Data\DataReader.cs" />
+    <Compile Include="Data\DataReader.IDataReader.cs" />
     <Compile Include="Data\GenerictDataReader.cs" />
     <Compile Include="Data\ValueTypes\Biannum.cs" />
     <Compile Include="Data\ValueTypes\Biannual.cs" />

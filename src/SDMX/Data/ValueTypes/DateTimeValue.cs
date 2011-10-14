@@ -19,14 +19,14 @@ namespace SDMX
         DateTimeOffset _value;
         string _toString;
 
-        public override int Year { get { return _value.Year; } }
-        public override int Month { get { return _value.Month; } }
-        public override int Day { get { return _value.Day; } }
-        public override int Hour { get { return _value.Hour; } }
-        public override int Minute { get { return _value.Minute; } }
-        public override int Second { get { return _value.Second; } }
-        public override int Millisecond { get { return _value.Millisecond; } }
-        public override TimeSpan Offset { get { return _value.Offset; } }
+        public int Year { get { return _value.Year; } }
+        public int Month { get { return _value.Month; } }
+        public int Day { get { return _value.Day; } }
+        public int Hour { get { return _value.Hour; } }
+        public int Minute { get { return _value.Minute; } }
+        public int Second { get { return _value.Second; } }
+        public int Millisecond { get { return _value.Millisecond; } }
+        public TimeSpan Offset { get { return _value.Offset; } }
 
         public DateTime DateTime { get { return _value.DateTime; } }
         public DateTimeOffset DateTimeOffset { get { return _value; } }

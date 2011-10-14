@@ -18,7 +18,7 @@ namespace SDMX
                 if (!_xmlReader.IsStartElement())
                     continue;
 
-                var group = KeyFamily.Groups.TryGet(_xmlReader.LocalName);
+                var group = KeyFamily.Groups.Find(_xmlReader.LocalName);
 
                 if (group != null)
                 {   
@@ -29,30 +29,28 @@ namespace SDMX
                         dict[_xmlReader.LocalName] = component.Parse(_xmlReader.Value, null);
                     }
 
-                    ReadGroupValues(group, dict);
+                    SetGroup(group, dict);
                 }
                 else if (_xmlReader.LocalName == "Series")
                 {
-                    ClearRecord();
+                    ClearSeries();
                     while (_xmlReader.MoveToNextAttribute())
                     {
                         var component = KeyFamily.GetComponent(_xmlReader.LocalName);
-                        SetRecord(_xmlReader.LocalName, component.Parse(_xmlReader.Value, null));
+                        SetSeries(_xmlReader.LocalName, component.Parse(_xmlReader.Value, null));
                     }
-
-                    SetGroupValues();
                 }
                 else if (_xmlReader.LocalName == "Obs")
                 {
-                    ClearObsAttributes();
+                    ClearObs();
 
                     while (_xmlReader.MoveToNextAttribute())
                     {
                         var component = KeyFamily.GetComponent(_xmlReader.LocalName);
-                        SetRecord(_xmlReader.LocalName, component.Parse(_xmlReader.Value, null));
+                        SetObs(_xmlReader.LocalName, component.Parse(_xmlReader.Value, null));
                     }
 
-                    FillMissingAttributes();
+                    SetRecord();
 
                     return true;
                 }

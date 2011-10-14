@@ -16,20 +16,20 @@ namespace SDMX
             Name.Add(name);
             Dimensions = new Collection<Dimension>();
             Attributes = new Collection<Attribute>();
-            Groups = new Collection<GroupDescriptor>();
+            Groups = new Collection<Group>();
             XMeasures = new Collection<CrossSectionalMeasure>();
         }
 
         public TimeDimension TimeDimension { get; internal set; }
         public PrimaryMeasure PrimaryMeasure { get; internal set; }
         public Collection<Dimension> Dimensions { get; private set; }
-        public Collection<GroupDescriptor> Groups { get; private set; }
+        public Collection<Group> Groups { get; private set; }
         public Collection<Attribute> Attributes { get; private set; }
         public Collection<CrossSectionalMeasure> XMeasures { get; set; }
 
-        public GroupDescriptor CreateNewGroup(Id groupId)
+        public Group CreateNewGroup(Id groupId)
         {
-            var group = new GroupDescriptor(groupId, this);
+            var group = new Group(groupId, this);
             Groups.Add(group);
             return group;
         }
@@ -52,7 +52,7 @@ namespace SDMX
                 {
                     var c = criterion as DimensionCriterion;
                     // TODO: remove TryGet and make Get return null to simplify the api
-                    var dim = Dimensions.TryGet(c.Name);
+                    var dim = Dimensions.Find(c.Name);
 
                     if (dim == null) 
                         return false;
@@ -64,7 +64,7 @@ namespace SDMX
                 {
                     var c = criterion as AttributeCriterion;
 
-                    var att = Attributes.TryGet(c.Name);
+                    var att = Attributes.Find(c.Name);
 
                     if (att == null)
                         return false;
@@ -97,7 +97,7 @@ namespace SDMX
 
         internal void ValidateAttribute(Id conceptId, object value, AttachmentLevel level)
         {
-            var attribute = Attributes.TryGet(conceptId);
+            var attribute = Attributes.Find(conceptId);
             if (attribute == null)
             {
                 throw new SDMXException("Invalid attribute '{0}'.", conceptId);
@@ -116,10 +116,10 @@ namespace SDMX
 
         internal Component GetComponent(Id id)
         {
-            Component com = Dimensions.TryGet(id);
+            Component com = Dimensions.Find(id);
             if (com == null)
             {
-                com = Attributes.TryGet(id);                
+                com = Attributes.Find(id);                
             }
             if (com == null && id == TimeDimension.Concept.Id)
             {

@@ -84,5 +84,15 @@ namespace SDMX
 
             return _value == other._value;
         }
+
+        public static bool operator ==(Id x, Id y)
+        {
+            return Extensions.Equals(x, y);
+        }
+
+        public static bool operator !=(Id x, Id y)
+        {
+            return !(x == y);
+        }
     }
 }
