@@ -19,5 +19,10 @@ namespace SDMX
         {
             return other is StringTextFormat;
         }
+
+        public override Type GetValueType()
+        {
+            return typeof(string);
+        }
     }
 }

@@ -1,31 +1,241 @@
-using System.Collections.Generic;
 using System;
-using System.Linq;
-using System.Xml.Linq;
-using SDMX.Parsers;
-using Common;
-using System.Xml;
-using System.IO;
+using System.Collections.Generic;
 using System.Data;
+using System.IO;
+using System.Linq;
+using System.Xml;
+using Common;
+using SDMX.Parsers;
 
 namespace SDMX
 {
-    public abstract class DataReader : IDisposable, IEnumerable<KeyValuePair<string, object>>, IDataReader
+    public partial class DataReader : IDataReader
+    {
+
+        public void Close()
+        {
+            throw new NotImplementedException();
+        }
+
+        public int Depth
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        public DataTable GetSchemaTable()
+        {
+            return _table.Clone();
+        }
+
+        public bool IsClosed
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        public bool NextResult()
+        {
+            throw new NotImplementedException();
+        }
+
+        public int RecordsAffected
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        public int FieldCount
+        {
+            get { return _record.Count; }
+        }
+
+        public bool GetBoolean(int i)
+        {
+            throw new NotImplementedException();
+        }
+
+        public byte GetByte(int i)
+        {
+            throw new NotImplementedException();
+        }
+
+        public long GetBytes(int i, long fieldOffset, byte[] buffer, int bufferoffset, int length)
+        {
+            throw new NotImplementedException();
+        }
+
+        public char GetChar(int i)
+        {
+            throw new NotImplementedException();
+        }
+
+        public long GetChars(int i, long fieldoffset, char[] buffer, int bufferoffset, int length)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IDataReader GetData(int i)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string GetDataTypeName(int i)
+        {
+            throw new NotImplementedException();
+        }
+
+        public DateTime GetDateTime(int i)
+        {
+            throw new NotImplementedException();
+        }
+
+        public decimal GetDecimal(int i)
+        {
+            throw new NotImplementedException();
+        }
+
+        public double GetDouble(int i)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Type GetFieldType(int i)
+        {
+            throw new NotImplementedException();
+        }
+
+        public float GetFloat(int i)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Guid GetGuid(int i)
+        {
+            throw new NotImplementedException();
+        }
+
+        public short GetInt16(int i)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int GetInt32(int i)
+        {
+            throw new NotImplementedException();
+        }
+
+        public long GetInt64(int i)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string GetName(int i)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int GetOrdinal(string name)
+        {
+            return _table.Columns[name].Ordinal;
+        }
+
+        public string GetString(int i)
+        {
+            throw new NotImplementedException();
+        }
+
+        public object GetValue(int i)
+        {
+            string name = _table.Columns[i].ColumnName;
+            return _record[name];
+        }
+
+        public int GetValues(object[] values)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool IsDBNull(int i)
+        {
+            throw new NotImplementedException();
+        }
+
+        public object this[int i]
+        {
+            get { throw new NotImplementedException(); }
+        }
+    }
+
+    public abstract partial class DataReader : IDisposable, IEnumerable<KeyValuePair<string, object>>
     {
         protected XmlReader _xmlReader;
-        protected Dictionary<string, object> _record = new Dictionary<string, object>();        
+        Dictionary<string, object> _record = new Dictionary<string, object>();       
         
         public KeyFamily KeyFamily { get; protected set; }
 
-        List<string> _obsAttributes = new List<string>();
+        List<string> _obsAttributes = null;
+        
+        List<string> _optionalAttributes = null;
         Dictionary<string, Dictionary<string, object>> _groupValues = new Dictionary<string, Dictionary<string, object>>();
+        Dictionary<string, Func<object, object>> _casts = new Dictionary<string, Func<object, object>>();
 
-        bool isDisposed = false;
+        DataTable _table = new DataTable();
+
+        bool _disposed = false;
 
         public DataReader(XmlReader reader, KeyFamily keyFamily)
         {
             _xmlReader = reader;
             KeyFamily = keyFamily;
+
+            BuildTable();
+        }
+
+        public void Cast(string name, Func<object, object> castAction)
+        {
+            Contract.AssertNotNullOrEmpty(name, "name");
+            Contract.AssertNotNull(castAction, "castAction");
+
+            _casts.Add(name, castAction);
+        }
+
+        protected void ClearRecord()
+        {
+            _record.Clear();
+        }
+
+        protected void SetRecord(string name, object value)
+        {
+            if (_casts.ContainsKey(name))
+                value = _casts[name](value);
+
+            _record[name] = value;
+        }
+
+        void BuildTable()
+        {
+            _table.TableName = KeyFamily.Name.First().ToString();
+
+            DataColumn col = null;
+            foreach (var dim in KeyFamily.Dimensions)
+            {
+                col = new DataColumn(dim.Concept.Id, dim.GetValueType());
+                col.AllowDBNull = false;
+                _table.Columns.Add(col);
+            }
+
+            col = new DataColumn(KeyFamily.TimeDimension.Concept.Id, KeyFamily.TimeDimension.GetValueType());
+            col.AllowDBNull = false;
+            _table.Columns.Add(col);
+
+            col = new DataColumn(KeyFamily.PrimaryMeasure.Concept.Id, KeyFamily.PrimaryMeasure.GetValueType());
+            col.AllowDBNull = false;
+            _table.Columns.Add(col);
+
+            foreach (var attr in KeyFamily.Attributes)
+            {
+                col = new DataColumn(attr.Concept.Id, attr.GetValueType());
+                col.AllowDBNull = attr.AssignmentStatus == AssignmentStatus.Conditional;
+                _table.Columns.Add(col);
+            }
         }
 
         public object this[string name]
@@ -95,22 +305,29 @@ namespace SDMX
 
         protected void CheckDisposed()
         {
-            if (isDisposed) throw new ObjectDisposedException("DataReader"); 
+            if (_disposed) 
+                throw new ObjectDisposedException("DataReader"); 
         }
 
         public void Dispose()
         {
-            _obsAttributes.Clear();
+            if (_disposed)
+                return;
+
+            if (_obsAttributes != null) _obsAttributes.Clear();
+            if (_optionalAttributes != null) _optionalAttributes.Clear();
+
             _record.Clear();
             _groupValues.Clear();
-            _xmlReader.Close();
-            isDisposed = true;
+            ((IDisposable)_xmlReader).Dispose();
+            _disposed = true;
         }
 
         protected void ClearObsAttributes()
         {
-            if (_obsAttributes.Count == 0)
-            {                
+            if (_obsAttributes == null)
+            {
+                _obsAttributes = new List<string>();
                 foreach (var attribute in KeyFamily.Attributes.Where(a => a.AttachementLevel == AttachmentLevel.Observation))
                     _obsAttributes.Add(attribute.Concept.Id.ToString());
             }
@@ -166,7 +383,7 @@ namespace SDMX
                     object value = null;
 
                     if (!_record.TryGetValue(id, out value))
-                        throw new SDMXException("Value for Dimension '{0}' is missin.", id);
+                        throw new SDMXException("Value for Dimension '{0}' is missing.", id);
 
                     keyList.Add(string.Format("{0}={1}", id, value));
                 }
@@ -185,173 +402,212 @@ namespace SDMX
             }
         }
 
-        #region IDataReader
-
-        void IDataReader.Close()
+        protected void FillMissingAttributes()
         {
-            Dispose();
+            if (_optionalAttributes == null)
+            {
+                _optionalAttributes = new List<string>();
+                foreach (var attr in KeyFamily.Attributes.Where(i => i.AssignmentStatus == AssignmentStatus.Conditional))
+                    _optionalAttributes.Add(attr.Concept.Id);
+            }
+
+            foreach (var attr in _optionalAttributes)
+                if (!_record.ContainsKey(attr))
+                    _record.Add(attr, null);
         }
 
-        int IDataReader.Depth
-        {
-            get { throw new NotImplementedException(); }
-        }
+        //#region IDataReader
 
-        DataTable IDataReader.GetSchemaTable()
-        {
-            throw new NotImplementedException();
-        }
+        //void IDataReader.Close()
+        //{
+        //    Dispose();
+        //}
 
-        bool IDataReader.IsClosed
-        {
-            get { return isDisposed; }
-        }
+        //int IDataReader.Depth
+        //{
+        //    get { return 0; }
+        //}
 
-        bool IDataReader.NextResult()
-        {
-            throw new NotImplementedException();
-        }
+        //DataTable IDataReader.GetSchemaTable()
+        //{
+        //    throw new NotImplementedException();
+        //}
 
-        bool IDataReader.Read()
-        {
-            return Read();
-        }
+        //bool IDataReader.IsClosed
+        //{
+        //    get { return _disposed; }
+        //}
 
-        int IDataReader.RecordsAffected
-        {
-            get { throw new NotImplementedException(); }
-        }
+        //bool IDataReader.NextResult()
+        //{
+        //    return false;
+        //}
 
-        void IDisposable.Dispose()
-        {
-            Dispose();
-        }
+        //bool IDataReader.Read()
+        //{
+        //    return Read();
+        //}
 
-        int IDataRecord.FieldCount
-        {
-            get { return _record.Count; }
-        }
+        //int IDataReader.RecordsAffected
+        //{
+        //    get { return -1; }
+        //}
 
-        bool IDataRecord.GetBoolean(int i)
-        {
-            return (bool)_record.ElementAt(i).Value;
-        }
+        //void IDisposable.Dispose()
+        //{
+        //    Dispose();
+        //}
 
-        byte IDataRecord.GetByte(int i)
-        {
-            return (byte)_record.ElementAt(i).Value;
-        }
+        //int IDataRecord.FieldCount
+        //{
+        //    get { return _record.Count; }
+        //}
 
-        long IDataRecord.GetBytes(int i, long fieldOffset, byte[] buffer, int bufferoffset, int length)
-        {
-            throw new NotImplementedException();
-        }
+        //bool IDataRecord.GetBoolean(int i)
+        //{
+        //    return (bool)_record.ElementAt(i).Value;
+        //}
 
-        char IDataRecord.GetChar(int i)
-        {
-            return (char)_record.ElementAt(i).Value;
-        }
+        //byte IDataRecord.GetByte(int i)
+        //{
+        //    return (byte)_record.ElementAt(i).Value;
+        //}
 
-        long IDataRecord.GetChars(int i, long fieldoffset, char[] buffer, int bufferoffset, int length)
-        {
-            throw new NotImplementedException();
-        }
+        //long IDataRecord.GetBytes(int i, long fieldOffset, byte[] buffer, int bufferoffset, int length)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
-        IDataReader IDataRecord.GetData(int i)
-        {
-            throw new NotImplementedException();
-        }
+        //char IDataRecord.GetChar(int i)
+        //{
+        //    return (char)_record.ElementAt(i).Value;
+        //}
 
-        string IDataRecord.GetDataTypeName(int i)
-        {
-            return _record.ElementAt(i).Value.GetType().Name;
-        }
+        //long IDataRecord.GetChars(int i, long fieldoffset, char[] buffer, int bufferoffset, int length)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
-        DateTime IDataRecord.GetDateTime(int i)
-        {
-            return (DateTime)_record.ElementAt(i).Value;
-        }
+        //IDataReader IDataRecord.GetData(int i)
+        //{
+        //    return this;
+        //}
 
-        decimal IDataRecord.GetDecimal(int i)
-        {
-            return (decimal)_record.ElementAt(i).Value;
-        }
+        //string IDataRecord.GetDataTypeName(int i)
+        //{
+        //    return _record.ElementAt(i).Value.GetType().Name;
+        //}
 
-        double IDataRecord.GetDouble(int i)
-        {
-            return (double)_record.ElementAt(i).Value;
-        }
+        //DateTime IDataRecord.GetDateTime(int i)
+        //{
+        //    return (DateTime)_record.ElementAt(i).Value;
+        //}
 
-        Type IDataRecord.GetFieldType(int i)
-        {
-            return _record.ElementAt(i).GetType();
-        }
+        //decimal IDataRecord.GetDecimal(int i)
+        //{
+        //    return (decimal)_record.ElementAt(i).Value;
+        //}
 
-        float IDataRecord.GetFloat(int i)
-        {
-            return (float)_record.ElementAt(i).Value;
-        }
+        //double IDataRecord.GetDouble(int i)
+        //{
+        //    return (double)_record.ElementAt(i).Value;
+        //}
 
-        Guid IDataRecord.GetGuid(int i)
-        {
-            return new Guid((string)_record.ElementAt(i).Value);
-        }
+        //Type IDataRecord.GetFieldType(int i)
+        //{
+        //    return _record.ElementAt(i).GetType();
+        //}
 
-        short IDataRecord.GetInt16(int i)
-        {
-            return (short)_record.ElementAt(i).Value;
-        }
+        //float IDataRecord.GetFloat(int i)
+        //{
+        //    return (float)_record.ElementAt(i).Value;
+        //}
 
-        int IDataRecord.GetInt32(int i)
-        {
-            return (int)_record.ElementAt(i).Value;
-        }
+        //Guid IDataRecord.GetGuid(int i)
+        //{
+        //    return new Guid((string)_record.ElementAt(i).Value);
+        //}
 
-        long IDataRecord.GetInt64(int i)
-        {
-            return (long)_record.ElementAt(i).Value;
-        }
+        //short IDataRecord.GetInt16(int i)
+        //{
+        //    return (short)_record.ElementAt(i).Value;
+        //}
 
-        string IDataRecord.GetName(int i)
-        {
-            throw new NotImplementedException();
-        }
+        //int IDataRecord.GetInt32(int i)
+        //{
+        //    return (int)_record.ElementAt(i).Value;
+        //}
 
-        int IDataRecord.GetOrdinal(string name)
-        {
-            throw new NotImplementedException();
-        }
+        //long IDataRecord.GetInt64(int i)
+        //{
+        //    return (long)_record.ElementAt(i).Value;
+        //}
 
-        string IDataRecord.GetString(int i)
-        {
-            return (string)_record.ElementAt(i).Value;
-        }
+        //string IDataRecord.GetName(int i)
+        //{
+        //    return _record.ElementAt(i).Key;
+        //}
 
-        object IDataRecord.GetValue(int i)
-        {
-            return _record.ElementAt(i).Value;
-        }
+        //int IDataRecord.GetOrdinal(string name)
+        //{
+        //    // case-sensitive search first and then case-insensitive
+        //    // as per IDataRecord.GetOrdinal specs
+        //    int i = 0;
+        //    foreach (var key in _record.Keys)
+        //        if (string.Compare(key, name, false) == 0)
+        //            return i;
+        //        else
+        //            i++;
 
-        int IDataRecord.GetValues(object[] values)
-        {
-            throw new NotImplementedException();
-        }
+        //    i = 0;
+        //    foreach (var key in _record.Keys)
+        //        if (string.Compare(key, name, true) == 0)
+        //            return i;
+        //        else
+        //            i++;
 
-        bool IDataRecord.IsDBNull(int i)
-        {
-            return false;
-        }
+        //    throw new IndexOutOfRangeException();
+        //}       
 
-        object IDataRecord.this[string name]
-        {
-            get { return this[name]; }
-        }
+        //string IDataRecord.GetString(int i)
+        //{
+        //    return (string)_record.ElementAt(i).Value;
+        //}
 
-        object IDataRecord.this[int i]
-        {
-            get { return _record.ElementAt(i).Value; }
-        }
+        //object IDataRecord.GetValue(int i)
+        //{
+        //    return _record.ElementAt(i).Value;
+        //}
 
-        #endregion
+        //int IDataRecord.GetValues(object[] values)
+        //{   
+        //    int count = values.Length < _record.Count ? values.Length : _record.Count;
+
+        //    int counter = 0;
+        //    for (int i = 0; i < count; i++)
+        //    {
+        //        values[i] = _record.ElementAt(i).Value;
+        //        counter++;
+        //    }
+
+        //    return counter;
+        //}
+
+        //bool IDataRecord.IsDBNull(int i)
+        //{
+        //    return false;
+        //}
+
+        //object IDataRecord.this[string name]
+        //{
+        //    get { return this[name]; }
+        //}
+
+        //object IDataRecord.this[int i]
+        //{
+        //    get { return _record.ElementAt(i).Value; }
+        //}
+
+        //#endregion
     }
 }

@@ -22,6 +22,12 @@ namespace SDMX
             return other is TimePeriodTextFormat;
         }
 
+
+        public override Type GetValueType()
+        {
+            return typeof(TimePeriod);
+        }
+
         //public override object Parse(string s, string startTime)
         //{
         //    var value = _converter.Parse(s, startTime);

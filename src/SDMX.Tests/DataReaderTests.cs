@@ -11,7 +11,7 @@ using SDMX.Parsers;
 namespace SDMX.Tests
 {
     [TestFixture]
-    public class DataReaderTests
+    public partial class DataReaderTests
     {
         [Test]
         public void ReadCompact()
@@ -84,7 +84,7 @@ namespace SDMX.Tests
 
                 while (reader.Read())
                 {
-                    Assert.AreEqual(13, reader.Count());
+                    Assert.AreEqual(15, reader.Count());
                     //foreach (var item in reader)
                     //    Console.Write("{0}={1},", item.Key, item.Value);
                     //Console.WriteLine();
@@ -113,7 +113,7 @@ namespace SDMX.Tests
 
                 while (reader.Read())
                 {
-                    Assert.AreEqual(13, reader.Count());
+                    Assert.AreEqual(15, reader.Count());
                     //foreach (var item in reader)
                     //    Console.Write("{0}={1},", item.Key, item.Value);
                     //Console.WriteLine();
@@ -135,7 +135,7 @@ namespace SDMX.Tests
             {              
                 while (reader.Read())
                 {
-                    Assert.AreEqual(13, reader.Count());
+                    Assert.AreEqual(15, reader.Count());
                     //foreach (var item in reader)
                     //    Console.Write("{0}={1},", item.Key, item.Value);
                     //Console.WriteLine();
@@ -157,7 +157,7 @@ namespace SDMX.Tests
             {
                 while (reader.Read())
                 {
-                    Assert.AreEqual(13, reader.Count());
+                    Assert.AreEqual(15, reader.Count());
                     //foreach (var item in reader)
                     //    Console.Write("{0}={1},", item.Key, item.Value);
                     //Console.WriteLine();

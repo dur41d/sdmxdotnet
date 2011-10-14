@@ -92,5 +92,13 @@ namespace SDMX
                             , value, Concept.Id);
             }
         }
+
+        public Type GetValueType()
+        {
+            if (IsCoded)
+                return typeof(string);
+            else
+                return TextFormat.GetValueType();
+        }
     }
 }

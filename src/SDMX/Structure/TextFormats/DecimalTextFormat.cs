@@ -19,5 +19,10 @@ namespace SDMX
         {
             return other is DecimalTextFormat;
         }
+
+        public override Type GetValueType()
+        {
+            return typeof(decimal);
+        }
     }
 }
