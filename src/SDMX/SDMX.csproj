@@ -82,6 +82,7 @@
     <Compile Include="Maps\DataMaps\ValueConverters\DateTimeValueConverter.cs" />
     <Compile Include="Maps\DataMaps\ValueConverters\DateValueConverter.cs" />
     <Compile Include="Maps\DataMaps\ValueConverters\DecimalValueConverter.cs" />
+    <Compile Include="Maps\DataMaps\ValueConverters\DoubleValueConverter.cs" />
     <Compile Include="Maps\DataMaps\ValueConverters\IntegerValueConverter.cs" />
     <Compile Include="Maps\DataMaps\ValueConverters\ITimePeriodConverter.cs" />
     <Compile Include="Maps\DataMaps\ValueConverters\IValueConverter.cs" />
@@ -180,7 +181,7 @@
     <Compile Include="Structure\CrossSectionalAttachmentLevel.cs" />
     <Compile Include="Structure\CrossSectionalMeasure.cs" />
     <Compile Include="Structure\Dimension.cs" />
-    <Compile Include="Structure\GroupDescriptor.cs" />
+    <Compile Include="Structure\Group.cs" />
     <Compile Include="Structure\HierarchicalCodeList.cs" />
     <Compile Include="Structure\Hierarchy.cs" />
     <Compile Include="Structure\Item.cs" />
@@ -193,6 +194,7 @@
     <Compile Include="Structure\TextFormats\DateTextFormat.cs" />
     <Compile Include="Structure\TextFormats\DateTimeTextFormat.cs" />
     <Compile Include="Structure\TextFormats\DecimalTextFormat.cs" />
+    <Compile Include="Structure\TextFormats\DoubleTextFormat.cs" />
     <Compile Include="Structure\TextFormats\IntegerTextFormat.cs" />
     <Compile Include="Structure\TextFormats\TextFormat.cs" />
     <Compile Include="Structure\TextFormats\ITimePeriodTextFormat.cs" />

@@ -13,9 +13,9 @@ namespace SDMX.Parsers
 
         public TextFormatMap()
         {
-            Map<TextType?>(o => GetTextType(o)).ToAttribute("textType", false)
-                .Set(v => _format = GetTextFormat(v.Value))
-                .Converter(new EnumConverter<TextType?>());
+            Map<TextType>(o => GetTextType(o)).ToAttribute("textType", false)
+                .Set(v => _format = GetTextFormat(v))
+                .Converter(new EnumConverter<TextType>());
         }
 
         protected override TextFormat Return()
@@ -23,11 +23,13 @@ namespace SDMX.Parsers
             return _format;
         }
 
-        private TextType? GetTextType(TextFormat format)
+        private TextType GetTextType(TextFormat format)
         {
             if (format is StringTextFormat)
                 return TextType.String;
             else if (format is DecimalTextFormat)
+                return TextType.Decimal;
+            else if (format is DoubleTextFormat)
                 return TextType.Double;
             else if (format is IntegerTextFormat)
                 return TextType.Integer;
@@ -52,8 +54,10 @@ namespace SDMX.Parsers
                 case TextType.None:
                 case TextType.String:
                     return new StringTextFormat();
-                case TextType.Double:
+                case TextType.Decimal:
                     return new DecimalTextFormat();
+                case TextType.Double:
+                    return new DoubleTextFormat();
                 case TextType.Integer:
                     return new IntegerTextFormat();
                 case TextType.ObservationalTimePeriod:

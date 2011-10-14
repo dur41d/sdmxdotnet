@@ -17,19 +17,17 @@ namespace SDMX.Tests
             string dataPath = Utility.GetPath("lib\\GenericSample.xml");
             var keyFamily = structure.KeyFamilies[0];
 
-
             using (var reader = DataReader.Create(dataPath, keyFamily))
             {
                 reader.Cast("TIME", i => ((YearMonth)i).DateTime);
 
-
-                foreach (DataColumn col in ((IDataReader)reader).GetSchemaTable().Columns)
-                    Console.WriteLine("{0}: {1}", col.ColumnName, col.DataType);
+                //foreach (DataColumn col in ((IDataReader)reader).GetSchemaTable().Columns)
+                //    Console.WriteLine("{0}: {1}", col.ColumnName, col.DataType);
 
                 CreateTable();
                 using (SqlBulkCopy bulkCopy = new SqlBulkCopy(_connectionString))
                 {
-                    bulkCopy.BatchSize = 500;
+                    //bulkCopy.BatchSize = 500;
                     bulkCopy.ColumnMappings.Add("FREQ", "FREQ");
                     bulkCopy.ColumnMappings.Add("JD_TYPE", "JD_TYPE");
                     bulkCopy.ColumnMappings.Add("JD_CATEGORY", "JD_CATEGORY");
@@ -48,7 +46,7 @@ namespace SDMX.Tests
 
 
                     //bulkCopy.NotifyAfter = 1;
-                    //bulkCopy.SqlRowsCopied += (a, e) => { Console.WriteLine("called"); };
+                    bulkCopy.SqlRowsCopied += (a, e) => { Console.WriteLine(e.RowsCopied); };
                     bulkCopy.DestinationTableName = "Sample";
                     bulkCopy.WriteToServer(reader);
                 }

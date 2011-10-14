@@ -7,155 +7,180 @@ namespace SDMX
 {
     public partial class DataReader : IDataReader
     {
-        public void Close()
+        void IDataReader.Close()
         {
-            throw new NotImplementedException();
+            Dispose();
         }
 
-        public int Depth
+        int IDataReader.Depth
         {
-            get { throw new NotImplementedException(); }
+            get { return 0; }
         }
 
-        public DataTable GetSchemaTable()
+        DataTable IDataReader.GetSchemaTable()
         {
             return GetTable().Clone();
         }
 
-        public bool IsClosed
+        bool IDataReader.IsClosed
         {
-            get { throw new NotImplementedException(); }
+            get { return _disposed; }
         }
 
-        public bool NextResult()
+        bool IDataReader.NextResult()
         {
-            throw new NotImplementedException();
+            return false;
         }
 
-        public int RecordsAffected
+        bool IDataReader.Read()
         {
-            get { throw new NotImplementedException(); }
+            return Read();
         }
 
-        public int FieldCount
+        int IDataReader.RecordsAffected
+        {
+            get { return -1; }
+        }
+
+        void IDisposable.Dispose()
+        {
+            Dispose();
+        }
+
+        int IDataRecord.FieldCount
         {
             get { return _record.Count; }
         }
 
-        public bool GetBoolean(int i)
+        bool IDataRecord.GetBoolean(int i)
+        {
+            return (bool)_record[GetTable().Columns[i].ColumnName];
+        }
+
+        byte IDataRecord.GetByte(int i)
+        {
+            return (byte)_record[GetTable().Columns[i].ColumnName];
+        }
+
+        long IDataRecord.GetBytes(int i, long fieldOffset, byte[] buffer, int bufferoffset, int length)
         {
             throw new NotImplementedException();
         }
 
-        public byte GetByte(int i)
+        char IDataRecord.GetChar(int i)
+        {
+            return (char)_record[GetTable().Columns[i].ColumnName];
+        }
+
+        long IDataRecord.GetChars(int i, long fieldoffset, char[] buffer, int bufferoffset, int length)
         {
             throw new NotImplementedException();
         }
 
-        public long GetBytes(int i, long fieldOffset, byte[] buffer, int bufferoffset, int length)
+        IDataReader IDataRecord.GetData(int i)
         {
-            throw new NotImplementedException();
+            return this;
         }
 
-        public char GetChar(int i)
+        string IDataRecord.GetDataTypeName(int i)
         {
-            throw new NotImplementedException();
+            return GetTable().Columns[i].DataType.Name;
         }
 
-        public long GetChars(int i, long fieldoffset, char[] buffer, int bufferoffset, int length)
+        DateTime IDataRecord.GetDateTime(int i)
         {
-            throw new NotImplementedException();
+            return (DateTime)_record[GetTable().Columns[i].ColumnName];
         }
 
-        public IDataReader GetData(int i)
+        decimal IDataRecord.GetDecimal(int i)
         {
-            throw new NotImplementedException();
+            return (decimal)_record[GetTable().Columns[i].ColumnName];
         }
 
-        public string GetDataTypeName(int i)
+        double IDataRecord.GetDouble(int i)
         {
-            throw new NotImplementedException();
+            return (double)_record[GetTable().Columns[i].ColumnName];
         }
 
-        public DateTime GetDateTime(int i)
+        Type IDataRecord.GetFieldType(int i)
         {
-            throw new NotImplementedException();
+            return GetTable().Columns[i].DataType;
         }
 
-        public decimal GetDecimal(int i)
+        float IDataRecord.GetFloat(int i)
         {
-            throw new NotImplementedException();
+            return (float)_record[GetTable().Columns[i].ColumnName];
         }
 
-        public double GetDouble(int i)
+        Guid IDataRecord.GetGuid(int i)
         {
-            throw new NotImplementedException();
+            return (Guid)_record[GetTable().Columns[i].ColumnName];
         }
 
-        public Type GetFieldType(int i)
+        short IDataRecord.GetInt16(int i)
         {
-            throw new NotImplementedException();
+            return (short)_record[GetTable().Columns[i].ColumnName];
         }
 
-        public float GetFloat(int i)
+        int IDataRecord.GetInt32(int i)
         {
-            throw new NotImplementedException();
+            return (int)_record[GetTable().Columns[i].ColumnName];
         }
 
-        public Guid GetGuid(int i)
+        long IDataRecord.GetInt64(int i)
         {
-            throw new NotImplementedException();
+            return (long)_record[GetTable().Columns[i].ColumnName];
         }
 
-        public short GetInt16(int i)
+        string IDataRecord.GetName(int i)
         {
-            throw new NotImplementedException();
+            return GetTable().Columns[i].ColumnName;
         }
 
-        public int GetInt32(int i)
-        {
-            throw new NotImplementedException();
-        }
-
-        public long GetInt64(int i)
-        {
-            throw new NotImplementedException();
-        }
-
-        public string GetName(int i)
-        {
-            throw new NotImplementedException();
-        }
-
-        public int GetOrdinal(string name)
+        int IDataRecord.GetOrdinal(string name)
         {
             return GetTable().Columns[name].Ordinal;
         }
 
-        public string GetString(int i)
+        string IDataRecord.GetString(int i)
         {
-            throw new NotImplementedException();
+            return (string)_record[GetTable().Columns[i].ColumnName];
         }
 
-        public object GetValue(int i)
+        object IDataRecord.GetValue(int i)
         {
             string name = GetTable().Columns[i].ColumnName;
             return _record[name];
         }
 
-        public int GetValues(object[] values)
+        int IDataRecord.GetValues(object[] values)
         {
-            throw new NotImplementedException();
+            int count = values.Length < _record.Count ? values.Length : _record.Count;
+
+            int counter = 0;
+            for (int i = 0; i < count; i++)
+            {
+                string name = GetTable().Columns[i].ColumnName;
+                values[i] = _record[name];
+                counter++;
+            }
+
+            return counter;
         }
 
-        public bool IsDBNull(int i)
+        bool IDataRecord.IsDBNull(int i)
         {
-            throw new NotImplementedException();
+            return _record[GetTable().Columns[i].ColumnName] == DBNull.Value;
         }
 
-        public object this[int i]
+        object IDataRecord.this[string name]
         {
-            get { throw new NotImplementedException(); }
+            get { return this[name]; }
+        }
+
+        object IDataRecord.this[int i]
+        {
+            get { return this[GetTable().Columns[i].ColumnName]; }
         }
     }
 }

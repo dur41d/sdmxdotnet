@@ -61,6 +61,8 @@ namespace SDMX
                         if (_xmlReader.LocalName == "Time" && _xmlReader.IsStartElement())
                         {
                             string value = _xmlReader.ReadString();
+                            // TODO: improve exception message to include line number by using Try parse
+                            // move parsing to DataReader class
                             SetObs(KeyFamily.TimeDimension.Concept.Id.ToString(), KeyFamily.TimeDimension.Parse(value, null));
                         }
                         else if (_xmlReader.LocalName == "ObsValue" && _xmlReader.IsStartElement())
