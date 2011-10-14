@@ -12,19 +12,8 @@ namespace SDMX
         int _year;
         Quarter _quarter;
 
-        public override int Year { get { return _year; } }
-        public override int Month { get { return 1; } }
-        public override int Day { get { return 1; } }
-        public override int Hour { get { return 0; } }
-        public override int Minute { get { return 0; } }
-        public override int Second { get { return 0; } }
-        public override int Millisecond { get { return 0; } }
-        public override TimeSpan Offset { get { return TimeSpan.FromTicks(0); } }
-
-        public Quarter Quarter
-        {
-            get { return _quarter; }
-        }
+        public int Year { get { return _year; } }
+        public Quarter Quarter { get { return _quarter; } }
 
         public Quarterly(int year, Quarter quarter)
         {

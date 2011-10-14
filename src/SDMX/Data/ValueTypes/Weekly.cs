@@ -12,19 +12,8 @@ namespace SDMX
         int _year;
         Week _week;
 
-        public override int Year { get { return _year; } }
-        public override int Month { get { return 1; } }
-        public override int Day { get { return 1; } }
-        public override int Hour { get { return 0; } }
-        public override int Minute { get { return 0; } }
-        public override int Second { get { return 0; } }
-        public override int Millisecond { get { return 0; } }
-        public override TimeSpan Offset { get { return TimeSpan.FromTicks(0); } }
-
-        public Week Week
-        {
-            get { return _week; }
-        }
+        public int Year { get { return _year; } }
+        public Week Week { get { return _week; } }
 
         public Weekly(int year, Week week)
         {

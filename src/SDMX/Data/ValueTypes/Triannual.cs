@@ -12,19 +12,8 @@ namespace SDMX
         int _year;
         Triannum _annum;
 
-        public override int Year { get { return _year; } }
-        public override int Month { get { return 1; } }
-        public override int Day { get { return 1; } }
-        public override int Hour { get { return 0; } }
-        public override int Minute { get { return 0; } }
-        public override int Second { get { return 0; } }
-        public override int Millisecond { get { return 0; } }
-        public override TimeSpan Offset { get { return TimeSpan.FromTicks(0); } }
-
-        public Triannum Annum
-        {
-            get { return _annum; }
-        }
+        public int Year { get { return _year; } }
+        public Triannum Annum { get { return _annum; } }
 
         public Triannual(int year, Triannum annum)
         {

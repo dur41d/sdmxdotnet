@@ -7,9 +7,9 @@ using Common;
 
 namespace SDMX.Parsers
 {
-    internal class GroupDescriptorMap : AnnotableArtefactMap<GroupDescriptor>
+    internal class GroupDescriptorMap : AnnotableArtefactMap<Group>
     {
-        GroupDescriptor _group;
+        Group _group;
         
         public GroupDescriptorMap(KeyFamily keyFamily)
         {
@@ -38,7 +38,7 @@ namespace SDMX.Parsers
             _group.Annotations.Add(annotation);
         }
 
-        protected override GroupDescriptor Return()
+        protected override Group Return()
         {
             return _group;
         }
