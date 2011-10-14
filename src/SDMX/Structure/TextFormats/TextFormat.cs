@@ -25,5 +25,7 @@ namespace SDMX
         }
 
         public abstract bool Equals(TextFormat other);
+
+        public abstract Type GetValueType();
     }
 }

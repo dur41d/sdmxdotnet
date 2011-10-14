@@ -23,5 +23,10 @@ namespace SDMX
         {
             return other is DateTextFormat;
         }
+
+        public override Type GetValueType()
+        {
+            return typeof(Date);
+        }
     }
 }

@@ -18,5 +18,10 @@ namespace SDMX
         {
             return other is DateTimeTextFormat;
         }
+
+        public override Type GetValueType()
+        {
+            return typeof(DateTimeValue);
+        }
     }
 }

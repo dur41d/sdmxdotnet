@@ -18,5 +18,10 @@ namespace SDMX
         {
             return other is YearTextFormat;
         }
+
+        public override Type GetValueType()
+        {
+            return typeof(YearValue);
+        }
     }
 }

@@ -28,6 +28,9 @@ namespace SDMX
         public override int Millisecond { get { return _value.Millisecond; } }
         public override TimeSpan Offset { get { return _value.Offset; } }
 
+        public DateTime DateTime { get { return _value.DateTime; } }
+        public DateTimeOffset DateTimeOffset { get { return _value; } }
+
         public DateTimeValue(DateTimeOffset dateTime)
         {
             _value = dateTime;

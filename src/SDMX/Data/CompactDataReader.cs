@@ -1,9 +1,5 @@
 using System.Collections.Generic;
-using System.Linq;
 using System.Xml;
-using Common;
-using SDMX.Parsers;
-using System.Text;
 
 namespace SDMX
 {
@@ -37,11 +33,11 @@ namespace SDMX
                 }
                 else if (_xmlReader.LocalName == "Series")
                 {
-                    _record.Clear();
+                    ClearRecord();
                     while (_xmlReader.MoveToNextAttribute())
                     {
                         var component = KeyFamily.GetComponent(_xmlReader.LocalName);
-                        _record[_xmlReader.LocalName] = component.Parse(_xmlReader.Value, null);
+                        SetRecord(_xmlReader.LocalName, component.Parse(_xmlReader.Value, null));
                     }
 
                     SetGroupValues();
@@ -53,8 +49,10 @@ namespace SDMX
                     while (_xmlReader.MoveToNextAttribute())
                     {
                         var component = KeyFamily.GetComponent(_xmlReader.LocalName);
-                        _record[_xmlReader.LocalName] = component.Parse(_xmlReader.Value, null);
+                        SetRecord(_xmlReader.LocalName, component.Parse(_xmlReader.Value, null));
                     }
+
+                    FillMissingAttributes();
 
                     return true;
                 }

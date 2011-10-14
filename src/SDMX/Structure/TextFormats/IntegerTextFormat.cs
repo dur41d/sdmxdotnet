@@ -19,5 +19,10 @@ namespace SDMX
         {
             return other is IntegerTextFormat;
         }
+
+        public override Type GetValueType()
+        {
+            return typeof(int);
+        }
     }
 }

@@ -21,6 +21,9 @@ namespace SDMX
         public override int Millisecond { get { return _value.Millisecond; } }
         public override TimeSpan Offset { get { return _value.Offset; } }
 
+        public DateTime DateTime { get { return _value.DateTime; } }
+        public DateTimeOffset DateTimeOffset { get { return _value; } }
+
         public YearMonth(int year, int month)
         {
             _value = new DateTimeOffset(year, month, 1, 0, 0, 0, new TimeSpan());
