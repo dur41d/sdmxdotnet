@@ -21,8 +21,8 @@ namespace SDMX.Tests
             {
                 reader.Cast("TIME", i => ((YearMonth)i).DateTime);
 
-                //foreach (DataColumn col in ((IDataReader)reader).GetSchemaTable().Columns)
-                //    Console.WriteLine("{0}: {1}", col.ColumnName, col.DataType);
+                foreach (DataColumn col in ((IDataReader)reader).GetSchemaTable().Columns)
+                    Console.WriteLine("{0}: {1}", col.ColumnName, col.DataType);
 
                 CreateTable();
                 using (SqlBulkCopy bulkCopy = new SqlBulkCopy(_connectionString))
@@ -44,6 +44,7 @@ namespace SDMX.Tests
                     bulkCopy.ColumnMappings.Add("OBS_CONF", "OBS_CONF");
                     bulkCopy.ColumnMappings.Add("OBS_PRE_BREAK", "OBS_PRE_BREAK");
 
+                    
 
                     //bulkCopy.NotifyAfter = 1;
                     bulkCopy.SqlRowsCopied += (a, e) => { Console.WriteLine(e.RowsCopied); };
@@ -94,8 +95,8 @@ create table dbo.Sample (
 	[JD_TYPE] nvarchar(255) not null,
 	[JD_CATEGORY] nvarchar(255) not null,
 	[VIS_CTY] nvarchar(255) not null,
-	[TIME] nvarchar(255) not null,
-	[OBS_VALUE] nvarchar(255) not null,
+	[TIME] datetime not null,
+	[OBS_VALUE] float not null,
 	[AVAILABILITY] nvarchar(255) not null,
 	[TIME_FORMAT] nvarchar(255) not null,
 	[COLLECTION] nvarchar(255) not null,
