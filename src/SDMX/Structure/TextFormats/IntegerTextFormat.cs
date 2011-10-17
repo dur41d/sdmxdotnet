@@ -1,13 +1,14 @@
 using System;
 using SDMX.Parsers;
+using OXM;
 
 namespace SDMX
 {
     public class IntegerTextFormat : TextFormat
     {
-        static IValueConverter _converter = new IntegerValueConverter();
+        static ISimpleTypeConverter _converter = new Int32Converter();
 
-        internal override IValueConverter Converter { get { return _converter; } }
+        internal override ISimpleTypeConverter Converter { get { return _converter; } }
 
         public override bool IsValid(object obj)
         {

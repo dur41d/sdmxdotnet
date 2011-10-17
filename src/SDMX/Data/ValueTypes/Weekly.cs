@@ -7,7 +7,7 @@ using System.Text.RegularExpressions;
 
 namespace SDMX
 {
-    public class Weekly : TimePeriod, IEquatable<Weekly>
+    public struct Weekly : IEquatable<Weekly>
     {
         int _year;
         Week _week;
@@ -28,26 +28,20 @@ namespace SDMX
             return string.Format("{0}-{1}", _year, _week);
         }
 
-        #region IEquatable<WeeklyValue> Members
-
         public override int GetHashCode()
         {
             return _year.HashWith(_week);
         }
 
         public override bool Equals(object other)
-        {
-            return Equals(other as Weekly);
-        }
-
-        public override bool Equals(TimePeriod other)
-        {
-            return Equals(other as Weekly);
+        {      
+            if (!(other is Weekly)) return false;
+            return Equals((Weekly)other);
         }
 
         public bool Equals(Weekly other)
         {
-            return this.Equals(other, () => _year.Equals(other._year) && _week.Equals(other._week));
+            return _year == other._year && _week == other._week;
         }
 
         public static bool operator ==(Weekly x, Weekly y)
@@ -59,7 +53,5 @@ namespace SDMX
         {
             return !(x == y);
         }
-
-        #endregion
     }
 }

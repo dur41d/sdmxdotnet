@@ -1,39 +1,42 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Xml.Linq;
-using System.Linq.Expressions;
-using System.Reflection;
-using Common;
 
 namespace OXM
 {
-    public interface ISimpleTypeConverter<T>
+    public abstract class SimpleTypeConverter<T> : ISimpleTypeConverter
     {
-        string ToXml(T value);
-        T ToObj(string value);
-    }
+        public abstract string ToXml(T value);
+        public abstract T ToObj(string value);
 
-    public abstract class SimpleTypeConverterBase<T> : ISimpleTypeConverter<T>
-    {
-        private Dictionary<T, string> toStringMap = new Dictionary<T, string>();
-        private Dictionary<string, T> fromStringMap = new Dictionary<string, T>();
-
-        public void Map(T value, string xmlValue)
+        public virtual bool CanConvertToXml(T value)
         {
-            toStringMap.Add(value, xmlValue);
-            fromStringMap.Add(xmlValue, value);
+            return true;
         }
 
-        public string ToXml(T value)
+        public virtual bool CanConvertToObj(string value)
         {
-            return toStringMap[value];
+            return true;
         }
 
-        public T ToObj(string value)
+        string ISimpleTypeConverter.ToXml(object value)
         {
-            return fromStringMap[value];
+            return ToXml((T)value);
+        }
+
+        object ISimpleTypeConverter.ToObj(string value)
+        {
+            return ToObj(value);
+        }
+
+        bool ISimpleTypeConverter.CanConvertToXml(object value)
+        {
+            return CanConvertToXml((T)value);
+        }
+
+        bool ISimpleTypeConverter.CanConvertToObj(string value)
+        {
+            return CanConvertToObj(value);
         }
     }
 }

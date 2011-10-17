@@ -3,33 +3,24 @@ using OXM;
 
 namespace SDMX.Parsers
 {
-    internal class HeaderTimeConverter : ISimpleTypeConverter<DateTimeOffset>
+    internal class HeaderTimeConverter : SimpleTypeConverter<DateTimeOffset>
     {
-        TimePeriodValueConverter converter = new TimePeriodValueConverter();
-
-        public string ToXml(DateTimeOffset value)
+        public override string ToXml(DateTimeOffset value)
         {
-            string startTime;
-
-            TimePeriod timePeriod = null;
-
             if (value.Hour > 0)
-                timePeriod = new DateTimeValue(value);
+                return new DateTimeConverter().ToXml(value);
             else
-                timePeriod = new Date(value);
-
-            return converter.Serialize(timePeriod, out startTime);
+                return new DateConverter().ToXml(value);
         }
 
-        public DateTimeOffset ToObj(string value)
+        public override DateTimeOffset ToObj(string value)
         {
-            string startTime = null;
-            var timePeriod = (TimePeriod)converter.Parse(value, startTime);
+            var converter = new DateConverter();
 
-            if (timePeriod is DateTimeValue)
-                return (DateTimeOffset)(DateTimeValue)timePeriod;
+            if (converter.CanConvertToObj(value))
+                return converter.ToObj(value);
             else
-                return (DateTimeOffset)(Date)timePeriod;
+                return new DateTimeConverter().ToObj(value);
         }
     }
 }

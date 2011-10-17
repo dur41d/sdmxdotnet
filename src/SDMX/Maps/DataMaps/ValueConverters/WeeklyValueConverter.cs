@@ -1,38 +1,35 @@
 ﻿using System;
 using System.Text.RegularExpressions;
 using SDMX.Parsers;
+using OXM;
 
 namespace SDMX.Parsers
-{    
-    internal class WeeklyValueConverter : ITimePeriodConverter
+{
+    internal class WeeklyValueConverter : SimpleTypeConverter<Weekly>
     {
         private const string p = @"^(?<Year>\d{4})-W(?<Week>[1-9]|[1-4][0-9]|5[0-2])$";
         static Regex pattern = new Regex(p, RegexOptions.Compiled);
 
-        public object Parse(string str, string startTime)
+        public override string ToXml(Weekly value)
         {
-            var match = pattern.Match(str);
+            return value.ToString();
+        }
+
+        public override Weekly ToObj(string value)
+        {
+            var match = pattern.Match(value);
             if (!match.Success)
             {
-                throw new SDMXException("Invalid date value '{0}'.", str);
+                throw new SDMXException("Invalid date value '{0}'.", value);
             }
             int year = int.Parse(match.Groups["Year"].Value);
             int week = int.Parse(match.Groups["Week"].Value);
-            return new Weekly(year, (Week)week);            
+            return new Weekly(year, (Week)week);
         }
 
-        public bool IsValid(string str)
+        public override bool CanConvertToObj(string value)
         {
-            return pattern.IsMatch(str);
-        }
-
-        public string Serialize(object obj, out string startTime)
-        {
-            if (!(obj is Weekly))
-                throw new SDMXException("Cannot serialize object of type: {0}.", obj.GetType());
-
-            startTime = null;
-            return ((Weekly)obj).ToString();
+            return pattern.IsMatch(value);
         }
     }
 }

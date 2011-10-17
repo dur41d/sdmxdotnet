@@ -3,23 +3,16 @@ using OXM;
 
 namespace SDMX.Parsers
 {
-    internal class NullableHeaderTimeConverter : ISimpleTypeConverter<DateTimeOffset?>
+    internal class NullableHeaderTimeConverter : NullabeConverter<DateTimeOffset>
     {
         HeaderTimeConverter converter = new HeaderTimeConverter();
 
-        public string ToXml(DateTimeOffset? value)
+        protected override SimpleTypeConverter<DateTimeOffset> Converter
         {
-            if (value == null)
-                return null;
-
-            return converter.ToXml(value.Value);
-        }
-
-        public DateTimeOffset? ToObj(string value)
-        {
-            if (value == null)
-                return null;
-            return converter.ToObj(value);
+            get
+            {
+                return new HeaderTimeConverter();
+            }
         }
     }
 }

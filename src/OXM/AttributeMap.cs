@@ -24,7 +24,7 @@ namespace OXM
         private bool _writeDefault;
 
         internal Property<T, TProperty> Property { get; set; }
-        internal ISimpleTypeConverter<TProperty> Converter { get; set; }
+        internal SimpleTypeConverter<TProperty> Converter { get; set; }
 
         public AttributeMap(XName name, bool required, string defaultValue, bool writeDefault)
         {

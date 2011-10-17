@@ -1,27 +1,18 @@
 using System;
 using SDMX.Parsers;
+using OXM;
 
 namespace SDMX
 {
     public class DateTimeTextFormat : TimePeriodTextFormatBase
     {
-        static IValueConverter _converter = new DateTimeValueConverter();
+        static ISimpleTypeConverter _converter = new DateTimeConverter();
 
-        internal override IValueConverter Converter { get { return _converter; } }
-
-        public override bool IsValid(object obj)
-        {
-            return obj is DateTimeValue;
-        }
+        internal override ISimpleTypeConverter Converter { get { return _converter; } }
 
         public override bool Equals(TextFormat other)
         {
             return other is DateTimeTextFormat;
-        }
-
-        public override Type GetValueType()
-        {
-            return typeof(DateTimeValue);
         }
     }
 }

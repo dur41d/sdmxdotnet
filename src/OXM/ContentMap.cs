@@ -13,7 +13,7 @@ namespace OXM
     internal class ContentMap<T, TProperty> : IMemberMap<T>
     { 
         internal Property<T, TProperty> Property { get; set; }
-        internal ISimpleTypeConverter<TProperty> Converter { get; set; }
+        internal SimpleTypeConverter<TProperty> Converter { get; set; }
 
         public void ReadXml(XmlReader reader)
         {

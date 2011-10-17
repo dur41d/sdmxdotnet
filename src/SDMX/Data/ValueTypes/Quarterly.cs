@@ -7,7 +7,7 @@ using System.Text.RegularExpressions;
 
 namespace SDMX
 {
-    public class Quarterly : TimePeriod, IEquatable<Quarterly>
+    public struct Quarterly : IEquatable<Quarterly>
     {
         int _year;
         Quarter _quarter;
@@ -28,8 +28,6 @@ namespace SDMX
             return string.Format("{0}-{1}", _year, _quarter);
         }
 
-        #region IEquatable<QuarterlyValue> Members
-
         public override int GetHashCode()
         {
             return _year.HashWith(_quarter);
@@ -37,17 +35,13 @@ namespace SDMX
 
         public override bool Equals(object other)
         {
-            return Equals(other as Quarterly);
-        }
-
-        public override bool Equals(TimePeriod other)
-        {
-            return Equals(other as Quarterly);
+            if (!(other is Quarterly)) return false;
+            return Equals((Quarterly)other);
         }
 
         public bool Equals(Quarterly other)
         {
-            return this.Equals(other, () => _year.Equals(other._year) && _quarter.Equals(other._quarter));
+            return _year == other._year && _quarter == other._quarter;
         }
 
         public static bool operator ==(Quarterly x, Quarterly y)
@@ -59,7 +53,5 @@ namespace SDMX
         {
             return !(x == y);
         }
-
-        #endregion
     }
 }

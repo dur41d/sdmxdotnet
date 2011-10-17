@@ -1,13 +1,14 @@
 using System;
 using SDMX.Parsers;
+using OXM;
 
 namespace SDMX
 {
     public class DoubleTextFormat : TextFormat
     {
-        static IValueConverter _converter = new DoubleValueConverter();
+        static ISimpleTypeConverter _converter = new DoubleConverter();
 
-        internal override IValueConverter Converter { get { return _converter; } }
+        internal override ISimpleTypeConverter Converter { get { return _converter; } }
 
         public override bool IsValid(object obj)
         {

@@ -1,38 +1,35 @@
 ﻿using System;
 using System.Text.RegularExpressions;
 using SDMX.Parsers;
+using OXM;
 
 namespace SDMX.Parsers
 {
-    internal class TriannaulValueConverter : ITimePeriodConverter
+    internal class TriannaulValueConverter : SimpleTypeConverter<Triannual>
     {
         private const string p = @"^(?<Year>\d{4})-T(?<Triannum>[1-3])$";
         static Regex pattern = new Regex(p, RegexOptions.Compiled);
 
-        public object Parse(string str, string startTime)
+        public override string ToXml(Triannual value)
         {
-            var match = pattern.Match(str);
+            return value.ToString();
+        }
+
+        public override Triannual ToObj(string value)
+        {
+            var match = pattern.Match(value);
             if (!match.Success)
             {
-                throw new SDMXException("Invalid date value '{0}'.", str);
+                throw new SDMXException("Invalid date value '{0}'.", value);
             }
             int year = int.Parse(match.Groups["Year"].Value);
             int triannum = int.Parse(match.Groups["Triannum"].Value);
             return new Triannual(year, (Triannum)triannum);
         }
 
-        public bool IsValid(string str)
+        public override bool CanConvertToObj(string value)
         {
-            return pattern.IsMatch(str);
-        }
-
-        public string Serialize(object obj, out string startTime)
-        {
-            if (!(obj is Triannual))
-                throw new SDMXException("Cannot serialize object of type: {0}.", obj.GetType());
-
-            startTime = null;
-            return ((Triannual)obj).ToString();
+            return pattern.IsMatch(value);
         }
     }
 }

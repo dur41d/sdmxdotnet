@@ -7,7 +7,7 @@ using System.Text.RegularExpressions;
 
 namespace SDMX
 {
-    public class Biannual : TimePeriod, IEquatable<Biannual>
+    public class Biannual : IEquatable<Biannual>
     {
         int _year;
         Biannum _annum;
@@ -28,8 +28,6 @@ namespace SDMX
             return string.Format("{0}-{1}", _year, _annum);
         }
 
-        #region IEquatable<BiannualValue> Members
-
         public override int GetHashCode()
         {
             return _year.HashWith(_annum);
@@ -37,17 +35,13 @@ namespace SDMX
 
         public override bool Equals(object other)
         {
-            return Equals(other as Biannual);
-        }
-
-        public override bool Equals(TimePeriod other)
-        {
-            return Equals(other as Biannual);
+            if (!(other is Biannual)) return false;
+            return Equals((Biannual)other);
         }
 
         public bool Equals(Biannual other)
         {
-            return this.Equals(other, () => _year.Equals(other._year) && _annum.Equals(other._annum));
+            return _year == other._year && _annum == other._annum;
         }
 
         public static bool operator ==(Biannual x, Biannual y)
@@ -59,6 +53,5 @@ namespace SDMX
         {
             return !(x == y);
         }
-        #endregion
     }
 }

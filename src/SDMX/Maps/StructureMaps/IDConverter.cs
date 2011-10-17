@@ -11,14 +11,14 @@ using System.Xml;
 
 namespace SDMX.Parsers
 {
-    internal class IdConverter : ISimpleTypeConverter<Id>
+    internal class IdConverter : SimpleTypeConverter<Id>
     {
-        public string ToXml(Id value)
+        public override string ToXml(Id value)
         {
             return value.ToString();
         }
 
-        public Id ToObj(string value)
+        public override Id ToObj(string value)
         {
             return (Id)value;
         }

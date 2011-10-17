@@ -19,8 +19,8 @@ namespace SDMX.Tests
 
             and.Add(new TimePeriodCriterion()
                 {
-                    StartTime = new Date(new DateTime(2000, 1, 1)),
-                    EndTime = new Date(new DateTime(2000, 12, 31))
+                    StartTime = TimePeriod.FromDate(new DateTime(2000, 1, 1)),
+                    EndTime = TimePeriod.FromDate(new DateTime(2000, 12, 31))
                 });
             var or = new OrCriterion();
             or.Add(new DataSetCriterion() { Name = "JD014" });
