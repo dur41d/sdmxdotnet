@@ -94,7 +94,6 @@ namespace SDMX.Tests
             string s = "2008";
             object obj = textFormat.Parse(s, null);
             Assert.IsNotNull(obj);
-            Assert.IsTrue(obj is YearValue);
             string startTime = null;
             string s2 = textFormat.Serialize(obj, out startTime);
             Assert.IsNull(startTime);
@@ -109,7 +108,6 @@ namespace SDMX.Tests
             string s = "2009-1";
             object obj = textFormat.Parse(s, null);
             Assert.IsNotNull(obj);
-            Assert.IsTrue(obj is YearMonth);
             string startTime = null;
             string s2 = textFormat.Serialize(obj, out startTime);
             Assert.IsNull(startTime);
@@ -124,7 +122,6 @@ namespace SDMX.Tests
             string s = "2009-1-1";
             object obj = textFormat.Parse(s, null);
             Assert.IsNotNull(obj);
-            Assert.IsTrue(obj is Date);
             string startTime = null;
             string s2 = textFormat.Serialize(obj, out startTime);
             Assert.IsNull(startTime);
@@ -139,7 +136,6 @@ namespace SDMX.Tests
             string s = "2009-1-1T01:01:01";
             object obj = textFormat.Parse(s, null);
             Assert.IsNotNull(obj);
-            Assert.IsTrue(obj is DateTimeValue);
             string startTime = null;
             string s2 = textFormat.Serialize(obj, out startTime);
             Assert.IsNull(startTime);

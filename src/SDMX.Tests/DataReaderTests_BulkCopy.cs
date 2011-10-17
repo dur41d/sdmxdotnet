@@ -11,6 +11,7 @@ namespace SDMX.Tests
         const string _connectionString = @"Server=.\SQLEXPRESS;Database=sdmx;Integrated Security=True";
         
         [Test]
+        [Ignore]
         public void BulkCopy()
         {
             var structure = StructureMessage.Load(Utility.GetPath("lib\\StructureSample.xml"));
@@ -19,7 +20,7 @@ namespace SDMX.Tests
 
             using (var reader = DataReader.Create(dataPath, keyFamily))
             {
-                reader.Cast("TIME", i => ((YearMonth)i).DateTime);
+                reader.Cast("TIME", i => ((TimePeriod)i).DateTime);
 
                 foreach (DataColumn col in ((IDataReader)reader).GetSchemaTable().Columns)
                     Console.WriteLine("{0}: {1}", col.ColumnName, col.DataType);

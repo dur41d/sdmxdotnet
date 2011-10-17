@@ -9,5 +9,14 @@ namespace SDMX
 {
     public abstract class TimePeriodTextFormatBase : TextFormat
     {
+        public override bool IsValid(object obj)
+        {
+            return obj is DateTime || obj is DateTimeOffset;
+        }
+
+        public override Type GetValueType()
+        {
+            return typeof(DateTimeOffset);
+        }
     }
 }

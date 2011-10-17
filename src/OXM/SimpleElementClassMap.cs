@@ -13,9 +13,9 @@ namespace OXM
     {
         T instance;
 
-        internal ISimpleTypeConverter<T> Converter { get; set; }
+        internal SimpleTypeConverter<T> Converter { get; set; }
 
-        public SimpleElementClassMap(ISimpleTypeConverter<T> converter)
+        public SimpleElementClassMap(SimpleTypeConverter<T> converter)
         {
             Converter = converter;
 

@@ -1,25 +1,17 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using NUnit.Framework;
-using System.Xml.Linq;
-using SDMX.Parsers;
-using System.Xml;
-using System.IO;
-using OXM;
-using System.Xml.Serialization;
-using System.Text.RegularExpressions;
 
-namespace SDMX.Tests
+namespace OXM.Tests
 {
     [TestFixture]
-    public class TimePeriodConverterTests
+    public class TimeConverterTests
     {
         [Test]
-        public void DateTimeTimePeriod()
+        public void DateTimeConverter()
         {
-            var converter = new TimePeriodConverter();
+            var converter = new DateTimeConverter();
 
             string value = "2001-10-26T21:32:52+02:00";
             var time = converter.ToObj(value);
@@ -43,9 +35,9 @@ namespace SDMX.Tests
         }
 
         [Test]
-        public void DateTimePeriod()
+        public void DateConverter()
         {
-            var converter = new TimePeriodConverter();
+            var converter = new DateConverter();
 
             string value = "2001-10-16+02:00";
             var time = converter.ToObj(value);
@@ -66,9 +58,9 @@ namespace SDMX.Tests
         }
 
         [Test]
-        public void YearMonthTimePeriod()
+        public void YearMonthConverter()
         {
-            var converter = new TimePeriodConverter();
+            var converter = new YearMonthConverter();
 
             string value = "2001-10+02:00";
             var time = converter.ToObj(value);
@@ -88,11 +80,11 @@ namespace SDMX.Tests
         }
 
         [Test]
-        public void YearTimePeriod()
+        public void YearConverter()
         {
-            var converter = new TimePeriodConverter();
+            var converter = new YearConverter();
 
-            string value = "2001+02:00";            
+            string value = "2001+02:00";
             var time = converter.ToObj(value);
             Assert.AreEqual(value, converter.ToXml(time));
 
@@ -107,62 +99,6 @@ namespace SDMX.Tests
             value = "2001";
             time = converter.ToObj(value);
             Assert.AreEqual("2001", converter.ToXml(time));
-        }
-
-        [Test]
-        public void WeeklyTimePeriod()
-        {
-            var converter = new TimePeriodConverter();
-
-            string value = "2001-W2";
-            var time = converter.ToObj(value);
-            Assert.AreEqual(value, converter.ToXml(time));
-
-            value = "1999-W51";
-            time = converter.ToObj(value);
-            Assert.AreEqual(value, converter.ToXml(time));
-        }
-
-        [Test]
-        public void QuarterTimePeriod()
-        {
-            var converter = new TimePeriodConverter();
-
-            string value = "2001-Q1";
-            var time = converter.ToObj(value);
-            Assert.AreEqual(value, converter.ToXml(time));
-
-            value = "1999-Q3";
-            time = converter.ToObj(value);
-            Assert.AreEqual(value, converter.ToXml(time));
-        }
-
-        [Test]
-        public void BiannualTimePeriod()
-        {
-            var converter = new TimePeriodConverter();
-
-            string value = "2001-B1";
-            var time = converter.ToObj(value);
-            Assert.AreEqual(value, converter.ToXml(time));
-
-            value = "1999-B2";
-            time = converter.ToObj(value);
-            Assert.AreEqual(value, converter.ToXml(time));
-        }
-
-        [Test]
-        public void TriannualTimePeriod()
-        {
-            var converter = new TimePeriodConverter();
-
-            string value = "2001-T1";
-            var time = converter.ToObj(value);
-            Assert.AreEqual(value, converter.ToXml(time));
-
-            value = "1999-T2";
-            time = converter.ToObj(value);
-            Assert.AreEqual(value, converter.ToXml(time));
         }
     }
 }

@@ -5,6 +5,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using Common;
 using SDMX.Parsers;
+using OXM;
 
 namespace SDMX
 {
@@ -12,16 +13,17 @@ namespace SDMX
     {
         public abstract bool IsValid(object value);
 
-        internal abstract IValueConverter Converter { get; }
+        internal abstract ISimpleTypeConverter Converter { get; }
 
         public virtual object Parse(string s, string startTime)
         {
-            return Converter.Parse(s, startTime);
+            return Converter.ToObj(s);
         }
 
         public virtual string Serialize(object obj, out string startTime)
-        { 
-            return Converter.Serialize(obj, out startTime);
+        {
+            startTime = null;
+            return Converter.ToXml(obj);
         }
 
         public abstract bool Equals(TextFormat other);

@@ -12,7 +12,7 @@ namespace OXM
 {
     public class SimpleMemberMap<TObj, TProperty>
     {
-        ISimpleTypeConverter<TProperty> _converter;
+        SimpleTypeConverter<TProperty> _converter;
         MemberMap<TObj, TProperty> _memberMap;
 
         Func<TObj, TProperty> _prop;
@@ -29,7 +29,7 @@ namespace OXM
             return this;
         }
 
-        public void Converter(ISimpleTypeConverter<TProperty> converter)
+        public void Converter(SimpleTypeConverter<TProperty> converter)
         {
             _converter = converter;
         }
@@ -39,7 +39,7 @@ namespace OXM
             return _memberMap.GetProperty();
         }
 
-        internal ISimpleTypeConverter<TProperty> GetConverter()
+        internal SimpleTypeConverter<TProperty> GetConverter()
         {
             if (_converter == null)
             {

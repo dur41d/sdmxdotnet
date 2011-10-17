@@ -77,7 +77,19 @@
     <Compile Include="ClassMap.cs" />
     <Compile Include="Collection.cs" />
     <Compile Include="Builders\ContainerMap.cs" />
-    <Compile Include="Converters.cs" />
+    <Compile Include="Converters\BooleanConverter.cs" />
+    <Compile Include="Converters\DateConverter.cs" />
+    <Compile Include="Converters\DecimalConverter.cs" />
+    <Compile Include="Converters\DoubleConverter.cs" />
+    <Compile Include="Converters\NullabeConverter.cs" />
+    <Compile Include="Converters\SingleConverter.cs" />
+    <Compile Include="Converters\StringConverter.cs" />
+    <Compile Include="Converters\DateTimeConverter.cs" />
+    <Compile Include="Converters\EnumConverter.cs" />
+    <Compile Include="Converters\Int32Converter.cs" />
+    <Compile Include="Converters\UriConverter.cs" />
+    <Compile Include="Converters\YearMonthConverter.cs" />
+    <Compile Include="Converters\YearConverter.cs" />
     <Compile Include="ElementCollectionMap.cs" />
     <Compile Include="ElementContainerMap.cs" />
     <Compile Include="ElementMap.cs" />
@@ -91,14 +103,16 @@
     <Compile Include="MapList.cs" />
     <Compile Include="Builders\MemberCollectionMap.cs" />
     <Compile Include="Builders\MemberMap.cs" />
+    <Compile Include="MappingConverterBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Property.cs" />
     <Compile Include="Builders\PropertyMap.cs" />
     <Compile Include="RoolElementMap.cs" />
     <Compile Include="SimpleElementClassMap.cs" />
     <Compile Include="SimpleElements.cs" />
-    <Compile Include="SimpleTypeConverter.cs" />
+    <Compile Include="ISimpleTypeConverter.cs" />
     <Compile Include="ContentMap.cs" />
+    <Compile Include="SimpleTypeConverter.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Common\Common.csproj">

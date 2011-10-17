@@ -8,6 +8,7 @@ using System.Xml;
 
 namespace OXM.Tests
 {
+
     public class Address
     {
         public string Street { get; set; }

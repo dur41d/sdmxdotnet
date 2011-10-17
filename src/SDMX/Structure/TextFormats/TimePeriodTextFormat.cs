@@ -1,27 +1,26 @@
 using System;
 using SDMX.Parsers;
 using Common;
+using OXM;
 
 namespace SDMX
 {
     public class TimePeriodTextFormat : TimePeriodTextFormatBase
     {
-        static IValueConverter _converter = new TimePeriodValueConverter();
+        static ISimpleTypeConverter _converter = new TimePeriodConverter();
 
-        internal override IValueConverter Converter { get { return _converter; } }
+        internal override ISimpleTypeConverter Converter { get { return _converter; } }
 
 
         public override bool IsValid(object obj)
         {
             return obj is TimePeriod;
-
         }
 
         public override bool Equals(TextFormat other)
         {
             return other is TimePeriodTextFormat;
         }
-
 
         public override Type GetValueType()
         {

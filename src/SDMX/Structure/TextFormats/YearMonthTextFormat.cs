@@ -1,27 +1,18 @@
 using System;
 using SDMX.Parsers;
+using OXM;
 
 namespace SDMX
 {
     public class YearMonthTextFormat : TimePeriodTextFormatBase
     {
-        static IValueConverter _converter = new YearMonthValueConverter();
+        static ISimpleTypeConverter _converter = new YearMonthConverter();
 
-        internal override IValueConverter Converter { get { return _converter; } }
-
-        public override bool IsValid(object obj)
-        {
-            return obj is YearMonth;
-        }
+        internal override ISimpleTypeConverter Converter { get { return _converter; } }
 
         public override bool Equals(TextFormat other)
         {
             return other is YearMonthTextFormat;
-        }
-
-        public override Type GetValueType()
-        {
-            return typeof(YearMonth);
         }
     }
 }
