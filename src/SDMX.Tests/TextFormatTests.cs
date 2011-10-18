@@ -32,6 +32,18 @@ namespace SDMX.Tests
         }
 
         [Test]
+        public void StringTextFormat_NullString()
+        {
+            var textFormat = new StringTextFormat();
+
+            string obj = null;
+            string startTime = null;
+            string s2 = textFormat.Serialize(obj, out startTime);
+            Assert.IsNull(startTime);
+            Assert.AreEqual(null, s2);
+        }
+
+        [Test]
         public void DecimalTextFormat()
         {
             var textFormat = new DecimalTextFormat();
@@ -55,6 +67,32 @@ namespace SDMX.Tests
             object obj = textFormat.Parse(s, null);
             Assert.IsNotNull(obj);
             Assert.IsTrue(obj is int);
+            string startTime = null;
+            string s2 = textFormat.Serialize(obj, out startTime);
+            Assert.IsNull(startTime);
+            Assert.AreEqual("1", s2);
+        }
+
+
+        [Test]
+        public void Integer_SerializeNullable()
+        {
+            var textFormat = new IntegerTextFormat();
+
+            int? obj = 1;
+            string startTime = null;
+            string s2 = textFormat.Serialize(obj, out startTime);
+            Assert.IsNull(startTime);
+            Assert.AreEqual("1", s2);
+        }
+
+        [Test]
+        [ExpectedException(typeof(ParseException))]
+        public void Integer_SerializeNull()
+        {
+            var textFormat = new IntegerTextFormat();
+
+            int? obj = null;
             string startTime = null;
             string s2 = textFormat.Serialize(obj, out startTime);
             Assert.IsNull(startTime);
@@ -137,6 +175,43 @@ namespace SDMX.Tests
             object obj = textFormat.Parse(s, null);
             Assert.IsNotNull(obj);
             string startTime = null;
+            string s2 = textFormat.Serialize(obj, out startTime);
+            Assert.IsNull(startTime);
+            Assert.AreEqual("2009-01-01T01:01:01", s2);
+        }
+
+        [Test]
+        public void DateTimeTextFormat_SerializeDateTime()
+        {
+            var textFormat = new DateTimeTextFormat();
+
+            string startTime = null;
+            DateTime obj = new DateTime(2009, 1, 1, 1, 1, 1);
+            string s2 = textFormat.Serialize(obj, out startTime);
+            Assert.IsNull(startTime);
+            Assert.AreEqual("2009-01-01T01:01:01", s2);
+        }
+
+        [Test]
+        public void DateTimeTextFormat_SerializeDateTimeNullable()
+        {
+            var textFormat = new DateTimeTextFormat();
+
+            string startTime = null;
+            DateTime? obj = new DateTime(2009, 1, 1, 1, 1, 1);
+            string s2 = textFormat.Serialize(obj, out startTime);
+            Assert.IsNull(startTime);
+            Assert.AreEqual("2009-01-01T01:01:01", s2);
+        }
+
+        [Test]
+        public void DateTimeTextFormat_SerializeDateTimeOffsetNullable()
+        {
+            var textFormat = new DateTimeTextFormat();
+
+            string startTime = null;
+            DateTimeOffset? obj = new DateTimeOffset(2009, 1, 1, 1, 1, 1, TimeSpan.FromTicks(0));
+
             string s2 = textFormat.Serialize(obj, out startTime);
             Assert.IsNull(startTime);
             Assert.AreEqual("2009-01-01T01:01:01", s2);
