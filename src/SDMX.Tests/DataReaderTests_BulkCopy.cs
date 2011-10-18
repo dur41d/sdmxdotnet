@@ -45,7 +45,7 @@ namespace SDMX.Tests
         }
 
         [Test]
-        public void testall()
+        public void LoadTest()
         {
             var list = new List<string>() 
                 { 
