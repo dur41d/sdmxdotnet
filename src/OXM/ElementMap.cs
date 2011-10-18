@@ -40,7 +40,18 @@ namespace OXM
             TProperty property = classMap.ReadXml(reader);
 
             if ((object)property != null)
-                Property.Set(property);
+            {
+                try
+                {
+                    Property.Set(property);
+                }
+                catch (Exception ex)
+                {
+                    ParseException.Throw(reader, typeof(T), ex, 
+                        "Exception while setting property type '{0}' (see inner exception for details): {1}",
+                         typeof(TProperty), ex.Message);
+                }
+            }
         }
 
         public override void WriteXml(XmlWriter writer, T obj)

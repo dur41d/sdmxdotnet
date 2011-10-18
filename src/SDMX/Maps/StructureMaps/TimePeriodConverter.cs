@@ -32,12 +32,12 @@ namespace SDMX.Parsers
 
         public override string ToXml(TimePeriod value)
         {
-            if (!registry.ContainsKey(value.TimePeriodType))
+            if (!registry.ContainsKey(value.Type))
             {
-                throw new SDMXException("Cannot serialize type: {0}.", value.TimePeriodType);
+                throw new SDMXException("Cannot serialize type: {0}.", value.Type);
             }
 
-            var converter = registry[value.TimePeriodType];
+            var converter = registry[value.Type];
 
             if (converter is YearConverter
                         || converter is YearMonthConverter
