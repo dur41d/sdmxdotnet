@@ -56,11 +56,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AddressMap.cs" />
+    <Compile Include="IntegerConverterTests.cs" />
     <Compile Include="NameAgeMap.cs" />
     <Compile Include="Person.cs" />
     <Compile Include="PersonMap.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Address.cs" />
+    <Compile Include="StringConverterTests.cs" />
     <Compile Include="Tests2.cs" />
     <Compile Include="TimeConverterTests.cs" />
     <Compile Include="Tutorial.cs" />

@@ -21,14 +21,20 @@ namespace OXM
 
         string ISimpleTypeConverter.ToXml(object value)
         {
-            Type type = typeof(T);
-            if (value != null && !(value is T))
-                throw new ParseException("Cannot convert object type '{0}'. Expected object type '{1}'."
-                    , value.GetType().Name, type.Name);
+            bool isNull = object.ReferenceEquals(value, null);
 
-            if (object.ReferenceEquals(value, null) && type.IsValueType && !IsNullable(type))
-                throw new ParseException("Cannot convert null to type '{0}'."
-                    , type.Name);
+            if (!isNull && !(value is T))
+                throw new ParseException("Cannot convert object type '{0}'. Expected object type '{1}'."
+                    , value.GetType().Name, typeof(T).Name);
+
+            if (isNull)
+            {
+                Type type = typeof(T);
+
+                // if null and is value type and not nullable then cast will not work
+                if (type.IsValueType && !IsNullable(type))
+                    throw new ParseException("Cannot convert null to type '{0}'.", type.Name);
+            }
 
 
             return ToXml((T)value);

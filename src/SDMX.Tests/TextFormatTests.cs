@@ -125,6 +125,111 @@ namespace SDMX.Tests
         }
 
         [Test]
+        public void TimePeriodTextFormat_Weekly()
+        {
+            var textFormat = new TimePeriodTextFormat();
+
+            string s = "2008-W2";
+            object obj = textFormat.Parse(s, null);
+            Assert.IsNotNull(obj);
+            Assert.IsTrue(obj is TimePeriod);
+            string startTime = null;
+            string s2 = textFormat.Serialize(obj, out startTime);
+            Assert.IsNull(startTime);
+            Assert.AreEqual("2008-W2", s2);
+        }
+
+        [Test]
+        public void TimePeriodTextFormat_Year()
+        {
+            var textFormat = new TimePeriodTextFormat();
+
+            string s = "2008";
+            object obj = textFormat.Parse(s, null);
+            Assert.IsNotNull(obj);
+            Assert.IsTrue(obj is TimePeriod);
+            string startTime = null;
+            string s2 = textFormat.Serialize(obj, out startTime);
+            Assert.IsNull(startTime);
+            Assert.AreEqual("2008", s2);
+        }
+
+        [Test]
+        public void TimePeriodTextFormat_Date()
+        {
+            var textFormat = new TimePeriodTextFormat();
+
+            string s = "2008-10-10";
+            object obj = textFormat.Parse(s, null);
+            Assert.IsNotNull(obj);
+            Assert.IsTrue(obj is TimePeriod);
+            string startTime = null;
+            string s2 = textFormat.Serialize(obj, out startTime);
+            Assert.IsNull(startTime);
+            Assert.AreEqual("2008-10-10", s2);
+        }
+
+        [Test]
+        public void TimePeriodTextFormat_DateTime()
+        {
+            var textFormat = new TimePeriodTextFormat();
+
+            string s = "2008-10-10T15:05:05";
+            object obj = textFormat.Parse(s, null);
+            Assert.IsNotNull(obj);
+            Assert.IsTrue(obj is TimePeriod);
+            string startTime = null;
+            string s2 = textFormat.Serialize(obj, out startTime);
+            Assert.IsNull(startTime);
+            Assert.AreEqual("2008-10-10T15:05:05", s2);
+        }
+
+        [Test]
+        public void TimePeriodTextFormat_Quarterly()
+        {
+            var textFormat = new TimePeriodTextFormat();
+
+            string s = "2008-Q2";
+            object obj = textFormat.Parse(s, null);
+            Assert.IsNotNull(obj);
+            Assert.IsTrue(obj is TimePeriod);
+            string startTime = null;
+            string s2 = textFormat.Serialize(obj, out startTime);
+            Assert.IsNull(startTime);
+            Assert.AreEqual("2008-Q2", s2);
+        }
+
+        [Test]
+        public void TimePeriodTextFormat_Binannual()
+        {
+            var textFormat = new TimePeriodTextFormat();
+
+            string s = "2008-B1";
+            object obj = textFormat.Parse(s, null);
+            Assert.IsNotNull(obj);
+            Assert.IsTrue(obj is TimePeriod);
+            string startTime = null;
+            string s2 = textFormat.Serialize(obj, out startTime);
+            Assert.IsNull(startTime);
+            Assert.AreEqual("2008-B1", s2);
+        }
+
+        [Test]
+        public void TimePeriodTextFormat_Triannual()
+        {
+            var textFormat = new TimePeriodTextFormat();
+
+            string s = "2008-T3";
+            object obj = textFormat.Parse(s, null);
+            Assert.IsNotNull(obj);
+            Assert.IsTrue(obj is TimePeriod);
+            string startTime = null;
+            string s2 = textFormat.Serialize(obj, out startTime);
+            Assert.IsNull(startTime);
+            Assert.AreEqual("2008-T3", s2);
+        }
+
+        [Test]
         public void YearTextFormat()
         {
             var textFormat = new YearTextFormat();

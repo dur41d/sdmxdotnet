@@ -5,6 +5,7 @@ using NUnit.Framework;
 
 namespace OXM.Tests
 {
+
     [TestFixture]
     public class TimeConverterTests
     {

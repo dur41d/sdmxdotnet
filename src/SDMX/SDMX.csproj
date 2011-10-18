@@ -196,8 +196,8 @@
     <Compile Include="Structure\TextFormats\DecimalTextFormat.cs" />
     <Compile Include="Structure\TextFormats\DoubleTextFormat.cs" />
     <Compile Include="Structure\TextFormats\IntegerTextFormat.cs" />
+    <Compile Include="Structure\TextFormats\TimePeriodTextFormatBase.cs" />
     <Compile Include="Structure\TextFormats\TextFormat.cs" />
-    <Compile Include="Structure\TextFormats\ITimePeriodTextFormat.cs" />
     <Compile Include="Structure\TextFormats\StringTextFormat.cs" />
     <Compile Include="Structure\TextFormats\TimePeriodTextFormat.cs" />
     <Compile Include="Structure\TextFormats\YearMonthTextFormat.cs" />

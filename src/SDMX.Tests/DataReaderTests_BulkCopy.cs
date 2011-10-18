@@ -11,6 +11,7 @@ namespace SDMX.Tests
         const string _connectionString = @"Server=.\SQLEXPRESS;Database=sdmx;Integrated Security=True";
         
         [Test]
+        [Ignore]
         public void BulkCopy()
         {
             var structure = StructureMessage.Load(Utility.GetPath("lib\\StructureSample.xml"));
@@ -43,8 +44,6 @@ namespace SDMX.Tests
                     bulkCopy.ColumnMappings.Add("UNIT_MULT", "UNIT_MULT");
                     bulkCopy.ColumnMappings.Add("OBS_CONF", "OBS_CONF");
                     bulkCopy.ColumnMappings.Add("OBS_PRE_BREAK", "OBS_PRE_BREAK");
-
-                    
 
                     //bulkCopy.NotifyAfter = 1;
                     bulkCopy.SqlRowsCopied += (a, e) => { Console.WriteLine(e.RowsCopied); };
