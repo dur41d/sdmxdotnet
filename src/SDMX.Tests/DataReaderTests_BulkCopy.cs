@@ -11,7 +11,6 @@ namespace SDMX.Tests
         const string _connectionString = @"Server=.\SQLEXPRESS;Database=sdmx;Integrated Security=True";
         
         [Test]
-        [Ignore]
         public void BulkCopy()
         {
             var structure = StructureMessage.Load(Utility.GetPath("lib\\StructureSample.xml"));
