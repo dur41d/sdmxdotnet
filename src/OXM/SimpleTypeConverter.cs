@@ -21,9 +21,15 @@ namespace OXM
 
         string ISimpleTypeConverter.ToXml(object value)
         {
-            if (!(value is T))
+            Type type = typeof(T);
+            if (value != null && !(value is T))
                 throw new ParseException("Cannot convert object type '{0}'. Expected object type '{1}'."
-                    , object.ReferenceEquals(value, null) ? "null" : value.GetType().Name, typeof(T).Name);
+                    , value.GetType().Name, type.Name);
+
+            if (object.ReferenceEquals(value, null) && type.IsValueType && !IsNullable(type))
+                throw new ParseException("Cannot convert null to type '{0}'."
+                    , type.Name);
+
 
             return ToXml((T)value);
         }
@@ -41,6 +47,11 @@ namespace OXM
         bool ISimpleTypeConverter.CanConvertToObj(string value)
         {
             return CanConvertToObj(value);
+        }
+
+        bool IsNullable(Type type)
+        {
+            return type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>);
         }
     }
 }
