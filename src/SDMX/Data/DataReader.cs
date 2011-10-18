@@ -6,6 +6,7 @@ using System.Linq;
 using System.Xml;
 using Common;
 using SDMX.Parsers;
+using System.Reflection;
 
 namespace SDMX
 {
@@ -314,7 +315,7 @@ namespace SDMX
             };
 
             _table = new DataTable();
-            _table.TableName = KeyFamily.Name.First().ToString();
+            _table.TableName = KeyFamily.Id;
 
             foreach (var dim in KeyFamily.Dimensions)
                 _table.Columns.Add(col(dim.Concept.Id, dim.GetValueType(), false));
@@ -340,7 +341,10 @@ namespace SDMX
                 }
                 catch (Exception ex)
                 {
-                    SDMXException.ThrowParseError(_xmlReader, ex, "Exception occured in while casting value. See inner exception");
+                    if (ex is TargetInvocationException && ex.InnerException != null)
+                        ex = ex.InnerException;
+
+                    SDMXException.ThrowParseError(_xmlReader, ex, "Exception occured in at Cast (see inner exception for details): {0}", ex.Message);
                     return null;
                 }
             }

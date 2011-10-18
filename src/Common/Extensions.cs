@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Xml;
 using System.Xml.Linq;
 
@@ -87,16 +86,4 @@ namespace Common
         }
 
     }
-
-    //public class Equality<T> where T : class, IEquatable<T>
-    //{
-    //    public static bool Equals(T x, T y, Func<bool> equals)
-    //    {
-    //        if (object.Equals(y, null)) return false;
-    //        return equals();
-    //    }
-    //}
-
-
-
 }

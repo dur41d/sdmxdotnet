@@ -49,7 +49,7 @@ namespace SDMX
 
         int IDataRecord.FieldCount
         {
-            get { return _record.Count; }
+            get { return GetTable().Columns.Count; }
         }
 
         bool IDataRecord.GetBoolean(int i)

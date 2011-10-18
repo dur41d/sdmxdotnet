@@ -1,14 +1,9 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Common;
-using System.Text.RegularExpressions;
-using OXM;
 
 namespace SDMX
 {
-    enum TimePeriodType
+    public enum TimePeriodType
     { 
         Year,
         YearMonth,
@@ -22,7 +17,7 @@ namespace SDMX
 
     public class TimePeriod : IEquatable<TimePeriod>
     {
-        internal TimePeriodType TimePeriodType { get; private set; }
+        public TimePeriodType Type { get; private set; }
 
         DateTimeOffset _value;
 
@@ -31,11 +26,20 @@ namespace SDMX
         Biannual _biannaul;
         Triannual _triannual;
 
+        public bool IsWeekly { get { return Type == TimePeriodType.Weekly; } }
+        public bool IsQuarterly { get { return Type == TimePeriodType.Quarterly; } }
+        public bool IsBiannual { get { return Type == TimePeriodType.Biannual; } }
+        public bool IsTriannual { get { return Type == TimePeriodType.Triannual; } }
+        public bool IsDate { get { return Type == TimePeriodType.Date; } }
+        public bool IsDateTime { get { return Type == TimePeriodType.DateTime; } }
+        public bool IsYear { get { return Type == TimePeriodType.Year; } }
+        public bool IsYearMonth { get { return Type == TimePeriodType.YearMonth; } }
+
         public int Year 
         { 
             get 
             {
-                switch (TimePeriodType)
+                switch (Type)
                 {
                     case TimePeriodType.Weekly: return _weekly.Year;
                     case TimePeriodType.Quarterly: return _quarterly.Year;
@@ -54,15 +58,15 @@ namespace SDMX
         { 
             get 
             {
-                if (TimePeriodType == TimePeriodType.YearMonth
-                    || TimePeriodType == TimePeriodType.Date
-                    || TimePeriodType == TimePeriodType.DateTime)
+                if (Type == TimePeriodType.YearMonth
+                    || Type == TimePeriodType.Date
+                    || Type == TimePeriodType.DateTime)
                 {
                     return _value.Month;
                 }
                 else
                 {
-                    return 0;
+                    throw new SDMXException("Month property is only valid for TimePeriodTypes YearMonth, Date, Datetime. The current type is: {0}.", Type);
                 }
             } 
         }
@@ -71,14 +75,14 @@ namespace SDMX
         {
             get
             {
-                if (TimePeriodType == TimePeriodType.Date
-                    || TimePeriodType == TimePeriodType.DateTime)
+                if (Type == TimePeriodType.Date
+                    || Type == TimePeriodType.DateTime)
                 {
                     return _value.Day;
                 }
                 else
                 {
-                    return 0;
+                    throw new SDMXException("Day property is only valid for TimePeriodTypes Date and Datetime. The current type is: {0}.", Type);
                 }
             }
         }
@@ -87,13 +91,13 @@ namespace SDMX
         {
             get
             {
-                if (TimePeriodType == TimePeriodType.DateTime)
+                if (Type == TimePeriodType.DateTime)
                 {
                     return _value.Hour;
                 }
                 else
                 {
-                    return 0;
+                    throw new SDMXException("Hour property is only valid for TimePeriodType.Datetime. The current type is: {0}.", Type);
                 }
             }
         }
@@ -102,13 +106,13 @@ namespace SDMX
         {
             get
             {
-                if (TimePeriodType == TimePeriodType.DateTime)
+                if (Type == TimePeriodType.DateTime)
                 {
                     return _value.Minute;
                 }
                 else
                 {
-                    return 0;
+                    throw new SDMXException("Minute property is only valid for TimePeriodType.Datetime. The current type is: {0}.", Type);
                 }
             }
         }
@@ -117,13 +121,13 @@ namespace SDMX
         {
             get
             {
-                if (TimePeriodType == TimePeriodType.DateTime)
+                if (Type == TimePeriodType.DateTime)
                 {
                     return _value.Second;
                 }
                 else
                 {
-                    return 0;
+                    throw new SDMXException("Second property is only valid for TimePeriodType.Datetime. The current type is: {0}.", Type);
                 }
             }
         }
@@ -132,13 +136,13 @@ namespace SDMX
         {
             get
             {
-                if (TimePeriodType == TimePeriodType.DateTime)
+                if (Type == TimePeriodType.DateTime)
                 {
                     return _value.Millisecond;
                 }
                 else
                 {
-                    return 0;
+                    throw new SDMXException("Millisecond property is only valid for TimePeriodType.Datetime. The current type is: {0}.", Type);
                 }
             }
         }
@@ -147,10 +151,10 @@ namespace SDMX
         {
             get
             {
-                if (TimePeriodType == TimePeriodType.Year
-                    || TimePeriodType == TimePeriodType.YearMonth
-                    || TimePeriodType == TimePeriodType.Date
-                    || TimePeriodType == TimePeriodType.DateTime)                
+                if (Type == TimePeriodType.Year
+                    || Type == TimePeriodType.YearMonth
+                    || Type == TimePeriodType.Date
+                    || Type == TimePeriodType.DateTime)                
                 {
                     return _value.Offset;
                 }
@@ -165,13 +169,13 @@ namespace SDMX
         {
             get
             {
-                if (TimePeriodType == TimePeriodType.Quarterly)
+                if (Type == TimePeriodType.Quarterly)
                 {
                     return _quarterly.Quarter;
                 }
                 else
                 {
-                    return 0;
+                    throw new SDMXException("Quarter property is only valid for TimePeriodType.Quarterly. The current type is: {0}.", Type);
                 }
             }
         }
@@ -180,13 +184,13 @@ namespace SDMX
         {
             get
             {
-                if (TimePeriodType == TimePeriodType.Weekly)
+                if (Type == TimePeriodType.Weekly)
                 {
                     return _weekly.Week;
                 }
                 else
                 {
-                    return 0;
+                    throw new SDMXException("Week property is only valid for TimePeriodType.Weekly. The current type is: {0}.", Type);
                 }
             }
         }
@@ -195,13 +199,13 @@ namespace SDMX
         {
             get
             {
-                if (TimePeriodType == TimePeriodType.Biannual)
+                if (Type == TimePeriodType.Biannual)
                 {
                     return _biannaul.Annum;
                 }
                 else
                 {
-                    return 0;
+                    throw new SDMXException("Biannum property is only valid for TimePeriodType.Biannual. The current type is: {0}.", Type);
                 }
             }
         }
@@ -210,13 +214,13 @@ namespace SDMX
         {
             get
             {
-                if (TimePeriodType == TimePeriodType.Triannual)
+                if (Type == TimePeriodType.Triannual)
                 {
                     return _triannual.Annum;
                 }
                 else
                 {
-                    return 0;
+                    throw new SDMXException("Triannum property is only valid for TimePeriodType.Triannual. The current type is: {0}.", Type);
                 }
             }
         }
@@ -225,16 +229,14 @@ namespace SDMX
         {
             get
             {
-                if (TimePeriodType == TimePeriodType.Year
-                   || TimePeriodType == TimePeriodType.YearMonth
-                   || TimePeriodType == TimePeriodType.Date
-                   || TimePeriodType == TimePeriodType.DateTime)
+                if (Type == TimePeriodType.Date
+                   || Type == TimePeriodType.DateTime)
                 {
                     return _value;
                 }
                 else
                 {
-                    throw new SDMXException("Cannot access DateTimeOffset for TimePeriod of type: {0}.", TimePeriodType);
+                    throw new SDMXException("DateTimeOffset property is only valid for TimePeriodTypes Date and Datetime. The current type is: {0}.", Type);
                 }
             }
         }
@@ -243,16 +245,14 @@ namespace SDMX
         {
             get
             {
-                if (TimePeriodType == TimePeriodType.Year
-                   || TimePeriodType == TimePeriodType.YearMonth
-                   || TimePeriodType == TimePeriodType.Date
-                   || TimePeriodType == TimePeriodType.DateTime)
+                if (Type == TimePeriodType.Date
+                   || Type == TimePeriodType.DateTime)
                 {
                     return _value.DateTime;
                 }
                 else
                 {
-                    throw new SDMXException("Cannot access DateTime for TimePeriod of type: {0}.", TimePeriodType);
+                    throw new SDMXException("DateTime property is only valid for TimePeriodTypes Date and Datetime. The current type is: {0}.", Type);
                 }
             }
         }
@@ -261,18 +261,42 @@ namespace SDMX
         {
         }
 
+        public string ToString(IFormatProvider formatProvider)
+        {
+            return ToStringInternal(() => _value.ToString(formatProvider));
+        }
+
+        public string ToString(string format)
+        {
+            return ToStringInternal(() => _value.ToString(format));
+        }
+
+        public string ToString(string format, IFormatProvider formatProvider)
+        {
+            return ToStringInternal(() => _value.ToString(format, formatProvider));
+        }
+
         public override string ToString()
         {
-            if (TimePeriodType == TimePeriodType.Weekly)
+            return ToStringInternal(() => _value.ToString());
+        }
+
+        string ToStringInternal(Func<string> valueToString)
+        { 
+            if (Type == TimePeriodType.Weekly)
                 return _weekly.ToString();
-            if (TimePeriodType == TimePeriodType.Quarterly)
+            if (Type == TimePeriodType.Quarterly)
                 return _quarterly.ToString();
-            if (TimePeriodType == TimePeriodType.Biannual)
+            if (Type == TimePeriodType.Biannual)
                 return _biannaul.ToString();
-            if (TimePeriodType == TimePeriodType.Triannual)
+            if (Type == TimePeriodType.Triannual)
                 return _triannual.ToString();
-            else
-                return _value.ToString();
+            if (Type == TimePeriodType.Year)
+                return _value.Offset.Ticks > 0 ? _value.ToString("yyyyKK") : _value.ToString("yyyy");
+            if (Type == TimePeriodType.YearMonth)
+                return _value.Offset.Ticks > 0 ? _value.ToString("yyyy-MMKK") : _value.ToString("yyyy-MM");
+            else 
+                return valueToString();
         }
 
         public override bool Equals(object obj)
@@ -282,7 +306,13 @@ namespace SDMX
 
         public bool Equals(TimePeriod other)
         {
-            return false;
+            return this.Equals(other, () => 
+                Type == other.Type
+                && _value == other._value
+                && _quarterly == other._quarterly
+                && _weekly == other._weekly
+                && _biannaul == other._biannaul
+                && _triannual == other._triannual);
         }
 
         public override int GetHashCode()
@@ -304,7 +334,7 @@ namespace SDMX
         {
             var timePeriod = new TimePeriod();
             timePeriod._value = new DateTimeOffset(value.Year, 1, 1, 0, 0, 0, 0, value.Offset);
-            timePeriod.TimePeriodType = TimePeriodType.Year;
+            timePeriod.Type = TimePeriodType.Year;
             return timePeriod;
         }
 
@@ -312,7 +342,7 @@ namespace SDMX
         {
             var timePeriod = new TimePeriod();
             timePeriod._value = new DateTimeOffset(value.Year, value.Month, 1, 0, 0, 0, 0, value.Offset);
-            timePeriod.TimePeriodType = TimePeriodType.YearMonth;
+            timePeriod.Type = TimePeriodType.YearMonth;
             return timePeriod;
         }
 
@@ -320,7 +350,7 @@ namespace SDMX
         {
             var timePeriod = new TimePeriod();
             timePeriod._value = new DateTimeOffset(value.Year, value.Month, value.Day, 0, 0, 0, 0, value.Offset);
-            timePeriod.TimePeriodType = TimePeriodType.Date;
+            timePeriod.Type = TimePeriodType.Date;
             return timePeriod;
         }
 
@@ -328,7 +358,7 @@ namespace SDMX
         {
             var timePeriod = new TimePeriod();
             timePeriod._value = value;
-            timePeriod.TimePeriodType = TimePeriodType.DateTime;
+            timePeriod.Type = TimePeriodType.DateTime;
             return timePeriod;
         }
 
@@ -336,7 +366,7 @@ namespace SDMX
         {
             var timePeriod = new TimePeriod();
             timePeriod._weekly = weekly;
-            timePeriod.TimePeriodType = TimePeriodType.Weekly;
+            timePeriod.Type = TimePeriodType.Weekly;
             return timePeriod;
         }
 
@@ -344,7 +374,7 @@ namespace SDMX
         {
             var timePeriod = new TimePeriod();
             timePeriod._quarterly = quarterly;
-            timePeriod.TimePeriodType = TimePeriodType.Quarterly;
+            timePeriod.Type = TimePeriodType.Quarterly;
             return timePeriod;
         }
 
@@ -352,7 +382,7 @@ namespace SDMX
         {
             var timePeriod = new TimePeriod();
             timePeriod._biannaul = biannual;
-            timePeriod.TimePeriodType = TimePeriodType.Biannual;
+            timePeriod.Type = TimePeriodType.Biannual;
             return timePeriod;
         }
 
@@ -360,7 +390,7 @@ namespace SDMX
         {
             var timePeriod = new TimePeriod();
             timePeriod._triannual = triannaul;
-            timePeriod.TimePeriodType = TimePeriodType.Triannual;
+            timePeriod.Type = TimePeriodType.Triannual;
             return timePeriod;
         }
     }
