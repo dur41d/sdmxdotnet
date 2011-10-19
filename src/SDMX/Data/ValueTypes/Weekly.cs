@@ -9,6 +9,12 @@ namespace SDMX
 {
     public struct Weekly : IEquatable<Weekly>
     {
+        private const string p = @"^(?<Year>\d{4})-W(?<Week>[1-9]|[1-4][0-9]|5[0-2])$";
+        static Regex pattern = new Regex(p, RegexOptions.Compiled);
+
+        public static readonly Weekly MinValue = new Weekly(DateTime.MinValue.Year, Week.W1);
+        public static readonly Weekly MaxValue = new Weekly(DateTime.MaxValue.Year, Week.W52);
+
         int _year;
         Week _week;
 
@@ -17,9 +23,8 @@ namespace SDMX
 
         public Weekly(int year, Week week)
         {
-            // use date time to validate the integer
-            var dateTime = new DateTime(year, 1, 1);
-            _year = dateTime.Year;
+            Validate(year, week);
+            _year = year;
             _week = week;
         }
 
@@ -52,6 +57,40 @@ namespace SDMX
         public static bool operator !=(Weekly x, Weekly y)
         {
             return !(x == y);
+        }
+
+        public static Weekly Parse(string value)
+        {
+            Weekly result;
+            if (!TryParse(value, out result))
+            {
+                throw new SDMXException("Invalid Weekly value '{0}'.", value);
+            }
+            return result;
+        }
+
+        public static bool TryParse(string value, out Weekly result)
+        {
+            var match = pattern.Match(value);
+            if (!match.Success)
+            {
+                result = new Weekly();
+                return false;
+            }
+            int year = int.Parse(match.Groups["Year"].Value);
+            int week = int.Parse(match.Groups["Week"].Value);
+            result = new Weekly(year, (Week)week);
+            return true;
+        }
+
+        static void Validate(int year, Week week)
+        {
+            if (year < DateTime.MinValue.Year || year > DateTime.MaxValue.Year)
+                throw new SDMXException("Year value is out of range: {0}.", year);
+
+            int q = (int)week;
+            if (q < 1 || q > 52)
+                throw new SDMXException("Week value is out of range: {0}.", q);
         }
     }
 }
