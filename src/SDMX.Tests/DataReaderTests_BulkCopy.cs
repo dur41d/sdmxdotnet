@@ -17,7 +17,7 @@ namespace SDMX.Tests
         const string _connectionString = @"Server=.;Database=sdmx;Integrated Security=True";
         
         [Test]
-        //[Ignore]
+        [Ignore]
         public void BulkCopy()
         {
             var structure = StructureMessage.Load(Utility.GetPath("lib\\StructureSample.xml"));
@@ -45,6 +45,7 @@ namespace SDMX.Tests
         }
 
         [Test]
+        [Ignore]
         public void LoadTest()
         {
             var list = new List<string>() 

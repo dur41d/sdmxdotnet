@@ -315,7 +315,7 @@ namespace SDMX.Tests
             var textFormat = new DateTimeTextFormat();
 
             string startTime = null;
-            DateTimeOffset? obj = new DateTimeOffset(2009, 1, 1, 1, 1, 1, TimeSpan.FromTicks(0));
+            DateTimeOffset? obj = new DateTimeOffset(2009, 1, 1, 1, 1, 1, TimeSpan.Zero);
 
             string s2 = textFormat.Serialize(obj, out startTime);
             Assert.IsNull(startTime);

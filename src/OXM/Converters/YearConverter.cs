@@ -5,8 +5,11 @@ using System.Text.RegularExpressions;
 
 namespace OXM
 {
+
+
     public class YearConverter : SimpleTypeConverter<DateTimeOffset>
     {
+        // TODO: think about serializing to YearOffset and YearMonthOffset instead of DateTimeOffset
         const string p = @"^(?<Sign>[-|+]?)(?<Year>\d{4})(?<Z>Z)?(?:(?<ZoneSign>[+-])(?<ZoneHour>\d{2}):(?<ZoneMinute>\d{2}))?$";
         static Regex pattern = new Regex(p, RegexOptions.Compiled);
 
