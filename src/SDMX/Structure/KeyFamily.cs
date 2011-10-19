@@ -20,6 +20,8 @@ namespace SDMX
             XMeasures = new Collection<CrossSectionalMeasure>();
         }
 
+        // TODO: rethink exposing Collection<T> and maybe using one collection internally
+        // for all componenets and exposing them via the properties Dimensions, TimeDimension, Attributes.. etc.
         public TimeDimension TimeDimension { get; internal set; }
         public PrimaryMeasure PrimaryMeasure { get; internal set; }
         public Collection<Dimension> Dimensions { get; private set; }

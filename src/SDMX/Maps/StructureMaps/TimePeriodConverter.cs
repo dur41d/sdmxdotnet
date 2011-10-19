@@ -39,10 +39,17 @@ namespace SDMX.Parsers
 
             var converter = registry[value.Type];
 
-            if (converter is YearConverter
-                        || converter is YearMonthConverter
-                        || converter is DateConverter
-                        || converter is DateTimeConverter)
+            if (converter is YearConverter)
+            {
+                var dt = new DateTimeOffset(value.Year, 1, 1, 0, 0, 0, value.Offset);
+                return converter.ToXml(dt);
+            }
+            else if (converter is YearMonthConverter)
+            {
+                var dt = new DateTimeOffset(value.Year, value.Month, 1, 0, 0, 0, value.Offset);
+                return converter.ToXml(dt);
+            }
+            if (converter is DateConverter  || converter is DateTimeConverter)
             {
                 return converter.ToXml(value.DateTimeOffset);
             }
@@ -78,6 +85,17 @@ namespace SDMX.Parsers
             }
 
             throw new SDMXException("Invalid time period value '{0}'.", value);
+        }
+
+        public override bool CanConvertToObj(string value)
+        {
+            foreach (var converter in registry.Values)
+            {
+                if (converter.CanConvertToObj(value))
+                    return true;
+            }
+
+            return false;
         }
     }
 }

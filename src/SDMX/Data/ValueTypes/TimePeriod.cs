@@ -160,7 +160,7 @@ namespace SDMX
                 }
                 else
                 {
-                    return TimeSpan.FromTicks(0);
+                    return TimeSpan.Zero;
                 }
             }
         }

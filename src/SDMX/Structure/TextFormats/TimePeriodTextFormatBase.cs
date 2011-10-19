@@ -9,15 +9,16 @@ namespace SDMX
 {
     public abstract class TimePeriodTextFormatBase : TextFormat
     {
-
         public virtual string Serialize(object obj, out string startTime)
         {
+            startTime = null;
             if (obj is DateTime)
                 obj = FromDateTime((DateTime)obj);
             if (obj is DateTime? && ((DateTime?)obj).HasValue)
                 obj = FromDateTime(((DateTime?)obj).Value);
-
-            startTime = null;
+            if (obj is string && Converter.CanConvertToObj((string)obj))
+                return (string)obj;
+            
             return Converter.ToXml(obj);
         }
 
@@ -33,7 +34,7 @@ namespace SDMX
 
         DateTimeOffset FromDateTime(DateTime dateTime)
         {
-            return new DateTimeOffset(dateTime.Ticks, TimeSpan.FromTicks(0));
+            return new DateTimeOffset(dateTime.Ticks, TimeSpan.Zero);
         }
     }
 }
