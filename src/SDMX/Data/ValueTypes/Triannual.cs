@@ -9,6 +9,12 @@ namespace SDMX
 {
     public struct Triannual : IEquatable<Triannual>
     {
+        private const string p = @"^(?<Year>\d{4})-T(?<Triannum>[1-3])$";
+        static Regex pattern = new Regex(p, RegexOptions.Compiled);
+
+        public static readonly Triannual MinValue = new Triannual(DateTime.MinValue.Year, Triannum.T1);
+        public static readonly Triannual MaxValue = new Triannual(DateTime.MaxValue.Year, Triannum.T3);
+
         int _year;
         Triannum _annum;
 
@@ -17,9 +23,8 @@ namespace SDMX
 
         public Triannual(int year, Triannum annum)
         {
-            // use date time to validate the integer
-            var dateTime = new DateTime(year, 1, 1);
-            _year = dateTime.Year;
+            Validate(year, annum);
+            _year = year;
             _annum = annum;
         }
 
@@ -52,6 +57,40 @@ namespace SDMX
         public static bool operator !=(Triannual x, Triannual y)
         {
             return !(x == y);
+        }
+
+        public static Triannual Parse(string value)
+        {
+            Triannual result;
+            if (!TryParse(value, out result))
+            {
+                throw new SDMXException("Invalid Triannual value '{0}'.", value);
+            }
+            return result;
+        }
+
+        public static bool TryParse(string value, out Triannual result)
+        {
+            var match = pattern.Match(value);
+            if (!match.Success)
+            {
+                result = new Triannual();
+                return false;
+            }
+            int year = int.Parse(match.Groups["Year"].Value);
+            int triannum = int.Parse(match.Groups["Triannum"].Value);
+            result = new Triannual(year, (Triannum)triannum);
+            return true;
+        }
+
+        static void Validate(int year, Triannum triannum)
+        {
+            if (year < DateTime.MinValue.Year || year > DateTime.MaxValue.Year)
+                throw new SDMXException("Year value is out of range: {0}.", year);
+
+            int q = (int)triannum;
+            if (q < 1 || q > 3)
+                throw new SDMXException("Triannum value is out of range: {0}.", q);
         }
     }
 }

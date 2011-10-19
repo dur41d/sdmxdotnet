@@ -9,6 +9,13 @@ namespace SDMX
 {
     public struct Quarterly : IEquatable<Quarterly>
     {
+        private const string p = @"^(?<Year>\d{4})-Q(?<Quarter>[1-4])$";
+        static Regex pattern = new Regex(p, RegexOptions.Compiled);
+
+        public static readonly Quarterly MinValue = new Quarterly(DateTime.MinValue.Year, Quarter.Q1);
+        public static readonly Quarterly MaxValue = new Quarterly(DateTime.MaxValue.Year, Quarter.Q4);
+
+
         int _year;
         Quarter _quarter;
 
@@ -17,9 +24,8 @@ namespace SDMX
 
         public Quarterly(int year, Quarter quarter)
         {
-            // use date time to validate the integer
-            var dateTime = new DateTime(year, 1, 1);
-            _year = dateTime.Year;
+            Validate(year, quarter);
+            _year = year;
             _quarter = quarter;
         }
 
@@ -52,6 +58,40 @@ namespace SDMX
         public static bool operator !=(Quarterly x, Quarterly y)
         {
             return !(x == y);
+        }
+
+        public static Quarterly Parse(string value)
+        {
+            Quarterly result;
+            if (!TryParse(value, out result))
+            {
+                throw new SDMXException("Invalid Quarterly value '{0}'.", value);
+            }
+            return result;
+        }
+
+        public static bool TryParse(string value, out Quarterly result)
+        {
+            var match = pattern.Match(value);
+            if (!match.Success)
+            {
+                result = new Quarterly();
+                return false;
+            }
+            int year = int.Parse(match.Groups["Year"].Value);
+            int quarter = int.Parse(match.Groups["Quarter"].Value);
+            result = new Quarterly(year, (Quarter)quarter);
+            return true;
+        }
+
+        static void Validate(int year, Quarter quarter)
+        {
+            if (year < DateTime.MinValue.Year || year > DateTime.MaxValue.Year)
+                throw new SDMXException("Year value is out of range: {0}.", year);
+
+            int q = (int)quarter;
+            if (q < 1 || q > 4)
+                throw new SDMXException("Quarter value is out of range: {0}.", q);
         }
     }
 }
