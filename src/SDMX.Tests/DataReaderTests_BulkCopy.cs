@@ -11,33 +11,11 @@ using System.Xml;
 using System.Collections.Generic;
 
 namespace SDMX.Tests
-{
+{   
     public partial class DataReaderTests
     {
         const string _connectionString = @"Server=.;Database=sdmx;Integrated Security=True";
 
-        //[Test]
-        //[Ignore]
-        //public void DataWriterDesign()
-        //{
-        //    var structure = StructureMessage.Load(Utility.GetPath("lib\\StructureSample.xml"));
-        //    string dataPath = Utility.GetPath("lib\\CompactSample.xml");
-        //    var keyFamily = structure.KeyFamilies[0];
-
-        //    // Get IDataReader instance from the database or any where else
-        //    using (IDataReader reader = GetReader())
-        //    {
-        //        using (var writer = CompactDataWriter.Create(dataPath, keyFamily))
-        //        {
-        //            // Cast back from DateTime (if its strored in the database like that) to TimePeriod.Year
-        //            writer.Cast("TIME", i => TimePeriod.FromYear(i));
-
-        //            writer.Write(reader);
-        //        }
-        //    }
-        //}
-
-        
         [Test]
         [Ignore]
         public void BulkCopy()
