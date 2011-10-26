@@ -24,7 +24,7 @@ namespace OXM
         public static void Throw(XmlReader reader, Type type, string format, params object[] args)
         {
             var xml = reader as IXmlLineInfo;
-            string message = string.Format("Parsing error at ({0},{1}): {3} Type=ClassMap<{2}>.",
+            string message = string.Format("Parse Error: {3} Line: {0} Position: {1}  Type: ClassMap<{2}>.",
                 xml.LineNumber, xml.LinePosition, type.Name, string.Format(format, args));
             throw new ParseException(message);
         }
@@ -32,7 +32,7 @@ namespace OXM
         public static void Throw(XmlReader reader, Type type, Exception inner, string format, params object[] args)
         {
             var xml = reader as IXmlLineInfo;
-            string message = string.Format("Parsing error at ({0},{1}): {3} Type=ClassMap<{2}>.",
+            string message = string.Format("Parse Error: {3}  Line: {0} Position: {1}  Type: ClassMap<{2}>.",
                 xml.LineNumber, xml.LinePosition, type.Name, string.Format(format, args));
             throw new ParseException(message, inner);
         }
