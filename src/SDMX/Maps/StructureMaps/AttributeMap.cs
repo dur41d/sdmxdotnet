@@ -10,7 +10,7 @@ using OXM;
 
 namespace SDMX.Parsers
 {
-    internal class AttributeMap : CompoenentMap<Attribute>
+    internal class AttributeMap : ComponentMap<Attribute>
     {
         Attribute _attribute;
 

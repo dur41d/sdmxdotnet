@@ -14,11 +14,11 @@ namespace OXM
     {
         public static bool IsDefault<T>(this T value)
         {
-            if (typeof(T).IsEnum) return false;
-            if (typeof(T) == typeof(bool)) return false;
+            //if (typeof(T).IsEnum) return false;
+            //if (typeof(T) == typeof(bool)) return false;
 
-            if ((object)value == null) return true;
-            return value.Equals(default(T));
+            return (object)value == null;
+            //return value.Equals(default(T));
         }
     }
 
@@ -39,7 +39,7 @@ namespace OXM
             classMap.Namespace = Name.Namespace;
             TProperty property = classMap.ReadXml(reader);
 
-            if ((object)property != null)
+            if (!property.IsDefault())
             {
                 try
                 {

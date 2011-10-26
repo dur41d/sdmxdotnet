@@ -7,7 +7,7 @@ using Common;
 
 namespace SDMX.Parsers
 {
-    internal class PrimaryMeasureMap : CompoenentMap<PrimaryMeasure>
+    internal class PrimaryMeasureMap : ComponentMap<PrimaryMeasure>
     {
         PrimaryMeasure _measure;
 

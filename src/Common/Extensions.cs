@@ -45,7 +45,7 @@ namespace Common
                 action(element);
         }
 
-        public static bool ReadNextElement(this XmlReader reader)
+        public static bool ReadNextStartElement(this XmlReader reader)
         {
             while (reader.Read())
             {
@@ -64,11 +64,17 @@ namespace Common
         public static XName GetXName(this XmlReader reader)
         {
             XNamespace ns = reader.NamespaceURI;
-            string localName = reader.Name.Contains(':') ?
-                reader.Name.Split(new[] {':'}, 2)[1] : reader.Name;
 
-            XName name = ns + localName;
-            return name;
+            int index = reader.Name.IndexOf(':');
+
+            if (index >= 0)
+            {
+                return ns + reader.Name.Substring(index + 1);
+            }
+            else
+            {
+                return ns + reader.Name;
+            }
         }
 
         public static bool Equals<T>(T x, T y) where T : IEquatable<T>

@@ -1,45 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Xml.Linq;
-using System.Linq.Expressions;
-using System.Reflection;
-using Common;
-using System.Runtime.Serialization;
 using System.Xml;
+using System.Xml.Linq;
+using Common;
 
 namespace OXM
 {
-    internal class NameCounter<T>
-    {
-        Dictionary<T, int> counts = new Dictionary<T, int>();
-
-        public void Increment(T name)
-        {
-            if (counts.ContainsKey(name))
-            {
-                counts[name]++;
-            }
-            else
-            {
-                counts.Add(name, 1);
-            }
-        }
-
-        public int Get(T name)
-        {
-            if (counts.ContainsKey(name))
-            {
-                return counts[name];
-            }
-            else
-            {
-                return 0;
-            }
-        }
-    }
-   
     public abstract class ClassMap<T> : IElementMapContainer<T>, IAttributeMapContainer<T>, IElementContentContainer<T>
     {
         internal XNamespace Namespace { get; set; }
@@ -107,50 +74,60 @@ namespace OXM
 
             if (_contentMap != null)
             {
+                if (reader.IsEmptyElement)
+                {
+                    ParseException.Throw(reader, typeof(T), "Element '{0}' is empty but its content is mapped.", reader.GetXName());
+                }
+
                 _contentMap.ReadXml(reader);
             }
             else
             {
-                if (!reader.IsEmptyElement)
-                {
-                    using (var subReader = reader.ReadSubtree())
-                    {
-                        bool found = subReader.ReadNextElement();
-                        found = subReader.ReadNextElement();
-
-                        if (found)
-                        {
-                            var counts = new NameCounter<XName>();
-
-                            do
-                            {
-                                XName name = subReader.GetXName();
-                                var elementMap = _elementMaps.Get(name);
-                                if (elementMap == null)
-                                {
-                                    System.Diagnostics.Debug.WriteLine(string.Format("Element '{0}' is not Mapped. Line: {1} Position: {2} Type: {3}",
-                                        name, ((IXmlLineInfo)subReader).LineNumber, ((IXmlLineInfo)subReader).LineNumber, this.GetType()), "Warning");
-                                    continue;
-                                }
-                                elementMap.ReadXml(subReader);
-                                counts.Increment(name);
-                            }
-                            while (subReader.ReadNextElement());
-
-                            foreach (IElementMap<T> elementMap in _elementMaps)
-                            {
-                                int count = counts.Get(elementMap.Name);
-                                if (elementMap.Required && count == 0)
-                                {
-                                    ParseException.Throw(subReader, typeof(T), "Element '{0}' is required but was not found.", elementMap.Name);
-                                }
-                            }
-                        }
-                    }
-                }               
-            }
+                ReadElements(reader, _elementMaps);
+            }   
 
             return Return();
+        }
+
+        internal static void ReadElements(XmlReader reader, MapList<T> elementMaps)
+        {
+            var counts = new NameCounter<XName>();
+
+            if (!reader.IsEmptyElement)
+            {
+                int depth = reader.Depth;
+
+                while (reader.Read())
+                {
+                    if (reader.NodeType == XmlNodeType.EndElement && reader.Depth == depth)
+                    { 
+                        break;
+                    }
+                    else if (reader.NodeType == XmlNodeType.Element)
+                    {
+                        XName name = reader.GetXName();
+                        var elementMap = elementMaps.Get(name);
+                        if (elementMap == null)
+                        {
+#if DEBUG
+                            System.Diagnostics.Debug.WriteLine(string.Format("Element '{0}' is not Mapped. Line: {1} Position: {2} Type: ClassMap<{3}>",
+                                name, ((IXmlLineInfo)reader).LineNumber, ((IXmlLineInfo)reader).LineNumber, typeof(T)), "Warning");
+#endif
+                            continue;
+                        }
+                        elementMap.ReadXml(reader);
+                        counts.Increment(name);
+                    }
+                }
+            }
+
+            foreach (IElementMap<T> elementMap in elementMaps)
+            {
+                if (elementMap.Required && counts.Get(elementMap.Name) == 0)
+                {
+                    ParseException.Throw(reader, typeof(T), "Element '{0}' is required but was not found.", elementMap.Name);
+                }
+            }
         }
 
         protected PropertyMap<T, TProperty> Map<TProperty>(Func<T, TProperty> property)

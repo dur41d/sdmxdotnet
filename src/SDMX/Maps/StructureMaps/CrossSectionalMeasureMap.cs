@@ -7,7 +7,7 @@ using Common;
 
 namespace SDMX.Parsers
 {
-    internal class XMeasureMap : CompoenentMap<CrossSectionalMeasure>
+    internal class XMeasureMap : ComponentMap<CrossSectionalMeasure>
     {
         CrossSectionalMeasure _measure;
         

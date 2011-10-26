@@ -132,7 +132,7 @@ namespace SDMX
 
             if (reader.NodeType != XmlNodeType.Element)
             {
-                reader.ReadNextElement();
+                reader.ReadNextStartElement();
             }
 
             if (reader.LocalName == "CompactData")

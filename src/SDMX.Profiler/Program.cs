@@ -10,7 +10,8 @@ namespace SDMX.Profiler
     {
         static void Main(string[] args)
         {            
-            new DataReaderTests().LoadTest();
+            // new DataReaderTests().LoadTest();
+            new StructureTests().LoadTest();
         }
 
         private static Header GetHeader()

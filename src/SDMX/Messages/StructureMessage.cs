@@ -29,14 +29,9 @@ namespace SDMX
 
         public CodeList FindCodeList(Id codeListId, Id agencyId, string version)
         {
-            var where = ExpressionExtensions.True<CodeList>();
-
-            where = where.And(i => i.Id == codeListId);
-            if (agencyId != null) where.And(i => i.AgencyId == agencyId);
-            if (version != null) where.And(i => i.Version == version);
-            var exp = where.Compile();
-
-            return CodeLists.Where(exp).SingleOrDefault();
+            return CodeLists.Where(i => i.Id == codeListId
+                    && (agencyId == null || i.AgencyId == agencyId)
+                    && (version == null || i.Version == version)).SingleOrDefault();
         }
 
 
@@ -45,16 +40,11 @@ namespace SDMX
             Id conceptId, Id conceptAgencyId, string conceptVersion)
         {
             IEnumerable<Concept> list = null;
-
             if (coneceptSchemeId != null)
-            {
-                var where = ExpressionExtensions.True<ConceptScheme>();
-                where = where.And(i => i.Id == coneceptSchemeId);
-                if (coneceptSchemeAgencyId != null) where.And(i => i.AgencyId == coneceptSchemeAgencyId);
-                if (coneceptSchemeVersion != null) where.And(i => i.Version == coneceptSchemeVersion);
-                var exp = where.Compile();
-
-                list = ConceptSchemes.Where(exp).SingleOrDefault();
+            {  
+                list = ConceptSchemes.Where(i => i.Id == coneceptSchemeId
+                    && (coneceptSchemeAgencyId == null || i.AgencyId == coneceptSchemeAgencyId)
+                    && (coneceptSchemeVersion == null || i.Version == coneceptSchemeVersion)).SingleOrDefault();
             }
             else
             {
@@ -63,21 +53,13 @@ namespace SDMX
 
             if (list != null)
             {
-                var where2 = ExpressionExtensions.True<Concept>();
-                where2 = where2.And(i => i.Id == conceptId);
-                if (conceptAgencyId != null) where2.And(i => i.AgencyId == conceptAgencyId);
-                if (conceptVersion != null) where2.And(i => i.Version == conceptVersion);
-                var exp2 = where2.Compile();
 
-                return list.Where(exp2).SingleOrDefault();
+                return list.Where(i => i.Id == conceptId
+                    && (conceptAgencyId == null || i.AgencyId == conceptAgencyId)
+                    && (conceptVersion == null || i.Version == conceptVersion)).SingleOrDefault();
             }
 
             return null;
-        }
-
-        protected override StructureMessage GetThis()
-        {
-            return this;
         }
     }
 }

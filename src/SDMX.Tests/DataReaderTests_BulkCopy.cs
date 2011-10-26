@@ -14,7 +14,7 @@ namespace SDMX.Tests
 {   
     public partial class DataReaderTests
     {
-        const string _connectionString = @"Server=.;Database=sdmx;Integrated Security=True";
+        const string _connectionString = @"Server=.\sqlexpress;Database=sdmx;Integrated Security=True";
 
         [Test]
         [Ignore]

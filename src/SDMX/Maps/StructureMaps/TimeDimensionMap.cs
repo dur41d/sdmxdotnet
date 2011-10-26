@@ -10,7 +10,7 @@ using OXM;
 
 namespace SDMX.Parsers
 {
-    internal class TimeDimensionMap : CompoenentMap<TimeDimension>
+    internal class TimeDimensionMap : ComponentMap<TimeDimension>
     {
         TimeDimension _timeDimension;
 

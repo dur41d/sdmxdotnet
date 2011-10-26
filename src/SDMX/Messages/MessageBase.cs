@@ -14,7 +14,7 @@ namespace SDMX
     /// It was preferable to use extension methods to provide shared functionality but
     /// because there are static methods this was not possible.
     /// </summary>
-    public abstract class MessageBase<T> : IMessage
+    public abstract class MessageBase<T> : IMessage where T : class
     { 
         public Header Header { get; set; }
 
@@ -90,7 +90,7 @@ namespace SDMX
         {
             Contract.AssertNotNull(writer, "writer");
             var map = factory[typeof(T)]() as RootElementMap<T>;
-            map.WriteXml(writer, GetThis());
+            map.WriteXml(writer, this as T);
         }
 
         public void Save(string fileName)
@@ -103,7 +103,5 @@ namespace SDMX
                 Write(writer);
             }
         }
-
-        protected abstract T GetThis();
     }
 }
