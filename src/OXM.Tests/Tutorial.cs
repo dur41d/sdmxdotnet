@@ -1,18 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.IO;
 using System.Text;
+using System.Xml;
 using System.Xml.Linq;
 using NUnit.Framework;
-using System.Xml;
-using System.IO;
 
 namespace OXM.Tests
 {
     //<?xml version="1.0" encoding="utf-16" ?> 
     //<Customer >
     //    <Name>John</Name>
-    //    <Age>22</Age>
+    //    <Age>32</Age>
     //</Customer>
 
     public class Customer

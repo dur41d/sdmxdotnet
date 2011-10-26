@@ -10,17 +10,17 @@ using OXM;
 
 namespace SDMX.Parsers
 {
-    internal abstract class CompoenentMap<T> : AnnotableArtefactMap<T>
+    internal abstract class ComponentMap<T> : AnnotableArtefactMap<T>
             where T : Component
     {
         protected abstract T Create(Concept conecpt);
 
         T _component;
 
-        public CompoenentMap(StructureMessage message)
+        public ComponentMap(StructureMessage message)
         {
             Map(o => ConceptRef.Create(o.Concept)).ToAttributeGroup("conceptRef")
-                .Set(v => _component = Create(GetCocept(message, v)))
+                .Set(v => _component = Create(GetConcept(message, v)))
                 .GroupTypeMap(new ConceptRefMap());
 
             Map(o => TempCodelistRef.Create(o.CodeList)).ToAttributeGroup("codelist")
@@ -64,7 +64,7 @@ namespace SDMX.Parsers
             return codelist;
         }
 
-        Concept GetCocept(StructureMessage message, ConceptRef v)
+        Concept GetConcept(StructureMessage message, ConceptRef v)
         {
             var concept = message.GetConcept(v.SchemeRef.Id, v.SchemeRef.AgencyId, v.SchemeRef.Version, v.Id, v.AgencyId, v.Version);
 

@@ -22,43 +22,7 @@ namespace OXM
 
         public override void ReadXml(XmlReader reader)
         {
-            if (!reader.IsEmptyElement)
-            {
-                using (var subReader = reader.ReadSubtree())
-                {
-                    bool found = subReader.ReadNextElement();
-                    found = subReader.ReadNextElement();
-
-                    if (found)
-                    {
-                        var counts = new NameCounter<XName>();
-
-                        do
-                        {
-                            XName name = subReader.GetXName();
-                            var elementMap = _elementMaps.Get(name);
-                            if (elementMap == null)
-                            {
-                                System.Diagnostics.Debug.WriteLine(string.Format("Element '{0}' is not Mapped. Line: {1} Position: {2} Type: ClassMap<{3}>",
-                                    name, ((IXmlLineInfo)subReader).LineNumber, ((IXmlLineInfo)subReader).LineNumber, typeof(T)), "Warning");
-                                continue;
-                            }
-                            elementMap.ReadXml(subReader);
-                            counts.Increment(name);
-                        }
-                        while (subReader.ReadNextElement());
-
-                        foreach (IElementMap<T> elementMap in _elementMaps)
-                        {
-                            int count = counts.Get(elementMap.Name);
-                            if (elementMap.Required && count == 0)
-                            {
-                                ParseException.Throw(subReader, typeof(T), "Element '{0}' is required but was not found.", elementMap.Name);
-                            }
-                        }
-                    }
-                }
-            }                 
+            ClassMap<T>.ReadElements(reader, _elementMaps);
         }
 
         public override void WriteXml(XmlWriter writer, T obj)

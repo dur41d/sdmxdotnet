@@ -26,21 +26,28 @@ namespace SDMX.Tests
         }
 
         [Test]
+        [Ignore]
+        public void LoadTest()
+        {
+            for (int i = 0; i < 300; i++)
+            {
+                var message = StructureMessage.Load(@"c:\temp\bop_its_tot.dsd.xml");
+            }
+        }
+
+        [Test]
         public void StructureSampleTest()
         {
             string dsdPath = Utility.GetPath("lib\\StructureSample.xml");
+            var message = StructureMessage.Load(dsdPath);
 
-            StructureMessageMap map = new StructureMessageMap();
+            ////message.Save(@"c:\temp\StructureSample2.xml");
 
-            StructureMessage message = StructureMessage.Load(dsdPath);
-
-            // message.Save(@"c:\temp\StructureSample2.xml");
-
-            var doc = new XDocument();
-            using (var writer = doc.CreateWriter())
-                map.WriteXml(writer, message);
-            using (var reader = doc.CreateReader())
-                Assert.IsTrue(MessageValidator.ValidateXml(reader));
+            //var doc = new XDocument();
+            //using (var writer = doc.CreateWriter())
+            //    message.Write(writer);
+            //using (var reader = doc.CreateReader())
+            //    Assert.IsTrue(MessageValidator.ValidateXml(reader));
         }
 
         [Test]

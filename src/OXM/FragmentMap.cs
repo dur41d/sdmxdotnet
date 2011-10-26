@@ -39,7 +39,7 @@ namespace OXM
 
             if (reader.NodeType != XmlNodeType.Element)
             {
-                reader.ReadNextElement();
+                reader.ReadNextStartElement();
             }
 
             if (!reader.NameEquals(_name))

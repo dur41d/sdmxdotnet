@@ -19,11 +19,8 @@ namespace OXM
         {
             string xmlValue = reader.ReadString();
 
-            if (xmlValue != null)
-            {
-                TProperty property = Converter.ToObj(xmlValue);
-                Property.Set(property);
-            }
+            TProperty property = Converter.ToObj(xmlValue);
+            Property.Set(property);
         }
 
         public void WriteXml(XmlWriter writer, T obj)
