@@ -17,7 +17,7 @@ namespace OXM
 
         public void ReadXml(XmlReader reader)
         {
-            string xmlValue = reader.ReadElementContentAsString();
+            string xmlValue = reader.ReadString();
 
             if (xmlValue != null)
             {

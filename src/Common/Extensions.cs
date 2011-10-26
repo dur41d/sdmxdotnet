@@ -47,12 +47,11 @@ namespace Common
 
         public static bool ReadNextElement(this XmlReader reader)
         {
-            do
+            while (reader.Read())
             {
                 if (reader.NodeType == XmlNodeType.Element)
                     return true;
-            } 
-            while (reader.Read());
+            }
 
             return false;
         }

@@ -16,7 +16,7 @@ namespace SDMX.Tests
     public class StructureTests
     {
         [Test]
-        [Ignore]
+        //[Ignore]
         public void bop_its_tot()
         {
             var message = StructureMessage.Load(@"c:\temp\bop_its_tot.dsd.xml");
@@ -33,6 +33,8 @@ namespace SDMX.Tests
             StructureMessageMap map = new StructureMessageMap();
 
             StructureMessage message = StructureMessage.Load(dsdPath);
+
+            // message.Save(@"c:\temp\StructureSample2.xml");
 
             var doc = new XDocument();
             using (var writer = doc.CreateWriter())

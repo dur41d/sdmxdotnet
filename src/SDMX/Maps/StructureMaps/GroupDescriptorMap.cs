@@ -7,11 +7,11 @@ using Common;
 
 namespace SDMX.Parsers
 {
-    internal class GroupDescriptorMap : AnnotableArtefactMap<Group>
+    internal class GroupMap : AnnotableArtefactMap<Group>
     {
         Group _group;
         
-        public GroupDescriptorMap(KeyFamily keyFamily)
+        public GroupMap(KeyFamily keyFamily)
         {
             ElementsOrder("DimensionRef", "AttachmentConstraintRef", "Description", "Annotations");
 

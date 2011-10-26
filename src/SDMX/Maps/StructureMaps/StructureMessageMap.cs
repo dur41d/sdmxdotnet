@@ -8,7 +8,7 @@ using System.Xml.Linq;
 
 namespace SDMX.Parsers
 {
-    internal class StructureMessageMap : RoolElementMap<StructureMessage>
+    internal class StructureMessageMap : RootElementMap<StructureMessage>
     {
         public override XName Name
         {

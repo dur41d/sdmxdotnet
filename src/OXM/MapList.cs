@@ -64,11 +64,11 @@ namespace OXM
             }
         }
 
-        internal IMemberMap<T> Get(XName name, XmlReader reader, Type type)
+        internal IMemberMap<T> Get(XName name)
         {            
             if (!_list.ContainsKey(name))
             {
-                ParseException.Throw(reader, type, "'{0}' is not Mapped.", name);
+                return null;
             }
             return _list[name];
         }
