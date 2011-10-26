@@ -26,7 +26,49 @@ namespace SDMX.Tests
         }
 
         [Test]
-        [Ignore]
+        //[Ignore]
+        public void SpeedTest()
+        {
+            string dsdPath = Utility.GetPath("lib\\StructureSample.xml");
+            const int smallLoopCount = 1;
+            const int bigLoopCount = 1000;
+            var list = new List<decimal>();
+            var list2 = new List<TimeSpan>();
+            for (int i = 0; i < bigLoopCount; i++)
+            {
+                var stopWatch = new System.Diagnostics.Stopwatch();
+                stopWatch.Start();
+
+                for (int j = 0; j < smallLoopCount; j++)
+                {
+                    using (var reader = XmlReader.Create(dsdPath))
+                    {
+                        while (reader.Read())
+                        { }
+                    }
+                }
+
+                stopWatch.Stop();
+                long ticks = stopWatch.ElapsedTicks;
+                stopWatch.Restart();
+                for (int k = 0; k < smallLoopCount; k++)
+                {
+                    var message = StructureMessage.Load(dsdPath);
+                }
+
+                stopWatch.Stop();
+                Console.Write((decimal)stopWatch.ElapsedTicks / ticks);
+                list.Add((decimal)stopWatch.ElapsedTicks / ticks);
+                list2.Add(stopWatch.Elapsed);
+                Console.WriteLine(" : {0}", stopWatch.Elapsed);
+            }
+
+            Console.WriteLine("Average: {0}", list.Average());
+            Console.WriteLine("Average Time: {0}", TimeSpan.FromTicks((long)list2.Select(i => i.Ticks).Average()));
+        }
+
+        [Test]
+        //[Ignore]
         public void LoadTest()
         {
             for (int i = 0; i < 300; i++)
@@ -41,13 +83,13 @@ namespace SDMX.Tests
             string dsdPath = Utility.GetPath("lib\\StructureSample.xml");
             var message = StructureMessage.Load(dsdPath);
 
-            ////message.Save(@"c:\temp\StructureSample2.xml");
+            //message.Save(@"c:\temp\StructureSample2.xml");
 
-            //var doc = new XDocument();
-            //using (var writer = doc.CreateWriter())
-            //    message.Write(writer);
-            //using (var reader = doc.CreateReader())
-            //    Assert.IsTrue(MessageValidator.ValidateXml(reader));
+            var doc = new XDocument();
+            using (var writer = doc.CreateWriter())
+                message.Write(writer);
+            using (var reader = doc.CreateReader())
+                Assert.IsTrue(MessageValidator.ValidateXml(reader));
         }
 
         [Test]
