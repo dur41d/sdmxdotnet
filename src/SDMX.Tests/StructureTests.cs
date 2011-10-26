@@ -16,7 +16,7 @@ namespace SDMX.Tests
     public class StructureTests
     {
         [Test]
-        //[Ignore]
+        [Ignore]
         public void bop_its_tot()
         {
             var message = StructureMessage.Load(@"c:\temp\bop_its_tot.dsd.xml");
@@ -26,7 +26,7 @@ namespace SDMX.Tests
         }
 
         [Test]
-        //[Ignore]
+        [Ignore]
         public void SpeedTest()
         {
             string dsdPath = Utility.GetPath("lib\\StructureSample.xml");
@@ -68,7 +68,7 @@ namespace SDMX.Tests
         }
 
         [Test]
-        //[Ignore]
+        [Ignore]
         public void LoadTest()
         {
             for (int i = 0; i < 300; i++)
