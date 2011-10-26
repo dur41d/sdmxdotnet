@@ -14,13 +14,13 @@ namespace OXM
          T ReadXml(XmlReader reader);
     }
 
-    public abstract class RoolElementMap<T> : ClassMap<T>
+    public abstract class RootElementMap<T> : ClassMap<T>
     {
         public abstract XName Name { get; }
 
         private Dictionary<string, XNamespace> namespaces = new Dictionary<string, XNamespace>();
 
-        public RoolElementMap()
+        public RootElementMap()
         {            
             Namespace = Name.Namespace;
             _rootMap = this;
@@ -57,8 +57,10 @@ namespace OXM
 
             if (!reader.NameEquals(Name))
             {
-                throw new ParseException("The first element name is '{0}:{1}' and the expected name is '{2}'."
-                    , reader.NamespaceURI, reader.Name, Name);
+                ParseException.Throw(reader, typeof(T), "The first element name is '{0}' and the expected name is '{1}'."
+                    , string.IsNullOrEmpty(reader.NamespaceURI) ? 
+                        reader.Name : string.Format("{0}:{1}", reader.NamespaceURI, reader.Name)
+                    , Name);
             }
 
             return base.ReadXml(reader);

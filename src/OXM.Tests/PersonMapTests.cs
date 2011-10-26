@@ -10,11 +10,10 @@ using System.IO;
 namespace OXM.Tests
 {
     [TestFixture]
-    public class Tests
-    {
-        
+    public class PersonMapTests
+    {   
         [Test]
-        public void TestPersonMap()
+        public void ReadWrite()
         {
             var person = new Person() { Name = "duraid", Age = 35 };
             person.Addresses.Add(new Address() { Street = "Decelles", City = "Montreal" });
@@ -39,6 +38,23 @@ namespace OXM.Tests
             Assert.AreEqual(2, person.Addresses.Count);
             person.Addresses.Where(a => a.Street == "Decelles" && a.City == "Montreal").Single();
             person.Addresses.Where(a => a.Street == "Lincoln" && a.City == "Montreal").Single();
+        }
+
+
+        [Test]
+        public void NonMappedXmlElement()
+        {
+            var doc = XDocument.Parse("<?xml version='1.0' encoding='utf-16'?><Customer xmlns='uis.org'><Name>John</Name><Age>32</Age><Occupation/></Customer>");
+            var map = new CustomerMap();
+
+            Customer customer;
+            using (var reader = doc.CreateReader())
+            {
+                customer = map.ReadXml(reader);
+            }
+
+            Assert.AreEqual("John", customer.Name);
+            Assert.AreEqual(32, customer.Age);
         }
     }
 }

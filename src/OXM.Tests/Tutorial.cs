@@ -9,10 +9,10 @@ using System.IO;
 
 namespace OXM.Tests
 {
-    //    <?xml version="1.0" encoding="utf-16" ?> 
-    //    <Customer >
-          // <Name>John</Name>
-    // <Age>22</Age>
+    //<?xml version="1.0" encoding="utf-16" ?> 
+    //<Customer >
+    //    <Name>John</Name>
+    //    <Age>22</Age>
     //</Customer>
 
     public class Customer
@@ -21,7 +21,7 @@ namespace OXM.Tests
         public int Age { get; set; }
     }
 
-    public class CustomerMap : RoolElementMap<Customer>
+    public class CustomerMap : RootElementMap<Customer>
     {
         Customer cust = new Customer();
         
@@ -77,14 +77,16 @@ namespace OXM.Tests
         public void ReadCustmer()
         {           
             var map = new CustomerMap();
-         
-            var xml = new StringReader(@"<?xml version=""1.0"" encoding=""utf-16"" ?>  
-                        <Customer name=""John S."" age=""22"" xmlns=""uis.org"" /> ");
+
+            var xml = new StringReader(@"<?xml version='1.0' encoding='utf-16' ?><Customer xmlns='uis.org'><Name>John</Name><Age>32</Age></Customer>");
             Customer customer;
             using (var reader = XmlReader.Create(xml))
             {
                 customer = map.ReadXml(reader);
             }
+
+            Assert.AreEqual("John", customer.Name);
+            Assert.AreEqual(32, customer.Age);
         }
     }
 }

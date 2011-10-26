@@ -50,7 +50,7 @@ namespace SDMX
         public static T Read(XmlReader reader)
         {
             Contract.AssertNotNull(reader, "reader");
-            var map = factory[typeof(T)]() as RoolElementMap<T>;
+            var map = factory[typeof(T)]() as RootElementMap<T>;
 
             return map.ReadXml(reader);
         }
@@ -89,7 +89,7 @@ namespace SDMX
         public void Write(XmlWriter writer)
         {
             Contract.AssertNotNull(writer, "writer");
-            var map = factory[typeof(T)]() as RoolElementMap<T>;
+            var map = factory[typeof(T)]() as RootElementMap<T>;
             map.WriteXml(writer, GetThis());
         }
 

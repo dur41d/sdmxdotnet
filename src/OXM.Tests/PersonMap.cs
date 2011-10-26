@@ -9,7 +9,7 @@ using System.IO;
 
 namespace OXM.Tests
 {
-    public class PersonMap : RoolElementMap<Person>
+    public class PersonMap : RootElementMap<Person>
     {
         Person person = new Person();
         XNamespace ns = "www.duraid.com";

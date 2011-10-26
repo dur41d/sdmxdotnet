@@ -8,7 +8,7 @@ using System.Xml.Linq;
 
 namespace SDMX.Parsers
 {
-    internal class QueryMessageMap : RoolElementMap<QueryMessage>
+    internal class QueryMessageMap : RootElementMap<QueryMessage>
     {
         public override XName Name
         {
