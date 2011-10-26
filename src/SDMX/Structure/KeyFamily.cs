@@ -22,8 +22,8 @@ namespace SDMX
 
         // TODO: rethink exposing Collection<T> and maybe using one collection internally
         // for all componenets and exposing them via the properties Dimensions, TimeDimension, Attributes.. etc.
-        public TimeDimension TimeDimension { get; internal set; }
-        public PrimaryMeasure PrimaryMeasure { get; internal set; }
+        public TimeDimension TimeDimension { get; set; }
+        public PrimaryMeasure PrimaryMeasure { get; set; }
         public Collection<Dimension> Dimensions { get; private set; }
         public Collection<Group> Groups { get; private set; }
         public Collection<Attribute> Attributes { get; private set; }
@@ -95,33 +95,13 @@ namespace SDMX
                 yield return criterion;
             }
         }
-       
 
-        internal void ValidateAttribute(Id conceptId, object value, AttachmentLevel level)
-        {
-            var attribute = Attributes.Find(conceptId);
-            if (attribute == null)
-            {
-                throw new SDMXException("Invalid attribute '{0}'.", conceptId);
-            }
-            if (attribute.AttachementLevel != level)
-            {
-                throw new SDMXException("Attribute '{0}' has attachment level '{1}' but was attached to level '{2}'."
-                    , conceptId, attribute.AttachementLevel, level);
-            }
-            if (!attribute.IsValid(value))
-            {
-                throw new SDMXException("Invalid value for attribute '{0}'. Value: {1}."
-                    , conceptId, value);
-            }
-        }     
-
-        internal Component GetComponent(Id id)
+        public Component FindComponent(Id id)
         {
             Component com = Dimensions.Find(id);
             if (com == null)
             {
-                com = Attributes.Find(id);                
+                com = Attributes.Find(id);
             }
             if (com == null && id == TimeDimension.Concept.Id)
             {
@@ -132,10 +112,18 @@ namespace SDMX
                 return PrimaryMeasure;
             }
 
+            return com;
+        }
+
+        public Component GetComponent(Id id)
+        {
+            var com = FindComponent(id);
+
             if (com == null)
             {
                 throw new SDMXException("Did not find component with id '{0}'.", id);
             }
+
             return com;
         }
     }
