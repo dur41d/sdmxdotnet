@@ -13,41 +13,41 @@ namespace SDMX
         {
             CheckDisposed();
 
-            while (_xmlReader.Read())
+            while (XmlReader.Read())
             {
-                if (!_xmlReader.IsStartElement())
+                if (!XmlReader.IsStartElement())
                     continue;
 
-                var group = KeyFamily.Groups.Find(_xmlReader.LocalName);
+                var group = KeyFamily.Groups.Find(XmlReader.LocalName);
 
                 if (group != null)
                 {   
                     var dict = new Dictionary<string, object>();
-                    while (_xmlReader.MoveToNextAttribute())
+                    while (XmlReader.MoveToNextAttribute())
                     {
-                        var component = KeyFamily.GetComponent(_xmlReader.LocalName);
-                        dict[_xmlReader.LocalName] = component.Parse(_xmlReader.Value, null);
+                        var component = KeyFamily.GetComponent(XmlReader.LocalName);
+                        dict[XmlReader.LocalName] = component.Parse(XmlReader.Value, null);
                     }
 
                     SetGroup(group, dict);
                 }
-                else if (_xmlReader.LocalName == "Series")
+                else if (XmlReader.LocalName == "Series")
                 {
                     ClearSeries();
-                    while (_xmlReader.MoveToNextAttribute())
+                    while (XmlReader.MoveToNextAttribute())
                     {
-                        var component = KeyFamily.GetComponent(_xmlReader.LocalName);
-                        SetSeries(_xmlReader.LocalName, component.Parse(_xmlReader.Value, null));
+                        var component = KeyFamily.GetComponent(XmlReader.LocalName);
+                        SetSeries(XmlReader.LocalName, component.Parse(XmlReader.Value, null));
                     }
                 }
-                else if (_xmlReader.LocalName == "Obs")
+                else if (XmlReader.LocalName == "Obs")
                 {
                     ClearObs();
 
-                    while (_xmlReader.MoveToNextAttribute())
+                    while (XmlReader.MoveToNextAttribute())
                     {
-                        var component = KeyFamily.GetComponent(_xmlReader.LocalName);
-                        SetObs(_xmlReader.LocalName, component.Parse(_xmlReader.Value, null));
+                        var component = KeyFamily.GetComponent(XmlReader.LocalName);
+                        SetObs(XmlReader.LocalName, component.Parse(XmlReader.Value, null));
                     }
 
                     SetRecord();

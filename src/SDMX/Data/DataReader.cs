@@ -11,10 +11,38 @@ using System.Reflection;
 namespace SDMX
 {
     public abstract partial class DataReader : IDisposable, IEnumerable<KeyValuePair<string, object>>
-    {
-        public KeyFamily KeyFamily { get; protected set; }
-        
-        protected XmlReader _xmlReader;
+    {        
+        /// <summary>
+        /// The key family used by the current reader
+        /// </summary>
+        public KeyFamily KeyFamily { get; private set; }
+
+        /// <summary>
+        /// The inner xml reader used by the reader.
+        /// </summary>
+        public XmlReader XmlReader { get; private set; }
+
+        /// <summary>
+        /// The line number at the current reader position.
+        /// </summary>
+        public int LineNumber
+        { 
+            get 
+            {
+                return ((IXmlLineInfo)XmlReader).LineNumber;
+            }
+        }
+
+        /// <summary>
+        /// The line position at the current reader position.
+        /// </summary>
+        public int LinePosition
+        {
+            get
+            {
+                return ((IXmlLineInfo)XmlReader).LinePosition;
+            }
+        }
 
         Dictionary<string, object> _obs = new Dictionary<string, object>();
         Dictionary<string, object> _series = new Dictionary<string, object>();
@@ -29,6 +57,9 @@ namespace SDMX
 
         bool _disposed = false;
 
+        /// <summary>
+        /// Dispose the reader.
+        /// </summary>
         public void Dispose()
         {
             if (_disposed)
@@ -47,17 +78,22 @@ namespace SDMX
             _groups.Clear();
             _record.Clear();
             _casts.Clear();
-            ((IDisposable)_xmlReader).Dispose();
+            ((IDisposable)XmlReader).Dispose();
             _disposed = true;
         }
 
 
-        public DataReader(XmlReader reader, KeyFamily keyFamily)
+        internal DataReader(XmlReader reader, KeyFamily keyFamily)
         {
-            _xmlReader = reader;
+            XmlReader = reader;
             KeyFamily = keyFamily;
         }
 
+        /// <summary>
+        /// Set cast action for a reader value. This gives the opportunity to change the data being read
+        /// </summary>        
+        /// <param name="name">The name of the component to change. For example the dimension name.</param>
+        /// <param name="castAction">The cast action.</param>
         public void Cast<T>(string name, Func<object, T> castAction)
         {
             Contract.AssertNotNullOrEmpty(name, "name");
@@ -109,18 +145,39 @@ namespace SDMX
             }
         }
 
+        /// <summary>
+        /// Create a data reader based on the type of the file. This mathod looks into the first element of the file
+        /// and creates the right reader (Generic, Compact, Utility, CrossSectional).
+        /// </summary>
+        /// <param name="fileName">The file name.</param>
+        /// <param name="keyFamily">The key family.</param>
+        /// <returns>An instance of the DataReader.</returns>
         public static DataReader Create(string fileName, KeyFamily keyFamily)
         {
             Contract.AssertNotNullOrEmpty(fileName, "fileName");
             return Create(XmlReader.Create(fileName), keyFamily);
         }
 
+        /// <summary>
+        /// Create a data reader based on the type of the stream. This mathod looks into the first element of the stream
+        /// and creates the right reader (Generic, Compact, Utility, CrossSectional).
+        /// </summary>
+        /// <param name="stream">The stream.</param>
+        /// <param name="keyFamily">The key family.</param>
+        /// <returns>An instance of the DataReader.</returns>
         public static DataReader Create(Stream stream, KeyFamily keyFamily)
         {
             Contract.AssertNotNull(stream, "stream");
             return Create(XmlReader.Create(stream), keyFamily);
         }
 
+        /// <summary>
+        /// Create a data reader based on an xml data reader. This mathod looks into the first element
+        /// and creates the right reader (Generic, Compact, Utility, CrossSectional).
+        /// </summary>
+        /// <param name="reader">The reader.</param>
+        /// <param name="keyFamily">The key family.</param>
+        /// <returns>An instance of the DataReader.</returns>
         public static DataReader Create(XmlReader reader, KeyFamily keyFamily)
         {
             Contract.AssertNotNull(reader, "reader");
@@ -145,17 +202,21 @@ namespace SDMX
 
         public abstract bool Read();
 
+        /// <summary>
+        /// Read the head of a Data Message. This should be done first before calling the Read method.
+        /// </summary>
+        /// <returns>The header instance.</returns>
         public Header ReadHeader()
         {
             CheckDisposed();
 
-            while (_xmlReader.Read() && !_xmlReader.IsStartElement() && _xmlReader.LocalName != "DataSet")
+            while (XmlReader.Read() && !XmlReader.IsStartElement() && XmlReader.LocalName != "DataSet")
                 continue;
 
-            if (_xmlReader.LocalName == "Header")
+            if (XmlReader.LocalName == "Header")
             {
                 var map = new OXM.FragmentMap<Header>(Namespaces.Message + "Header", new HeaderMap());
-                return map.ReadXml(_xmlReader);
+                return map.ReadXml(XmlReader);
             }
 
             return null;
@@ -179,18 +240,20 @@ namespace SDMX
         }
 
         protected void SetGroup(Group group, Dictionary<string, object> dict)
-        {
-            var keyList = new List<string>();
-            var dimList = group.Dimensions.Select(i => i.Concept.Id).ToList();
-
+        {            
+            // The dict contains the values of the dimensions and the attributes
+            // we need to seperate the dims from the attributes and create a key from
+            // the dimensions and the values from the attributes
+            // cast the values in case the user specified a cast for them
             var castedDict = new Dictionary<string, object>();
-
             foreach (var item in dict)
                 castedDict.Add(item.Key, Cast(item.Key, item.Value));
-
+            
             string key = BuildGroupKey(group, castedDict);
 
+            // build attribute value collection by excluding dimensions
             var values = new Dictionary<string, object>();
+            var dimList = group.Dimensions.Select(i => i.Concept.Id).ToList();
             foreach (var item in castedDict.Where(i => !dimList.Contains(i.Key)))
                 values.Add(item.Key, item.Value);
 
@@ -206,7 +269,7 @@ namespace SDMX
                     if (_record.ContainsKey(name))
                     {
                         if (!_record[name].Equals(value))
-                            SDMXException.ThrowParseError(_xmlReader, "There are two differnt values for key: {0}, value1={1}, value2={2}.", name, value, _record[name]);
+                            SDMXException.ThrowParseError(XmlReader, "There are two differnt values for key: {0}, value1={1}, value2={2}.", name, value, _record[name]);
                     }
                     else
                     {
@@ -226,7 +289,7 @@ namespace SDMX
 
                 Dictionary<string, object> groupValues;
                 if (!_groups.TryGetValue(key, out groupValues))
-                    SDMXException.ThrowParseError(_xmlReader, "Group '{0}' was not found for values '{1}'. Groups must be placed before their respective Series in the file.", group.Id, key);
+                    SDMXException.ThrowParseError(XmlReader, "Group '{0}' was not found for values '{1}'. Groups must be placed before their respective Series in the file.", group.Id, key);
 
                 foreach (var item in groupValues)
                     set(item.Key, item.Value);
@@ -244,9 +307,9 @@ namespace SDMX
             Action<Component, string> validate = (com, name) =>
                 {
                     if (!_record.ContainsKey(com.Concept.Id))
-                        SDMXException.ThrowParseError(_xmlReader, "{0} '{1}' is missing from record.", name, com.Concept.Id);
+                        SDMXException.ThrowParseError(XmlReader, "{0} '{1}' is missing from record.", name, com.Concept.Id);
                     else if (_record[com.Concept.Id] == null)
-                        SDMXException.ThrowParseError(_xmlReader, "{0} '{1}' value  is null.", name, com.Concept.Id);
+                        SDMXException.ThrowParseError(XmlReader, "{0} '{1}' value  is null.", name, com.Concept.Id);
                 };
 
             foreach (var dim in KeyFamily.Dimensions)
@@ -268,7 +331,7 @@ namespace SDMX
                 object value = null;
 
                 if (!values.TryGetValue(id, out value))
-                    SDMXException.ThrowParseError(_xmlReader, "Value for Dimension '{0}' is missing.", id);
+                    SDMXException.ThrowParseError(XmlReader, "Value for Dimension '{0}' is missing.", id);
 
                 keyList.Add(string.Format("{0}={1}", id, value));
             }
@@ -344,7 +407,7 @@ namespace SDMX
                     if (ex is TargetInvocationException && ex.InnerException != null)
                         ex = ex.InnerException;
 
-                    SDMXException.ThrowParseError(_xmlReader, ex, "Exception occured in at Cast (see inner exception for details): {0}", ex.Message);
+                    SDMXException.ThrowParseError(XmlReader, ex, "Exception occured in at Cast (see inner exception for details): {0}", ex.Message);
                     return null;
                 }
             }
