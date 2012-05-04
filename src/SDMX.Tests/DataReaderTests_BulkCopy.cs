@@ -11,10 +11,11 @@ using System.Xml;
 using System.Collections.Generic;
 
 namespace SDMX.Tests
-{   
+{
     public partial class DataReaderTests
     {
-        const string _connectionString = @"Server=.\sqlexpress;Database=sdmx;Integrated Security=True";
+        //const string _connectionString = @"Server=.\sqlexpress;Database=sdmx;Integrated Security=True";
+        const string _connectionString = @"Server=.;Database=sdmx;Integrated Security=False; User id=dev;Password=dev";
 
         [Test]
         [Ignore]
@@ -33,7 +34,7 @@ namespace SDMX.Tests
                 CreateTable(table);
 
                 using (SqlBulkCopy bulkCopy = new SqlBulkCopy(_connectionString))
-                {                   
+                {
                     bulkCopy.DestinationTableName = table.TableName;
                     bulkCopy.WriteToServer(reader);
                 }
@@ -41,7 +42,7 @@ namespace SDMX.Tests
                 int count = 0;
                 ExecuteReader("select count(*) from dbo." + table.TableName, r => count = (int)r[0]);
                 Assert.AreNotEqual(0, count);
-            }           
+            }
         }
 
         [Test]
@@ -50,15 +51,15 @@ namespace SDMX.Tests
         {
             var list = new List<string>() 
                 { 
-                    "aei_ps_alt.sdmx.zip",
-                    "apri_ap_him.sdmx.zip",
-                    //"apro_cpb_cerea.sdmx.zip", // has errors
+                    //"aei_ps_alt.sdmx.zip",
+                    //"apri_ap_him.sdmx.zip",
+                    ////"apro_cpb_cerea.sdmx.zip", // has errors
                     //"apro_cpp_crop.sdmx.zip",  // has errors
                     "avia_ac_fatal.sdmx.zip",
                     "avia_ac_number.sdmx.zip",
                     "avia_ec_enterp.sdmx.zip",
-                    // "avia_paexcc.sdmx.zip", // takes long time
-                    "avia_tf_alc.sdmx.zip"
+                    //"avia_paexcc.sdmx.zip", // takes long time
+                    //"avia_tf_alc.sdmx.zip"
                 };
 
             ZipFile zf = null;
@@ -94,7 +95,7 @@ namespace SDMX.Tests
             mngr.AddNamespace("structure", "http://www.SDMX.org/resources/SDMXML/schemas/v2_0/structure");
             mngr.AddNamespace("xsi", "http://www.w3.org/2001/XMLSchema-instanc");
             mngr.AddNamespace("xsd", "http://www.w3.org/2001/XMLSchema");
-            
+
             XElement xElementParse = ParseElement("<structure:Concept id='TIME_FORMAT'><structure:Name xml:lang='en'>Time format</structure:Name></structure:Concept>", mngr);
             doc.Descendants().Where(i => i.Name.LocalName == "ConceptScheme").Single().Add(xElementParse);
 
@@ -122,7 +123,7 @@ namespace SDMX.Tests
                     int count = 0;
                     ExecuteReader("select count(*) from dbo." + table.TableName, r => count = (int)r[0]);
                     Assert.AreNotEqual(0, count);
-                }    
+                }
             }
         }
 
@@ -133,10 +134,8 @@ namespace SDMX.Tests
             return XElement.Load(txtReader);
         }
 
-
-
         void ExecuteReader(string cmd, Action<SqlDataReader> action)
-        { 
+        {
             using (var con = new SqlConnection(_connectionString))
             using (var com = new SqlCommand(cmd, con))
             {
@@ -173,10 +172,10 @@ create table dbo.{0} (", table.TableName);
 
             foreach (DataColumn column in table.Columns)
             {
-                builder.AppendFormat("[{0}] {1} {2} null,", 
-                    column.ColumnName, 
-                    GetColumnTypeName(column.DataType), 
-                    column.AllowDBNull ? "" : "not");
+                builder.AppendFormat("[{0}] {1} {2} null,",
+                    column.ColumnName,
+                    GetColumnTypeName(column.ColumnName, column.DataType),
+                    column.ColumnName != "IsValid" ? "" : "not");
             }
 
             builder.Remove(builder.Length - 1, 1);
@@ -186,8 +185,13 @@ create table dbo.{0} (", table.TableName);
             ExecuteNonQuery(builder.ToString());
         }
 
-        string GetColumnTypeName(Type type)
+        string GetColumnTypeName(string name, Type type)
         {
+            if (name == "ErrorMessages")
+            {
+                return "nvarchar(4000)";
+            }
+
             if (type == typeof(double))
                 return "float";
             else if (type == typeof(int))
@@ -196,6 +200,8 @@ create table dbo.{0} (", table.TableName);
                 return "datetime";
             else if (type == typeof(DateTimeOffset))
                 return "datetime2";
+            else if (type == typeof(bool))
+                return "bit";
             else
                 return "nvarchar(255)";
 

@@ -7,11 +7,15 @@ using System.Xml;
 using Common;
 using SDMX.Parsers;
 using System.Reflection;
+using System.Collections;
+using System.Text;
 
 namespace SDMX
 {
     public abstract partial class DataReader : IDisposable, IEnumerable<KeyValuePair<string, object>>
-    {        
+    {
+        const string _IsValidColumnName = "IsValid";
+        const string _ErrorStringColumnName = "ErrorMessages";
         /// <summary>
         /// The key family used by the current reader
         /// </summary>
@@ -26,8 +30,8 @@ namespace SDMX
         /// The line number at the current reader position.
         /// </summary>
         public int LineNumber
-        { 
-            get 
+        {
+            get
             {
                 return ((IXmlLineInfo)XmlReader).LineNumber;
             }
@@ -44,49 +48,43 @@ namespace SDMX
             }
         }
 
-        Dictionary<string, object> _obs = new Dictionary<string, object>();
-        Dictionary<string, object> _series = new Dictionary<string, object>();
+        public IEnumerable Errors
+        {
+            get
+            {
+                return _errors.AsReadOnly();
+            }
+        }
+
+        public string ErrorString { get; protected set; }
+
+        public bool IsValid
+        {
+            get
+            {
+                return _errors.Count == 0;
+            }
+        }
+        
+        List<Error> _errors = new List<Error>();
+        Dictionary<string, object> _groupValues = new Dictionary<string, object>();
         Dictionary<string, Dictionary<string, object>> _groups = new Dictionary<string, Dictionary<string, object>>();
         Dictionary<string, object> _record = new Dictionary<string, object>();
- 
-        List<string> _optionalAttributes = null;
-        List<Attribute> _mandatoryAttributes = null;
+        Dictionary<string, object> _seriesValues = new Dictionary<string, object>();
+        Dictionary<string, object> _obsValues = new Dictionary<string, object>();
+
+        Dictionary<string, Dictionary<string, Component>> _groupComponents = new Dictionary<string, Dictionary<string, Component>>();
+        Dictionary<string, Component> _seriesComponenets = null;
+        Dictionary<string, Component> _obsComponenets = null;
+
         DataTable _table = null;
 
         Dictionary<string, object> _casts = new Dictionary<string, object>();
 
-        bool _disposed = false;
-
-        /// <summary>
-        /// Dispose the reader.
-        /// </summary>
-        public void Dispose()
-        {
-            if (_disposed)
-                return;
-
-            if (_optionalAttributes != null) _optionalAttributes.Clear();
-            if (_mandatoryAttributes != null) _mandatoryAttributes.Clear();
-            if (_table != null) _table.Clear();
-
-            _optionalAttributes = null;
-            _mandatoryAttributes = null;
-            _table = null;
-            
-            _obs.Clear();
-            _series.Clear();
-            _groups.Clear();
-            _record.Clear();
-            _casts.Clear();
-            ((IDisposable)XmlReader).Dispose();
-            _disposed = true;
-        }
-
-
         internal DataReader(XmlReader reader, KeyFamily keyFamily)
         {
             XmlReader = reader;
-            KeyFamily = keyFamily;
+            KeyFamily = keyFamily;            
         }
 
         /// <summary>
@@ -102,26 +100,236 @@ namespace SDMX
             _casts.Add(name, castAction);
         }
 
+        protected void ClearErrors()
+        {
+            _errors.Clear();
+        }
+
         protected void ClearObs()
         {
-            _obs.Clear();
+            _obsValues.Clear();
         }
 
         protected void ClearSeries()
         {
-            _series.Clear();
+            _seriesValues.Clear();
         }
 
-        protected void SetSeries(string name, object value)
+        protected void NewGroupValues()
         {
-            value = Cast(name, value);
-            _series.Add(name, value);
+            _groupValues = new Dictionary<string, object>();
         }
 
-        protected void SetObs(string name, object value)
+        protected void SetGroup(Group group, string name, string value)
         {
-            value = Cast(name, value);
-            _obs.Add(name, value);
+            if (_groupValues.ContainsKey(name))
+            {
+                AddReadError("Duplicate '{0}' in the same group.");
+                return;
+            }
+
+            var comp = FindGroupComponent(group, name);
+                        
+            object obj;
+            if (TryParse(name, value, comp, out obj))
+            {
+                _groupValues.Add(name, obj);
+            }
+        }
+
+        protected void SetSeries(string name, string value)
+        {
+            if (_seriesValues.ContainsKey(name))
+            {
+                AddReadError("Duplicate '{0}' in the same series.");
+                return;
+            }
+
+            var comp = FindSeriesComponent(name);
+
+            object obj;
+            if (TryParse(name, value, comp, out obj))
+            {
+                _seriesValues.Add(name, obj);
+            }
+        }
+
+        protected void SetObs(string name, string value)
+        {
+            if (_seriesValues.ContainsKey(name))
+            {
+                AddReadError("Duplicate '{0}' in the series of the observation.");
+                return;
+            }
+
+            if (_obsValues.ContainsKey(name))
+            {
+                AddReadError("Duplicate '{0}' in the same observation.");
+                return;
+            }
+
+            var comp = FindObsComponent(name);
+
+            object obj;
+            if (TryParse(name, value, comp, out obj))
+            {
+                _obsValues.Add(name, obj);
+            }
+        }
+
+        protected void ValidateGroup(Group group)
+        {
+            bool valid = ValidateDimensions(group.Dimensions, _groupValues, true);
+            ValidateAttributes(GroupAttributes(group), _groupValues);
+
+            if (!valid)
+                return;
+
+            string key = BuildGroupKey(group, _groupValues);
+
+            Dictionary<string, object> existing = null;
+            if (!_groups.TryGetValue(key, out existing))
+            {
+                _groups.Add(key, _groupValues);
+            }
+            else
+            {
+                if (!IsDictEqual(existing, _groupValues))
+                {
+                    AddReadError("2 Occurances for group (id={0}) that have the same key but differnt values. Value1: ({1}) Value2: ({2}).",
+                        group.Id, RecordToString(existing), RecordToString(_groupValues));
+                }
+            }
+        }
+
+        protected void ValidateSeries()
+        {
+            ValidateDimensions(KeyFamily.Dimensions, _seriesValues, true);
+            ValidateAttributes(SeriesAttributes(), _seriesValues);
+        }
+
+
+        protected void ValidateObs()
+        {
+            string id = KeyFamily.TimeDimension.Concept.Id;
+            ValidateDimension(_obsValues, id, true);
+            id = KeyFamily.PrimaryMeasure.Concept.Id;
+            ValidateDimension(_obsValues, id, true);
+            ValidateAttributes(ObsAttributes(), _obsValues);
+        }
+
+        private bool TryParse(string name, string value, Component comp, out object obj)
+        {
+            obj = null;
+            if (comp == null)
+            {
+                AddValidationError("Invalid tag '{0}'.", name);
+                return false;
+            }
+
+            string startTime = null;
+            if (!comp.TryParse(value, startTime, out obj))
+            {
+                AddValidationError("Cannot parse value '{1}' for '{0}'.", name, value);
+                return false;
+            }
+
+            return true ;
+        }
+        bool ValidateDimensions(IEnumerable<Dimension> dimensions, Dictionary<string, object> values, bool logErrors)
+        {
+            bool valid = true;
+            foreach (var id in dimensions.Select(d => d.Concept.Id))
+            {
+                if (!ValidateDimension(values, id, logErrors))
+                {
+                    valid = false;
+                }
+            }
+
+            return valid;
+        }
+        
+        bool ValidateDimension(Dictionary<string, object> values, string id, bool logErrors)
+        {
+            if (!values.ContainsKey(id))
+            {
+                if (logErrors)
+                {
+                    AddValidationError("Value for dimension '{0}' is missing.", id);
+                    values.Add(id, null);
+                }
+                
+                return false;
+            }
+
+            return true;
+        }
+
+        void ValidateAttributes(IEnumerable<Attribute> attributes, Dictionary<string, object> values)
+        {
+            foreach (var attr in attributes)
+            {
+                string id = attr.Concept.Id;
+                if (!values.ContainsKey(id))
+                {
+                    if (attr.AssignmentStatus != AssignmentStatus.Conditional)
+                    {
+                        AddValidationError("Value for mandatory attribute '{0}' is missing.", id);
+                    }
+                    values.Add(id, null);
+                }
+            }
+        }
+
+        protected void SetRecord()
+        {
+            _record.Clear();
+
+            var tempRecord = new Dictionary<string, object>();
+
+            // add values for series, obs and each group
+            _seriesValues.ForEach(i => tempRecord.Add(i.Key, i.Value));
+            _obsValues.ForEach(i => tempRecord.Add(i.Key, i.Value));
+
+            foreach (var group in KeyFamily.Groups)
+            {
+                bool valid = ValidateDimensions(group.Dimensions, tempRecord, false);
+
+                if (!valid)
+                    continue;
+
+                string key = BuildGroupKey(group, tempRecord);
+
+                Dictionary<string, object> groupValues;
+                if (_groups.TryGetValue(key, out groupValues))
+                {
+                    foreach (var groupValue in groupValues)
+                    {
+                        if (!tempRecord.ContainsKey(groupValue.Key))
+                        {
+                            tempRecord.Add(groupValue.Key, groupValue.Value);
+                        }
+                    }
+                }
+            }
+
+            ErrorString = GetErrorString(_errors);
+
+            foreach (var item in tempRecord)
+            {
+                if (_casts.ContainsKey(item.Key))
+                {
+                    _record[item.Key] = Cast(item.Key, item.Value);
+                }
+                else
+                {
+                    _record[item.Key] = item.Value;
+                }
+            }
+
+            _record[_ErrorStringColumnName] = ErrorString;
+            _record[_IsValidColumnName] = IsValid;
         }
 
         DataTable GetTable()
@@ -136,12 +344,12 @@ namespace SDMX
         {
             get
             {
-                Contract.AssertNotNullOrEmpty(name, "name");
-
-                if (!_record.ContainsKey(name))
+                object value = null;
+                if (!_record.TryGetValue(name, out value))
+                {
                     throw new SDMXException("{0} not found.", name);
-
-                return _record[name];
+                }
+                return value;
             }
         }
 
@@ -224,8 +432,8 @@ namespace SDMX
 
         protected void CheckDisposed()
         {
-            if (_disposed) 
-                throw new ObjectDisposedException("DataReader"); 
+            if (_disposed)
+                throw new ObjectDisposedException("DataReader");
         }
 
         public IEnumerator<KeyValuePair<string, object>> GetEnumerator()
@@ -234,136 +442,26 @@ namespace SDMX
                 yield return item;
         }
 
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
         }
 
-        protected void SetGroup(Group group, Dictionary<string, object> dict)
-        {            
-            // The dict contains the values of the dimensions and the attributes
-            // we need to seperate the dims from the attributes and create a key from
-            // the dimensions and the values from the attributes
-            // cast the values in case the user specified a cast for them
-            var castedDict = new Dictionary<string, object>();
-            foreach (var item in dict)
-                castedDict.Add(item.Key, Cast(item.Key, item.Value));
-            
-            string key = BuildGroupKey(group, castedDict);
-
-            // build attribute value collection by excluding dimensions
-            var values = new Dictionary<string, object>();
-            var dimList = group.Dimensions.Select(i => i.Concept.Id).ToList();
-            foreach (var item in castedDict.Where(i => !dimList.Contains(i.Key)))
-                values.Add(item.Key, item.Value);
-
-            _groups.Add(key, values);
-        }
-
-        protected void SetRecord()
-        {
-            _record.Clear();
-
-            Action<string, object> set = (name, value) =>
-                {
-                    if (_record.ContainsKey(name))
-                    {
-                        if (!_record[name].Equals(value))
-                            SDMXException.ThrowParseError(XmlReader, "There are two differnt values for key: {0}, value1={1}, value2={2}.", name, value, _record[name]);
-                    }
-                    else
-                    {
-                        _record.Add(name, value);
-                    }
-                };
-
-            foreach (var item in _series)
-                set(item.Key, item.Value);
-
-            foreach (var item in _obs)
-                set(item.Key, item.Value);
-
-            foreach (var group in KeyFamily.Groups)
-            {
-                string key = BuildGroupKey(group, _record);
-
-                Dictionary<string, object> groupValues;
-                if (!_groups.TryGetValue(key, out groupValues))
-                    SDMXException.ThrowParseError(XmlReader, "Group '{0}' was not found for values '{1}'. Groups must be placed before their respective Series in the file.", group.Id, key);
-
-                foreach (var item in groupValues)
-                    set(item.Key, item.Value);
-            }
-
-            foreach (var attr in GeOptionalAttributes())
-                if (!_record.ContainsKey(attr))
-                    _record.Add(attr, null);
-
-            ValidateRecord();
-        }
-
-        void ValidateRecord()
-        {
-            Action<Component, string> validate = (com, name) =>
-                {
-                    if (!_record.ContainsKey(com.Concept.Id))
-                        SDMXException.ThrowParseError(XmlReader, "{0} '{1}' is missing from record.", name, com.Concept.Id);
-                    else if (_record[com.Concept.Id] == null)
-                        SDMXException.ThrowParseError(XmlReader, "{0} '{1}' value  is null.", name, com.Concept.Id);
-                };
-
-            foreach (var dim in KeyFamily.Dimensions)
-                validate(dim, "Dimension");
-
-            validate(KeyFamily.TimeDimension, "TimeDimension");
-            validate(KeyFamily.PrimaryMeasure, "PrimaryMeasure");
-
-            foreach (var attr in GetMandatoryAttributes())
-                validate(attr, "Attibute");
-        }
-
         string BuildGroupKey(Group group, Dictionary<string, object> values)
         {
-            var keyList = new List<string>();
-
-            foreach (var id in group.Dimensions.Select(i => i.Concept.Id))
+            var groupKey = new Dictionary<string, object>();
+            foreach (var id in group.Dimensions.Select(d => d.Concept.Id))
             {
-                object value = null;
-
-                if (!values.TryGetValue(id, out value))
-                    SDMXException.ThrowParseError(XmlReader, "Value for Dimension '{0}' is missing.", id);
-
-                keyList.Add(string.Format("{0}={1}", id, value));
+                groupKey.Add(id, values[id]);
             }
-
-            // build key from group dimension values
-            string key = string.Join(",", keyList.ToArray());
-
-            return key;
+            return string.Format("id={0},{1}", group.Id, RecordToString(groupKey));
         }
 
-        List<Attribute> GetMandatoryAttributes()
+        string RecordToString(Dictionary<string, object> record)
         {
-            if (_mandatoryAttributes == null)
-            {
-                _mandatoryAttributes = new List<Attribute>();
-                foreach (var attr in KeyFamily.Attributes.Where(i => i.AssignmentStatus == AssignmentStatus.Mandatory))
-                    _mandatoryAttributes.Add(attr);
-            }
-
-            return _mandatoryAttributes;
-        }
-
-        List<string> GeOptionalAttributes()
-        {
-            if (_optionalAttributes == null)
-            {
-                _optionalAttributes = new List<string>();
-                foreach (var attr in KeyFamily.Attributes.Where(i => i.AssignmentStatus == AssignmentStatus.Conditional))
-                    _optionalAttributes.Add(attr.Concept.Id);
-            }
-
-            return _optionalAttributes;
+            var list = new List<string>();
+            record.ForEach(i => list.Add(string.Format("{0}={1}", i.Key, i.Value)));
+            return string.Join(",", list.ToArray());
         }
 
         void BuildTable()
@@ -371,7 +469,9 @@ namespace SDMX
             Func<string, Type, bool, DataColumn> col = (name, type, isNull) =>
             {
                 if (_casts.ContainsKey(name))
+                {
                     type = ((Delegate)_casts[name]).Method.ReturnType;
+                }
                 var c = new DataColumn(name, type);
                 c.AllowDBNull = isNull;
                 return c;
@@ -392,29 +492,212 @@ namespace SDMX
             foreach (var attr in KeyFamily.Attributes)
                 _table.Columns.Add(col(attr.Concept.Id, attr.GetValueType(),
                     attr.AssignmentStatus == AssignmentStatus.Conditional));
+
+            _table.Columns.Add(col(_IsValidColumnName, typeof(bool), false));
+            _table.Columns.Add(col(_ErrorStringColumnName, typeof(string), true));
         }
 
         object Cast(string name, object value)
         {
-            if (_casts.ContainsKey(name))
+            try
             {
-                try
-                {
-                    return ((Delegate)_casts[name]).DynamicInvoke(value);
-                }
-                catch (Exception ex)
-                {
-                    if (ex is TargetInvocationException && ex.InnerException != null)
-                        ex = ex.InnerException;
-
-                    SDMXException.ThrowParseError(XmlReader, ex, "Exception occured in at Cast (see inner exception for details): {0}", ex.Message);
-                    return null;
-                }
+                return ((Delegate)_casts[name]).DynamicInvoke(value);
             }
-            else
+            catch (Exception ex)
             {
-                return value;
+                if (ex is TargetInvocationException && ex.InnerException != null)
+                    ex = ex.InnerException;
+
+                SDMXException.ThrowParseError(XmlReader, ex, "Exception occured in at Cast (see inner exception for details): {0}", ex.Message);
+                return null;
             }
         }
+
+        protected void AddReadError(string message)
+        {
+            _errors.Add(new ParseError("Parse error at ({0},{1}): {2}", LineNumber, LinePosition, message));
+        }
+
+        protected void AddReadError(string format, params object[] args)
+        {
+            AddReadError(string.Format(format, args));
+        }
+
+        protected void AddValidationError(string message)
+        {
+            _errors.Add(new ValidationError("Validation error at ({0},{1}): {2}", LineNumber, LinePosition, message));
+        }
+
+        protected void AddValidationError(string format, params object[] args)
+        {
+            AddValidationError(string.Format(format, args));
+        }
+
+        protected bool IsNullOrEmpty(string s)
+        {
+            return s == null || s.Trim() == "";
+        }
+
+        string GetErrorString(List<Error> errors)
+        {
+            if (errors.Count == 0) return null;
+
+            var builder = new StringBuilder();
+            errors.ForEach(i => builder.AppendLine(i.Message));
+
+            return builder.ToString();
+        }
+
+        bool IsDictEqual(Dictionary<string, object> dict1, Dictionary<string, object> dict2)
+        {
+            if (dict1.Count != dict2.Count)
+                return false;
+
+            foreach (var item1 in dict1)
+            {
+                object value2 = null;
+                if (!dict2.TryGetValue(item1.Key, out value2))
+                    return false;
+
+                if (!item1.Value.Equals(value2))
+                    return false;
+            }
+
+            return true;
+        }
+
+        Component FindGroupComponent(Group group, string name)
+        {
+            Dictionary<string, Component> components = null;
+            if (!_groupComponents.TryGetValue(group.Id, out components))
+            {
+                components = BuildGroupComponents(group);
+                _groupComponents.Add(group.Id, components);
+            }
+
+            Component comp = null;
+            components.TryGetValue(name, out comp);
+            return comp;
+        }
+
+        Component FindSeriesComponent(string name)
+        {
+            if (_seriesComponenets == null)
+            {
+                _seriesComponenets = BuildSeriesComponents();
+            }
+
+            Component comp = null;
+            _seriesComponenets.TryGetValue(name, out comp);
+            return comp;
+        }
+
+        Component FindObsComponent(string name)
+        {
+            if (_obsComponenets == null)
+            {
+                _obsComponenets = BuildObsComponents();
+            }
+
+            Component comp = null;
+            _obsComponenets.TryGetValue(name, out comp);
+            return comp;
+        }
+
+        IEnumerable<Attribute> GroupAttributes(Group group)
+        {
+            return KeyFamily.Attributes.Where(i => i.AttachementLevel == AttachmentLevel.Group && i.AttachmentGroups.Contains(group.Id));
+        }
+
+        IEnumerable<Attribute> SeriesAttributes()
+        {
+            return KeyFamily.Attributes.Where(i => i.AttachementLevel == AttachmentLevel.Series);
+        }
+
+        IEnumerable<Attribute> ObsAttributes()
+        {
+            return KeyFamily.Attributes.Where(i => i.AttachementLevel == AttachmentLevel.Observation);
+        }
+
+        Dictionary<string, Component> BuildGroupComponents(Group group)
+        {
+            var result = new Dictionary<string, Component>();
+            AddCompoenents(result, group.Dimensions);
+            AddCompoenents(result, GroupAttributes(group));
+            return result;
+        }
+
+        Dictionary<string, Component> BuildSeriesComponents()
+        {
+            var result = new Dictionary<string, Component>();
+            AddCompoenents(result, KeyFamily.Dimensions);
+            AddCompoenents(result, SeriesAttributes());
+            return result;
+        }
+
+        Dictionary<string, Component> BuildObsComponents()
+        {
+            var result = new Dictionary<string, Component>();
+
+            result.Add(KeyFamily.TimeDimension.Concept.Id, KeyFamily.TimeDimension);
+            result.Add(KeyFamily.PrimaryMeasure.Concept.Id, KeyFamily.PrimaryMeasure);
+            AddCompoenents(result, ObsAttributes());
+
+            return result;
+        }
+
+        private void AddCompoenents(Dictionary<string, Component> result, IEnumerable components)
+        {
+            foreach (Component comp in components)
+            {
+                result.Add(comp.Concept.Id, comp);
+            }
+        }
+
+        #region IDisposable
+
+        bool _disposed = false;
+
+        /// <summary>
+        /// Dispose the reader.
+        /// </summary>        
+        public void Dispose()
+        {
+            if (!_disposed)
+            {
+                Dispose(true);
+                GC.SuppressFinalize(this);
+            }
+        }
+
+        ~DataReader()
+        {
+            Dispose(false);
+        }
+
+        public void Dispose(bool disposing)
+        {
+            if (_disposed)
+                return;
+
+            if (disposing)
+            {
+                if (_table != null) _table.Clear();
+
+
+                _obsValues.Clear();
+                _seriesValues.Clear();
+                _groups.Clear();
+                _record.Clear();
+                _casts.Clear();
+                ((IDisposable)XmlReader).Dispose();
+            }
+
+            _table = null;
+
+            _disposed = true;
+        }
+
+        #endregion        
     }
 }

@@ -11,9 +11,9 @@ namespace OXM
 {
     public interface ISimpleTypeConverter
     {
-        string ToXml(object value);
-        object ToObj(string value);
-        bool CanConvertToXml(object value);
-        bool CanConvertToObj(string value);
+        string ToXml(object obj);
+        object ToObj(string s);
+        bool CanConvertToXml(object obj);
+        bool CanConvertToObj(string s);
     }
 }

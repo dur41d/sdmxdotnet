@@ -6,19 +6,27 @@ namespace SDMX
 {
     public class StringTextFormat : TextFormat
     {
-        static ISimpleTypeConverter _converter = new StringConverter();
+        ISimpleTypeConverter _converter = new StringConverter();
 
         internal override ISimpleTypeConverter Converter { get { return _converter; } }
 
-        public override bool IsValid(object obj)
+        internal override bool TryCast(object obj, out object result)
         {
-            var value = obj as string;
-            return value != null;
-        }
-
-        public override bool Equals(TextFormat other)
-        {
-            return other is StringTextFormat;
+            if (obj == null)
+            {
+                result = null;
+                return true;
+            }
+            if (obj is string)
+            {
+                result = (string)obj;
+                return true;
+            }
+            else
+            {
+                result = null;
+                return false;
+            }
         }
 
         public override Type GetValueType()

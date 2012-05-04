@@ -87,7 +87,7 @@ namespace SDMX.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(ParseException))]
+        [ExpectedException(typeof(SDMXException))]
         public void Integer_SerializeNull()
         {
             var textFormat = new IntegerTextFormat();
@@ -95,8 +95,6 @@ namespace SDMX.Tests
             int? obj = null;
             string startTime = null;
             string s2 = textFormat.Serialize(obj, out startTime);
-            Assert.IsNull(startTime);
-            Assert.AreEqual("1", s2);
         }
 
         [Test]
@@ -104,9 +102,9 @@ namespace SDMX.Tests
         {
             var textFormat = new DecimalTextFormat();
             decimal value = 1.7m;
-            Assert.IsTrue(textFormat.IsValid(value));
+            Assert.IsTrue(textFormat.CanSerialize(value));
             decimal? value2 = 1.6m;
-            Assert.IsTrue(textFormat.IsValid(value2));
+            Assert.IsTrue(textFormat.CanSerialize(value2));
         }
 
         [Test]

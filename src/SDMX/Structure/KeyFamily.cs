@@ -8,6 +8,10 @@ using Common;
 
 namespace SDMX
 {
+    public class DimensionCollection : Collection<Dimension>
+    { }
+
+
     public class KeyFamily : MaintainableArtefact
     {
         public KeyFamily(InternationalString name, Id id, Id agencyId)
@@ -53,13 +57,13 @@ namespace SDMX
                 if (criterion is DimensionCriterion)
                 {
                     var c = criterion as DimensionCriterion;
-                    // TODO: remove TryGet and make Get return null to simplify the api
+                    
                     var dim = Dimensions.Find(c.Name);
 
                     if (dim == null) 
                         return false;
 
-                    if (!dim.IsValid(c.Value))
+                    if (!dim.CanSerialize(c.Value))
                         return false;
                 }
                 else if (criterion is AttributeCriterion)
@@ -71,7 +75,7 @@ namespace SDMX
                     if (att == null)
                         return false;
 
-                    if (!att.IsValid(c.Value))
+                    if (!att.CanSerialize(c.Value))
                         return false;
 
                     //if (att.AttachementLevel != c.AttachmentLevel)

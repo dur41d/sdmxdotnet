@@ -52,9 +52,15 @@
     <Compile Include="AnnotableArtefact.cs" />
     <Compile Include="Annotation.cs" />
     <Compile Include="Data\CompactDataReader.cs" />
+    <Compile Include="Data\CompactDataWriter.cs" />
     <Compile Include="Data\DataReader.cs" />
     <Compile Include="Data\DataReader.IDataReader.cs" />
+    <Compile Include="Data\DataValidator.cs" />
+    <Compile Include="Data\DataWriter.cs" />
+    <Compile Include="Data\Error.cs" />
+    <Compile Include="Data\GenericDataWriter.cs" />
     <Compile Include="Data\GenerictDataReader.cs" />
+    <Compile Include="Data\ValuePair.cs" />
     <Compile Include="Data\ValueTypes\Biannum.cs" />
     <Compile Include="Data\ValueTypes\Biannual.cs" />
     <Compile Include="Data\ValueTypes\CodeValue.cs" />
@@ -152,7 +158,7 @@
     <Compile Include="Messages\Party.cs" />
     <Compile Include="Messages\QueryMessage.cs" />
     <Compile Include="Messages\StructureMessage.cs" />
-    <Compile Include="Messages\Validator.cs" />
+    <Compile Include="Messages\MessageValidator.cs" />
     <Compile Include="Query\AndCriterion.cs" />
     <Compile Include="Query\AttributeCriterion.cs" />
     <Compile Include="Query\DataQuery.cs" />
@@ -167,6 +173,7 @@
     <Compile Include="Query\Query.cs" />
     <Compile Include="Query\TimeCriterion.cs" />
     <Compile Include="Query\TimePeriodCriterion.cs" />
+    <Compile Include="SDMXValidationException.cs" />
     <Compile Include="Structure\AssignmentStatus.cs" />
     <Compile Include="Structure\AttachmentLevel.cs" />
     <Compile Include="Structure\Attribute.cs" />

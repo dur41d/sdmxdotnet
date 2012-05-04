@@ -84,7 +84,7 @@ namespace SDMX.Tests
 
                 while (reader.Read())
                 {
-                    Assert.AreEqual(15, reader.Count());
+                    Assert.AreEqual(17, reader.Count());
                     //foreach (var item in reader)
                     //    Console.Write("{0}={1},", item.Key, item.Value);
                     //Console.WriteLine();
@@ -103,7 +103,7 @@ namespace SDMX.Tests
 
             var doc = XDocument.Load(dataPath);
             doc.Descendants().Where(i => i.Name.LocalName == "Header").Single().Remove();
-            
+
             int counter = 0;
             using (var reader = DataReader.Create(doc.CreateReader(), keyFamily))
             {
@@ -113,7 +113,7 @@ namespace SDMX.Tests
 
                 while (reader.Read())
                 {
-                    Assert.AreEqual(15, reader.Count());
+                    Assert.AreEqual(17, reader.Count());
                     //foreach (var item in reader)
                     //    Console.Write("{0}={1},", item.Key, item.Value);
                     //Console.WriteLine();
@@ -132,10 +132,10 @@ namespace SDMX.Tests
 
             int counter = 0;
             using (var reader = DataReader.Create(dataPath, keyFamily))
-            {              
+            {
                 while (reader.Read())
                 {
-                    Assert.AreEqual(15, reader.Count());
+                    Assert.AreEqual(17, reader.Count());
                     //foreach (var item in reader)
                     //    Console.Write("{0}={1},", item.Key, item.Value);
                     //Console.WriteLine();
@@ -157,7 +157,7 @@ namespace SDMX.Tests
             {
                 while (reader.Read())
                 {
-                    Assert.AreEqual(15, reader.Count());
+                    Assert.AreEqual(17, reader.Count());
                     //foreach (var item in reader)
                     //    Console.Write("{0}={1},", item.Key, item.Value);
                     //Console.WriteLine();

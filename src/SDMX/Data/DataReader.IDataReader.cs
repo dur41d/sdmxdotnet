@@ -150,7 +150,15 @@ namespace SDMX
         object IDataRecord.GetValue(int i)
         {
             string name = GetTable().Columns[i].ColumnName;
-            return _record[name];
+            try
+            {
+                return _record[name];
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return null;
+            }
         }
 
         int IDataRecord.GetValues(object[] values)

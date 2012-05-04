@@ -10,9 +10,33 @@ namespace SDMX
 
         internal override ISimpleTypeConverter Converter { get { return _converter; } }
 
-        public override bool Equals(TextFormat other)
+        internal override bool TryCast(object obj, out object result)
         {
-            return other is YearTextFormat;
+            if (obj is DateTimeOffset)
+            {
+                result = (DateTimeOffset)obj;
+                return true;
+            }
+            else if (obj is DateTime)
+            {
+                result = ToDateTimeOffset((DateTime)obj);
+                return true;
+            }
+            else
+            {
+                result = null;
+                return false;
+            }
+        }
+
+        DateTimeOffset ToDateTimeOffset(DateTime dateTime)
+        {
+            return new DateTimeOffset(dateTime.Ticks, TimeSpan.Zero);
+        }
+
+        public override Type GetValueType()
+        {
+            return typeof(DateTimeOffset);
         }
     }
 }
