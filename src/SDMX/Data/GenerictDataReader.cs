@@ -14,29 +14,42 @@ namespace SDMX
         {
             CheckDisposed();
 
+            ClearErrors();
+
             while (XmlReader.Read())
             {
                 if (XmlReader.LocalName == "Group" && XmlReader.IsStartElement())
-                {
+                {                    
                     string groupId = XmlReader.GetAttribute("type");
-
-                    if (groupId == null)
-                        SDMXException.ThrowParseError(XmlReader, "Group is missing type attribute.");
-
-                    var group = KeyFamily.Groups.Find(groupId);
-
-                    if (group == null)
-                        SDMXException.ThrowParseError(XmlReader, "Keyfamily does not contain group with id: {0}.", groupId);
-
-                    var dict = new Dictionary<string, object>();
-                    while (XmlReader.Read() && XmlReader.LocalName != "Series")
+                    Group group = null;                                        
+                    if (IsNullOrEmpty(groupId))
                     {
-                        if (IsValueElement())
-                            ParseValue((n, v) => dict.Add(n, v));
+                        AddReadError("Group is missing 'type' attribute.");
+                    }
+                    else
+                    {
+                        group = KeyFamily.Groups.Find(groupId);
+
+                        if (group == null)
+                        {
+                            AddValidationError(string.Format("Keyfamily does not contain group with id: {0}.", groupId));
+                        }
                     }
 
-                    SetGroup(group, dict);
-                } 
+                    NewGroupValues();
+                    while (XmlReader.Read() && XmlReader.LocalName != "Series")
+                    {
+                        if (group != null && IsValueElement())
+                        {
+                            ReadValue((n, v) => SetGroup(group, n, v));
+                        }
+                    }
+
+                    if (group != null)
+                    {
+                        ValidateGroup(group);
+                    }
+                }
 
 
                 if (XmlReader.LocalName == "Series" && XmlReader.IsStartElement())
@@ -47,37 +60,38 @@ namespace SDMX
                     {
                         if (IsValueElement())
                         {
-                            ParseValue((n, v) => SetSeries(n, v));
+                            ReadValue((n, v) => SetSeries(n, v));
                         }
                     }
+
+                    ValidateSeries();
                 }
 
                 if (XmlReader.LocalName == "Obs" && XmlReader.IsStartElement())
-                {                    
+                {
                     ClearObs();
 
                     while (XmlReader.Read() && !(XmlReader.LocalName == "Obs" && !XmlReader.IsStartElement()))
                     {
                         if (XmlReader.LocalName == "Time" && XmlReader.IsStartElement())
                         {
-                            string value = XmlReader.ReadString();
-                            // TODO: improve exception message to include line number by using Try parse
-                            // move parsing to DataReader class
-                            SetObs(KeyFamily.TimeDimension.Concept.Id.ToString(), KeyFamily.TimeDimension.Parse(value, null));
+                            string value = XmlReader.ReadString();                            
+                            SetObs(KeyFamily.TimeDimension.Concept.Id, value);
                         }
                         else if (XmlReader.LocalName == "ObsValue" && XmlReader.IsStartElement())
                         {
                             string value = XmlReader.GetAttribute("value");
-                            SetObs(KeyFamily.PrimaryMeasure.Concept.Id.ToString(), KeyFamily.PrimaryMeasure.Parse(value, null));
+                            SetObs(KeyFamily.PrimaryMeasure.Concept.Id, value);
                         }
                         else if (IsValueElement())
                         {
-                            ParseValue((n, v) => SetObs(n, v));
+                            ReadValue((n, v) => SetObs(n, v));
                         }
                     }
 
+                    ValidateObs();
                     SetRecord();
-                    
+
                     return true;
                 }
             }
@@ -91,13 +105,28 @@ namespace SDMX
             return XmlReader.LocalName == "Value" && XmlReader.IsStartElement();
         }
 
-        void ParseValue(Action<string, object> set)
+        void ReadValue(Action<string, string> set)
         {
             string concept = XmlReader.GetAttribute("concept");
             string value = XmlReader.GetAttribute("value");
-            string startTime = XmlReader.GetAttribute("startTime");
-            var component = KeyFamily.GetComponent(concept);
-            set(concept, component.Parse(value, startTime));
+            //string startTime = XmlReader.GetAttribute("startTime");
+            bool error = false;
+            if (IsNullOrEmpty(concept))
+            {
+                AddReadError("The Value element is missing 'concept' attribute.");
+                error = true;
+            }
+
+            if (IsNullOrEmpty(value))
+            {
+                AddReadError("Value element is missing 'value' attribute.");
+                error = true;
+            }
+
+            if (!error)
+            {
+                set(concept, value);
+            }
         }
     }
 }

@@ -10,15 +10,18 @@ namespace SDMX
 
         internal override ISimpleTypeConverter Converter { get { return _converter; } }
 
-        public override bool IsValid(object obj)
+        internal override bool TryCast(object obj, out object result)
         {
-            var value = obj as decimal?;
-            return value != null;
-        }
-
-        public override bool Equals(TextFormat other)
-        {
-            return other is DecimalTextFormat;
+            if (obj is decimal)
+            {
+                result = (decimal)obj;
+                return true;
+            }
+            else
+            {
+                result = null;
+                return false;
+            }
         }
 
         public override Type GetValueType()

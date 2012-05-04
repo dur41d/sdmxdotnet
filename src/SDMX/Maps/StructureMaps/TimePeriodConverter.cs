@@ -59,32 +59,32 @@ namespace SDMX.Parsers
             }
         }
 
-        public override TimePeriod ToObj(string value)
+        public override TimePeriod ToObj(string s)
         {
             foreach (var converter in registry.Values)
             {
-                if (converter.CanConvertToObj(value))
+                if (converter.CanConvertToObj(s))
                 {
                     if (converter is WeeklyValueConverter)
-                        return TimePeriod.FromWeekly((Weekly)converter.ToObj(value));
-                    if (converter is QuarterlyValueConverter)
-                        return TimePeriod.FromQuarterly((Quarterly)converter.ToObj(value));
-                    if (converter is BiannualValueConverter)
-                        return TimePeriod.FromBiannual((Biannual)converter.ToObj(value));
-                    if (converter is TriannaulValueConverter)
-                        return TimePeriod.FromTriannual((Triannual)converter.ToObj(value));
+                        return TimePeriod.FromWeekly((Weekly)converter.ToObj(s));
+                    else if (converter is QuarterlyValueConverter)
+                        return TimePeriod.FromQuarterly((Quarterly)converter.ToObj(s));
+                    else if (converter is BiannualValueConverter)
+                        return TimePeriod.FromBiannual((Biannual)converter.ToObj(s));
+                    else if (converter is TriannaulValueConverter)
+                        return TimePeriod.FromTriannual((Triannual)converter.ToObj(s));
                     else if (converter is YearConverter)
-                        return TimePeriod.FromYear((DateTimeOffset)converter.ToObj(value));
+                        return TimePeriod.FromYear((DateTimeOffset)converter.ToObj(s));
                     else if (converter is YearMonthConverter)
-                        return TimePeriod.FromYearMonth((DateTimeOffset)converter.ToObj(value));
+                        return TimePeriod.FromYearMonth((DateTimeOffset)converter.ToObj(s));
                     else if (converter is DateConverter)
-                        return TimePeriod.FromDate((DateTimeOffset)converter.ToObj(value));
+                        return TimePeriod.FromDate((DateTimeOffset)converter.ToObj(s));
                     else if (converter is DateTimeConverter)
-                        return TimePeriod.FromDateTime((DateTimeOffset)converter.ToObj(value));
+                        return TimePeriod.FromDateTime((DateTimeOffset)converter.ToObj(s));
                 }
             }
 
-            throw new SDMXException("Invalid time period value '{0}'.", value);
+            throw new SDMXException("Invalid time period value '{0}'.", s);
         }
 
         public override bool CanConvertToObj(string value)

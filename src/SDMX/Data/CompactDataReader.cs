@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Xml;
+using System;
 
 namespace SDMX
 {
@@ -13,6 +14,8 @@ namespace SDMX
         {
             CheckDisposed();
 
+            ClearErrors();
+
             while (XmlReader.Read())
             {
                 if (!XmlReader.IsStartElement())
@@ -21,24 +24,24 @@ namespace SDMX
                 var group = KeyFamily.Groups.Find(XmlReader.LocalName);
 
                 if (group != null)
-                {   
-                    var dict = new Dictionary<string, object>();
+                {
+                    NewGroupValues();
                     while (XmlReader.MoveToNextAttribute())
                     {
-                        var component = KeyFamily.GetComponent(XmlReader.LocalName);
-                        dict[XmlReader.LocalName] = component.Parse(XmlReader.Value, null);
+                        ReadValue((n, v) => SetGroup(group, n, v));
                     }
 
-                    SetGroup(group, dict);
+                    ValidateGroup(group);
                 }
                 else if (XmlReader.LocalName == "Series")
                 {
                     ClearSeries();
                     while (XmlReader.MoveToNextAttribute())
                     {
-                        var component = KeyFamily.GetComponent(XmlReader.LocalName);
-                        SetSeries(XmlReader.LocalName, component.Parse(XmlReader.Value, null));
+                        ReadValue((n, v) => SetSeries(n, v));
                     }
+
+                    ValidateSeries();
                 }
                 else if (XmlReader.LocalName == "Obs")
                 {
@@ -46,10 +49,10 @@ namespace SDMX
 
                     while (XmlReader.MoveToNextAttribute())
                     {
-                        var component = KeyFamily.GetComponent(XmlReader.LocalName);
-                        SetObs(XmlReader.LocalName, component.Parse(XmlReader.Value, null));
+                        ReadValue((n, v) => SetObs(n, v));
                     }
 
+                    ValidateObs();
                     SetRecord();
 
                     return true;
@@ -57,6 +60,24 @@ namespace SDMX
             }
 
             return false;
+        }
+
+        void ReadValue(Action<string, string> set)
+        {
+            string name = XmlReader.LocalName;
+            string value = XmlReader.Value;
+            //string startTime = XmlReader.GetAttribute("startTime");
+            bool error = false;
+            if (IsNullOrEmpty(value))
+            {
+                AddReadError("Value for attribute '{0}' is missing.", name);
+                error = true;
+            }
+
+            if (!error)
+            {
+                set(name, value);
+            }
         }
     }
 }

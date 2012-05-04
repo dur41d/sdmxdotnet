@@ -10,15 +10,18 @@ namespace SDMX
 
         internal override ISimpleTypeConverter Converter { get { return _converter; } }
 
-        public override bool IsValid(object obj)
-        {
-            var value = obj as int?;
-            return value != null;
-        }
-
-        public override bool Equals(TextFormat other)
-        {
-            return other is IntegerTextFormat;
+        internal override bool TryCast(object obj, out object result)
+        {         
+            if (obj is int)
+            {
+                result = (int)obj;
+                return true;
+            }
+            else
+            {
+                result = null;
+                return false;
+            }
         }
 
         public override Type GetValueType()

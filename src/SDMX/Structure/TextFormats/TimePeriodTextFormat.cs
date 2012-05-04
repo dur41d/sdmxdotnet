@@ -7,19 +7,25 @@ namespace SDMX
 {
     public class TimePeriodTextFormat : TimePeriodTextFormatBase
     {
-        static ISimpleTypeConverter _converter = new TimePeriodConverter();
+        TimePeriodConverter _converter = new TimePeriodConverter();
 
-        internal override ISimpleTypeConverter Converter { get { return _converter; } }
-
-
-        public override bool IsValid(object obj)
+        internal override ISimpleTypeConverter Converter
         {
-            return obj is TimePeriod;
+            get { return _converter; }
         }
 
-        public override bool Equals(TextFormat other)
+        internal override bool TryCast(object obj, out object result)
         {
-            return other is TimePeriodTextFormat;
+            if (obj is TimePeriod)
+            {
+                result = (TimePeriod)obj;
+                return true;
+            }
+            else
+            {
+                result = null;
+                return false;
+            }
         }
 
         public override Type GetValueType()

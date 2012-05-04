@@ -5,8 +5,6 @@ using System.Text.RegularExpressions;
 
 namespace OXM
 {
-
-
     public class YearConverter : SimpleTypeConverter<DateTimeOffset>
     {
         // TODO: think about serializing to YearOffset and YearMonthOffset instead of DateTimeOffset

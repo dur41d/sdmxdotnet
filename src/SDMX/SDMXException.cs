@@ -40,6 +40,5 @@ namespace SDMX
             string message2 = string.Format("Parse error at ({0},{1}): {2}", xml.LineNumber, xml.LinePosition, message);
             throw new SDMXException(message2, inner);
         }
-
     }
 }

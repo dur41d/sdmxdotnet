@@ -49,48 +49,50 @@ namespace SDMX
             return Concept.Id.ToString();
         }
 
-        public virtual object Parse(string value)
-        {
-            return Parse(value, null);
-        }
-
-        public virtual object Parse(string s, string startTime)
+        public virtual bool TryParse(string s, string startTime, out object obj)
         {
             if (IsCoded)
             {
                 var code = CodeList.Get(s);
                 if (code == null)
                 {
-                    throw new SDMXException("Cannot parse s='{0}' startTime='{1}' for Component id '{2}'.", s, startTime, Concept.Id);
+                    obj = null;
+                    return false;
                 }
-                return code.Id.ToString();
+                obj = code.Id.ToString();
+                return true;
             }
             else
             {
-                return TextFormat.Parse(s, startTime);
+                return TextFormat.TryParse(s, startTime, out obj);
             }
         }
 
-        public virtual bool IsValid(object value)
+        public bool TrySerialize(object obj, out string s, out string startTime)
         {
             if (IsCoded)
             {
-                string id = value as string;
-                return id != null && CodeList.Contains(id);
+                var code = CodeList.Get(obj.ToString());
+                if (code == null)
+                {
+                    s = startTime = null;
+                    return false;
+                }
+
+                s = code.Id;
+                startTime = null;
+                return true;
             }
             else
             {
-                return TextFormat.IsValid(value);
+                return TextFormat.TrySerialize(obj, out s, out startTime);
             }
         }
 
-        internal void Validate(object value)
+        public virtual bool CanSerialize(object obj)
         {
-            if (!IsValid(value))
-            {
-                throw new SDMXException("Invalid value '{0}' for component '{1}'."
-                            , value, Concept.Id);
-            }
+            string s, startTime = null;
+            return TrySerialize(obj, out s, out startTime);
         }
 
         public Type GetValueType()
