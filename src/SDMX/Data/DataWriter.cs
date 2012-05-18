@@ -17,8 +17,7 @@ namespace SDMX
         KeyValuePair<string, Dictionary<string, string>> prevGroup = new KeyValuePair<string, Dictionary<string, string>>();
         Dictionary<string, string> prevSeries = new Dictionary<string, string>();
         List<Attribute> _mandatoryAttributes;
-
-        public DataValidator Validator { get; private set; }
+        DataValidator _validator;
 
         bool _wroteHeader = false;
         bool _wroteDataSet = false;
@@ -34,64 +33,64 @@ namespace SDMX
         public DataWriter(string path, KeyFamily keyFamily)
         {
             KeyFamily = keyFamily;
-            XmlWriter = XmlWriter.Create(path);
-            Validator = new DataValidator(keyFamily);
+            XmlWriter = XmlWriter.Create(path, new XmlWriterSettings() { Indent = true });
+            _validator = new DataValidator(keyFamily);
         }
 
         public DataWriter(Stream stream, KeyFamily keyFamily)
         {
             KeyFamily = keyFamily;
-            XmlWriter = XmlWriter.Create(stream);
-            Validator = new DataValidator(keyFamily);
+            XmlWriter = XmlWriter.Create(stream, new XmlWriterSettings() { Indent = true });
+            _validator = new DataValidator(keyFamily);
         }
 
         public DataWriter(XmlWriter writer, KeyFamily keyFamily)
         {
             KeyFamily = keyFamily;
             XmlWriter = writer;
-            Validator = new DataValidator(keyFamily);
+            _validator = new DataValidator(keyFamily);
         }
 
         public DataWriter(StringBuilder stringBuilder, KeyFamily keyFamily)
         {
             KeyFamily = keyFamily;
-            XmlWriter = XmlWriter.Create(stringBuilder);
-            Validator = new DataValidator(keyFamily);
+            XmlWriter = XmlWriter.Create(stringBuilder, new XmlWriterSettings() { Indent = true });
+            _validator = new DataValidator(keyFamily);
         }
 
         public DataWriter(TextWriter textWriter, KeyFamily keyFamily)
         {
             KeyFamily = keyFamily;
-            XmlWriter = XmlWriter.Create(textWriter);
-            Validator = new DataValidator(keyFamily);
+            XmlWriter = XmlWriter.Create(textWriter, new XmlWriterSettings() { Indent = true });
+            _validator = new DataValidator(keyFamily);
         }
 
         public DataWriter(string path, KeyFamily keyFamily, XmlWriterSettings settings)
         {
             KeyFamily = keyFamily;
             XmlWriter = XmlWriter.Create(path, settings);
-            Validator = new DataValidator(keyFamily);
+            _validator = new DataValidator(keyFamily);
         }
 
         public DataWriter(Stream stream, KeyFamily keyFamily, XmlWriterSettings settings)
         {
             KeyFamily = keyFamily;
             XmlWriter = XmlWriter.Create(stream, settings);
-            Validator = new DataValidator(keyFamily);
+            _validator = new DataValidator(keyFamily);
         }
 
         public DataWriter(StringBuilder stringBuilder, KeyFamily keyFamily, XmlWriterSettings settings)
         {
             KeyFamily = keyFamily;
             XmlWriter = XmlWriter.Create(stringBuilder, settings);
-            Validator = new DataValidator(keyFamily);
+            _validator = new DataValidator(keyFamily);
         }
 
         public DataWriter(TextWriter textWriter, KeyFamily keyFamily, XmlWriterSettings settings)
         {
             KeyFamily = keyFamily;
             XmlWriter = XmlWriter.Create(textWriter, settings);
-            Validator = new DataValidator(keyFamily);
+            _validator = new DataValidator(keyFamily);
         }
 
 
@@ -137,11 +136,11 @@ namespace SDMX
             }
         }
 
-        //public void Write(DataReader reader)
-        //{
-        //    WriteHeader(reader.ReadHeader());
-        //    Write((IDataReader)reader);            
-        //}
+        public void Write(DataReader reader)
+        {
+            WriteHeader(reader.ReadHeader());
+            Write((IDataReader)reader);
+        }
 
         public void Write(IDataReader reader)
         {
@@ -170,7 +169,7 @@ namespace SDMX
             CheckDisposed();
 
             Dictionary<string, string> values = null;
-            var errors = Validator.ValidateRecord(record, out values);
+            var errors = _validator.ValidateRecord(record, out values);
 
             if (errors.Count > 0)
             {
@@ -235,7 +234,9 @@ namespace SDMX
                         var prevGroup = GetPrevGroup();
                         if (!IsGroupEqual(prevGroup, group.Id, groupKey))
                         {
-                            CloseGroup();
+                            _wroteSeries = false;
+                            CloseSeries();
+                            CloseGroup();                            
                             WriteGroup(group, groupKey, groupAttr);
                             SetPrevGroup(group.Id, groupKey);
                         }
@@ -432,6 +433,48 @@ namespace SDMX
             }
 
             return false;
+        }
+
+        /// <summary>
+        /// Validates a record.
+        /// </summary>
+        /// <param name="record">The record to validate.</param>        
+        /// <returns>Returns a list of errors if the record is not valid; otherwise an empty list.</returns>
+        public List<Error> ValidateRecord(IDataRecord record)
+        {
+            return _validator.ValidateRecord(record);
+        }
+
+        /// <summary>
+        /// Validates a record.
+        /// </summary>
+        /// <param name="record">The record to validate.</param>        
+        /// <returns>Returns a list of errors if the record is not valid; otherwise an empty list.</returns>
+        public List<Error> ValidateRecord(Dictionary<string, object> record)
+        {
+            return _validator.ValidateRecord(record);
+        }
+
+        /// <summary>
+        /// Validates a record.
+        /// </summary>
+        /// <param name="record">The record to validate.</param>
+        /// <param name="values">The validated record. This dictionary might not contain a valid record. It's only valid if the return list is empty.</param>
+        /// <returns>Returns a list of errors if the record is not valid; otherwise an empty list.</returns>
+        public List<Error> ValidateRecord(IDataRecord record, out Dictionary<string, string> values)
+        {
+            return _validator.ValidateRecord(record, out values);
+        }
+
+        /// <summary>
+        /// Validates a record.
+        /// </summary>
+        /// <param name="record">The record to validate.</param>
+        /// <param name="values">The validated record. This dictionary might not contain a valid record. It's only valid if the return list is empty.</param>
+        /// <returns>Returns a list of errors if the record is not valid; otherwise an empty list.</returns>
+        public List<Error> ValidateRecord(Dictionary<string, object> record, out Dictionary<string, string> values)
+        {
+            return _validator.ValidateRecord(record, out values);
         }
     }
 }

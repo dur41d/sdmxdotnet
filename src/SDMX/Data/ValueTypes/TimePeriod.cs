@@ -338,10 +338,26 @@ namespace SDMX
             return timePeriod;
         }
 
+        public static TimePeriod FromYear(int year)
+        {
+            var timePeriod = new TimePeriod();
+            timePeriod._value = new DateTimeOffset(year, 1, 1, 0, 0, 0, 0, TimeSpan.Zero);
+            timePeriod.Type = TimePeriodType.Year;
+            return timePeriod;
+        }
+
         public static TimePeriod FromYearMonth(DateTimeOffset value)
         {
             var timePeriod = new TimePeriod();
             timePeriod._value = new DateTimeOffset(value.Year, value.Month, 1, 0, 0, 0, 0, value.Offset);
+            timePeriod.Type = TimePeriodType.YearMonth;
+            return timePeriod;
+        }
+
+        public static TimePeriod FromYearMonth(int year, int month)
+        {
+            var timePeriod = new TimePeriod();
+            timePeriod._value = new DateTimeOffset(year, month, 1, 0, 0, 0, 0, TimeSpan.Zero);
             timePeriod.Type = TimePeriodType.YearMonth;
             return timePeriod;
         }

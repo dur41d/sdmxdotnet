@@ -17,7 +17,7 @@ namespace SDMX
 
         public IEnumerable<Error> Errors { get; private set; }
 
-        public static SDMXValidationException Create(List<Error> errors, string message)
+        public static SDMXValidationException Create(IEnumerable<Error> errors, string message)
         {
             var builder = new StringBuilder();
             builder.AppendLine(message);
