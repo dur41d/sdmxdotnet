@@ -12,11 +12,8 @@ using System.Collections.Generic;
 
 namespace SDMX.Tests
 {
-    public partial class DataReaderTests
+    public partial class DataReaderTests : TestBase
     {
-        //const string _connectionString = @"Server=.\sqlexpress;Database=sdmx;Integrated Security=True";
-        const string _connectionString = @"Server=.;Database=sdmx;Integrated Security=False; User id=dev;Password=dev";
-
         [Test]
         [Ignore]
         public void BulkCopy()
@@ -27,7 +24,7 @@ namespace SDMX.Tests
 
             using (var reader = DataReader.Create(dataPath, keyFamily))
             {
-                reader.Cast("TIME", i => i.ToString());
+                reader.Map("TIME", "TIME", i => i.ToString());
 
                 var table = ((IDataReader)reader).GetSchemaTable();
 
@@ -53,8 +50,8 @@ namespace SDMX.Tests
                 { 
                     //"aei_ps_alt.sdmx.zip",
                     //"apri_ap_him.sdmx.zip",
-                    ////"apro_cpb_cerea.sdmx.zip", // has errors
-                    //"apro_cpp_crop.sdmx.zip",  // has errors
+                    "apro_cpb_cerea.sdmx.zip", // has errors
+                    "apro_cpp_crop.sdmx.zip",  // has errors
                     "avia_ac_fatal.sdmx.zip",
                     "avia_ac_number.sdmx.zip",
                     "avia_ec_enterp.sdmx.zip",
@@ -107,7 +104,7 @@ namespace SDMX.Tests
 
                 using (var reader = DataReader.Create(dataStream, keyFamily))
                 {
-                    reader.Cast("TIME_PERIOD", i => ((TimePeriod)i).Year);
+                    reader.Map("TIME_PERIOD", "TIME_PERIOD", i => ((TimePeriod)i).Year);
 
                     var table = ((IDataReader)reader).GetSchemaTable();
 
@@ -133,80 +130,5 @@ namespace SDMX.Tests
             XmlTextReader txtReader = new XmlTextReader(strXml, XmlNodeType.Element, parserContext);
             return XElement.Load(txtReader);
         }
-
-        void ExecuteReader(string cmd, Action<SqlDataReader> action)
-        {
-            using (var con = new SqlConnection(_connectionString))
-            using (var com = new SqlCommand(cmd, con))
-            {
-                con.Open();
-                using (var reader = com.ExecuteReader())
-                {
-                    while (reader.Read())
-                        action(reader);
-                }
-            }
-        }
-
-        void ExecuteNonQuery(string cmd)
-        {
-            using (var con = new SqlConnection(_connectionString))
-            using (var com = new SqlCommand(cmd, con))
-            {
-                con.Open();
-                com.ExecuteNonQuery();
-            }
-        }
-
-        void CreateTable(DataTable table)
-        {
-            var builder = new StringBuilder();
-
-            builder.AppendFormat(@"
-IF  EXISTS (select * from sys.objects 
-			where object_id = OBJECT_ID(N'[dbo].[{0}]') 
-			AND type in (N'U'))
-DROP TABLE [dbo].[{0}]
-
-create table dbo.{0} (", table.TableName);
-
-            foreach (DataColumn column in table.Columns)
-            {
-                builder.AppendFormat("[{0}] {1} {2} null,",
-                    column.ColumnName,
-                    GetColumnTypeName(column.ColumnName, column.DataType),
-                    column.ColumnName != "IsValid" ? "" : "not");
-            }
-
-            builder.Remove(builder.Length - 1, 1);
-
-            builder.Append(")");
-
-            ExecuteNonQuery(builder.ToString());
-        }
-
-        string GetColumnTypeName(string name, Type type)
-        {
-            if (name == "ErrorMessages")
-            {
-                return "nvarchar(4000)";
-            }
-
-            if (type == typeof(double))
-                return "float";
-            else if (type == typeof(int))
-                return "int";
-            else if (type == typeof(DateTime))
-                return "datetime";
-            else if (type == typeof(DateTimeOffset))
-                return "datetime2";
-            else if (type == typeof(bool))
-                return "bit";
-            else
-                return "nvarchar(255)";
-
-        }
     }
-
-
 }

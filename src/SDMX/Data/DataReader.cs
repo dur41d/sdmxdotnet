@@ -22,6 +22,13 @@ namespace SDMX
         public KeyFamily KeyFamily { get; private set; }
 
         /// <summary>
+        /// Throw an exception if the reader encounters an error; otherwise, don't throw an exception
+        /// and add the error the the Errors property and set the IsValid to false.
+        /// The default is true.
+        /// </summary>
+        public bool ThrowExceptionIfNotValid { get; set; }
+
+        /// <summary>
         /// The inner xml reader used by the reader.
         /// </summary>
         public XmlReader XmlReader { get; private set; }
@@ -67,37 +74,49 @@ namespace SDMX
         }
         
         List<Error> _errors = new List<Error>();
-        Dictionary<string, object> _groupValues = new Dictionary<string, object>();
-        Dictionary<string, Dictionary<string, object>> _groups = new Dictionary<string, Dictionary<string, object>>();
+        Dictionary<string, KeyValuePair<string, object>> _groupValues = new Dictionary<string, KeyValuePair<string, object>>();
+        Dictionary<string, Dictionary<string, KeyValuePair<string, object>>> _groups = new Dictionary<string, Dictionary<string, KeyValuePair<string, object>>>();
         Dictionary<string, object> _record = new Dictionary<string, object>();
-        Dictionary<string, object> _seriesValues = new Dictionary<string, object>();
-        Dictionary<string, object> _obsValues = new Dictionary<string, object>();
+        Dictionary<string, KeyValuePair<string, object>> _tempRecord = new Dictionary<string, KeyValuePair<string, object>>();
+        Dictionary<string, KeyValuePair<string, object>> _seriesValues = new Dictionary<string, KeyValuePair<string, object>>();
+        Dictionary<string, KeyValuePair<string, object>> _obsValues = new Dictionary<string, KeyValuePair<string, object>>();
 
         Dictionary<string, Dictionary<string, Component>> _groupComponents = new Dictionary<string, Dictionary<string, Component>>();
         Dictionary<string, Component> _seriesComponenets = null;
         Dictionary<string, Component> _obsComponenets = null;
+        List<Attribute> _optionalAttributes = null;
+        Dictionary<string, string> _keys = new Dictionary<string, string>();
+        DataMapper _mapper = new DataMapper();
 
         DataTable _table = null;
-
-        Dictionary<string, object> _casts = new Dictionary<string, object>();
 
         internal DataReader(XmlReader reader, KeyFamily keyFamily)
         {
             XmlReader = reader;
-            KeyFamily = keyFamily;            
+            KeyFamily = keyFamily;
+            ThrowExceptionIfNotValid = true;
         }
 
         /// <summary>
-        /// Set cast action for a reader value. This gives the opportunity to change the data being read
+        /// Allows to map the reader field names to different ones.
         /// </summary>        
-        /// <param name="name">The name of the component to change. For example the dimension name.</param>
+        /// <param name="source">The name of the source field.</param>
+        /// /// <param name="source">The name of the destination field.</param>
         /// <param name="castAction">The cast action.</param>
-        public void Cast<T>(string name, Func<object, T> castAction)
+        public void Map(string source, string destination)
         {
-            Contract.AssertNotNullOrEmpty(name, "name");
-            Contract.AssertNotNull(castAction, "castAction");
+            _mapper.Map(source, destination);
+        }
 
-            _casts.Add(name, castAction);
+        /// <summary>
+        /// Allows to map the reader field names to different ones and set the cast action.
+        /// </summary>        
+        /// <param name="source">The name of the source field.</param>
+        /// /// <param name="source">The name of the destination field.</param>
+        /// <param name="castAction">The cast action.</param>
+        public void Map(string source, string destination, Func<object, object> castAction)
+        {
+            _mapper.Map(source, destination, castAction);
         }
 
         protected void ClearErrors()
@@ -117,14 +136,14 @@ namespace SDMX
 
         protected void NewGroupValues()
         {
-            _groupValues = new Dictionary<string, object>();
+            _groupValues = new Dictionary<string, KeyValuePair<string, object>>();
         }
 
         protected void SetGroup(Group group, string name, string value)
         {
             if (_groupValues.ContainsKey(name))
             {
-                AddReadError("Duplicate '{0}' in the same group.");
+                AddParseError("Duplicate '{0}' in the same group.");
                 return;
             }
 
@@ -133,15 +152,24 @@ namespace SDMX
             object obj;
             if (TryParse(name, value, comp, out obj))
             {
-                _groupValues.Add(name, obj);
+                _groupValues.Add(name, KeyVal(value, obj));
             }
+            else
+            {
+                _groupValues.Add(name, KeyVal(value, null));
+            }
+        }
+
+        KeyValuePair<string, object> KeyVal(string value, object obj)
+        {
+            return new KeyValuePair<string, object>(value, obj);
         }
 
         protected void SetSeries(string name, string value)
         {
             if (_seriesValues.ContainsKey(name))
             {
-                AddReadError("Duplicate '{0}' in the same series.");
+                AddParseError("Duplicate '{0}' in the same series.");
                 return;
             }
 
@@ -150,7 +178,11 @@ namespace SDMX
             object obj;
             if (TryParse(name, value, comp, out obj))
             {
-                _seriesValues.Add(name, obj);
+                _seriesValues.Add(name, KeyVal(value, obj));
+            }
+            else
+            {
+                _seriesValues.Add(name, KeyVal(value, null));
             }
         }
 
@@ -158,13 +190,13 @@ namespace SDMX
         {
             if (_seriesValues.ContainsKey(name))
             {
-                AddReadError("Duplicate '{0}' in the series of the observation.");
+                AddParseError("Duplicate '{0}' in the series of the observation.");
                 return;
             }
 
             if (_obsValues.ContainsKey(name))
             {
-                AddReadError("Duplicate '{0}' in the same observation.");
+                AddParseError("Duplicate '{0}' in the same observation.");
                 return;
             }
 
@@ -173,7 +205,11 @@ namespace SDMX
             object obj;
             if (TryParse(name, value, comp, out obj))
             {
-                _obsValues.Add(name, obj);
+                _obsValues.Add(name, KeyVal(value, obj));
+            }
+            else
+            {
+                _obsValues.Add(name, KeyVal(value, null));
             }
         }
 
@@ -187,7 +223,7 @@ namespace SDMX
 
             string key = BuildGroupKey(group, _groupValues);
 
-            Dictionary<string, object> existing = null;
+            Dictionary<string, KeyValuePair<string, object>> existing = null;
             if (!_groups.TryGetValue(key, out existing))
             {
                 _groups.Add(key, _groupValues);
@@ -196,7 +232,7 @@ namespace SDMX
             {
                 if (!IsDictEqual(existing, _groupValues))
                 {
-                    AddReadError("2 Occurances for group (id={0}) that have the same key but differnt values. Value1: ({1}) Value2: ({2}).",
+                    AddParseError("2 Occurances for group (id={0}) that have the same key but differnt values. Value1: ({1}) Value2: ({2}).",
                         group.Id, RecordToString(existing), RecordToString(_groupValues));
                 }
             }
@@ -236,7 +272,7 @@ namespace SDMX
 
             return true ;
         }
-        bool ValidateDimensions(IEnumerable<Dimension> dimensions, Dictionary<string, object> values, bool logErrors)
+        bool ValidateDimensions(IEnumerable<Dimension> dimensions, Dictionary<string, KeyValuePair<string, object>> values, bool logErrors)
         {
             bool valid = true;
             foreach (var id in dimensions.Select(d => d.Concept.Id))
@@ -249,15 +285,14 @@ namespace SDMX
 
             return valid;
         }
-        
-        bool ValidateDimension(Dictionary<string, object> values, string id, bool logErrors)
+
+        bool ValidateDimension(Dictionary<string, KeyValuePair<string, object>> values, string id, bool logErrors)
         {
             if (!values.ContainsKey(id))
             {
                 if (logErrors)
                 {
                     AddValidationError("Value for dimension '{0}' is missing.", id);
-                    values.Add(id, null);
                 }
                 
                 return false;
@@ -266,7 +301,7 @@ namespace SDMX
             return true;
         }
 
-        void ValidateAttributes(IEnumerable<Attribute> attributes, Dictionary<string, object> values)
+        void ValidateAttributes(IEnumerable<Attribute> attributes, Dictionary<string, KeyValuePair<string, object>> values)
         {
             foreach (var attr in attributes)
             {
@@ -277,7 +312,6 @@ namespace SDMX
                     {
                         AddValidationError("Value for mandatory attribute '{0}' is missing.", id);
                     }
-                    values.Add(id, null);
                 }
             }
         }
@@ -285,48 +319,60 @@ namespace SDMX
         protected void SetRecord()
         {
             _record.Clear();
-
-            var tempRecord = new Dictionary<string, object>();
+            _tempRecord.Clear();            
 
             // add values for series, obs and each group
-            _seriesValues.ForEach(i => tempRecord.Add(i.Key, i.Value));
-            _obsValues.ForEach(i => tempRecord.Add(i.Key, i.Value));
+            _seriesValues.ForEach(i => _tempRecord.Add(i.Key, i.Value));
+            _obsValues.ForEach(i => _tempRecord.Add(i.Key, i.Value));
+
+            string key = BuildKey(_tempRecord);
+            if (_keys.ContainsKey(key))
+            {
+                AddValidationError("Duplicate key found: {0}", key);
+            }
+            else
+            {
+                _keys.Add(key, null);
+            }
 
             foreach (var group in KeyFamily.Groups)
             {
-                bool valid = ValidateDimensions(group.Dimensions, tempRecord, false);
+                bool valid = ValidateDimensions(group.Dimensions, _tempRecord, false);
 
                 if (!valid)
+                {
                     continue;
+                }
 
-                string key = BuildGroupKey(group, tempRecord);
+                string groupKey = BuildGroupKey(group, _tempRecord);
 
-                Dictionary<string, object> groupValues;
-                if (_groups.TryGetValue(key, out groupValues))
+                Dictionary<string, KeyValuePair<string, object>> groupValues;
+                if (_groups.TryGetValue(groupKey, out groupValues))
                 {
                     foreach (var groupValue in groupValues)
                     {
-                        if (!tempRecord.ContainsKey(groupValue.Key))
+                        if (!_tempRecord.ContainsKey(groupValue.Key))
                         {
-                            tempRecord.Add(groupValue.Key, groupValue.Value);
+                            _tempRecord.Add(groupValue.Key, groupValue.Value);
                         }
                     }
                 }
             }
 
-            ErrorString = GetErrorString(_errors);
-
-            foreach (var item in tempRecord)
+            // Fill optional attributes
+            foreach (var attr in GetOptionalAttributes())
             {
-                if (_casts.ContainsKey(item.Key))
+                string name = attr.Concept.Id;
+                if (!_tempRecord.ContainsKey(name))
                 {
-                    _record[item.Key] = Cast(item.Key, item.Value);
-                }
-                else
-                {
-                    _record[item.Key] = item.Value;
+                    _tempRecord[name] = new KeyValuePair<string, object>(null, null);
                 }
             }
+
+
+            ErrorString = GetErrorString(_errors);
+
+            _mapper.MapRecord(_record, _tempRecord);
 
             _record[_ErrorStringColumnName] = ErrorString;
             _record[_IsValidColumnName] = IsValid;
@@ -447,9 +493,9 @@ namespace SDMX
             return GetEnumerator();
         }
 
-        string BuildGroupKey(Group group, Dictionary<string, object> values)
+        string BuildGroupKey(Group group, Dictionary<string, KeyValuePair<string, object>> values)
         {
-            var groupKey = new Dictionary<string, object>();
+            var groupKey = new Dictionary<string, KeyValuePair<string, object>>();
             foreach (var id in group.Dimensions.Select(d => d.Concept.Id))
             {
                 groupKey.Add(id, values[id]);
@@ -457,20 +503,37 @@ namespace SDMX
             return string.Format("id={0},{1}", group.Id, RecordToString(groupKey));
         }
 
-        string RecordToString(Dictionary<string, object> record)
+        string BuildKey(Dictionary<string, KeyValuePair<string, object>> values)
+        {
+            var key = new Dictionary<string, KeyValuePair<string, object>>();
+            foreach (var id in KeyFamily.Dimensions.Select(d => d.Concept.Id))
+            {
+                key.Add(id, values[id]);
+            }
+            string name = KeyFamily.TimeDimension.Concept.Id;
+            key.Add(name, values[name]);
+            return RecordToString(key);
+        }
+
+        string RecordToString(Dictionary<string, KeyValuePair<string, object>> record)
         {
             var list = new List<string>();
-            record.ForEach(i => list.Add(string.Format("{0}={1}", i.Key, i.Value)));
+            record.ForEach(i => list.Add(string.Format("{0}={1}", i.Key, i.Value.Key)));
             return string.Join(",", list.ToArray());
         }
 
         void BuildTable()
         {
             Func<string, Type, bool, DataColumn> col = (name, type, isNull) =>
-            {
-                if (_casts.ContainsKey(name))
+            {                
+                KeyValuePair<string, object> value = new KeyValuePair<string, object>();
+                if (_mapper.TryGetValue(name, out value))
                 {
-                    type = ((Delegate)_casts[name]).Method.ReturnType;
+                    name = value.Key;
+                    if (value.Value != null)
+                    {
+                        type = ((Delegate)value.Value).Method.ReturnType;
+                    }
                 }
                 var c = new DataColumn(name, type);
                 c.AllowDBNull = isNull;
@@ -497,35 +560,51 @@ namespace SDMX
             _table.Columns.Add(col(_ErrorStringColumnName, typeof(string), true));
         }
 
-        object Cast(string name, object value)
+        object Cast(string source, string destination, object castAction, object oldValue)
         {
             try
             {
-                return ((Delegate)_casts[name]).DynamicInvoke(value);
+                return ((Delegate)castAction).DynamicInvoke(oldValue);
             }
             catch (Exception ex)
             {
                 if (ex is TargetInvocationException && ex.InnerException != null)
                     ex = ex.InnerException;
 
-                SDMXException.ThrowParseError(XmlReader, ex, "Exception occured in at Cast (see inner exception for details): {0}", ex.Message);
-                return null;
+                string message = string.Format("Exception at position ({5},{6}) occured in the cast action 'Map(\"{0}\",\"{1}\", castAction)' when casting value '{2}' of type '{3}' (see inner exception for details): {4}", source, destination, oldValue, oldValue.GetType(), ex.Message, LineNumber, LinePosition);
+                throw new SDMXException(message, ex);
             }
         }
 
-        protected void AddReadError(string message)
+        protected void AddParseError(string message)
         {
-            _errors.Add(new ParseError("Parse error at ({0},{1}): {2}", LineNumber, LinePosition, message));
+            string errorMessage = string.Format("Parse error at ({0},{1}): {2}", LineNumber, LinePosition, message);
+            if (ThrowExceptionIfNotValid)
+            {
+                throw new SDMXException(errorMessage);
+            }
+            else
+            {
+                _errors.Add(new ParseError(errorMessage));
+            }
         }
 
-        protected void AddReadError(string format, params object[] args)
+        protected void AddParseError(string format, params object[] args)
         {
-            AddReadError(string.Format(format, args));
+            AddParseError(string.Format(format, args));
         }
 
         protected void AddValidationError(string message)
         {
-            _errors.Add(new ValidationError("Validation error at ({0},{1}): {2}", LineNumber, LinePosition, message));
+            string errorMessage = string.Format("Validation error at ({0},{1}): {2}", LineNumber, LinePosition, message);
+            if (ThrowExceptionIfNotValid)
+            {
+                throw new SDMXException(errorMessage);
+            }
+            else
+            {
+                _errors.Add(new ValidationError(errorMessage));
+            }
         }
 
         protected void AddValidationError(string format, params object[] args)
@@ -548,14 +627,14 @@ namespace SDMX
             return builder.ToString();
         }
 
-        bool IsDictEqual(Dictionary<string, object> dict1, Dictionary<string, object> dict2)
+        bool IsDictEqual(Dictionary<string, KeyValuePair<string, object>> dict1, Dictionary<string, KeyValuePair<string, object>> dict2)
         {
             if (dict1.Count != dict2.Count)
                 return false;
 
             foreach (var item1 in dict1)
             {
-                object value2 = null;
+                var value2 = new KeyValuePair<string, object>();
                 if (!dict2.TryGetValue(item1.Key, out value2))
                     return false;
 
@@ -602,6 +681,25 @@ namespace SDMX
             Component comp = null;
             _obsComponenets.TryGetValue(name, out comp);
             return comp;
+        }
+
+        List<Attribute> GetOptionalAttributes()
+        {
+            if (_optionalAttributes == null)
+            {
+                _optionalAttributes = BuildOptionalAttributes();
+            }
+            return _optionalAttributes;
+        }
+
+        List<Attribute> BuildOptionalAttributes()
+        {
+            var list = new List<Attribute>();
+            foreach (var attr in KeyFamily.Attributes.Where(a => a.AssignmentStatus == AssignmentStatus.Conditional))
+            {
+                list.Add(attr);
+            }
+            return list;
         }
 
         IEnumerable<Attribute> GroupAttributes(Group group)
@@ -689,7 +787,7 @@ namespace SDMX
                 _seriesValues.Clear();
                 _groups.Clear();
                 _record.Clear();
-                _casts.Clear();
+                _keys.Clear();
                 ((IDisposable)XmlReader).Dispose();
             }
 

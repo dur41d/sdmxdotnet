@@ -24,7 +24,7 @@ namespace SDMX
                     Group group = null;                                        
                     if (IsNullOrEmpty(groupId))
                     {
-                        AddReadError("Group is missing 'type' attribute.");
+                        AddParseError("Group is missing 'type' attribute.");
                     }
                     else
                     {
@@ -113,13 +113,13 @@ namespace SDMX
             bool error = false;
             if (IsNullOrEmpty(concept))
             {
-                AddReadError("The Value element is missing 'concept' attribute.");
+                AddParseError("The Value element is missing 'concept' attribute.");
                 error = true;
             }
 
             if (IsNullOrEmpty(value))
             {
-                AddReadError("Value element is missing 'value' attribute.");
+                AddParseError("Value element is missing 'value' attribute.");
                 error = true;
             }
 

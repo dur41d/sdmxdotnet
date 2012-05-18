@@ -3,6 +3,7 @@ using Common;
 using System.Data;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 
 namespace SDMX
 {
@@ -17,14 +18,15 @@ namespace SDMX
 
         public KeyFamily KeyFamily { get; private set; }
 
-        public List<Error> Validate(IDataReader reader)
-        {
-            var list = new List<Error>();
+        public IEnumerable<Error> Validate(IDataReader reader)
+        {            
             while (reader.Read())
             {
-                list.AddRange(ValidateRecord(reader));
+                foreach (var error in ValidateRecord(reader))
+                {
+                    yield return error;
+                }
             }
-            return list;
         }
 
         /// <summary>
@@ -165,7 +167,7 @@ namespace SDMX
                     string startTime = null;
                     if (!component.TrySerialize(obj, out value, out startTime))
                     {
-                        errors.Add(new ValidationError("Cannot serialize {0}: Name:'{1}' Value:'{2}' Record ({3}).", componentName, name, value, RecordToString(record)));
+                        errors.Add(new ValidationError("Cannot serialize {0}: Name:'{1}' Value:'{2}' Type:'{4}' Record ({3}).", componentName, name, obj, RecordToString(record), obj.GetType()));
                     }
                     else
                     {
@@ -189,7 +191,7 @@ namespace SDMX
         string RecordToString(Dictionary<string, object> record)
         {
             var list = new List<string>();
-            record.ForEach(i => list.Add(string.Format("{0}={1}", i.Key, i.Value.ToString())));
+            record.ForEach(i => list.Add(string.Format("{0}={1}", i.Key, i.Value)));
             return string.Join(",", list.ToArray());
         }
     }
