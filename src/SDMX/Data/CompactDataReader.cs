@@ -70,7 +70,7 @@ namespace SDMX
             bool error = false;
             if (IsNullOrEmpty(value))
             {
-                AddParseError("Value for attribute '{0}' is missing.", name);
+                AddValidationError("Value for attribute '{0}' is missing.", name);
                 error = true;
             }
 
