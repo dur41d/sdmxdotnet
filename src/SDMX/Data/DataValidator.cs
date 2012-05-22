@@ -78,7 +78,7 @@ namespace SDMX
 
             foreach (var dim in KeyFamily.Dimensions)
             {
-                ValidateComponent(dim, record, values, errors, "Dimension", message => new ValidationError(message));
+                ValidateComponent(dim, record, values, errors, "Dimension");
 
                 // build series key
                 string name = dim.Concept.Id;
@@ -91,12 +91,12 @@ namespace SDMX
 
             foreach (var attr in KeyFamily.Attributes)
             {
-                ValidateComponent(attr, record, values, errors, "Attribute", message => new ValidationError(message));
+                ValidateComponent(attr, record, values, errors, "Attribute");
             }
 
             if (KeyFamily.TimeDimension != null)
             {
-                ValidateComponent(KeyFamily.TimeDimension, record, values, errors, "Time dimension", message => new ValidationError(message));
+                ValidateComponent(KeyFamily.TimeDimension, record, values, errors, "Time dimension");
                 string name = KeyFamily.TimeDimension.Concept.Id;
                 string value = null;
                 if (values.TryGetValue(name, out value))
@@ -107,13 +107,13 @@ namespace SDMX
 
             if (KeyFamily.PrimaryMeasure != null)
             {
-                ValidateComponent(KeyFamily.PrimaryMeasure, record, values, errors, "Primary measure", message => new ValidationError(message));
+                ValidateComponent(KeyFamily.PrimaryMeasure, record, values, errors, "Primary measure");
             }
 
             string seriesKeyString = ValuesToString(seriesKey);
             if (_keys.ContainsKey(seriesKeyString))
             {
-                var error = new ValidationError("Duplicate key: {0}", seriesKeyString);
+                var error = new DuplicateKeyError("Duplicate key: {0}", seriesKeyString);
                 errors.Add(error);
             }
             else
@@ -136,7 +136,7 @@ namespace SDMX
             return string.Join(",", list.ToArray());
         }
 
-        void ValidateComponent(Component component, Dictionary<string, object> record, Dictionary<string, string> values, List<Error> errors, string componentName, Func<string, Error> getError)
+        void ValidateComponent(Component component, Dictionary<string, object> record, Dictionary<string, string> values, List<Error> errors, string componentName)
         {
             string name = component.Concept.Id;
             object obj = null;
@@ -145,7 +145,7 @@ namespace SDMX
             {   
                 if (!optionalAttribute)
                 {
-                    errors.Add(getError(string.Format("{0} '{1}' is missing from record ({2}).", componentName, name, RecordToString(record))));
+                    errors.Add(new MandatoryComponentMissing("{0} '{1}' is missing from record ({2}).", componentName, name, RecordToString(record)));
                 }
 
                 values.Add(name, null);
@@ -156,7 +156,7 @@ namespace SDMX
                 {
                     if (!optionalAttribute)
                     {
-                        errors.Add(new ValidationError("Null value for {0}: Name:'{1}' Value:'null' Record ({2}).", componentName, name, RecordToString(record)));
+                        errors.Add(new MandatoryComponentMissing("Null value for {0}: Name:'{1}' Value:'null' Record ({2}).", componentName, name, RecordToString(record)));
                     }
 
                     values.Add(name, null);
@@ -167,7 +167,7 @@ namespace SDMX
                     string startTime = null;
                     if (!component.TrySerialize(obj, out value, out startTime))
                     {
-                        errors.Add(new ValidationError("Cannot serialize {0}: Name:'{1}' Value:'{2}' Type:'{4}' Record ({3}).", componentName, name, obj, RecordToString(record), obj.GetType()));
+                        errors.Add(new SerializationError("Cannot serialize {0}: Name:'{1}' Value:'{2}' Type:'{4}' Record ({3}).", componentName, name, obj, RecordToString(record), obj.GetType()));
                     }
                     else
                     {

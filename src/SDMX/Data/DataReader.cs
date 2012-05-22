@@ -143,7 +143,7 @@ namespace SDMX
         {
             if (_groupValues.ContainsKey(name))
             {
-                AddParseError("Duplicate '{0}' in the same group.");
+                AddValidationError("Duplicate '{0}' in the same group.");
                 return;
             }
 
@@ -169,7 +169,7 @@ namespace SDMX
         {
             if (_seriesValues.ContainsKey(name))
             {
-                AddParseError("Duplicate '{0}' in the same series.");
+                AddValidationError("Duplicate '{0}' in the same series.");
                 return;
             }
 
@@ -190,13 +190,13 @@ namespace SDMX
         {
             if (_seriesValues.ContainsKey(name))
             {
-                AddParseError("Duplicate '{0}' in the series of the observation.");
+                AddValidationError("Duplicate '{0}' in the series of the observation.");
                 return;
             }
 
             if (_obsValues.ContainsKey(name))
             {
-                AddParseError("Duplicate '{0}' in the same observation.");
+                AddValidationError("Duplicate '{0}' in the same observation.");
                 return;
             }
 
@@ -232,7 +232,7 @@ namespace SDMX
             {
                 if (!IsDictEqual(existing, _groupValues))
                 {
-                    AddParseError("2 Occurances for group (id={0}) that have the same key but differnt values. Value1: ({1}) Value2: ({2}).",
+                    AddValidationError("2 Occurances for group (id={0}) that have the same key but differnt values. Value1: ({1}) Value2: ({2}).",
                         group.Id, RecordToString(existing), RecordToString(_groupValues));
                 }
             }
@@ -266,7 +266,7 @@ namespace SDMX
             string startTime = null;
             if (!comp.TryParse(value, startTime, out obj))
             {
-                AddValidationError("Cannot parse value '{1}' for '{0}'.", name, value);
+                AddParseError("Cannot parse value '{1}' for '{0}'.", name, value);
                 return false;
             }
 
@@ -292,7 +292,7 @@ namespace SDMX
             {
                 if (logErrors)
                 {
-                    AddValidationError("Value for dimension '{0}' is missing.", id);
+                    AddMandatoryComponentMissingError("Value for dimension '{0}' is missing.", id);
                 }
                 
                 return false;
@@ -310,7 +310,7 @@ namespace SDMX
                 {
                     if (attr.AssignmentStatus != AssignmentStatus.Conditional)
                     {
-                        AddValidationError("Value for mandatory attribute '{0}' is missing.", id);
+                        AddMandatoryComponentMissingError("Value for mandatory attribute '{0}' is missing.", id);
                     }
                 }
             }
@@ -328,7 +328,7 @@ namespace SDMX
             string key = BuildKey(_tempRecord);
             if (_keys.ContainsKey(key))
             {
-                AddValidationError("Duplicate key found: {0}", key);
+                AddDuplicateKeyError("Duplicate key found: {0}", key);
             }
             else
             {
@@ -576,17 +576,31 @@ namespace SDMX
             }
         }
 
-        protected void AddParseError(string message)
+        void AddError(Error error)
         {
-            string errorMessage = string.Format("Parse error at ({0},{1}): {2}", LineNumber, LinePosition, message);
             if (ThrowExceptionIfNotValid)
             {
-                throw new SDMXException(errorMessage);
+                throw SDMXValidationException.Create(new List<Error> { error } , error.Message);
             }
             else
             {
-                _errors.Add(new ParseError(errorMessage));
+                _errors.Add(error);
             }
+        }
+     
+        protected void AddValidationError(string message)
+        {
+            AddError(new ValidationError(string.Format("Validation error at ({0},{1}): {2}", LineNumber, LinePosition, message)));
+        }
+
+        protected void AddValidationError(string format, params object[] args)
+        {
+            AddValidationError(string.Format(format, args));
+        }
+
+        protected void AddParseError(string message)
+        {
+            AddError(new ParseError(string.Format("Parse error at ({0},{1}): {2}", LineNumber, LinePosition, message)));
         }
 
         protected void AddParseError(string format, params object[] args)
@@ -594,22 +608,24 @@ namespace SDMX
             AddParseError(string.Format(format, args));
         }
 
-        protected void AddValidationError(string message)
+        protected void AddDuplicateKeyError(string message)
         {
-            string errorMessage = string.Format("Validation error at ({0},{1}): {2}", LineNumber, LinePosition, message);
-            if (ThrowExceptionIfNotValid)
-            {
-                throw new SDMXException(errorMessage);
-            }
-            else
-            {
-                _errors.Add(new ValidationError(errorMessage));
-            }
+            AddError(new DuplicateKeyError(string.Format("Duplicate key error at ({0},{1}): {2}", LineNumber, LinePosition, message)));
         }
 
-        protected void AddValidationError(string format, params object[] args)
+        protected void AddDuplicateKeyError(string format, params object[] args)
         {
-            AddValidationError(string.Format(format, args));
+            AddDuplicateKeyError(string.Format(format, args));
+        }
+
+        protected void AddMandatoryComponentMissingError(string message)
+        {
+            AddError(new MandatoryComponentMissing(string.Format("Duplicate key error at ({0},{1}): {2}", LineNumber, LinePosition, message)));
+        }
+
+        protected void AddMandatoryComponentMissingError(string format, params object[] args)
+        {
+            AddMandatoryComponentMissingError(string.Format(format, args));
         }
 
         protected bool IsNullOrEmpty(string s)
