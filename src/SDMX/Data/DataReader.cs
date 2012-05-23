@@ -620,7 +620,7 @@ namespace SDMX
 
         protected void AddMandatoryComponentMissingError(string message)
         {
-            AddError(new MandatoryComponentMissing(string.Format("Duplicate key error at ({0},{1}): {2}", LineNumber, LinePosition, message)));
+            AddError(new MandatoryComponentMissing(string.Format("Mandatory component missing error at ({0},{1}): {2}", LineNumber, LinePosition, message)));
         }
 
         protected void AddMandatoryComponentMissingError(string format, params object[] args)
