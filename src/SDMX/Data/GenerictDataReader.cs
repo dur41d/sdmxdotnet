@@ -14,8 +14,6 @@ namespace SDMX
         {
             CheckDisposed();
 
-            ClearErrors();
-
             while (XmlReader.Read())
             {
                 if (XmlReader.LocalName == "Group" && XmlReader.IsStartElement())
@@ -24,7 +22,7 @@ namespace SDMX
                     Group group = null;                                        
                     if (IsNullOrEmpty(groupId))
                     {
-                        AddValidationError("Group is missing 'type' attribute.");
+                        AddValidationError(false, "Group is missing 'type' attribute.");
                     }
                     else
                     {
@@ -32,7 +30,7 @@ namespace SDMX
 
                         if (group == null)
                         {
-                            AddValidationError(string.Format("Keyfamily does not contain group with id: {0}.", groupId));
+                            AddValidationError(false, "Keyfamily does not contain group with id: {0}.", groupId);
                         }
                     }
 
@@ -41,7 +39,7 @@ namespace SDMX
                     {
                         if (group != null && IsValueElement())
                         {
-                            ReadValue((n, v) => SetGroup(group, n, v));
+                            ReadValue((n, v) => SetGroup(group, n, v), false);
                         }
                     }
 
@@ -60,7 +58,7 @@ namespace SDMX
                     {
                         if (IsValueElement())
                         {
-                            ReadValue((n, v) => SetSeries(n, v));
+                            ReadValue((n, v) => SetSeries(n, v), true);
                         }
                     }
 
@@ -85,7 +83,7 @@ namespace SDMX
                         }
                         else if (IsValueElement())
                         {
-                            ReadValue((n, v) => SetObs(n, v));
+                            ReadValue((n, v) => SetObs(n, v), false);
                         }
                     }
 
@@ -105,7 +103,7 @@ namespace SDMX
             return XmlReader.LocalName == "Value" && XmlReader.IsStartElement();
         }
 
-        void ReadValue(Action<string, string> set)
+        void ReadValue(Action<string, string> set, bool isSeries)
         {
             string concept = XmlReader.GetAttribute("concept");
             string value = XmlReader.GetAttribute("value");
@@ -113,13 +111,13 @@ namespace SDMX
             bool error = false;
             if (IsNullOrEmpty(concept))
             {
-                AddValidationError("The Value element is missing 'concept' attribute.");
+                AddValidationError("The Value element is missing 'concept' attribute.", isSeries);
                 error = true;
             }
 
             if (IsNullOrEmpty(value))
             {
-                AddValidationError("Value element is missing 'value' attribute.");
+                AddValidationError("Value element is missing 'value' attribute.", isSeries);
                 error = true;
             }
 

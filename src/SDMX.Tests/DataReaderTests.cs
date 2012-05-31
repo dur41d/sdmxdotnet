@@ -7,6 +7,7 @@ using System.Data;
 using System.Xml.Linq;
 using System.Xml;
 using SDMX.Parsers;
+using System.Diagnostics;
 
 namespace SDMX.Tests
 {
@@ -169,6 +170,109 @@ namespace SDMX.Tests
             }
 
             Assert.AreEqual(count, counter);
+        }
+
+
+        [Test]
+        public void read_compact_invalid_obs_value()
+        {
+            string dataPath = Utility.GetPath("lib\\CompactSample.xml");
+
+            var doc = XDocument.Load(dataPath);
+            doc.Descendants().Where(i => i.Name.LocalName == "Obs").First().Attribute("OBS_VALUE").Value = "abc";
+            string dsdPath = Utility.GetPath("lib\\StructureSample.xml");
+            var dsd = StructureMessage.Load(dsdPath);
+            var keyFamily = dsd.KeyFamilies[0];
+
+            int counter = 0;
+            using (var reader = DataReader.Create(doc.CreateReader(), keyFamily))
+            {
+                reader.ThrowExceptionIfNotValid = false;
+                while (reader.Read())
+                {
+                    if (!reader.IsValid)
+                    {
+                        Assert.AreEqual(1, reader.Errors.Count);
+                        Assert.IsTrue(reader.Errors[0] is ParseError);
+                        //Debug.WriteLine(reader.Errors[0].Message);
+                        counter++;
+                    }
+                }
+            }
+
+            Assert.AreEqual(1, counter);
+        }
+
+        [Test]
+        public void read_compact_invalid_missing_dim()
+        {
+            string dataPath = Utility.GetPath("lib\\CompactSample.xml");
+
+            var doc = XDocument.Load(dataPath);
+            var series = doc.Descendants().Where(i => i.Name.LocalName == "Series").First();
+            series.RemoveAttributes();
+            series.SetAttributeValue("FREQxx", "M");
+            series.SetAttributeValue("COLLECTION", "B");
+            series.SetAttributeValue("TIME_FORMAT", "P1M");
+            series.SetAttributeValue("VIS_CTY", "MX");
+            series.SetAttributeValue("JD_TYPE", "P");
+            series.SetAttributeValue("JD_CATEGORY", "A");
+
+            string dsdPath = Utility.GetPath("lib\\StructureSample.xml");
+            var dsd = StructureMessage.Load(dsdPath);
+            var keyFamily = dsd.KeyFamilies[0];
+
+            int counter = 0;
+            using (var reader = DataReader.Create(doc.CreateReader(), keyFamily))
+            {
+                reader.ThrowExceptionIfNotValid = false;
+                while (reader.Read())
+                {
+                    if (!reader.IsValid)
+                    {
+                        Assert.AreEqual(2, reader.Errors.Count);
+                        Assert.IsTrue(reader.Errors[0] is ValidationError);
+                        Assert.IsTrue(reader.Errors[1] is MandatoryComponentMissing);
+                        //Debug.WriteLine(reader.Errors[0].Message);
+                        //Debug.WriteLine(reader.Errors[1].Message);
+                        counter++;
+                    }
+                }
+            }
+
+            Assert.AreEqual(12, counter);
+        }
+
+        [Test]
+        public void read_compact_invalid_dim_value()
+        {
+            string dataPath = Utility.GetPath("lib\\CompactSample.xml");
+
+            var doc = XDocument.Load(dataPath);
+            var series = doc.Descendants().Where(i => i.Name.LocalName == "Series").First();
+            series.Attribute("FREQ").Value = "InvalidValue";
+
+            string dsdPath = Utility.GetPath("lib\\StructureSample.xml");
+            var dsd = StructureMessage.Load(dsdPath);
+            var keyFamily = dsd.KeyFamilies[0];
+
+            int counter = 0;
+            using (var reader = DataReader.Create(doc.CreateReader(), keyFamily))
+            {
+                reader.ThrowExceptionIfNotValid = false;
+                while (reader.Read())
+                {
+                    if (!reader.IsValid)
+                    {
+                        Assert.AreEqual(1, reader.Errors.Count);
+                        Assert.IsTrue(reader.Errors[0] is ParseError);
+                        //Debug.WriteLine(reader.Errors[0].Message);
+                        counter++;
+                    }
+                }
+            }
+
+            Assert.AreEqual(12, counter);
         }
     }
 }

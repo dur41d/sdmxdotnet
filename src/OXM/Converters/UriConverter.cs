@@ -15,5 +15,11 @@ namespace OXM
         {
             return new Uri(value);
         }
+
+        public override bool CanConvertToObj(string s)
+        {
+            Uri result = null;
+            return Uri.TryCreate(s, UriKind.RelativeOrAbsolute, out result);
+        }
     }
 }

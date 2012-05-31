@@ -17,6 +17,11 @@ namespace OXM
         {
             return value;
         }
+
+        public override bool CanConvertToObj(string s)
+        {
+            return true;
+        }
     }
 
 }

@@ -22,5 +22,10 @@ namespace SDMX.Parsers
             else
                 return new DateTimeConverter().ToObj(value);
         }
+
+        public override bool CanConvertToObj(string s)
+        {
+            return new DateConverter().CanConvertToObj(s) || new DateTimeConverter().CanConvertToObj(s);
+        }
     }
 }

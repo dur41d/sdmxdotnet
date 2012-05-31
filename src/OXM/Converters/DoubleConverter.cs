@@ -16,6 +16,12 @@ namespace OXM
         {
             return XmlConvert.ToDouble(value);
         }
+
+        public override bool CanConvertToObj(string s)
+        {
+            double result = 0;
+            return double.TryParse(s, out result);
+        }
     }
 
     public class NullableDoubleConverter : NullabeConverter<double>

@@ -27,5 +27,19 @@ namespace OXM
                 return (T)Enum.Parse(typeof(T), value);
             }
         }
+
+        public override bool CanConvertToObj(string s)
+        {            
+            Type enumType = typeof(T);
+            if (enumType.IsGenericType && enumType.GetGenericTypeDefinition().Equals(typeof(Nullable<>)))
+            {
+                var nonNullableType = Nullable.GetUnderlyingType(enumType);
+                return Enum.IsDefined(nonNullableType, s);
+            }
+            else
+            {
+                return Enum.IsDefined(typeof(T), s);
+            }
+        }
     }
 }

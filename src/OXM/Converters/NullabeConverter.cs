@@ -23,5 +23,10 @@ namespace OXM
 
             return Converter.ToObj(value);
         }
+
+        public override bool CanConvertToObj(string s)
+        {
+            return Converter.CanConvertToObj(s);
+        }
     }
 }

@@ -22,5 +22,10 @@ namespace SDMX.Parsers
         {
             return (Id)value;
         }
+
+        public override bool CanConvertToObj(string s)
+        {            
+            return Id.IsValid(s);
+        }
     }   
 }
