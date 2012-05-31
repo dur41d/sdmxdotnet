@@ -180,6 +180,151 @@ namespace SDMX.Tests
 
             var doc = XDocument.Load(dataPath);
             doc.Descendants().Where(i => i.Name.LocalName == "Obs").First().Attribute("OBS_VALUE").Value = "abc";
+            test_invalid_obs_value(doc);
+        }
+
+        [Test]
+        public void read_compact_invalid_missing_dim()
+        {
+            string dataPath = Utility.GetPath("lib\\CompactSample.xml");
+
+            var doc = XDocument.Load(dataPath);
+            var series = doc.Descendants().Where(i => i.Name.LocalName == "Series").First();
+            series.RemoveAttributes();
+            series.SetAttributeValue("FREQxx", "M");
+            series.SetAttributeValue("COLLECTION", "B");
+            series.SetAttributeValue("TIME_FORMAT", "P1M");
+            series.SetAttributeValue("VIS_CTY", "MX");
+            series.SetAttributeValue("JD_TYPE", "P");
+            series.SetAttributeValue("JD_CATEGORY", "A");
+
+            test_invalid_missing_dim(doc);
+        }
+
+        [Test]
+        public void read_compact_invalid_dim_value()
+        {
+            string dataPath = Utility.GetPath("lib\\CompactSample.xml");
+
+            var doc = XDocument.Load(dataPath);
+            var series = doc.Descendants().Where(i => i.Name.LocalName == "Series").First();
+            series.Attribute("FREQ").Value = "InvalidValue";
+
+            test_invalid_dim_value(doc);
+        }
+
+        [Test]
+        public void read_compact_invalid_duplicateKey()
+        {
+            string dataPath = Utility.GetPath("lib\\CompactSample.xml");
+
+            var doc = XDocument.Load(dataPath);
+            var obs = doc.Descendants().Where(i => i.Name.LocalName == "Obs").First();
+            var copy = new XElement(obs);
+            obs.AddAfterSelf(copy);
+
+            test_duplicate_key(doc);
+        }
+
+        [Test]
+        public void read_generic_invalid_obs_value()
+        {
+            string dataPath = Utility.GetPath("lib\\GenericSample.xml");
+
+            var doc = XDocument.Load(dataPath);
+            doc.Descendants().Where(i => i.Name.LocalName == "ObsValue").First().Attribute("value").Value = "abc";
+            test_invalid_obs_value(doc);
+        }
+
+        [Test]
+        public void read_generic_invalid_missing_dim()
+        {
+            string dataPath = Utility.GetPath("lib\\GenericSample.xml");
+
+            var doc = XDocument.Load(dataPath);
+            var series = doc.Descendants().Where(i => i.Name.LocalName == "Value" && i.Attribute("concept").Value == "FREQ").First();
+            series.RemoveAttributes();
+            series.SetAttributeValue("concept", "FREQxxx");
+            series.SetAttributeValue("value", "M");
+
+            test_invalid_missing_dim(doc);
+        }
+
+        [Test]
+        public void read_generic_invalid_dim_value()
+        {
+            string dataPath = Utility.GetPath("lib\\GenericSample.xml");
+
+            var doc = XDocument.Load(dataPath);
+            var series = doc.Descendants().Where(i => i.Name.LocalName == "Value" && i.Attribute("concept").Value == "FREQ").First();
+            series.Attribute("value").Value = "InvalidValue";
+
+            test_invalid_dim_value(doc);
+        }
+
+        [Test]
+        public void read_generic_duplicate_tag()
+        {
+            string dataPath = Utility.GetPath("lib\\GenericSample.xml");
+
+            var doc = XDocument.Load(dataPath);
+            var series = doc.Descendants().Where(i => i.Name.LocalName == "Value" && i.Attribute("concept").Value == "FREQ").First();
+            var copy = new XElement(series);
+            series.AddAfterSelf(copy);
+
+            test_duplicate_tag(doc);
+        }
+
+        [Test]
+        public void read_generic_duplicate_obs_tag()
+        {
+            string dataPath = Utility.GetPath("lib\\GenericSample.xml");
+
+            var doc = XDocument.Load(dataPath);
+            var series = doc.Descendants().Where(i => i.Name.LocalName == "Value" && i.Attribute("concept").Value == "OBS_STATUS").First();
+            var copy = new XElement(series);
+            copy.SetAttributeValue("concept", "FREQ");
+            copy.SetAttributeValue("value", "M");
+            series.AddAfterSelf(copy);
+
+            string dsdPath = Utility.GetPath("lib\\StructureSample.xml");
+            var dsd = StructureMessage.Load(dsdPath);
+            var keyFamily = dsd.KeyFamilies[0];
+
+            int counter = 0;
+            using (var reader = DataReader.Create(doc.CreateReader(), keyFamily))
+            {
+                reader.ThrowExceptionIfNotValid = false;
+                while (reader.Read())
+                {
+                    if (!reader.IsValid)
+                    {
+                        Assert.AreEqual(1, reader.Errors.Count);
+                        Assert.IsTrue(reader.Errors[0] is ValidationError);
+                        Debug.WriteLine(reader.Errors[0].Message);
+                        counter++;
+                    }
+                }
+            }
+
+            Assert.AreEqual(1, counter);
+        }
+
+        [Test]
+        public void read_generic_invalid_duplicateKey()
+        {
+            string dataPath = Utility.GetPath("lib\\GenericSample.xml");
+
+            var doc = XDocument.Load(dataPath);
+            var obs = doc.Descendants().Where(i => i.Name.LocalName == "Obs").First();
+            var copy = new XElement(obs);
+            obs.AddAfterSelf(copy);
+
+            test_duplicate_key(doc);
+        }
+        
+        void test_invalid_dim_value(XDocument doc)
+        {
             string dsdPath = Utility.GetPath("lib\\StructureSample.xml");
             var dsd = StructureMessage.Load(dsdPath);
             var keyFamily = dsd.KeyFamilies[0];
@@ -200,24 +345,11 @@ namespace SDMX.Tests
                 }
             }
 
-            Assert.AreEqual(1, counter);
+            Assert.AreEqual(12, counter);
         }
 
-        [Test]
-        public void read_compact_invalid_missing_dim()
+        void test_invalid_missing_dim(XDocument doc)
         {
-            string dataPath = Utility.GetPath("lib\\CompactSample.xml");
-
-            var doc = XDocument.Load(dataPath);
-            var series = doc.Descendants().Where(i => i.Name.LocalName == "Series").First();
-            series.RemoveAttributes();
-            series.SetAttributeValue("FREQxx", "M");
-            series.SetAttributeValue("COLLECTION", "B");
-            series.SetAttributeValue("TIME_FORMAT", "P1M");
-            series.SetAttributeValue("VIS_CTY", "MX");
-            series.SetAttributeValue("JD_TYPE", "P");
-            series.SetAttributeValue("JD_CATEGORY", "A");
-
             string dsdPath = Utility.GetPath("lib\\StructureSample.xml");
             var dsd = StructureMessage.Load(dsdPath);
             var keyFamily = dsd.KeyFamilies[0];
@@ -242,16 +374,9 @@ namespace SDMX.Tests
 
             Assert.AreEqual(12, counter);
         }
-
-        [Test]
-        public void read_compact_invalid_dim_value()
+        
+        void test_invalid_obs_value(XDocument doc)
         {
-            string dataPath = Utility.GetPath("lib\\CompactSample.xml");
-
-            var doc = XDocument.Load(dataPath);
-            var series = doc.Descendants().Where(i => i.Name.LocalName == "Series").First();
-            series.Attribute("FREQ").Value = "InvalidValue";
-
             string dsdPath = Utility.GetPath("lib\\StructureSample.xml");
             var dsd = StructureMessage.Load(dsdPath);
             var keyFamily = dsd.KeyFamilies[0];
@@ -266,6 +391,56 @@ namespace SDMX.Tests
                     {
                         Assert.AreEqual(1, reader.Errors.Count);
                         Assert.IsTrue(reader.Errors[0] is ParseError);
+                        //Debug.WriteLine(reader.Errors[0].Message);
+                        counter++;
+                    }
+                }
+            }
+
+            Assert.AreEqual(1, counter);
+        }
+
+        void test_duplicate_key(XDocument doc)
+        {
+            string dsdPath = Utility.GetPath("lib\\StructureSample.xml");
+            var dsd = StructureMessage.Load(dsdPath);
+            var keyFamily = dsd.KeyFamilies[0];
+
+            int counter = 0;
+            using (var reader = DataReader.Create(doc.CreateReader(), keyFamily))
+            {
+                reader.ThrowExceptionIfNotValid = false;
+                while (reader.Read())
+                {
+                    if (!reader.IsValid)
+                    {
+                        Assert.AreEqual(1, reader.Errors.Count);
+                        Assert.IsTrue(reader.Errors[0] is DuplicateKeyError);
+                        //Debug.WriteLine(reader.Errors[0].Message);
+                        counter++;
+                    }
+                }
+            }
+
+            Assert.AreEqual(1, counter);
+        }
+
+        void test_duplicate_tag(XDocument doc)
+        {
+            string dsdPath = Utility.GetPath("lib\\StructureSample.xml");
+            var dsd = StructureMessage.Load(dsdPath);
+            var keyFamily = dsd.KeyFamilies[0];
+
+            int counter = 0;
+            using (var reader = DataReader.Create(doc.CreateReader(), keyFamily))
+            {
+                reader.ThrowExceptionIfNotValid = false;
+                while (reader.Read())
+                {
+                    if (!reader.IsValid)
+                    {
+                        Assert.AreEqual(1, reader.Errors.Count);
+                        Assert.IsTrue(reader.Errors[0] is ValidationError);
                         //Debug.WriteLine(reader.Errors[0].Message);
                         counter++;
                     }

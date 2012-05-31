@@ -169,7 +169,7 @@ namespace SDMX
         {
             if (_seriesValues.ContainsKey(name))
             {
-                AddValidationError(true, "Duplicate '{0}' in the same series.");
+                AddValidationError(true, "Duplicate '{0}' in the same series.", name);
                 return;
             }
 
@@ -190,13 +190,13 @@ namespace SDMX
         {
             if (_seriesValues.ContainsKey(name))
             {
-                AddValidationError(false, "Duplicate '{0}' in the series of the observation.");
+                AddValidationError(false, "Duplicate '{0}' in the series of the observation.", name);
                 return;
             }
 
             if (_obsValues.ContainsKey(name))
             {
-                AddValidationError(false, "Duplicate '{0}' in the same observation.");
+                AddValidationError(false, "Duplicate '{0}' in the same observation.", name);
                 return;
             }
 
