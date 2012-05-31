@@ -16,6 +16,12 @@ namespace OXM
         {
             return XmlConvert.ToBoolean(value);
         }
+
+        public override bool CanConvertToObj(string s)
+        {
+            bool result = false;
+            return bool.TryParse(s, out result);
+        }
     }
 
     public class NullableBooleanConverter : NullabeConverter<bool>

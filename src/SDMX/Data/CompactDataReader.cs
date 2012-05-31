@@ -14,8 +14,6 @@ namespace SDMX
         {
             CheckDisposed();
 
-            ClearErrors();
-
             while (XmlReader.Read())
             {
                 if (!XmlReader.IsStartElement())
@@ -28,7 +26,7 @@ namespace SDMX
                     NewGroupValues();
                     while (XmlReader.MoveToNextAttribute())
                     {
-                        ReadValue((n, v) => SetGroup(group, n, v));
+                        ReadValue((n, v) => SetGroup(group, n, v), false);
                     }
 
                     ValidateGroup(group);
@@ -38,7 +36,7 @@ namespace SDMX
                     ClearSeries();
                     while (XmlReader.MoveToNextAttribute())
                     {
-                        ReadValue((n, v) => SetSeries(n, v));
+                        ReadValue((n, v) => SetSeries(n, v), true);
                     }
 
                     ValidateSeries();
@@ -49,7 +47,7 @@ namespace SDMX
 
                     while (XmlReader.MoveToNextAttribute())
                     {
-                        ReadValue((n, v) => SetObs(n, v));
+                        ReadValue((n, v) => SetObs(n, v), false);
                     }
 
                     ValidateObs();
@@ -62,7 +60,7 @@ namespace SDMX
             return false;
         }
 
-        void ReadValue(Action<string, string> set)
+        void ReadValue(Action<string, string> set, bool isSeries)
         {
             string name = XmlReader.LocalName;
             string value = XmlReader.Value;
@@ -70,7 +68,7 @@ namespace SDMX
             bool error = false;
             if (IsNullOrEmpty(value))
             {
-                AddValidationError("Value for attribute '{0}' is missing.", name);
+                AddValidationError(isSeries, "Value for attribute '{0}' is missing.", name);
                 error = true;
             }
 

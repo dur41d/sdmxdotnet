@@ -16,6 +16,12 @@ namespace OXM
         {
             return XmlConvert.ToSingle(value);
         }
+
+        public override bool CanConvertToObj(string s)
+        {
+            float result = 0;
+            return float.TryParse(s, out result);
+        }
     }
 
     public class NullableSingleConverter : NullabeConverter<float>

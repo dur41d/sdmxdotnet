@@ -14,10 +14,7 @@ namespace OXM
             return true;
         }
 
-        public virtual bool CanConvertToObj(string s)
-        {
-            return true;
-        }
+        public abstract bool CanConvertToObj(string s);
 
         string ISimpleTypeConverter.ToXml(object obj)
         {

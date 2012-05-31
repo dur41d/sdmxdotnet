@@ -16,6 +16,12 @@ namespace OXM
         {
             return XmlConvert.ToDecimal(value);
         }
+
+        public override bool CanConvertToObj(string s)
+        {
+            decimal result = 0;
+            return decimal.TryParse(s, out result);
+        }
     }
 
 

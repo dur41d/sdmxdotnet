@@ -16,6 +16,12 @@ namespace OXM
         {
             return XmlConvert.ToInt32(value);
         }
+
+        public override bool CanConvertToObj(string s)
+        {
+            int result = 0;
+            return int.TryParse(s, out result);
+        }
     }
 
     public class NullableInt32Converter : NullabeConverter<int>
