@@ -17,6 +17,6 @@ namespace SDMX
         {
         }
 
-        public override TextFormat DefaultTextFormat { get { return new StringTextFormat(); } }
+        public override TextFormat DefaultTextFormat { get { return new DecimalTextFormat(); } }
     }
 }
