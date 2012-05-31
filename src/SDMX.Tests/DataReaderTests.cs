@@ -301,7 +301,7 @@ namespace SDMX.Tests
                     {
                         Assert.AreEqual(1, reader.Errors.Count);
                         Assert.IsTrue(reader.Errors[0] is ValidationError);
-                        Debug.WriteLine(reader.Errors[0].Message);
+                        //Debug.WriteLine(reader.Errors[0].Message);
                         counter++;
                     }
                 }
