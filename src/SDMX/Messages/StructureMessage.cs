@@ -29,11 +29,17 @@ namespace SDMX
 
         public CodeList FindCodeList(Id codeListId, Id agencyId, string version)
         {
-            return CodeLists.Where(i => i.Id == codeListId
+            var result = CodeLists.Where(i => i.Id == codeListId
                     && (agencyId == null || i.AgencyId == agencyId)
-                    && (version == null || i.Version == version)).SingleOrDefault();
-        }
+                    && (version == null || i.Version == version));
 
+            if (result.Count() > 1)
+            {
+                throw new SDMXException("Duplicate code list was found. id={0}, agencyId={1}, version={2}", codeListId, agencyId, version);
+            }
+
+            return result.SingleOrDefault();
+        }
 
 
         public Concept GetConcept(Id coneceptSchemeId, Id coneceptSchemeAgencyId, string coneceptSchemeVersion, 
@@ -41,10 +47,17 @@ namespace SDMX
         {
             IEnumerable<Concept> list = null;
             if (coneceptSchemeId != null)
-            {  
-                list = ConceptSchemes.Where(i => i.Id == coneceptSchemeId
+            {
+                var schemes = ConceptSchemes.Where(i => i.Id == coneceptSchemeId
                     && (coneceptSchemeAgencyId == null || i.AgencyId == coneceptSchemeAgencyId)
-                    && (coneceptSchemeVersion == null || i.Version == coneceptSchemeVersion)).SingleOrDefault();
+                    && (coneceptSchemeVersion == null || i.Version == coneceptSchemeVersion));
+
+                if (schemes.Count() > 1)
+                {
+                    throw new SDMXException("Duplicate concept scheme was found. id={0}, agencyId={1}, version={2}", coneceptSchemeId, coneceptSchemeAgencyId, coneceptSchemeVersion);
+                }
+
+                list = schemes.SingleOrDefault();
             }
             else
             {
@@ -54,9 +67,16 @@ namespace SDMX
             if (list != null)
             {
 
-                return list.Where(i => i.Id == conceptId
+                var concepts = list.Where(i => i.Id == conceptId
                     && (conceptAgencyId == null || i.AgencyId == conceptAgencyId)
-                    && (conceptVersion == null || i.Version == conceptVersion)).SingleOrDefault();
+                    && (conceptVersion == null || i.Version == conceptVersion));
+
+                if (concepts.Count() > 1)
+                {
+                    throw new SDMXException("Duplicate concept was found. id={0}, agencyId={1}, version={2}", conceptId, conceptAgencyId, conceptVersion);
+                }
+
+                return concepts.SingleOrDefault();
             }
 
             return null;

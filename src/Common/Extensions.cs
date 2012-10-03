@@ -58,7 +58,7 @@ namespace Common
 
         public static bool NameEquals(this XmlReader reader, XName name)
         {
-            return reader.Name == name.LocalName && reader.NamespaceURI == name.NamespaceName;
+            return reader.LocalName == name.LocalName && reader.NamespaceURI == name.NamespaceName;
         }
 
         public static XName GetXName(this XmlReader reader)
