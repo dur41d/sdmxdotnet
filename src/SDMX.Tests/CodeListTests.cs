@@ -13,20 +13,20 @@ namespace SDMX.Tests
         [Test]
         public void CreateCodeList()
         {
-            var codelist = new CodeList(new InternationalString("en", "Countries"), "CL_COUNTRY", "UIS");            
+            var codelist = new CodeList(new InternationalString("en", "Countries"), "CL_COUNTRY", "UIS");
 
-            codelist.Add(new Code("CAN"));
-            codelist.Add(new Code("USA"));
+            var code = new Code("CAN");
+            code.Description["en"] = "Canada";
+            codelist.Add(code);
+
+            code = new Code("USA");
+            code.Description["en"] = "United States of America";
+            codelist.Add(code);
 
             var message = new StructureMessage();
-            message.Header = BuildHeader();
+            message.Header = new Header("MSD_HDR", new Party("UIS")) { Prepared = DateTime.Now };            
             message.CodeLists.Add(codelist);
-
-            var doc = new XDocument();
-            using (var writer = doc.CreateWriter())
-            {
-                message.Write(writer);
-            }
+            message.Save("CL_COUNTRY.xml");
         }
 
 

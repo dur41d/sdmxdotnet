@@ -74,11 +74,6 @@ namespace OXM
 
             if (_contentMap != null)
             {
-                if (reader.IsEmptyElement)
-                {
-                    ParseException.Throw(reader, typeof(T), "Element '{0}' is empty but its content is mapped.", reader.GetXName());
-                }
-
                 _contentMap.ReadXml(reader);
             }
             else
