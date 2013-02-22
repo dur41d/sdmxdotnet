@@ -1,0 +1,515 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- Copyright SDMX 2005  -   www.sdmx.org -->
+<xs:schema
+	xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns:utility="http://www.SDMX.org/resources/SDMXML/schemas/v2_0/utility"
+	xmlns:common="http://www.SDMX.org/resources/SDMXML/schemas/v2_0/common"
+	xmlns="urn:sdmx:org.sdmx.infomodel.keyfamily.KeyFamily=BIS:EXT_DEBT:utility"
+	targetNamespace="urn:sdmx:org.sdmx.infomodel.keyfamily.KeyFamily=BIS:EXT_DEBT:utility"
+	elementFormDefault="qualified"
+	attributeFormDefault="unqualified"
+>
+
+<xs:import
+	namespace="http://www.SDMX.org/resources/SDMXML/schemas/v2_0/utility"
+	schemaLocation="SDMXUtilityData.xsd"
+/>
+
+<xs:import namespace="http://www.SDMX.org/resources/SDMXML/schemas/v2_0/common" schemaLocation="SDMXCommon.xsd"/>
+
+
+<xs:element name="DataSet" substitutionGroup="utility:DataSet" type="DataSetType"/>
+
+<xs:complexType name="DataSetType">
+	<xs:complexContent>
+		<xs:extension base="utility:DataSetType">
+			<xs:sequence>
+				<xs:choice maxOccurs="unbounded">
+					<xs:element ref="SiblingGroup"/>
+				</xs:choice>
+				<xs:element name="Annotations" type="common:AnnotationsType" minOccurs="0"/>
+			</xs:sequence>
+		
+		</xs:extension>
+	</xs:complexContent>
+</xs:complexType>
+
+<xs:element name="SiblingGroup" substitutionGroup="utility:Group" type="SiblingGroupType"/>
+
+<xs:complexType name="SiblingGroupType">
+	<xs:complexContent>
+		<xs:extension base="utility:GroupType">
+			<xs:sequence>
+				<xs:element name="Series" type="SeriesType" maxOccurs="unbounded"/>
+				<xs:element name="Annotations" type="common:AnnotationsType" minOccurs="0"/>
+			</xs:sequence>
+			<xs:attribute name="AVAILABILITY" type="CL_AVAILABILITY" use="required"/>
+			<xs:attribute name="DECIMALS" type="CL_DECIMALS" use="required"/>
+			<xs:attribute name="BIS_UNIT" type="CL_BIS_UNIT" use="required"/>
+			<xs:attribute name="UNIT_MULT" type="CL_UNIT_MULT" use="required"/>
+			
+		</xs:extension>
+	</xs:complexContent>
+</xs:complexType>
+
+<xs:element name="Series" substitutionGroup="utility:Series" type="SeriesType"/>
+
+<xs:complexType name="SeriesType">
+	<xs:complexContent>
+		<xs:extension base="utility:SeriesType">
+			<xs:sequence>
+				<xs:element ref="Key"/>
+				<xs:element ref="Obs" maxOccurs="unbounded"/>
+				<xs:element name="Annotations" type="common:AnnotationsType" minOccurs="0"/>
+			</xs:sequence>
+			<xs:attribute name="COLLECTION" type="CL_COLLECTION" use="required"/>
+			<xs:attribute name="TIME_FORMAT" type="CL_TIME_FORMAT" use="required"/>			
+		</xs:extension>
+	</xs:complexContent>
+</xs:complexType>
+
+<xs:element name="Key" substitutionGroup="utility:Key" type="KeyType"/>
+
+<xs:complexType name="KeyType">
+	<xs:complexContent>
+		<xs:extension base="utility:KeyType">
+			<xs:sequence>
+				<xs:element name="FREQ" type="CL_FREQ"/>
+				<xs:element name="JD_TYPE" type="CL_JD_TYPE"/>
+				<xs:element name="JD_CATEGORY" type="CL_JD_CATEGORY"/>
+				<xs:element name="VIS_CTY" type="CL_BIS_IF_REF_AREA"/>
+			</xs:sequence>
+		</xs:extension>
+	</xs:complexContent>
+</xs:complexType>
+
+<xs:element name="Obs" substitutionGroup="utility:Obs" type="ObsType"/>
+
+<xs:complexType name="ObsType">
+	<xs:complexContent>
+		<xs:extension base="utility:ObsType">
+			<xs:sequence>
+				<xs:element name="TIME_PERIOD" type="common:TimePeriodType" />
+				<xs:element name="OBS_VALUE" type="xs:double"/>
+			</xs:sequence>
+			<xs:attribute name="OBS_CONF" type="CL_BIS_OBS_CONF" use="optional"/>
+			<xs:attribute name="OBS_PRE_BREAK" type="xs:string" use="optional"/>
+			<xs:attribute name="OBS_STATUS" type="CL_OBS_STATUS" use="required"/>
+			
+		</xs:extension>
+	</xs:complexContent>
+</xs:complexType>
+
+
+<xs:simpleType name="CL_AVAILABILITY">
+	<xs:restriction base="xs:string">
+		<xs:enumeration value="A">
+			<xs:annotation>
+				<xs:documentation>Free</xs:documentation>
+			</xs:annotation>
+		</xs:enumeration>
+	</xs:restriction>
+</xs:simpleType>
+
+<xs:simpleType name="CL_OBS_STATUS">
+	<xs:restriction base="xs:string">
+		<xs:enumeration value="A">
+			<xs:annotation>
+				<xs:documentation>Present</xs:documentation>
+			</xs:annotation>
+		</xs:enumeration>
+		<xs:enumeration value="M">
+			<xs:annotation>
+				<xs:documentation>Missing</xs:documentation>
+			</xs:annotation>
+		</xs:enumeration>
+		
+	</xs:restriction>
+</xs:simpleType>
+
+<xs:simpleType name="CL_DECIMALS">
+	<xs:restriction base="xs:string">
+		<xs:enumeration value="0">
+				<xs:annotation>
+					<xs:documentation>zero</xs:documentation>
+				</xs:annotation>
+		</xs:enumeration>
+		<xs:enumeration value="1">
+			<xs:annotation>
+				<xs:documentation>one</xs:documentation>
+			</xs:annotation>
+		</xs:enumeration>
+		<xs:enumeration value="2">
+			<xs:annotation>
+				<xs:documentation>two</xs:documentation>
+			</xs:annotation>
+		</xs:enumeration>
+		<xs:enumeration value="3">
+			<xs:annotation>
+				<xs:documentation>three</xs:documentation>
+			</xs:annotation>
+		</xs:enumeration>
+		<xs:enumeration value="4">
+			<xs:annotation>
+				<xs:documentation>four</xs:documentation>
+			</xs:annotation>
+		</xs:enumeration>
+		<xs:enumeration value="5">
+			<xs:annotation>
+				<xs:documentation>five</xs:documentation>
+			</xs:annotation>
+		</xs:enumeration>
+		<xs:enumeration value="6">
+			<xs:annotation>
+				<xs:documentation>six</xs:documentation>
+			</xs:annotation>
+		</xs:enumeration>
+		<xs:enumeration value="7">
+			<xs:annotation>
+				<xs:documentation>seven</xs:documentation>
+			</xs:annotation>
+		</xs:enumeration>
+		<xs:enumeration value="8">
+			<xs:annotation>
+				<xs:documentation>eight</xs:documentation>
+			</xs:annotation>
+		</xs:enumeration>
+	</xs:restriction>
+</xs:simpleType>
+
+<xs:simpleType name="CL_BIS_UNIT">
+	<xs:restriction base="xs:string">
+		<xs:enumeration value="CHF">
+			<xs:annotation>
+				<xs:documentation>Swiss Francs</xs:documentation>
+			</xs:annotation>
+		</xs:enumeration>
+		<xs:enumeration value="EUR">
+			<xs:annotation>
+				<xs:documentation>Euros</xs:documentation>
+			</xs:annotation>
+		</xs:enumeration>
+		<xs:enumeration value="NZD">
+			<xs:annotation>
+				<xs:documentation>New Zealand Dollars</xs:documentation>
+			</xs:annotation>
+		</xs:enumeration>
+		<xs:enumeration value="USD">
+			<xs:annotation>
+				<xs:documentation>United States Dollars</xs:documentation>
+			</xs:annotation>
+		</xs:enumeration>
+	</xs:restriction>
+</xs:simpleType>
+
+<xs:simpleType name="CL_UNIT_MULT">
+	<xs:restriction base="xs:string">
+		<xs:enumeration value="0">
+			<xs:annotation>
+				<xs:documentation>Units</xs:documentation>
+			</xs:annotation>
+		</xs:enumeration>
+		<xs:enumeration value="1">
+			<xs:annotation>
+				<xs:documentation>Tens</xs:documentation>
+			</xs:annotation>
+		</xs:enumeration>
+		<xs:enumeration value="2">
+			<xs:annotation>
+				<xs:documentation>Hundreds</xs:documentation>
+			</xs:annotation>
+		</xs:enumeration>
+		<xs:enumeration value="3">
+			<xs:annotation>
+				<xs:documentation>Thousands</xs:documentation>
+			</xs:annotation>
+		</xs:enumeration>
+		<xs:enumeration value="4">
+			<xs:annotation>
+				<xs:documentation>Ten Thousands</xs:documentation>
+			</xs:annotation>
+		</xs:enumeration>
+		<xs:enumeration value="5">
+			<xs:annotation>
+				<xs:documentation>Millions</xs:documentation>
+			</xs:annotation>
+		</xs:enumeration>
+		<xs:enumeration value="6">
+			<xs:annotation>
+				<xs:documentation>Billions</xs:documentation>
+			</xs:annotation>
+		</xs:enumeration>
+	</xs:restriction>
+</xs:simpleType>
+
+<xs:simpleType name="CL_COLLECTION">
+	<xs:restriction base="xs:string">
+		<xs:enumeration value="A">
+			<xs:annotation>
+				<xs:documentation>Average of observations through period</xs:documentation>
+			</xs:annotation>
+		</xs:enumeration>
+		<xs:enumeration value="B">
+			<xs:annotation>
+				<xs:documentation>Beginning of period</xs:documentation>
+			</xs:annotation>
+		</xs:enumeration>
+		<xs:enumeration value="E">
+			<xs:annotation>
+				<xs:documentation>End of period</xs:documentation>
+			</xs:annotation>
+		</xs:enumeration>
+		<xs:enumeration value="H">
+			<xs:annotation>
+				<xs:documentation>Highest in period</xs:documentation>
+			</xs:annotation>
+		</xs:enumeration>
+		<xs:enumeration value="L">
+			<xs:annotation>
+				<xs:documentation>Lowest in period</xs:documentation>
+			</xs:annotation>
+		</xs:enumeration>
+		<xs:enumeration value="M">
+			<xs:annotation>
+				<xs:documentation>Middle of period</xs:documentation>
+			</xs:annotation>
+		</xs:enumeration>
+		<xs:enumeration value="S">
+			<xs:annotation>
+				<xs:documentation>Summed through period</xs:documentation>
+			</xs:annotation>
+		</xs:enumeration>
+		<xs:enumeration value="U">
+			<xs:annotation>
+				<xs:documentation>Unknown</xs:documentation>
+			</xs:annotation>
+		</xs:enumeration>
+		<xs:enumeration value="V">
+			<xs:annotation>
+				<xs:documentation>Other</xs:documentation>
+			</xs:annotation>
+		</xs:enumeration>
+		<xs:enumeration value="Y">
+			<xs:annotation>
+				<xs:documentation>Annualized</xs:documentation>
+			</xs:annotation>
+		</xs:enumeration>
+	</xs:restriction>
+</xs:simpleType>
+
+<xs:simpleType name="CL_BIS_OBS_CONF">
+	<xs:restriction base="xs:string">
+		<xs:enumeration value="C">
+			<xs:annotation>
+				<xs:documentation>Non-publishable and confidential</xs:documentation>
+			</xs:annotation>
+		</xs:enumeration>
+		<xs:enumeration value="F">
+			<xs:annotation>
+				<xs:documentation>Free</xs:documentation>
+			</xs:annotation>
+		</xs:enumeration>
+		<xs:enumeration value="N">
+			<xs:annotation>
+				<xs:documentation>Non-publishable, but non-confidential</xs:documentation>
+			</xs:annotation>
+		</xs:enumeration>
+		<xs:enumeration value="R">
+			<xs:annotation>
+				<xs:documentation>Confidential statistical information due to identifiable respondents</xs:documentation>
+			</xs:annotation>
+		</xs:enumeration>
+	</xs:restriction>
+</xs:simpleType>
+
+<xs:simpleType name="CL_FREQ">
+	<xs:restriction base="xs:string">
+		<xs:enumeration value="A">
+			<xs:annotation>
+				<xs:documentation>Annually</xs:documentation>
+			</xs:annotation>
+		</xs:enumeration>
+		<xs:enumeration value="D">
+			<xs:annotation>
+				<xs:documentation>Daily</xs:documentation>
+			</xs:annotation>
+		</xs:enumeration>
+		<xs:enumeration value="H">
+			<xs:annotation>
+				<xs:documentation>Semi-annually</xs:documentation>
+			</xs:annotation>
+		</xs:enumeration>
+		<xs:enumeration value="M">
+			<xs:annotation>
+				<xs:documentation>Monthly</xs:documentation>
+			</xs:annotation>
+		</xs:enumeration>
+		<xs:enumeration value="Q">
+			<xs:annotation>
+				<xs:documentation>Quarterly</xs:documentation>
+			</xs:annotation>
+		</xs:enumeration>
+		<xs:enumeration value="W">
+			<xs:annotation>
+				<xs:documentation>Weekly</xs:documentation>
+			</xs:annotation>
+		</xs:enumeration>
+	</xs:restriction>
+</xs:simpleType>
+
+<xs:simpleType name="CL_JD_TYPE">
+	<xs:restriction base="xs:string">
+		<xs:enumeration value="P">
+			<xs:annotation>
+				<xs:documentation>Amounts outstanding at end of period</xs:documentation>
+			</xs:annotation>
+		</xs:enumeration>
+		<xs:enumeration value="Q">
+			<xs:annotation>
+				<xs:documentation>Net Disbursm.(Cat B,C,E,F) or Val.Adj.Change in stocks(Cat A,D,J,L,M)</xs:documentation>
+			</xs:annotation>
+		</xs:enumeration>
+	</xs:restriction>
+</xs:simpleType>
+
+<xs:simpleType name="CL_JD_CATEGORY">
+	<xs:restriction base="xs:string">
+		<xs:enumeration value="A">
+			<xs:annotation>
+				<xs:documentation>External Debt, All Maturities, Bank Loans</xs:documentation>
+			</xs:annotation>
+		</xs:enumeration>
+		<xs:enumeration value="B">
+			<xs:annotation>
+				<xs:documentation>External Debt, All Maturities, Debt Securities Issued Abroad</xs:documentation>
+			</xs:annotation>
+		</xs:enumeration>
+		<xs:enumeration value="C">
+			<xs:annotation>
+				<xs:documentation>External Debt, All Maturities, Brady Bonds</xs:documentation>
+			</xs:annotation>
+		</xs:enumeration>
+		<xs:enumeration value="D">
+			<xs:annotation>
+				<xs:documentation>External Debt, All Maturities, Non-Bank Trade Credits</xs:documentation>
+			</xs:annotation>
+		</xs:enumeration>
+		<xs:enumeration value="E">
+			<xs:annotation>
+				<xs:documentation>External Debt, All Maturities, Multilateral Claims</xs:documentation>
+			</xs:annotation>
+		</xs:enumeration>
+		<xs:enumeration value="F">
+			<xs:annotation>
+				<xs:documentation>External Debt, All Maturities, Off. Bilateral Loans (DAC Creditors)</xs:documentation>
+			</xs:annotation>
+		</xs:enumeration>
+		<xs:enumeration value="G">
+			<xs:annotation>
+				<xs:documentation>Debt due within 1 year, Liabilities To Banks</xs:documentation>
+			</xs:annotation>
+		</xs:enumeration>
+		<xs:enumeration value="H">
+			<xs:annotation>
+				<xs:documentation>Debt due within 1 year, Debt Securities Issued Abroad</xs:documentation>
+			</xs:annotation>
+		</xs:enumeration>
+		<xs:enumeration value="I">
+			<xs:annotation>
+				<xs:documentation>Debt due within 1 year, Non-Bank Trade Credits</xs:documentation>
+			</xs:annotation>
+		</xs:enumeration>
+		<xs:enumeration value="J">
+			<xs:annotation>
+				<xs:documentation>Memorandum Item, Liabilities to Banks (Locational)</xs:documentation>
+			</xs:annotation>
+		</xs:enumeration>
+		<xs:enumeration value="K">
+			<xs:annotation>
+				<xs:documentation>Memorandum Item, Liabilities to Banks (Consolidated)</xs:documentation>
+			</xs:annotation>
+		</xs:enumeration>
+		<xs:enumeration value="L">
+			<xs:annotation>
+				<xs:documentation>Memorandum Item, Total Trade Credits</xs:documentation>
+			</xs:annotation>
+		</xs:enumeration>
+		<xs:enumeration value="M">
+			<xs:annotation>
+				<xs:documentation>Memorandum Item, Total Claims on Banks</xs:documentation>
+			</xs:annotation>
+		</xs:enumeration>
+		<xs:enumeration value="N">
+			<xs:annotation>
+				<xs:documentation>Memorandum Item, International Reserve Assets (excl. Gold)</xs:documentation>
+			</xs:annotation>
+		</xs:enumeration>
+	</xs:restriction>
+</xs:simpleType>
+
+<xs:simpleType name="CL_BIS_IF_REF_AREA">
+	<xs:restriction base="xs:string">
+		<xs:enumeration value="CH">
+			<xs:annotation>
+				<xs:documentation>Switzerland (includes the Bank for International Settlements)</xs:documentation>
+			</xs:annotation>
+		</xs:enumeration>
+		<xs:enumeration value="DE">
+			<xs:annotation>
+				<xs:documentation>Germany (includes the European Central Bank)</xs:documentation>
+			</xs:annotation>
+		</xs:enumeration>
+		<xs:enumeration value="US">
+			<xs:annotation>
+				<xs:documentation>United States (includes American Samoa, Guam, Midway Islands)</xs:documentation>
+			</xs:annotation>
+		</xs:enumeration>
+		<xs:enumeration value="MX">
+			<xs:annotation>
+				<xs:documentation>Mexico</xs:documentation>
+			</xs:annotation>
+		</xs:enumeration>
+	</xs:restriction>
+</xs:simpleType>
+<xs:simpleType name="CL_TIME_FORMAT">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="P1Y">
+				<xs:annotation>
+					<xs:documentation>Annual</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="P6M">
+				<xs:annotation>
+					<xs:documentation>Semi-annual</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="P3M">
+				<xs:annotation>
+					<xs:documentation>Quarterly</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="P1M">
+				<xs:annotation>
+					<xs:documentation>Monthly</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="P7D">
+				<xs:annotation>
+					<xs:documentation>Weekly</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="P1D">
+				<xs:annotation>
+					<xs:documentation>Daily</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="PT1M">
+				<xs:annotation>
+					<xs:documentation>Minutely</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+
+		</xs:restriction>
+</xs:simpleType>
+
+</xs:schema>

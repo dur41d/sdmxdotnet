@@ -1,0 +1,152 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{8441ED91-9F2B-4E43-8023-73883DA1FEA2}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>OXM</RootNamespace>
+    <AssemblyName>OXM</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation />
+    <TargetFrameworkProfile />
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AttributeGroupMap.cs" />
+    <Compile Include="AttributeGroupTypeMap.cs" />
+    <Compile Include="AttributeMap.cs" />
+    <Compile Include="Builders\ClassMemberCollectionMap.cs" />
+    <Compile Include="Builders\ClassMemberMap.cs" />
+    <Compile Include="Builders\CollectionMap.cs" />
+    <Compile Include="Builders\MapBuilderUtility.cs" />
+    <Compile Include="Builders\SimpleMemberCollectionMap.cs" />
+    <Compile Include="Builders\SimpleMemberMap.cs" />
+    <Compile Include="ClassMap.cs" />
+    <Compile Include="Collection.cs" />
+    <Compile Include="Builders\ContainerMap.cs" />
+    <Compile Include="Converters\BooleanConverter.cs" />
+    <Compile Include="Converters\DateConverter.cs" />
+    <Compile Include="Converters\DecimalConverter.cs" />
+    <Compile Include="Converters\DoubleConverter.cs" />
+    <Compile Include="Converters\NullabeConverter.cs" />
+    <Compile Include="Converters\SingleConverter.cs" />
+    <Compile Include="Converters\StringConverter.cs" />
+    <Compile Include="Converters\DateTimeConverter.cs" />
+    <Compile Include="Converters\EnumConverter.cs" />
+    <Compile Include="Converters\Int32Converter.cs" />
+    <Compile Include="Converters\UriConverter.cs" />
+    <Compile Include="Converters\YearMonthConverter.cs" />
+    <Compile Include="Converters\YearConverter.cs" />
+    <Compile Include="ElementCollectionMap.cs" />
+    <Compile Include="ElementContainerMap.cs" />
+    <Compile Include="ElementMap.cs" />
+    <Compile Include="ElementMapBase.cs" />
+    <Compile Include="Exceptions.cs" />
+    <Compile Include="FragmentMap.cs" />
+    <Compile Include="IElementMap.cs" />
+    <Compile Include="Builders\IMapBuilder.cs" />
+    <Compile Include="IMapContainer.cs" />
+    <Compile Include="IMemberMap.cs" />
+    <Compile Include="MapList.cs" />
+    <Compile Include="Builders\MemberCollectionMap.cs" />
+    <Compile Include="Builders\MemberMap.cs" />
+    <Compile Include="MappingConverterBase.cs" />
+    <Compile Include="NameCounter.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Property.cs" />
+    <Compile Include="Builders\PropertyMap.cs" />
+    <Compile Include="RootElementMap.cs" />
+    <Compile Include="SimpleElementClassMap.cs" />
+    <Compile Include="SimpleElements.cs" />
+    <Compile Include="ISimpleTypeConverter.cs" />
+    <Compile Include="ContentMap.cs" />
+    <Compile Include="SimpleTypeConverter.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Common\Common.csproj">
+      <Project>{EB9211B5-E5FB-4467-B60E-6E84C3D9810C}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

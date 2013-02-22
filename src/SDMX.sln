@@ -1,0 +1,114 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SDMX.Tests", "SDMX.Tests\SDMX.Tests.csproj", "{31750F4E-5778-433D-9C2A-98971C45B051}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SDMX", "SDMX\SDMX.csproj", "{8729DEDD-51EA-41DB-BF49-89297BB56D54}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "Common\Common.csproj", "{EB9211B5-E5FB-4467-B60E-6E84C3D9810C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OXM", "OXM\OXM.csproj", "{8441ED91-9F2B-4E43-8023-73883DA1FEA2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OXM.Tests", "OXM.Tests\OXM.Tests.csproj", "{1FAA4703-F89B-4C01-8066-AB8E4123723E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SDMX.Profiler", "SDMX.Profiler\SDMX.Profiler.csproj", "{2BC1CC9B-78C5-4924-A56B-4B5C4E1C215B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common.Tests", "Common.Tests\Common.Tests.csproj", "{DA9FA048-6CBE-44C8-96B7-D11F09D367E4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Lib", "Lib", "{27BAA588-57A2-4008-8DD5-A1C45F40AB48}"
+	ProjectSection(SolutionItems) = preProject
+		..\lib\BIS_JOINT_DEBT_Compact.xsd = ..\lib\BIS_JOINT_DEBT_Compact.xsd
+		..\lib\BIS_JOINT_DEBT_CrossSectional.xsd = ..\lib\BIS_JOINT_DEBT_CrossSectional.xsd
+		..\lib\BIS_JOINT_DEBT_Utility.xsd = ..\lib\BIS_JOINT_DEBT_Utility.xsd
+		..\lib\CompactSample.xml = ..\lib\CompactSample.xml
+		..\lib\ContactMDStructureSample.xml = ..\lib\ContactMDStructureSample.xml
+		..\lib\CrossSectionalSample.xml = ..\lib\CrossSectionalSample.xml
+		..\lib\DSD_WB.xml = ..\lib\DSD_WB.xml
+		..\lib\GenericMetadataSample.xml = ..\lib\GenericMetadataSample.xml
+		..\lib\GenericSample.xml = ..\lib\GenericSample.xml
+		..\lib\HeirarchicalCodeListSample.xml = ..\lib\HeirarchicalCodeListSample.xml
+		..\lib\IMF_CONTACT_MetadataReport.xsd = ..\lib\IMF_CONTACT_MetadataReport.xsd
+		..\lib\MDG_DSD.xml = ..\lib\MDG_DSD.xml
+		..\lib\MetadataReportSample.xml = ..\lib\MetadataReportSample.xml
+		..\lib\NotifyRegistryEvent.xml = ..\lib\NotifyRegistryEvent.xml
+		..\lib\nunit.framework.dll = ..\lib\nunit.framework.dll
+		..\lib\QueryProvisioningRequest.xml = ..\lib\QueryProvisioningRequest.xml
+		..\lib\QueryProvisioningResponse.xml = ..\lib\QueryProvisioningResponse.xml
+		..\lib\QueryRegistrationRequest.xml = ..\lib\QueryRegistrationRequest.xml
+		..\lib\QueryRegistrationResponse.xml = ..\lib\QueryRegistrationResponse.xml
+		..\lib\QuerySample.xml = ..\lib\QuerySample.xml
+		..\lib\QueryStructureRequest.xml = ..\lib\QueryStructureRequest.xml
+		..\lib\QueryStructureResponse.xml = ..\lib\QueryStructureResponse.xml
+		..\lib\ReadMe.txt = ..\lib\ReadMe.txt
+		..\lib\ReferenceUtilities.xslt = ..\lib\ReferenceUtilities.xslt
+		..\lib\SchemaUtilities.xslt = ..\lib\SchemaUtilities.xslt
+		..\lib\SDMXCommon.xsd = ..\lib\SDMXCommon.xsd
+		..\lib\SDMXCompactData.xsd = ..\lib\SDMXCompactData.xsd
+		..\lib\SDMXCrossSectionalData.xsd = ..\lib\SDMXCrossSectionalData.xsd
+		..\lib\SDMXGenericData.xsd = ..\lib\SDMXGenericData.xsd
+		..\lib\SDMXGenericMetadata.xsd = ..\lib\SDMXGenericMetadata.xsd
+		..\lib\SDMXMessage.xsd = ..\lib\SDMXMessage.xsd
+		..\lib\SDMXMetadataReport.xsd = ..\lib\SDMXMetadataReport.xsd
+		..\lib\SDMXQuery.xsd = ..\lib\SDMXQuery.xsd
+		..\lib\SDMXRegistry.xsd = ..\lib\SDMXRegistry.xsd
+		..\lib\SDMXStructure.xsd = ..\lib\SDMXStructure.xsd
+		..\lib\SDMXUtilityData.xsd = ..\lib\SDMXUtilityData.xsd
+		..\lib\StructureSample.xml = ..\lib\StructureSample.xml
+		..\lib\StructureToCompact.xslt = ..\lib\StructureToCompact.xslt
+		..\lib\StructureToCrossSection.xslt = ..\lib\StructureToCrossSection.xslt
+		..\lib\StructureToUtility.xslt = ..\lib\StructureToUtility.xslt
+		..\lib\SubmitProvisioningRequest.xml = ..\lib\SubmitProvisioningRequest.xml
+		..\lib\SubmitProvisioningResponse.xml = ..\lib\SubmitProvisioningResponse.xml
+		..\lib\SubmitRegistrationRequest.xml = ..\lib\SubmitRegistrationRequest.xml
+		..\lib\SubmitRegistrationResponse.xml = ..\lib\SubmitRegistrationResponse.xml
+		..\lib\SubmitStructureRequest.xml = ..\lib\SubmitStructureRequest.xml
+		..\lib\SubmitStructureResponse.xml = ..\lib\SubmitStructureResponse.xml
+		..\lib\SubmitSubscriptionRequest.xml = ..\lib\SubmitSubscriptionRequest.xml
+		..\lib\SubmitSubscriptionResponse.xml = ..\lib\SubmitSubscriptionResponse.xml
+		..\lib\UtilitySample.xml = ..\lib\UtilitySample.xml
+		..\lib\xml.xsd = ..\lib\xml.xsd
+		..\lib\xmldiffpatch.dll = ..\lib\xmldiffpatch.dll
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{31750F4E-5778-433D-9C2A-98971C45B051}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{31750F4E-5778-433D-9C2A-98971C45B051}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{31750F4E-5778-433D-9C2A-98971C45B051}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{31750F4E-5778-433D-9C2A-98971C45B051}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8729DEDD-51EA-41DB-BF49-89297BB56D54}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8729DEDD-51EA-41DB-BF49-89297BB56D54}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8729DEDD-51EA-41DB-BF49-89297BB56D54}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8729DEDD-51EA-41DB-BF49-89297BB56D54}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EB9211B5-E5FB-4467-B60E-6E84C3D9810C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EB9211B5-E5FB-4467-B60E-6E84C3D9810C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EB9211B5-E5FB-4467-B60E-6E84C3D9810C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EB9211B5-E5FB-4467-B60E-6E84C3D9810C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8441ED91-9F2B-4E43-8023-73883DA1FEA2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8441ED91-9F2B-4E43-8023-73883DA1FEA2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8441ED91-9F2B-4E43-8023-73883DA1FEA2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8441ED91-9F2B-4E43-8023-73883DA1FEA2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1FAA4703-F89B-4C01-8066-AB8E4123723E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1FAA4703-F89B-4C01-8066-AB8E4123723E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1FAA4703-F89B-4C01-8066-AB8E4123723E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1FAA4703-F89B-4C01-8066-AB8E4123723E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2BC1CC9B-78C5-4924-A56B-4B5C4E1C215B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2BC1CC9B-78C5-4924-A56B-4B5C4E1C215B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2BC1CC9B-78C5-4924-A56B-4B5C4E1C215B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2BC1CC9B-78C5-4924-A56B-4B5C4E1C215B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DA9FA048-6CBE-44C8-96B7-D11F09D367E4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DA9FA048-6CBE-44C8-96B7-D11F09D367E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DA9FA048-6CBE-44C8-96B7-D11F09D367E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DA9FA048-6CBE-44C8-96B7-D11F09D367E4}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(SpecExplorer.ActivityCompletionStatus) = preSolution
+		SpecExplorer.ActivityCompletionStatus = 
+	EndGlobalSection
+EndGlobal
