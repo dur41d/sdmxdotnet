@@ -7,20 +7,16 @@ namespace SDMX.Parsers
 {
     internal class BiannualValueConverter : SimpleTypeConverter<Biannual>
     {
-        public override string ToXml(Biannual value)
+        public override bool TrySerialize(Biannual obj, out string s)
         {
-            return value.ToString();
+            s = obj.ToString();
+            return true;
         }
 
-        public override Biannual ToObj(string value)
-        {
-            return Biannual.Parse(value);
-        }
 
-        public override bool CanConvertToObj(string value)
+        public override bool TryParse(string s, out Biannual obj)
         {
-            Biannual result;
-            return Biannual.TryParse(value, out result);
+            return Biannual.TryParse(s, out obj);
         }
     }
 }

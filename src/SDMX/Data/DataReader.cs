@@ -10,6 +10,7 @@ using System.Reflection;
 using System.Collections;
 using System.Text;
 using System.Collections.ObjectModel;
+using OXM;
 
 namespace SDMX
 {
@@ -28,6 +29,9 @@ namespace SDMX
         /// The default is true.
         /// </summary>
         public bool ThrowExceptionIfNotValid { get; set; }
+
+
+        public bool DetectDuplicateKeys { get; set; }
 
         /// <summary>
         /// The inner xml reader used by the reader.
@@ -247,10 +251,16 @@ namespace SDMX
 
         protected void ValidateObs()
         {
-            string id = KeyFamily.TimeDimension.Concept.Id;
-            ValidateDimension(_obsValues, id, true, false);
-            id = KeyFamily.PrimaryMeasure.Concept.Id;
-            ValidateDimension(_obsValues, id, true, false);
+            if (KeyFamily.TimeDimension != null)
+            {
+                ValidateDimension(_obsValues, KeyFamily.TimeDimension.Concept.Id, true, false);
+            }
+
+            if (KeyFamily.PrimaryMeasure != null)
+            {
+                ValidateDimension(_obsValues, KeyFamily.PrimaryMeasure.Concept.Id, true, false);
+            }
+
             ValidateAttributes(ObsAttributes(), _obsValues, false);
         }
 
@@ -266,7 +276,7 @@ namespace SDMX
             string startTime = null;
             if (!comp.TryParse(value, startTime, out obj))
             {
-                AddParseError(isSeries, "Cannot parse value '{1}' for '{0}'.", name, value);
+                AddParseError(string.Format("Cannot parse value '{1}' for '{0}'.", name, value), isSeries, name, value);
                 return false;
             }
 
@@ -274,8 +284,8 @@ namespace SDMX
         }
         bool ValidateDimensions(IEnumerable<Dimension> dimensions, Dictionary<string, KeyValuePair<string, object>> values, bool logErrors, bool isSeries)
         {
-            bool valid = true;
-            foreach (var id in dimensions.Select(d => d.Concept.Id))
+            bool valid = true;            
+            foreach (var id in dimensions.Where(d => d != null).Select(d => d.Concept.Id))
             {
                 if (!ValidateDimension(values, id, logErrors, isSeries))
                 {
@@ -292,7 +302,7 @@ namespace SDMX
             {
                 if (logErrors)
                 {
-                    AddMandatoryComponentMissingError(isSeries, "Value for dimension '{0}' is missing.", id);
+                    AddMandatoryComponentMissingError(string.Format("Value for dimension '{0}' is missing.", id), isSeries, id);
                 }
                 
                 return false;
@@ -310,7 +320,7 @@ namespace SDMX
                 {
                     if (attr.AssignmentStatus != AssignmentStatus.Conditional)
                     {
-                        AddMandatoryComponentMissingError(isSeries, "Value for mandatory attribute '{0}' is missing.", id);
+                        AddMandatoryComponentMissingError(string.Format("Value for mandatory attribute '{0}' is missing.", id), isSeries, id);
                     }
                 }
             }
@@ -325,16 +335,19 @@ namespace SDMX
             _seriesValues.ForEach(i => _tempRecord.Add(i.Key, i.Value));
             _obsValues.ForEach(i => _tempRecord.Add(i.Key, i.Value));
 
-            string key = BuildKey(_tempRecord);
-            if (key != null)
+            if (DetectDuplicateKeys)
             {
-                if (_keys.ContainsKey(key))
+                string key = BuildKey(_tempRecord);
+                if (key != null)
                 {
-                    AddDuplicateKeyError(false, "Duplicate key found: {0}", key);
-                }
-                else
-                {
-                    _keys.Add(key, null);
+                    if (_keys.ContainsKey(key))
+                    {
+                        AddDuplicateKeyError(string.Format("Duplicate key found: {0}", key), false, key);
+                    }
+                    else
+                    {
+                        _keys.Add(key, null);
+                    }
                 }
             }
 
@@ -412,6 +425,22 @@ namespace SDMX
         }
 
         /// <summary>
+        /// Tries to get the value for the name if one exists.
+        /// </summary>
+        public bool TryGetValue(string name, out object value)
+        {
+            return _record.TryGetValue(name, out value);
+        }
+
+        /// <summary>
+        /// Returns true if the record contains the name; otherwise false.
+        /// </summary>
+        public bool Contains(string name)
+        {
+            return _record.ContainsKey(name);
+        }
+
+        /// <summary>
         /// Create a data reader based on the type of the file. This mathod looks into the first element of the file
         /// and creates the right reader (Generic, Compact, Utility, CrossSectional).
         /// </summary>
@@ -468,11 +497,16 @@ namespace SDMX
 
         public abstract bool Read();
 
+        public Header ReadHeader()
+        {
+            return ReadHeader(null);
+        }
+
         /// <summary>
         /// Read the head of a Data Message. This should be done first before calling the Read method.
         /// </summary>
         /// <returns>The header instance.</returns>
-        public Header ReadHeader()
+        public Header ReadHeader(Action<ValidationMessage> validationAction)
         {
             CheckDisposed();
 
@@ -482,7 +516,7 @@ namespace SDMX
             if (XmlReader.LocalName == "Header")
             {
                 var map = new OXM.FragmentMap<Header>(Namespaces.Message + "Header", new HeaderMap());
-                return map.ReadXml(XmlReader);
+                return map.ReadXml(XmlReader, validationAction);
             }
 
             return null;
@@ -508,7 +542,7 @@ namespace SDMX
         string BuildGroupKey(Group group, Dictionary<string, KeyValuePair<string, object>> values)
         {
             var groupKey = new Dictionary<string, KeyValuePair<string, object>>();
-            foreach (var id in group.Dimensions.Select(d => d.Concept.Id))
+            foreach (var id in group.Dimensions.Where(d => d != null).Select(d => d.Concept.Id))
             {
                 groupKey.Add(id, values[id]);
             }
@@ -580,21 +614,21 @@ namespace SDMX
             _table.Columns.Add(col(_ErrorStringColumnName, typeof(string), true));
         }
 
-        object Cast(string source, string destination, object castAction, object oldValue)
-        {
-            try
-            {
-                return ((Delegate)castAction).DynamicInvoke(oldValue);
-            }
-            catch (Exception ex)
-            {
-                if (ex is TargetInvocationException && ex.InnerException != null)
-                    ex = ex.InnerException;
+        //object Cast(string source, string destination, object castAction, object oldValue)
+        //{
+        //    try
+        //    {
+        //        return ((Delegate)castAction).DynamicInvoke(oldValue);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        if (ex is TargetInvocationException && ex.InnerException != null)
+        //            ex = ex.InnerException;
 
-                string message = string.Format("Exception at position ({5},{6}) occured in the cast action 'Map(\"{0}\",\"{1}\", castAction)' when casting value '{2}' of type '{3}' (see inner exception for details): {4}", source, destination, oldValue, oldValue.GetType(), ex.Message, LineNumber, LinePosition);
-                throw new SDMXException(message, ex);
-            }
-        }
+        //        string message = string.Format("Exception at position ({5},{6}) occured in the cast action 'Map(\"{0}\",\"{1}\", castAction)' when casting value '{2}' of type '{3}' (see inner exception for details): {4}", source, destination, oldValue, oldValue.GetType(), ex.Message, LineNumber, LinePosition);
+        //        throw new SDMXException(message, ex);
+        //    }
+        //}
 
         void AddError(Error error, bool isSeries)
         {
@@ -613,7 +647,7 @@ namespace SDMX
      
         protected void AddValidationError(string message, bool isSeries)
         {
-            AddError(new ValidationError(string.Format("Validation error at ({0},{1}): {2}", LineNumber, LinePosition, message)), isSeries);
+            AddError(new ValidationError(LineNumber, LinePosition, string.Format("Validation error at ({0},{1}): {2}", LineNumber, LinePosition, message)), isSeries);
         }
 
         protected void AddValidationError(bool isSeries, string format, params object[] args)
@@ -621,34 +655,19 @@ namespace SDMX
             AddValidationError(string.Format(format, args), isSeries);
         }
 
-        protected void AddParseError(string message, bool isSeries)
+        protected void AddParseError(string message, bool isSeries, string name, string value)
         {
-            AddError(new ParseError(string.Format("Parse error at ({0},{1}): {2}", LineNumber, LinePosition, message)), isSeries);
+            AddError(new ParseError(name, value, LineNumber, LinePosition, string.Format("Parse error at ({0},{1}): {2}", LineNumber, LinePosition, message)), isSeries);
         }
 
-        protected void AddParseError(bool isSeries, string format, params object[] args)
+        protected void AddDuplicateKeyError(string message, bool isSeries, string key)
         {
-            AddParseError(string.Format(format, args), isSeries);
+            AddError(new DuplicateKeyError(key, LineNumber, LinePosition, string.Format("Duplicate key error at ({0},{1}): {2}", LineNumber, LinePosition, message)), isSeries);
         }
 
-        protected void AddDuplicateKeyError(string message, bool isSeries)
+        protected void AddMandatoryComponentMissingError(string message, bool isSeries, string id)
         {
-            AddError(new DuplicateKeyError(string.Format("Duplicate key error at ({0},{1}): {2}", LineNumber, LinePosition, message)), isSeries);
-        }
-
-        protected void AddDuplicateKeyError(bool isSeries, string format, params object[] args)
-        {
-            AddDuplicateKeyError(string.Format(format, args), isSeries);
-        }
-
-        protected void AddMandatoryComponentMissingError(string message, bool isSeries)
-        {
-            AddError(new MandatoryComponentMissing(string.Format("Mandatory component missing error at ({0},{1}): {2}", LineNumber, LinePosition, message)), isSeries);
-        }
-
-        protected void AddMandatoryComponentMissingError(bool isSeries, string format, params object[] args)
-        {
-            AddMandatoryComponentMissingError(string.Format(format, args), isSeries);
+            AddError(new MandatoryComponentMissing(id, string.Format("Mandatory component missing error at ({0},{1}): {2}", LineNumber, LinePosition, message)), isSeries);
         }
 
         protected bool IsNullOrEmpty(string s)
@@ -776,8 +795,16 @@ namespace SDMX
         {
             var result = new Dictionary<string, Component>();
 
-            result.Add(KeyFamily.TimeDimension.Concept.Id, KeyFamily.TimeDimension);
-            result.Add(KeyFamily.PrimaryMeasure.Concept.Id, KeyFamily.PrimaryMeasure);
+            if (KeyFamily.TimeDimension != null)
+            {
+                result.Add(KeyFamily.TimeDimension.Concept.Id, KeyFamily.TimeDimension);
+            }
+
+            if (KeyFamily.PrimaryMeasure != null)
+            {
+                result.Add(KeyFamily.PrimaryMeasure.Concept.Id, KeyFamily.PrimaryMeasure);
+            }
+
             AddCompoenents(result, ObsAttributes());
 
             return result;

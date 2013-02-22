@@ -7,20 +7,15 @@ namespace SDMX.Parsers
 {
     internal class QuarterlyValueConverter : SimpleTypeConverter<Quarterly>
     {
-        public override string ToXml(Quarterly value)
+        public override bool TrySerialize(Quarterly obj, out string s)
         {
-            return value.ToString();
+            s = obj.ToString();
+            return true;
         }
 
-        public override Quarterly ToObj(string value)
+        public override bool TryParse(string s, out Quarterly obj)
         {
-            return Quarterly.Parse(value);
-        }
-
-        public override bool CanConvertToObj(string value)
-        {
-            Quarterly result;
-            return Quarterly.TryParse(value, out result);
+            return Quarterly.TryParse(s, out obj);
         }
     }
 }

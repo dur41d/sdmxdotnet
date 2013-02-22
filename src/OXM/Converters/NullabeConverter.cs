@@ -8,25 +8,36 @@ namespace OXM
     {
         protected abstract SimpleTypeConverter<T> Converter { get; }
 
-        public override string ToXml(Nullable<T> value)
+        public override bool TrySerialize(Nullable<T> value, out string s)
         {
             if (!value.HasValue)
-                return null;
+            {
+                s = null;
+                return true;
+            }
 
-            return Converter.ToXml(value.Value);
+            return Converter.TrySerialize(value.Value, out s);
         }
 
-        public override Nullable<T> ToObj(string value)
+        public override bool TryParse(string s, out Nullable<T> obj)
         {
-            if (value == null)
-                return null;
+            if (s == null)
+            {
+                obj = null;
+                return true;
+            }
 
-            return Converter.ToObj(value);
-        }
-
-        public override bool CanConvertToObj(string s)
-        {
-            return Converter.CanConvertToObj(s);
+            T result = default(T);
+            if (Converter.TryParse(s, out result))
+            {
+                obj = result;
+                return true;
+            }
+            else
+            {
+                obj = null;
+                return false;
+            }
         }
     }
 }

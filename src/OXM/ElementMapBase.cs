@@ -21,9 +21,9 @@ namespace OXM
         {
             Name = name;
             Required = required;
-        }      
+        }
 
-        public abstract void ReadXml(XmlReader reader);
+        public abstract void ReadXml(XmlReader reader, Action<ValidationMessage> validationAction);
 
         public abstract void WriteXml(XmlWriter writer, T obj);
     }

@@ -20,32 +20,20 @@ namespace SDMX
             _value = id;
         }
 
-        public static Id Create(string id)
-        {            
-            Id result = null;
-            if (!ids.TryGetValue(id, out result))
-            {
-                Validate(id);
-                result = new Id(id);
-                ids.Add(id, result);                
-            }
-            return result;
-        }
-
         static Dictionary<string, Id> ids = new Dictionary<string, Id>();
 
-        public static bool IsValid(string id)
+        public static bool TryParse(string id, out Id result)
         {
-            Contract.AssertNotNull(id, "id");
-            return regex.IsMatch(id);
-        }
-
-        public static void Validate(string id)
-        {
-            if (!IsValid(id))
+            result = null;
+            if (!ids.TryGetValue(id, out result))
             {
-                throw new SDMXException("Invalid Id value '{0}'".F(id));
-            }    
+                if (regex.IsMatch(id))
+                {
+                    result = new Id(id);
+                    ids.Add(id, result);
+                }
+            }
+            return result != null;
         }
 
         public override string  ToString()
@@ -60,7 +48,13 @@ namespace SDMX
 
         public static implicit operator Id(string id)
         {
-            return Create(id);
+            Id result = null;
+            if (TryParse(id, out result))
+            {
+                return result;
+            }
+
+            throw new SDMXException("Invalid id value '{0}'.", id);
         }
 
         public static implicit operator string(Id id)

@@ -10,39 +10,38 @@ namespace OXM
         private const string p = @"^(?<Sign>[-|+]?)(?<Year>\d{4})-(?<Month>\d{1,2})-(?<Day>\d{1,2})(?<Z>Z)?(?:(?<ZoneSign>[+-])(?<ZoneHour>\d{2}):(?<ZoneMinute>\d{2}))?$";
         static Regex pattern = new Regex(p, RegexOptions.Compiled);
 
-        public override string ToXml(DateTimeOffset value)
-        {   
-            return value.Offset.Ticks == 0 ? 
+        public override bool TrySerialize(DateTimeOffset value, out string s)
+        {
+            s = value.Offset.Ticks == 0 ?
                 value.ToString("yyyy-MM-dd") : value.ToString("yyyy-MM-ddK");
+            return true;
         }
 
-        public override DateTimeOffset ToObj(string value)
+        public override bool TryParse(string value, out DateTimeOffset obj)
         {
             var match = pattern.Match(value);
             if (!match.Success)
             {
-                throw new ParseException("Invalid date value '{0}'.", value);
+                obj = new DateTimeOffset();
+                return false;
             }
             int year = int.Parse(match.Groups["Year"].Value);
             int month = int.Parse(match.Groups["Month"].Value);
             int day = int.Parse(match.Groups["Day"].Value);
             TimeSpan offset = DateTimeConverter.ParseTimeOffset(match);
-            return new DateTimeOffset(year, month, day, 0, 0, 0, 0, offset);
-        }
-
-        public override bool CanConvertToObj(string value)
-        {
-            return pattern.IsMatch(value);
+            obj = new DateTimeOffset(year, month, day, 0, 0, 0, 0, offset);
+            return true;
         }
     }
 
     public class NullableDateConverter : NullabeConverter<DateTimeOffset>
     {
+        DateConverter _converter = new DateConverter();
         protected override SimpleTypeConverter<DateTimeOffset> Converter
         {
             get
             {
-                return new DateConverter();
+                return _converter;
             }
         }
     }

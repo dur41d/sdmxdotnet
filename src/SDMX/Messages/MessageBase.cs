@@ -24,43 +24,58 @@ namespace SDMX
                 { typeof(QueryMessage), () => new QueryMessageMap() },
             };
 
-        public override string ToString()
+        public static T Read(string input)
         {
-            return Header.ToString();
+            return Read(input, null);
         }
 
-        public static T Read(string input)
+        public static T Read(string input, Action<ValidationMessage> validationAction)
         {
             Contract.AssertNotNullOrEmpty(input, "input");
             using (var reader = XmlReader.Create(new StringReader(input)))
             {
-                return Read(reader);
+                return Read(reader, validationAction);
             }
         }
 
         public static T Read(Stream stream)
         {
+            return Read(stream, null);
+        }
+
+        public static T Read(Stream stream, Action<ValidationMessage> validationAction)
+        {
             Contract.AssertNotNull(stream, "stream");
             using (var reader = XmlReader.Create(stream))
             {
-                return Read(reader);
+                return Read(reader, validationAction);
             }
         }
 
         public static T Read(XmlReader reader)
         {
+            return Read(reader, null);
+        }
+
+        public static T Read(XmlReader reader, Action<ValidationMessage> validationAction)
+        {
             Contract.AssertNotNull(reader, "reader");
             var map = factory[typeof(T)]() as RootElementMap<T>;
 
-            return map.ReadXml(reader);
+            return map.ReadXml(reader, validationAction);
         }
 
         public static T Load(string fileName)
         {
+            return Load(fileName, null);
+        }
+
+        public static T Load(string fileName, Action<ValidationMessage> validationAction)
+        {
             T message;
             using (var reader = XmlReader.Create(fileName))
             {
-                message = Read(reader);
+                message = Read(reader, validationAction);
             }
 
             return message;

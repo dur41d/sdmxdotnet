@@ -54,7 +54,7 @@ namespace OXM
         {
             if (String.IsNullOrEmpty(defaultValue))
             {
-                throw new ParseException("defaultValue cannot be null or empty. ObjectType '{0}' PropertyType '{1}'.", typeof(TObj).Name, typeof(TProperty).Name);
+                throw new MappingException("defaultValue cannot be null or empty. ObjectType '{0}' PropertyType '{1}'.", typeof(TObj).Name, typeof(TProperty).Name);
             }
 
             isAttribute = true;
@@ -163,8 +163,8 @@ namespace OXM
             }
             else
             {
-                var prop = new Property<TObj, TProperty>(_property, null);                
-                throw new ParseException("Error mapping ({0}).{1}: a property must be mapped to either an attribute, an element, or element conent.", prop.GetTypeName(), prop.GetName());
+                var prop = new Property<TObj, TProperty>(_property, null);
+                throw new MappingException("Error mapping ({0}).{1}: a property must be mapped to either an attribute, an element, or element conent.", prop.GetTypeName(), prop.GetName());
             }
         }
     }

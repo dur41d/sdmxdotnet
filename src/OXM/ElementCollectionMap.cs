@@ -18,13 +18,13 @@ namespace OXM
         public ElementCollectionMap(XName name, bool required)
             : base(name, required)
         {}
-      
-        public override void ReadXml(XmlReader reader)
+
+        public override void ReadXml(XmlReader reader, Action<ValidationMessage> validationAction)
         {
             var classMap = ClassMapFactory();
             classMap.Namespace = Name.Namespace;
 
-            TProperty property = classMap.ReadXml(reader);
+            TProperty property = classMap.ReadXml(reader, validationAction);
             
             if (!property.IsDefault())
             {
@@ -34,9 +34,16 @@ namespace OXM
                 }
                 catch (Exception ex)
                 {
-                    ParseException.Throw(reader, typeof(T), ex,
-                        "Exception while setting property type '{0}' (see inner exception for details): {1}",
-                         typeof(TProperty), ex.Message);
+                    throw new MappingException(string.Format(
+@"Mapping  exception while setting collection property. Check the mapping class to correct the exception. 
+Collection Element Name: '{6}'.
+Class Map Type: '{0}'.
+Property Type: '{1}'.
+Property Value: '{2}'.
+Inner Exception Message: '{3}'.
+Line Number: '{4}'.
+Line Position: '{5}'.", classMap.GetType(), typeof(TProperty), property, ex.Message,
+                      ((IXmlLineInfo)reader).LineNumber, ((IXmlLineInfo)reader).LinePosition, Name), ex);
                 }
             }
         }
@@ -49,7 +56,7 @@ namespace OXM
             {
                 if (Required)
                 {
-                    throw new ParseException("Element Collection '{0}' is required but its value is null. Collection: ({1}).{2}"
+                    throw new SerializationException("Element Collection '{0}' is required but its value is null. Collection: ({1}).{2}"
                         , Name, Collection.GetTypeName(), Collection.GetName());
                 }
             }          
@@ -57,7 +64,7 @@ namespace OXM
             {
                 if (Required && values.Count() == 0)
                 {
-                    throw new ParseException("Element Collection '{0}' is required but the collection is empty. Collection: ({1}).{2}"
+                    throw new SerializationException("Element Collection '{0}' is required but the collection is empty. Collection: ({1}).{2}"
                         , Name, Collection.GetTypeName(), Collection.GetName());
                 }
 

@@ -7,20 +7,15 @@ namespace SDMX.Parsers
 {
     internal class TriannaulValueConverter : SimpleTypeConverter<Triannual>
     {
-        public override string ToXml(Triannual value)
+        public override bool TrySerialize(Triannual obj, out string s)
         {
-            return value.ToString();
+            s = obj.ToString();
+            return true;
         }
 
-        public override Triannual ToObj(string value)
+        public override bool TryParse(string s, out Triannual obj)
         {
-            return Triannual.Parse(value);
-        }
-
-        public override bool CanConvertToObj(string value)
-        {
-            Triannual result;
-            return Triannual.TryParse(value, out result);
+            return Triannual.TryParse(s, out obj);
         }
     }
 }

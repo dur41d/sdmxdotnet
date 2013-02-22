@@ -72,12 +72,19 @@ namespace SDMX.Tests
 
         void TestRead(string dataPath, int count)
         {
+            var doc = XDocument.Load(dataPath);
+            TestRead(doc, count);
+        }
+
+        void TestRead(XDocument doc, int count)
+        {
             string dsdPath = Utility.GetPath("lib\\StructureSample.xml");
             var dsd = StructureMessage.Load(dsdPath);
             var keyFamily = dsd.KeyFamilies[0];
 
             int counter = 0;
-            using (var reader = DataReader.Create(dataPath, keyFamily))
+            using (var r = doc.CreateReader())
+            using (var reader = DataReader.Create(r, keyFamily))
             {
                 var header = reader.ReadHeader();
 
@@ -410,6 +417,7 @@ namespace SDMX.Tests
             using (var reader = DataReader.Create(doc.CreateReader(), keyFamily))
             {
                 reader.ThrowExceptionIfNotValid = false;
+                reader.DetectDuplicateKeys = true;
                 while (reader.Read())
                 {
                     if (!reader.IsValid)
@@ -448,6 +456,19 @@ namespace SDMX.Tests
             }
 
             Assert.AreEqual(12, counter);
+        }
+
+        [Test]
+        public void read_compact_invalid_empty_series()
+        {
+            string dataPath = Utility.GetPath("lib\\CompactSample.xml");
+
+            var doc = XDocument.Load(dataPath);
+            var obs = doc.Descendants().Where(i => i.Name.LocalName == "Series"
+                && i.Attribute("FREQ").Value == "A" && i.Attribute("JD_CATEGORY").Value == "A").Single();
+            obs.Descendants().Remove();
+
+            TestRead(doc, 25);
         }
     }
 }

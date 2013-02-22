@@ -20,9 +20,9 @@ namespace OXM
             _elementMaps = new MapList<T>(classMapName + "." + name.LocalName);
         }
 
-        public override void ReadXml(XmlReader reader)
+        public override void ReadXml(XmlReader reader, Action<ValidationMessage> validationAction)
         {
-            ClassMap<T>.ReadElements(reader, _elementMaps);
+            ClassMap<T>.ReadElements(reader, _elementMaps, validationAction);
         }
 
         public override void WriteXml(XmlWriter writer, T obj)

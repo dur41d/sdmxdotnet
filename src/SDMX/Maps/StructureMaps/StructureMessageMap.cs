@@ -33,10 +33,10 @@ namespace SDMX.Parsers
                     .Set(v => _message.CodeLists.Add(v))
                     .ClassMap(() => new CodeListMap());
 
-            MapContainer("HierarchicalCodelists", false)
-              .MapCollection(o => o.HierarchicalCodeLists).ToElement(Namespaces.Structure + "HierarchicalCodelist", false)
-                  .Set(v => _message.HierarchicalCodeLists.Add(v))
-                  .ClassMap(() => new HierarchicalCodeListMap());
+            //MapContainer("HierarchicalCodelists", false)
+            //  .MapCollection(o => o.HierarchicalCodeLists).ToElement(Namespaces.Structure + "HierarchicalCodelist", false)
+            //      .Set(v => _message.HierarchicalCodeLists.Add(v))
+            //      .ClassMap(() => new HierarchicalCodeListMap());
 
             var concepts = MapContainer("Concepts", false);
 

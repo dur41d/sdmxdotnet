@@ -12,65 +12,74 @@ namespace SDMX
         {
             Message = message;
         }
-
-        public Error(string format, params object[] args)
-        {
-            Message = string.Format(format, args);
-        }
     }
 
     public class ValidationError : Error
-    { 
-        public ValidationError(string message)
-            : base(message)
-        { }
+    {
+        public int LineNumber { get; private set; }
+        public int LinePosition { get; private set; }
 
-        public ValidationError(string format, params object[] args)
-            : base(format, args)
-        { }
+        public ValidationError(int lineNumber, int linePosition, string message)
+            : base(message)
+        {
+            LineNumber = lineNumber;
+            LinePosition = linePosition;
+        }
     }
 
     public class ParseError : Error
     {
-        public ParseError(string message)
-            : base(message)
-        { }
+        public int LineNumber { get; private set; }
+        public int LinePosition { get; private set; }
+        public string Name { get; private set; }
+        public string Value { get; private set; }
 
-        public ParseError(string format, params object[] args)
-            : base(format, args)
-        { }
+        public ParseError(string name, string value, int lineNumber, int linePosition, string message)
+            : base(message)
+        {
+            Name = name;
+            Value = value;
+            LineNumber = lineNumber;
+            LinePosition = linePosition;
+        }
     }
 
     public class SerializationError : Error
     {
-        public SerializationError(string message)
-            : base(message)
-        { }
+        public string Name { get; private set; }
+        public object Value { get; private set; }
 
-        public SerializationError(string format, params object[] args)
-            : base(format, args)
-        { }
+        public SerializationError(string name, object value, string message)
+            : base(message)
+        {
+            Name = name;
+            Value = value;
+        }
     }
 
     public class DuplicateKeyError : Error
     {
-        public DuplicateKeyError(string message)
-            : base(message)
-        { }
+        public string Key { get; private set; }
+        public int LineNumber { get; private set; }
+        public int LinePosition { get; private set; }
 
-        public DuplicateKeyError(string format, params object[] args)
-            : base(format, args)
-        { }
+        public DuplicateKeyError(string key, int lineNumber, int linePosition, string message)
+            : base(message)
+        {
+            Key = key;
+            LineNumber = lineNumber;
+            LinePosition = linePosition;
+        }
     }
 
     public class MandatoryComponentMissing : Error
     {
-        public MandatoryComponentMissing(string message)
-            : base(message)
-        { }
+        public string Name { get; private set; }
 
-        public MandatoryComponentMissing(string format, params object[] args)
-            : base(format, args)
-        { }
+        public MandatoryComponentMissing(string name, string message)
+            : base(message)
+        {
+            Name = name;
+        }
     }
 }

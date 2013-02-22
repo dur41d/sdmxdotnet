@@ -42,9 +42,9 @@ namespace OXM
 
         #region IMemberMap<TObj> Members
 
-        public void ReadXml(XmlReader reader)
+        public void ReadXml(XmlReader reader, Action<ValidationMessage> validationAction)
         {
-            TProperty property = GroupTypeMap.ReadXml(reader);
+            TProperty property = GroupTypeMap.ReadXml(reader, validationAction);
 
             if (!property.IsDefault())
                 Property.Set(property);
@@ -58,7 +58,7 @@ namespace OXM
             {
                 if (((IAttributeMap)GroupTypeMap).Required)
                 {
-                    throw new ParseException("Attribute group '{0}' contains required attributes but its property is null. Property: ({1}).{2}"
+                    throw new SerializationException("Attribute group '{0}' contains required attributes but its property is null. Property: ({1}).{2}"
                         , _groupName, Property.GetTypeName(), Property.GetName());
                 }
             }

@@ -13,6 +13,7 @@ namespace SDMX.Parsers
     internal class DimensionMap : ComponentMap<Dimension>
     {
         Dimension _dimension;
+        Concept _concept;
         
         public DimensionMap(StructureMessage message)
             : base(message)
@@ -58,9 +59,19 @@ namespace SDMX.Parsers
               .GroupTypeMap(new CrossSectionalAttachmentLevelMap());
         }
 
-        protected override Dimension Create(Concept conecpt)
+        protected override Dimension Create(Concept concept)
         {
-            _dimension = new Dimension(conecpt);
+            _concept = concept;
+            if (concept != null)
+            {
+                _dimension = new Dimension(concept);
+            }
+            else
+            {
+                var fakeConcept = CreateFakeConcept();
+                _dimension = new Dimension(fakeConcept);
+            }
+
             return _dimension;
         }
 
@@ -71,7 +82,14 @@ namespace SDMX.Parsers
 
         protected override Dimension Return()
         {
-            return _dimension;
+            if (_concept == null)
+            {
+                return null;
+            }
+            else
+            {
+                return _dimension;
+            }
         }
     }
 }

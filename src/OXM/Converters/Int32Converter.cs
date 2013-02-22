@@ -7,30 +7,26 @@ namespace OXM
 {
     public class Int32Converter : SimpleTypeConverter<int>
     {
-        public override string ToXml(int value)
+        public override bool TrySerialize(int value, out string s)
         {
-            return XmlConvert.ToString(value);
+            s = XmlConvert.ToString(value);
+            return true;
         }
 
-        public override int ToObj(string value)
+        public override bool TryParse(string s, out int value)
         {
-            return XmlConvert.ToInt32(value);
-        }
-
-        public override bool CanConvertToObj(string s)
-        {
-            int result = 0;
-            return int.TryParse(s, out result);
+            return int.TryParse(s, out value);
         }
     }
 
     public class NullableInt32Converter : NullabeConverter<int>
     {
+        Int32Converter _converter = new Int32Converter();
         protected override SimpleTypeConverter<int> Converter
         {
             get
             {
-                return new Int32Converter();
+                return _converter;
             }
         }
     }

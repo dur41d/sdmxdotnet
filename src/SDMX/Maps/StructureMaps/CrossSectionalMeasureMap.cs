@@ -10,6 +10,7 @@ namespace SDMX.Parsers
     internal class XMeasureMap : ComponentMap<CrossSectionalMeasure>
     {
         CrossSectionalMeasure _measure;
+        Concept _concept;
         
         internal XMeasureMap(StructureMessage message)
             : base(message)
@@ -30,9 +31,19 @@ namespace SDMX.Parsers
                 .Converter(new IdConverter());
         }      
 
-        protected override CrossSectionalMeasure Create(Concept conecpt)
+        protected override CrossSectionalMeasure Create(Concept concept)
         {
-            _measure = new CrossSectionalMeasure(conecpt);
+            _concept = concept;
+            if (concept != null)
+            {
+                _measure = new CrossSectionalMeasure(concept);
+            }
+            else
+            {
+                var fakeConcept = CreateFakeConcept();
+                _measure = new CrossSectionalMeasure(fakeConcept);
+            }
+
             return _measure;
         }
 
@@ -43,7 +54,14 @@ namespace SDMX.Parsers
 
         protected override CrossSectionalMeasure Return()
         {
-            return _measure;
+            if (_concept == null)
+            {
+                return null;
+            }
+            else
+            {
+                return _measure;
+            }
         }
     }
 }

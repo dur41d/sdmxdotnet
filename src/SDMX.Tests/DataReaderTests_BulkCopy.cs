@@ -48,15 +48,15 @@ namespace SDMX.Tests
         {
             var list = new List<string>() 
                 { 
-                    //"aei_ps_alt.sdmx.zip",
-                    //"apri_ap_him.sdmx.zip",
-                    "apro_cpb_cerea.sdmx.zip", // has errors
-                    "apro_cpp_crop.sdmx.zip",  // has errors
+                    "aei_ps_alt.sdmx.zip",
+                    "apri_ap_him.sdmx.zip",
+                    //"apro_cpb_cerea.sdmx.zip", // has errors
+                    //"apro_cpp_crop.sdmx.zip",  // has errors
                     "avia_ac_fatal.sdmx.zip",
                     "avia_ac_number.sdmx.zip",
                     "avia_ec_enterp.sdmx.zip",
                     //"avia_paexcc.sdmx.zip", // takes long time
-                    //"avia_tf_alc.sdmx.zip"
+                    "avia_tf_alc.sdmx.zip"
                 };
 
             ZipFile zf = null;

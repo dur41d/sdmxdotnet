@@ -113,7 +113,7 @@ namespace SDMX
             string seriesKeyString = ValuesToString(seriesKey);
             if (_keys.ContainsKey(seriesKeyString))
             {
-                var error = new DuplicateKeyError("Duplicate key: {0}", seriesKeyString);
+                var error = new DuplicateKeyError(seriesKeyString, 0, 0, string.Format("Duplicate key: {0}", seriesKeyString));
                 errors.Add(error);
             }
             else
@@ -145,7 +145,7 @@ namespace SDMX
             {   
                 if (!optionalAttribute)
                 {
-                    errors.Add(new MandatoryComponentMissing("{0} '{1}' is missing from record ({2}).", componentName, name, RecordToString(record)));
+                    errors.Add(new MandatoryComponentMissing(name, string.Format("{0} '{1}' is missing from record ({2}).", componentName, name, RecordToString(record))));
                 }
 
                 values.Add(name, null);
@@ -156,7 +156,7 @@ namespace SDMX
                 {
                     if (!optionalAttribute)
                     {
-                        errors.Add(new MandatoryComponentMissing("Null value for {0}: Name:'{1}' Value:'null' Record ({2}).", componentName, name, RecordToString(record)));
+                        errors.Add(new MandatoryComponentMissing(name, string.Format("Null value for {0}: Name:'{1}' Value:'null' Record ({2}).", componentName, name, RecordToString(record))));
                     }
 
                     values.Add(name, null);
@@ -167,7 +167,7 @@ namespace SDMX
                     string startTime = null;
                     if (!component.TrySerialize(obj, out value, out startTime))
                     {
-                        errors.Add(new SerializationError("Cannot serialize {0}: Name:'{1}' Value:'{2}' Type:'{4}' Record ({3}).", componentName, name, obj, RecordToString(record), obj.GetType()));
+                        errors.Add(new SerializationError(name, obj, string.Format("Cannot serialize {0}: Name:'{1}' Value:'{2}' Type:'{4}' Record ({3}).", componentName, name, obj, RecordToString(record), obj.GetType())));
                     }
                     else
                     {

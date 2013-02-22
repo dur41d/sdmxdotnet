@@ -1,6 +1,8 @@
 using System.Linq;
 using System.Xml.Linq;
 using NUnit.Framework;
+using System;
+using System.Collections.Generic;
 
 namespace OXM.Tests
 {
@@ -37,7 +39,7 @@ namespace OXM.Tests
 
 
         [Test]
-        public void NonMappedXmlElement()
+        public void Warnings()
         {
             var doc = XDocument.Parse("<?xml version='1.0' encoding='utf-16'?><Customer xmlns='uis.org'><Name>John</Name><Age>32</Age><Occupation/></Customer>");
             var map = new CustomerMap();
@@ -45,10 +47,42 @@ namespace OXM.Tests
             Customer customer;
             using (var reader = doc.CreateReader())
             {
-                customer = map.ReadXml(reader);
+                customer = map.ReadXml(reader, e => Console.WriteLine(e.Message));
             }
 
             Assert.AreEqual("John", customer.Name);
+            Assert.AreEqual(32, customer.Age);
+        }
+
+        [Test]
+        public void Conversion_error()
+        {
+            var doc = XDocument.Parse("<?xml version='1.0' encoding='utf-16'?><Customer xmlns='uis.org'><Name>John</Name><Age>32s</Age></Customer>");
+            var map = new CustomerMap();
+
+            Customer customer;
+            using (var reader = doc.CreateReader())
+            {
+                customer = map.ReadXml(reader, e => Console.WriteLine(e.Message));
+            }
+
+            Assert.AreEqual("John", customer.Name);
+            Assert.AreEqual(0, customer.Age);
+        }
+
+        [Test]
+        public void required_notfound()
+        {
+            var doc = XDocument.Parse("<?xml version='1.0' encoding='utf-16'?><Customer xmlns='uis.org'><Name></Name><Age>32</Age></Customer>");
+            var map = new CustomerMap();
+
+            Customer customer;
+            using (var reader = doc.CreateReader())
+            {
+                customer = map.ReadXml(reader, e => Console.WriteLine(e.Message));
+            }
+
+            Assert.AreEqual("", customer.Name);
             Assert.AreEqual(32, customer.Age);
         }
     }

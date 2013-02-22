@@ -7,30 +7,26 @@ namespace OXM
 {   
     public class DoubleConverter : SimpleTypeConverter<double>
     {
-        public override string ToXml(double value)
+        public override bool TrySerialize(double value, out string s)
         {
-            return XmlConvert.ToString(value);
+            s = XmlConvert.ToString(value);
+            return true;
         }
 
-        public override double ToObj(string value)
+        public override bool TryParse(string s, out double value)
         {
-            return XmlConvert.ToDouble(value);
-        }
-
-        public override bool CanConvertToObj(string s)
-        {
-            double result = 0;
-            return double.TryParse(s, out result);
+            return double.TryParse(s, out value);
         }
     }
 
     public class NullableDoubleConverter : NullabeConverter<double>
     {
+        DoubleConverter _converter = new DoubleConverter();
         protected override SimpleTypeConverter<double> Converter
         {
             get
             {
-                return new DoubleConverter();
+                return _converter;
             }
         }
     }

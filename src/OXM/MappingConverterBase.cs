@@ -15,14 +15,14 @@ namespace OXM
             fromStringMap.Add(xmlValue, value);
         }
 
-        public override string ToXml(T value)
+        public override bool TrySerialize(T obj, out string s)
         {
-            return toStringMap[value];
+            return toStringMap.TryGetValue(obj, out s);
         }
 
-        public override T ToObj(string value)
+        public override bool TryParse(string s, out T obj)
         {
-            return fromStringMap[value];
+            return fromStringMap.TryGetValue(s, out obj);
         }
     }
 }

@@ -5,27 +5,27 @@ namespace SDMX.Parsers
 {
     internal class HeaderTimeConverter : SimpleTypeConverter<DateTimeOffset>
     {
-        public override string ToXml(DateTimeOffset value)
+        DateTimeConverter _dateTimeConverter = new DateTimeConverter();
+        DateConverter _dateConverter = new DateConverter();
+        
+        public override bool TrySerialize(DateTimeOffset obj, out string s)
         {
-            if (value.Hour > 0)
-                return new DateTimeConverter().ToXml(value);
+            if (obj.Hour > 0)
+                return _dateTimeConverter.TrySerialize(obj, out s);
             else
-                return new DateConverter().ToXml(value);
+                return _dateConverter.TrySerialize(obj, out s);
         }
 
-        public override DateTimeOffset ToObj(string value)
+        public override bool TryParse(string s, out DateTimeOffset obj)
         {
-            var converter = new DateConverter();
-
-            if (converter.CanConvertToObj(value))
-                return converter.ToObj(value);
+            if (_dateConverter.TryParse(s, out obj))
+            {
+                return true;
+            }
             else
-                return new DateTimeConverter().ToObj(value);
-        }
-
-        public override bool CanConvertToObj(string s)
-        {
-            return new DateConverter().CanConvertToObj(s) || new DateTimeConverter().CanConvertToObj(s);
+            {
+                return _dateTimeConverter.TryParse(s, out obj);
+            }
         }
     }
 }

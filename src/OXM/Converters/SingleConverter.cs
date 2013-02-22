@@ -7,30 +7,26 @@ namespace OXM
 {
     public class SingleConverter : SimpleTypeConverter<float>
     {
-        public override string ToXml(float value)
+        public override bool TrySerialize(float value, out string s)
         {
-            return XmlConvert.ToString(value);
+            s = XmlConvert.ToString(value);
+            return true;
         }
 
-        public override float ToObj(string value)
+        public override bool TryParse(string s, out float value)
         {
-            return XmlConvert.ToSingle(value);
-        }
-
-        public override bool CanConvertToObj(string s)
-        {
-            float result = 0;
-            return float.TryParse(s, out result);
+            return float.TryParse(s, out value);
         }
     }
 
     public class NullableSingleConverter : NullabeConverter<float>
     {
+        SingleConverter _converter = new SingleConverter();
         protected override SimpleTypeConverter<float> Converter
         {
             get
             {
-                return new SingleConverter();
+                return _converter;
             }
         }
     }

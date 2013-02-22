@@ -26,21 +26,7 @@ namespace SDMX
         {
             Contract.AssertNotNull(id, "id");
             return items.GetValueOrDefault(id, default(T));
-        }
-
-        /// <summary>
-        /// Get item by id. Throws exception if item is not found.
-        /// </summary>
-        public T Get(Id id)
-        {
-            Contract.AssertNotNull(id, "id");
-            T value = default(T);
-            if (!items.TryGetValue(id, out value))
-            {
-                throw new SDMXException("Item not found for concept id '{0}'. Use Find or Contains instead.", id);
-            }
-            return value;
-        }
+        }      
 
         /// <summary>
         /// Remove item by id.

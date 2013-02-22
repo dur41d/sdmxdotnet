@@ -69,7 +69,7 @@ namespace OXM
             else
             {
                 var coll = new Collection<TObj, TProperty>(_collection, null);
-                throw new ParseException("Error mapping ({0}).{1}: a collection must be mapped to either an an element or simple element.", coll.GetTypeName(), coll.GetName());
+                throw new MappingException("Error mapping ({0}).{1}: a collection must be mapped to either an an element or simple element.", coll.GetTypeName(), coll.GetName());
             }
         }
     }

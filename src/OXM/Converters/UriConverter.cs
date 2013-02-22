@@ -6,20 +6,15 @@ namespace OXM
 {
     public class UriConverter : SimpleTypeConverter<Uri>
     {
-        public override string ToXml(Uri value)
+        public override bool TrySerialize(Uri value, out string s)
         {
-            return value == null ? null : value.ToString();
+            s = value == null ? null : value.ToString();
+            return true;
         }
 
-        public override Uri ToObj(string value)
+        public override bool TryParse(string s, out Uri value)
         {
-            return new Uri(value);
-        }
-
-        public override bool CanConvertToObj(string s)
-        {
-            Uri result = null;
-            return Uri.TryCreate(s, UriKind.RelativeOrAbsolute, out result);
+            return Uri.TryCreate(s, UriKind.RelativeOrAbsolute, out value);
         }
     }
 }

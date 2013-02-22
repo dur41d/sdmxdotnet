@@ -12,7 +12,7 @@ namespace OXM
 {
     internal interface IMemberMap<T>
     {
-        void ReadXml(XmlReader reader);
+        void ReadXml(XmlReader reader, Action<ValidationMessage> validationAction);
         void WriteXml(XmlWriter writer, T obj);
     }
 }

@@ -44,7 +44,10 @@ namespace SDMX.Parsers
             else if (format is DateTimeTextFormat)
                 return TextType.DateTime;
             else
-                throw new SDMXException("Unsupported text format: '{0}'.", format);
+            {
+                SignalError("Unsupported text format: '{0}'.", format);
+                return TextType.None;
+            }
         }
 
         private TextFormat GetTextFormat(TextType textType)
@@ -71,7 +74,8 @@ namespace SDMX.Parsers
                 case TextType.DateTime:
                     return new DateTimeTextFormat();
                 default:
-                    throw new SDMXException("Unsupported text type '{0}'", textType);
+                    SignalError("Unsupported text type '{0}'", textType);
+                    return null;
             }
         }
     }

@@ -7,30 +7,26 @@ namespace OXM
 {
     public class BooleanConverter : SimpleTypeConverter<bool>
     {
-        public override string ToXml(bool value)
+        public override bool TrySerialize(bool value, out string s)
         {
-            return XmlConvert.ToString(value);
+            s = XmlConvert.ToString(value);
+            return true;
         }
 
-        public override bool ToObj(string value)
+        public override bool TryParse(string s, out bool value)
         {
-            return XmlConvert.ToBoolean(value);
-        }
-
-        public override bool CanConvertToObj(string s)
-        {
-            bool result = false;
-            return bool.TryParse(s, out result);
+            return bool.TryParse(s, out value);
         }
     }
 
     public class NullableBooleanConverter : NullabeConverter<bool>
     {
+        BooleanConverter _converter = new BooleanConverter();
         protected override SimpleTypeConverter<bool> Converter
         {
             get
             {
-                return new BooleanConverter();
+                return _converter;
             }
         }
     }

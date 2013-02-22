@@ -13,6 +13,7 @@ namespace SDMX.Parsers
     internal class AttributeMap : ComponentMap<Attribute>
     {
         Attribute _attribute;
+        Concept _concept;
 
         public AttributeMap(StructureMessage message)
             : base(message)
@@ -77,9 +78,18 @@ namespace SDMX.Parsers
         }      
 
 
-        protected override Attribute Create(Concept conecpt)
+        protected override Attribute Create(Concept concept)
         {
-            _attribute = new Attribute(conecpt);
+            _concept = concept;
+            if (concept != null)
+            {
+                _attribute = new Attribute(concept);
+            }
+            else
+            {
+                var fakeConcept = CreateFakeConcept();
+                _attribute = new Attribute(fakeConcept);
+            }
             return _attribute;
         }
 
@@ -90,7 +100,14 @@ namespace SDMX.Parsers
 
         protected override Attribute Return()
         {
-            return _attribute;
+            if (_concept == null)
+            {
+                return null;
+            }
+            else
+            {
+                return _attribute;
+            }
         }
     }
 }

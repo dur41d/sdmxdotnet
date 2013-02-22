@@ -118,17 +118,5 @@ namespace SDMX
 
             return com;
         }
-
-        public Component GetComponent(Id id)
-        {
-            var com = FindComponent(id);
-
-            if (com == null)
-            {
-                throw new SDMXException("Did not find component with id '{0}'.", id);
-            }
-
-            return com;
-        }
     }
 }

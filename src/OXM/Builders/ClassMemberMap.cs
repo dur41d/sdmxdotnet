@@ -40,7 +40,7 @@ namespace OXM
         {
             if (_groupTypeMap == null)
             {
-                throw new ParseException("Attribute group type map is not set for property.");
+                throw new MappingException("Attribute group type map is not set for property.");
             }
 
             return _groupTypeMap;
@@ -77,7 +77,7 @@ namespace OXM
         {
             if (_classMapFactory == null)
             {
-                throw new ParseException("Class map is not set for property. ObjectType '{0}' PropertyType '{1}'.", typeof(TObj).Name, typeof(TProperty).Name);
+                throw new MappingException("Class map is not set for property. ObjectType '{0}' PropertyType '{1}'.", typeof(TObj).Name, typeof(TProperty).Name);
             }
 
             return _classMapFactory;

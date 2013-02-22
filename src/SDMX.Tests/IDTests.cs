@@ -6,7 +6,6 @@ using NUnit.Framework;
 
 namespace SDMX.Tests
 {
-
     [TestFixture]
     public class IdTests
     {

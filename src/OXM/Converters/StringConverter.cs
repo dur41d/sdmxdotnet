@@ -8,18 +8,15 @@ namespace OXM
 {
     public class StringConverter : SimpleTypeConverter<string>
     {
-        public override string ToXml(string value)
+        public override bool TrySerialize(string value, out string s)
         {
-            return value;
+            s = value;
+            return true;
         }
 
-        public override string ToObj(string value)
+        public override bool TryParse(string s, out string value)
         {
-            return value;
-        }
-
-        public override bool CanConvertToObj(string s)
-        {
+            value = s;
             return true;
         }
     }

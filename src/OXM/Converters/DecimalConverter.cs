@@ -7,31 +7,27 @@ namespace OXM
 {
     public class DecimalConverter : SimpleTypeConverter<decimal>
     {
-        public override string ToXml(decimal value)
+        public override bool TrySerialize(decimal value, out string s)
         {
-            return XmlConvert.ToString(value);
+            s = XmlConvert.ToString(value);
+            return true;
         }
 
-        public override decimal ToObj(string value)
+        public override bool TryParse(string s, out decimal value)
         {
-            return XmlConvert.ToDecimal(value);
-        }
-
-        public override bool CanConvertToObj(string s)
-        {
-            decimal result = 0;
-            return decimal.TryParse(s, out result);
+            return decimal.TryParse(s, out value);
         }
     }
 
 
     public class NullableDecimalConverter : NullabeConverter<decimal>
     {
+        DecimalConverter _converter = new DecimalConverter();
         protected override SimpleTypeConverter<decimal> Converter
         {
             get
             {
-                return new DecimalConverter();
+                return _converter;
             }
         }
     }

@@ -18,6 +18,9 @@ namespace OXM
         private string[] _elementsOrder;
         private List<IMapBuilder<T>> builders = new List<IMapBuilder<T>>();
 
+        private Action<ValidationMessage> _validationAction;
+        private XmlReader _reader;
+
         public ClassMap()
         {
             string name = this.GetType().Name;
@@ -28,18 +31,79 @@ namespace OXM
 
         protected abstract T Return();
 
-        bool isBuilt = false;
+        protected void SignalError(string message)
+        {
+            SignalValidatation(message, SeverityType.Error);
+        }
+
+        protected void SignalError(string format, params object[] args)
+        {
+            SignalValidatation(string.Format(format, args), SeverityType.Error);
+        }        
+
+        protected void SignalWarning(string message)
+        {
+            SignalValidatation(message, SeverityType.Warning);
+        }
+
+        protected void SignalWarning(string format, params object[] args)
+        {
+            SignalValidatation(string.Format(format, args), SeverityType.Warning);
+        }
+
+        protected void SignalValidatation(string message, SeverityType severity)
+        {
+            int lineNumber = 0;
+            int linePosition = 0;
+            var xml = _reader as IXmlLineInfo;
+            var type = this.GetType();
+
+            string signalMessage = null;
+            if (xml != null)
+            {
+                lineNumber = xml.LineNumber;
+                linePosition = xml.LinePosition;
+
+                signalMessage = string.Format(@"Parse {0}: {1} 
+Line: {2}, Position: {3}  
+Type: {4}.", severity.ToString(), message, lineNumber, linePosition, type.Name);
+            }
+            else
+            {
+                signalMessage = string.Format(@"Parse {0}: {1}. Type: {2}.", 
+                    severity.ToString(), message, type.Name);
+            }
+
+            if (_validationAction == null)
+            {
+                if (severity == SeverityType.Error)
+                {
+                    throw new ParseException(signalMessage) { LineNumber = lineNumber, LinePosition = linePosition };
+                }
+                else if (severity == SeverityType.Warning)
+                {
+                    System.Diagnostics.Debug.WriteLine(signalMessage, "Warning");
+                }
+            }
+            else
+            {
+                _validationAction(new ValidationMessage(signalMessage, severity, lineNumber, linePosition));
+            }
+            
+        }   
+
+        bool _isBuilt = false;
         private void BuildAndVerifyMaps()
         {
-            if (!isBuilt)
+            if (!_isBuilt)
             {
                 builders.ForEach(b => b.BuildMaps(this));
 
                 if (_contentMap != null && _elementMaps.Count() > 0)
                 {
-                    throw new ParseException("Class map for '{0}' has both elements and content. This is not possible.", typeof(T).ToString());
+                    throw new MappingException("Class map for '{0}' has both elements and content. This is not possible.", typeof(T).ToString());
                 }
-                isBuilt = true;
+                _isBuilt = true;
             }
         }
 
@@ -63,33 +127,37 @@ namespace OXM
             }
         }
 
-        internal T ReadXml(XmlReader reader)
+        internal T ReadXml(XmlReader reader, Action<ValidationMessage> validationAction)
         {
+            _reader = reader;
+            _validationAction = validationAction;
+
             BuildAndVerifyMaps();
 
             foreach (var attributeMap in _attributeMaps.GetOrderedList(_attributesOrder))
             {
-                attributeMap.ReadXml(reader);
+                attributeMap.ReadXml(reader, validationAction);
             }
 
             if (_contentMap != null)
             {
                 if (reader.IsEmptyElement)
-                {
-                    ParseException.Throw(reader, typeof(T), "Element '{0}' is empty but its content is mapped.", reader.GetXName());
+                {                    
+                    Helper.NotifyWarning(validationAction, reader, typeof(T), 
+                        "Element '{0}' is empty but its content is mapped.", reader.GetXName());
                 }
 
-                _contentMap.ReadXml(reader);
+                _contentMap.ReadXml(reader, validationAction);
             }
             else
             {
-                ReadElements(reader, _elementMaps);
+                ReadElements(reader, _elementMaps, validationAction);
             }   
 
             return Return();
         }
 
-        internal static void ReadElements(XmlReader reader, MapList<T> elementMaps)
+        internal static void ReadElements(XmlReader reader, MapList<T> elementMaps, Action<ValidationMessage> validationAction)
         {
             var counts = new NameCounter<XName>();
 
@@ -109,13 +177,11 @@ namespace OXM
                         var elementMap = elementMaps.Get(name);
                         if (elementMap == null)
                         {
-#if DEBUG
-                            System.Diagnostics.Debug.WriteLine(string.Format("Element '{0}' is not Mapped. Line: {1} Position: {2} Type: ClassMap<{3}>",
-                                name, ((IXmlLineInfo)reader).LineNumber, ((IXmlLineInfo)reader).LineNumber, typeof(T)), "Warning");
-#endif
+                            Helper.NotifyWarning(validationAction, reader, typeof(T), "Element '{0}' is not Mapped.", name);
                             continue;
                         }
-                        elementMap.ReadXml(reader);
+
+                        elementMap.ReadXml(reader, validationAction);
                         counts.Increment(name);
                     }
                 }
@@ -125,7 +191,7 @@ namespace OXM
             {
                 if (elementMap.Required && counts.Get(elementMap.Name) == 0)
                 {
-                    ParseException.Throw(reader, typeof(T), "Element '{0}' is required but was not found.", elementMap.Name);
+                    Helper.Notify(validationAction, reader, typeof(T), "Element '{0}' is required but was not found.", elementMap.Name);
                 }
             }
         }
@@ -185,7 +251,7 @@ namespace OXM
         {
             if (_contentMap != null)
             {
-                throw new ParseException("Element content is mapped more than once in {0}.", this.GetType().Name);
+                throw new MappingException("Element content is mapped more than once in {0}.", this.GetType().Name);
             }
             _contentMap = map;
         }

@@ -93,6 +93,68 @@ namespace SDMX.Tests
         }
 
         [Test]
+        public void Invalid_structure_missing_codelist()
+        {
+            string dsdPath = Utility.GetPath("lib\\StructureSample.xml");
+            var doc = XDocument.Load(dsdPath);
+
+            var series = doc.Descendants().Where(i => i.Name.LocalName == "CodeList" && i.Attribute("id").Value == "CL_FREQ").First();
+            series.Remove();
+
+            var errorList = new List<ValidationMessage>();
+            var message = StructureMessage.Read(doc.CreateReader(), v => errorList.Add(v));
+
+            Assert.AreEqual(1, errorList.Count);
+        }
+
+        [Test]
+        public void Invalid_structure_missing_concept()
+        {
+            string dsdPath = Utility.GetPath("lib\\StructureSample.xml");
+            var doc = XDocument.Load(dsdPath);
+
+            var series = doc.Descendants().Where(i => i.Name.LocalName == "Concept" && i.Attribute("id").Value == "TIME").First();
+            series.Remove();
+
+            var errorList = new List<ValidationMessage>();
+            var message = StructureMessage.Read(doc.CreateReader(), v => errorList.Add(v));
+
+            Assert.AreEqual(1, errorList.Count);
+        }
+
+        [Test]
+        public void Invalid_structure_duplicate_codelist()
+        {
+            string dsdPath = Utility.GetPath("lib\\StructureSample.xml");
+            var doc = XDocument.Load(dsdPath);           
+
+            var series = doc.Descendants().Where(i => i.Name.LocalName == "CodeList" && i.Attribute("id").Value == "CL_FREQ").First();
+            var copy = new XElement(series);
+            series.AddAfterSelf(copy);
+
+            var errorList = new List<ValidationMessage>();
+            var message = StructureMessage.Read(doc.CreateReader(), v => errorList.Add(v));
+
+            Assert.AreEqual(1, errorList.Count);
+        }
+
+        [Test]
+        public void Invalid_structure_duplicate_concept()
+        {
+            string dsdPath = Utility.GetPath("lib\\StructureSample.xml");
+            var doc = XDocument.Load(dsdPath);
+
+            var series = doc.Descendants().Where(i => i.Name.LocalName == "Concept" && i.Attribute("id").Value == "TIME").First();
+            var copy = new XElement(series);
+            series.AddAfterSelf(copy);
+
+            var errorList = new List<ValidationMessage>();
+            var message = StructureMessage.Read(doc.CreateReader(), v => errorList.Add(v));
+
+            Assert.AreEqual(1, errorList.Count);
+        }
+
+        [Test]
         public void LoadWriteLoad()
         {
             string dsdPath = Utility.GetPath("lib\\StructureSample.xml");

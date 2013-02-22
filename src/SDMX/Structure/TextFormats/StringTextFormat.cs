@@ -6,7 +6,7 @@ namespace SDMX
 {
     public class StringTextFormat : TextFormat
     {
-        ISimpleTypeConverter _converter = new StringConverter();
+        StringConverter _converter = new StringConverter();
 
         internal override ISimpleTypeConverter Converter { get { return _converter; } }
 

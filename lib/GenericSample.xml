@@ -64,6 +64,7 @@ SDMXMessage.xsd">
 					<generic:Value concept="COLLECTION" value="B"/>
 					<generic:Value concept="TIME_FORMAT" value="P1M"/>
 				</generic:Attributes>
+        
 				<generic:Obs>
 					<generic:Time>2000-01</generic:Time>
 					<generic:ObsValue  value="3.14"/>

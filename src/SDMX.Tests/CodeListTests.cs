@@ -29,7 +29,6 @@ namespace SDMX.Tests
             }
         }
 
-
         private Header BuildHeader()
         {
             return new Header("MSD_HDR", new Party("UIS")) 

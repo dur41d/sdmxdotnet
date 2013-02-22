@@ -13,6 +13,7 @@ namespace SDMX.Parsers
     internal class TimeDimensionMap : ComponentMap<TimeDimension>
     {
         TimeDimension _timeDimension;
+        Concept _concept;
 
         public TimeDimensionMap(StructureMessage message)
             : base(message)
@@ -29,9 +30,19 @@ namespace SDMX.Parsers
 
         }
 
-        protected override TimeDimension Create(Concept conecpt)
+        protected override TimeDimension Create(Concept concept)
         {
-            _timeDimension = new TimeDimension(conecpt);
+            _concept = concept;
+            if (concept != null)
+            {
+                _timeDimension = new TimeDimension(concept);
+            }
+            else
+            {
+                var fakeConcept = CreateFakeConcept();
+                _timeDimension = new TimeDimension(fakeConcept);
+            }
+
             return _timeDimension;
         }
 
@@ -46,7 +57,15 @@ namespace SDMX.Parsers
             {
                 _timeDimension.TextFormat = new TimePeriodTextFormat();
             }
-            return _timeDimension;
+
+            if (_concept == null)
+            {
+                return null;
+            }
+            else
+            {
+                return _timeDimension;
+            }
         }
     }
 }

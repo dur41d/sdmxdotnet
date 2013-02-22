@@ -48,13 +48,13 @@ namespace OXM
             return builder.ToAttribute(attributeName, required);
         }
 
-        public T ReadXml(XmlReader reader)
+        public T ReadXml(XmlReader reader, Action<ValidationMessage> validationAction)
         {
             BuildAndVerifyMaps();
 
             foreach (var attributeMap in _attributeMaps.GetOrderedList(_attributesOrder))
             {
-                attributeMap.ReadXml(reader);
+                attributeMap.ReadXml(reader, validationAction);
             }
 
             return Return();

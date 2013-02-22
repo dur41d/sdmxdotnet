@@ -64,6 +64,7 @@
     <Compile Include="Address.cs" />
     <Compile Include="StringConverterTests.cs" />
     <Compile Include="PersonMapTests.cs" />
+    <Compile Include="t1cs.cs" />
     <Compile Include="TimeConverterTests.cs" />
     <Compile Include="Tutorial.cs" />
   </ItemGroup>

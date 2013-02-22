@@ -54,7 +54,8 @@ namespace SDMX
                 {
                     ClearSeries();
 
-                    while (XmlReader.Read() && XmlReader.LocalName != "Obs")
+                    // read until <Obs> or </Series> end element
+                    while (XmlReader.Read() && !(XmlReader.LocalName == "Obs") && !(XmlReader.LocalName == "Series" && !XmlReader.IsStartElement()))
                     {
                         if (IsValueElement())
                         {
@@ -69,17 +70,26 @@ namespace SDMX
                 {
                     ClearObs();
 
+                    // read until </Obs> end element
                     while (XmlReader.Read() && !(XmlReader.LocalName == "Obs" && !XmlReader.IsStartElement()))
                     {
                         if (XmlReader.LocalName == "Time" && XmlReader.IsStartElement())
                         {
-                            string value = XmlReader.ReadString();                            
-                            SetObs(KeyFamily.TimeDimension.Concept.Id, value);
+                            string value = XmlReader.ReadString();
+
+                            if (KeyFamily.TimeDimension != null)
+                            {
+                                SetObs(KeyFamily.TimeDimension.Concept.Id, value);
+                            }
                         }
                         else if (XmlReader.LocalName == "ObsValue" && XmlReader.IsStartElement())
                         {
                             string value = XmlReader.GetAttribute("value");
-                            SetObs(KeyFamily.PrimaryMeasure.Concept.Id, value);
+
+                            if (KeyFamily.PrimaryMeasure != null)
+                            {
+                                SetObs(KeyFamily.PrimaryMeasure.Concept.Id, value);
+                            }
                         }
                         else if (IsValueElement())
                         {

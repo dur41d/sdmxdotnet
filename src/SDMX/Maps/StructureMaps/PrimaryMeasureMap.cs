@@ -10,6 +10,7 @@ namespace SDMX.Parsers
     internal class PrimaryMeasureMap : ComponentMap<PrimaryMeasure>
     {
         PrimaryMeasure _measure;
+        Concept _concept;
 
         internal PrimaryMeasureMap(StructureMessage message)
             : base(message)
@@ -19,9 +20,19 @@ namespace SDMX.Parsers
             ElementsOrder("TextFormat", "Annotations");
         }
 
-        protected override PrimaryMeasure Create(Concept conecpt)
+        protected override PrimaryMeasure Create(Concept concept)
         {
-            _measure = new PrimaryMeasure(conecpt);
+            _concept = concept;
+            if (concept != null)
+            {
+                _measure = new PrimaryMeasure(concept);
+            }
+            else
+            {
+                var fakeConcept = CreateFakeConcept();
+                _measure = new PrimaryMeasure(fakeConcept);
+            }
+
             return _measure;
         }
 
@@ -36,7 +47,15 @@ namespace SDMX.Parsers
             {
                 _measure.TextFormat = new DecimalTextFormat();
             }
-            return _measure;
+
+            if (_concept == null)
+            {
+                return null;
+            }
+            else
+            {
+                return _measure;
+            }
         }
     }
 }

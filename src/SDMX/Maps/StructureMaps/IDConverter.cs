@@ -13,19 +13,15 @@ namespace SDMX.Parsers
 {
     internal class IdConverter : SimpleTypeConverter<Id>
     {
-        public override string ToXml(Id value)
+        public override bool TrySerialize(Id obj, out string s)
         {
-            return value.ToString();
+            s = obj.ToString();
+            return true;
         }
 
-        public override Id ToObj(string value)
+        public override bool TryParse(string s, out Id obj)
         {
-            return (Id)value;
-        }
-
-        public override bool CanConvertToObj(string s)
-        {            
-            return Id.IsValid(s);
+            return Id.TryParse(s, out obj);
         }
     }   
 }

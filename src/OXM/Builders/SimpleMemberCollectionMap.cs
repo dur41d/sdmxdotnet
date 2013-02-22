@@ -45,7 +45,7 @@ namespace OXM
             if (_converter == null)
             {
                 var coll = new Collection<TObj, TProperty>(_collection, null);
-                throw new ParseException("Converter is not set for collection ({0}).{1}.", coll.GetTypeName(), coll.GetName());
+                throw new MappingException("Converter is not set for collection ({0}).{1}.", coll.GetTypeName(), coll.GetName());
             }
 
             return _converter;

@@ -26,7 +26,7 @@ namespace OXM
         {
             if (_list.ContainsKey(name))
             {
-                throw new ParseException("'{0}' has been already mapped.".F(name));
+                throw new MappingException("'{0}' has been already mapped.".F(name));
             }
             _list.Add(name, map);
         }
@@ -49,12 +49,12 @@ namespace OXM
                     string orderList = order.Aggregate((item, next) => item = item + "," + next);
                     if (listTypeName.Contains("Attribute"))
                     {
-                        throw new ParseException("Mapped attribute names are different than the attribute order names in '{0}'. Make sure they are identical.\r\nMapped: {1}\r\nOrdered: {2}"
+                        throw new MappingException("Mapped attribute names are different than the attribute order names in '{0}'. Make sure they are identical.\r\nMapped: {1}\r\nOrdered: {2}"
                            , _declaringType, mappedList, orderList);
                     }
                     else
                     {
-                        throw new ParseException("Mapped element names are different than the element order names in '{0}'. Make sure they are identical.\r\nMapped: {1}\r\nOrdered: {2}"
+                        throw new MappingException("Mapped element names are different than the element order names in '{0}'. Make sure they are identical.\r\nMapped: {1}\r\nOrdered: {2}"
                             , _declaringType , mappedList, orderList);
                     }
                 }

@@ -15,6 +15,9 @@ namespace SDMX.Parsers
 
         public HierarchicalCodeListMap()
         {
+            AttributesOrder("id", "agencyID", "version", "uri", "isExternalReference", "isFinal", "validFrom", "validTo");
+            ElementsOrder("Name", "Description", "CodelistRef", "Hierarchy", "Annotations");
+
             MapCollection(o => o.CodeListRefs).ToElement("CodelistRef", false)
                 .Set(v => hcl.AddCodeList(v))
                 .ClassMap(() => new CodeListRefMap());

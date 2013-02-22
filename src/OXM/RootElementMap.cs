@@ -43,7 +43,12 @@ namespace OXM
             writer.WriteEndElement();
         }
 
-        public new T ReadXml(XmlReader reader)
+        public T ReadXml(XmlReader reader)
+        {
+            return ReadXml(reader, null);
+        }
+
+        public new T ReadXml(XmlReader reader, Action<ValidationMessage> validationAction)
         {   
             if (reader.ReadState == ReadState.Initial)
             {
@@ -57,13 +62,13 @@ namespace OXM
 
             if (!reader.NameEquals(Name))
             {
-                ParseException.Throw(reader, typeof(T), "The first element name is '{0}' and the expected name is '{1}'."
+                Helper.Notify(validationAction, reader, typeof(T), "The first element name is '{0}' and the expected name is '{1}'."
                     , string.IsNullOrEmpty(reader.NamespaceURI) ? 
                         reader.Name : string.Format("{0}:{1}", reader.NamespaceURI, reader.Name)
                     , Name);
             }
 
-            return base.ReadXml(reader);
+            return base.ReadXml(reader, validationAction);
         }
     }
 }

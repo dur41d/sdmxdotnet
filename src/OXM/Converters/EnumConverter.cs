@@ -6,39 +6,47 @@ namespace OXM
 {
     public class EnumConverter<T> : SimpleTypeConverter<T>
     {
-        public override string ToXml(T value)
+        public override bool TrySerialize(T obj, out string s)
         {
-            if ((object)value == null)
-                return null;
+            if ((object)obj == null)
+            {
+                s = null;
+                return false;
+            }
 
-            return value.ToString();
+            s = obj.ToString();
+            return true;
         }
 
-        public override T ToObj(string value)
+        public override bool TryParse(string s, out T obj)
         {
             Type enumType = typeof(T);
             if (enumType.IsGenericType && enumType.GetGenericTypeDefinition().Equals(typeof(Nullable<>)))
             {
                 var nonNullableType = Nullable.GetUnderlyingType(enumType);
-                return (T)Enum.Parse(nonNullableType, value);
+                if (Enum.IsDefined(nonNullableType, s))
+                {
+                    obj = (T)Enum.Parse(nonNullableType, s);
+                    return true;
+                }
+                else
+                {
+                    obj = default(T);
+                    return false;
+                }
             }
             else
             {
-                return (T)Enum.Parse(typeof(T), value);
-            }
-        }
-
-        public override bool CanConvertToObj(string s)
-        {            
-            Type enumType = typeof(T);
-            if (enumType.IsGenericType && enumType.GetGenericTypeDefinition().Equals(typeof(Nullable<>)))
-            {
-                var nonNullableType = Nullable.GetUnderlyingType(enumType);
-                return Enum.IsDefined(nonNullableType, s);
-            }
-            else
-            {
-                return Enum.IsDefined(typeof(T), s);
+                if (Enum.IsDefined(enumType, s))
+                {
+                    obj = (T)Enum.Parse(enumType, s);
+                    return true;
+                }
+                else
+                {
+                    obj = default(T);
+                    return false;
+                }
             }
         }
     }

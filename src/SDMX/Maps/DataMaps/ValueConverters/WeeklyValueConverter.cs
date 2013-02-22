@@ -7,20 +7,15 @@ namespace SDMX.Parsers
 {
     internal class WeeklyValueConverter : SimpleTypeConverter<Weekly>
     {
-        public override string ToXml(Weekly value)
+        public override bool TrySerialize(Weekly obj, out string s)
         {
-            return value.ToString();
+            s = obj.ToString();
+            return true;
         }
 
-        public override Weekly ToObj(string value)
+        public override bool TryParse(string s, out Weekly obj)
         {
-            return Weekly.Parse(value);
-        }
-
-        public override bool CanConvertToObj(string value)
-        {
-            Weekly result;
-            return Weekly.TryParse(value, out result);
+            return Weekly.TryParse(s, out obj);
         }
     }
 }

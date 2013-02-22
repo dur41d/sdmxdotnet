@@ -29,12 +29,13 @@ namespace SDMX.Parsers
             registry.Add(TimePeriodType.DateTime, new DateTimeConverter());
         }
 
-
-        public override string ToXml(TimePeriod value)
+        public override bool TrySerialize(TimePeriod value, out string s)
         {
+            s = null;
+
             if (!registry.ContainsKey(value.Type))
             {
-                throw new SDMXException("Cannot serialize type: {0}.", value.Type);
+                return false;
             }
 
             var converter = registry[value.Type];
@@ -42,59 +43,75 @@ namespace SDMX.Parsers
             if (converter is YearConverter)
             {
                 var dt = new DateTimeOffset(value.Year, 1, 1, 0, 0, 0, value.Offset);
-                return converter.ToXml(dt);
+                return converter.TrySerialize(dt, out s);
             }
             else if (converter is YearMonthConverter)
             {
                 var dt = new DateTimeOffset(value.Year, value.Month, 1, 0, 0, 0, value.Offset);
-                return converter.ToXml(dt);
+                return converter.TrySerialize(dt, out s);
             }
-            if (converter is DateConverter  || converter is DateTimeConverter)
+            if (converter is DateConverter || converter is DateTimeConverter)
             {
-                return converter.ToXml(value.DateTimeOffset);
+                return converter.TrySerialize(value.DateTimeOffset, out s);
             }
             else
             {
-                return value.ToString();
+                s = value.ToString();
+                return true;
             }
         }
 
-        public override TimePeriod ToObj(string s)
+        public override bool TryParse(string s, out TimePeriod obj)
         {
             foreach (var converter in registry.Values)
             {
-                if (converter.CanConvertToObj(s))
+                object result = null;
+                if (converter.TryParse(s, out result))
                 {
                     if (converter is WeeklyValueConverter)
-                        return TimePeriod.FromWeekly((Weekly)converter.ToObj(s));
+                    {
+                        obj = TimePeriod.FromWeekly((Weekly)result);
+                        return true;
+                    }
                     else if (converter is QuarterlyValueConverter)
-                        return TimePeriod.FromQuarterly((Quarterly)converter.ToObj(s));
+                    {
+                        obj = TimePeriod.FromQuarterly((Quarterly)result);
+                        return true;
+                    }
                     else if (converter is BiannualValueConverter)
-                        return TimePeriod.FromBiannual((Biannual)converter.ToObj(s));
+                    {
+                        obj = TimePeriod.FromBiannual((Biannual)result);
+                        return true;
+                    }
                     else if (converter is TriannaulValueConverter)
-                        return TimePeriod.FromTriannual((Triannual)converter.ToObj(s));
+                    {
+                        obj = TimePeriod.FromTriannual((Triannual)result);
+                        return true;
+                    }
                     else if (converter is YearConverter)
-                        return TimePeriod.FromYear((DateTimeOffset)converter.ToObj(s));
+                    {
+                        obj = TimePeriod.FromYear((DateTimeOffset)result);
+                        return true;
+                    }
                     else if (converter is YearMonthConverter)
-                        return TimePeriod.FromYearMonth((DateTimeOffset)converter.ToObj(s));
+                    {
+                        obj = TimePeriod.FromYearMonth((DateTimeOffset)result);
+                        return true;
+                    }
                     else if (converter is DateConverter)
-                        return TimePeriod.FromDate((DateTimeOffset)converter.ToObj(s));
+                    {
+                        obj = TimePeriod.FromDate((DateTimeOffset)result);
+                        return true;
+                    }
                     else if (converter is DateTimeConverter)
-                        return TimePeriod.FromDateTime((DateTimeOffset)converter.ToObj(s));
+                    {
+                        obj = TimePeriod.FromDateTime((DateTimeOffset)result);
+                        return true;
+                    }
                 }
             }
 
-            throw new SDMXException("Invalid time period value '{0}'.", s);
-        }
-
-        public override bool CanConvertToObj(string value)
-        {
-            foreach (var converter in registry.Values)
-            {
-                if (converter.CanConvertToObj(value))
-                    return true;
-            }
-
+            obj = null;
             return false;
         }
     }

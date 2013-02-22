@@ -10,23 +10,20 @@ namespace OXM
         private const string p = @"^(?<Sign>[-|+]?)(?<Year>\d{4})-(?<Month>\d{1,2})-(?<Day>\d{1,2})T(?<Hour>\d{2}):(?<Minute>\d{2}):(?<Second>\d{2})(?<Ticks>(?:\.\d+)?)(?<Z>Z)?(?:(?<ZoneSign>[+-])(?<ZoneHour>\d{2}):(?<ZoneMinute>\d{2}))?$";
         static Regex pattern = new Regex(p, RegexOptions.Compiled);
 
-        public override bool CanConvertToObj(string value)
+        public override bool TrySerialize(DateTimeOffset value, out string s)
         {
-            return pattern.IsMatch(value);
-        }
-
-        public override string ToXml(DateTimeOffset value)
-        {   
-            return value.Offset.Ticks == 0 ? 
+            s = value.Offset.Ticks == 0 ?
                 value.ToString("yyyy-MM-ddTHH:mm:ss.FFFFFFF") : value.ToString("yyyy-MM-ddTHH:mm:ss.FFFFFFFK");
+            return true;
         }
 
-        public override DateTimeOffset ToObj(string value)
+        public override bool TryParse(string value, out DateTimeOffset obj)
         {
             var match = pattern.Match(value);
             if (!match.Success)
             {
-                throw new ParseException("Invalid date value '{0}'.", value);
+                obj = new DateTimeOffset();
+                return false;
             }
             int year = int.Parse(match.Groups["Year"].Value);
             int month = int.Parse(match.Groups["Month"].Value);
@@ -40,7 +37,8 @@ namespace OXM
             if (ticks != "")
                 millisecond = int.Parse(ticks.Substring(1));
             TimeSpan offset = ParseTimeOffset(match);
-            return new DateTimeOffset(year, month, day, hour, minute, second, millisecond, offset);
+            obj = new DateTimeOffset(year, month, day, hour, minute, second, millisecond, offset);
+            return true;
         }
 
         public static TimeSpan ParseTimeOffset(Match match)
@@ -64,11 +62,12 @@ namespace OXM
 
     public class NullableDateTimeConverter : NullabeConverter<DateTimeOffset>
     {
+        DateTimeConverter _converter = new DateTimeConverter();
         protected override SimpleTypeConverter<DateTimeOffset> Converter
         {
             get
             {
-                return new DateTimeConverter();
+                return _converter;
             }
         }
     }

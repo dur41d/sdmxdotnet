@@ -1,12 +1,7 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Xml.Linq;
-using System.Linq.Expressions;
-using System.Reflection;
-using Common;
 using System.Xml;
+using System.Xml.Linq;
+using Common;
 
 namespace OXM
 {
@@ -43,31 +38,56 @@ namespace OXM
             }
         }
 
-        public void ReadXml(XmlReader reader)
+        public void ReadXml(XmlReader reader, Action<ValidationMessage> validationAction)
         {
-            string value = reader.GetAttribute(_name.LocalName);
+            string xmlValue = reader.GetAttribute(_name.LocalName);
 
-            if (value == null)
+            if (xmlValue == null)
             {
-                value = reader.GetAttribute(_name.LocalName, _name.NamespaceName);
+                xmlValue = reader.GetAttribute(_name.LocalName, _name.NamespaceName);
             }
 
-            if (value == null)
+            if (xmlValue == null)
             {
                 if (_required)
                 {
-                    ParseException.Throw(reader, typeof(T), "Attribute '{0}' for element '{1}' is required but was not found.", _name, reader.GetXName());
+                    Helper.Notify(validationAction, reader, typeof(T), "Attribute '{0}' for element '{1}' is required but was not found.", _name, reader.GetXName());
                 }
                 else if (_hasDefault)
                 {
-                    value = _default;
+                    xmlValue = _default;
                 }
             }
 
-            if (value != null)
+            if (xmlValue != null)
             {
-                TProperty property = Converter.ToObj(value);
-                Property.Set(property);
+                TProperty property = default(TProperty);
+                if (Converter.TryParse(xmlValue, out property))
+                {
+                    try
+                    {
+                        Property.Set(property);
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new MappingException(string.Format(
+    @"Mapping  exception while setting property for attribute. Check the mapping class to correct the exception.
+Xml Attribute: '{6}'. 
+Class Map Type: '{0}'.
+Property Type: '{1}'.
+Property Value: '{2}'.
+Inner Exception Message: '{3}'.
+Line Number: '{4}'.
+Line Position: '{5}'.", typeof(T), typeof(TProperty), property, ex.Message,
+                          ((IXmlLineInfo)reader).LineNumber, ((IXmlLineInfo)reader).LinePosition, _name), ex);
+
+                    }
+                }
+                else
+                {
+                    Helper.Notify(validationAction, reader, typeof(T), @"Error converting xml value: '{0}' to type '{1}'.
+Converter: '{2}'.", xmlValue, typeof(TProperty), Converter.GetType());
+                }
             }
         }
 
@@ -80,12 +100,19 @@ namespace OXM
                 // if the attribute is required through an exception otherwise do nothing
                 if (_required)
                 {
-                    throw new ParseException("Attribute '{0}' is required but its value is null.", _name);
+                    throw new SerializationException("Attribute '{0}' is required but its value is null.", _name);
                 }
             }
             else
             {
-                string xmlValue = Converter.ToXml(property);
+                string xmlValue = null;
+                if (!Converter.TrySerialize(property, out xmlValue))
+                {
+                    throw new SerializationException(string.Format(@"Error converting object to xml.
+Object ToString: '{0}'
+Object Type '{1}'
+Converter: '{2}'.", property.ToString(), typeof(TProperty), Converter.GetType()));
+                }
                 
 
                 // write the attribute if it's writeDefault is true or it's required or if it's value
