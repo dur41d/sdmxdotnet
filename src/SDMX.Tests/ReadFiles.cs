@@ -8,7 +8,8 @@ using System.Xml;
 
 namespace SDMX.Tests
 {
-    [TestFixture]    
+    [TestFixture]   
+    [Ignore]
     public class ReadFiles
     {
         /// <summary>

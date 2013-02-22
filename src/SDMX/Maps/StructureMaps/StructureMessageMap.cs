@@ -22,7 +22,7 @@ namespace SDMX.Parsers
             RegisterNamespace("common", Namespaces.Common);
             RegisterNamespace("structure", Namespaces.Structure);
 
-            ElementsOrder("Header", "CodeLists", "HierarchicalCodelists", "Concepts", "KeyFamilies");
+            ElementsOrder("Header", "CodeLists", "Concepts", "KeyFamilies");
 
             Map(o => o.Header).ToElement("Header", true)
                 .Set(v => _message.Header = v)
