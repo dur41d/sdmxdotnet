@@ -45,6 +45,7 @@ namespace SDMX.Parsers
             if (typeof(T) == typeof(TimeDimension) && !(value is TimePeriodTextFormatBase))
             {
                 SignalError("The text format for TimeDimension must be of time specific type (ObservationalTimePeriod, DateTime, Date, etc) but was found to be of type '{0}'.", value.GetType());
+                _component.TextFormat = null;
             }
             else
             {
