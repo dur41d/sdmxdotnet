@@ -90,6 +90,10 @@ namespace SDMX.Tests
             copy.SetAttributeValue("id", "TIME_FORMAT");
             concept.AddAfterSelf(copy);
 
+            // Remove TextFormat="String"
+            var textFormat = dsdDoc.Descendants().Where(i => i.Name.LocalName == "TextFormat" && i.Attribute("textType").Value == "String").First();
+            textFormat.Remove();
+
             StructureMessage dsd = null;
             using (var reader = dsdDoc.CreateReader())
             {
