@@ -80,7 +80,8 @@
     <Compile Include="DataWriterTests.cs" />
     <Compile Include="InternationalTextTests.cs" />
     <Compile Include="KeyFamilyTests.cs" />
-    <Compile Include="ReadFiles.cs" />
+    <Compile Include="BIAccelerator.cs" />
+    <Compile Include="MessageGroupReaderTests.cs" />
     <Compile Include="TestBase.cs" />
     <Compile Include="TextFormatTests.cs" />
     <Compile Include="ValidatorTests.cs" />

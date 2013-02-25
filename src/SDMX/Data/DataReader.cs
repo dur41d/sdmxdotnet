@@ -14,33 +14,23 @@ using OXM;
 
 namespace SDMX
 {
-    public abstract partial class DataReader : IDisposable, IEnumerable<KeyValuePair<string, object>>
+    /// <summary>
+    /// Reads Data messages.
+    /// </summary>
+    public abstract partial class DataReader : ISDMXDataReader
     {
         const string _IsValidColumnName = "IsValid";
         const string _ErrorStringColumnName = "ErrorMessages";
-        /// <summary>
-        /// The key family used by the current reader
-        /// </summary>
+        
         public KeyFamily KeyFamily { get; private set; }
-
-        /// <summary>
-        /// Throw an exception if the reader encounters an error; otherwise, don't throw an exception
-        /// and add the error the the Errors property and set the IsValid to false.
-        /// The default is true.
-        /// </summary>
+                
         public bool ThrowExceptionIfNotValid { get; set; }
 
 
         public bool DetectDuplicateKeys { get; set; }
-
-        /// <summary>
-        /// The inner xml reader used by the reader.
-        /// </summary>
+                
         public XmlReader XmlReader { get; private set; }
 
-        /// <summary>
-        /// The line number at the current reader position.
-        /// </summary>
         public int LineNumber
         {
             get
@@ -49,9 +39,6 @@ namespace SDMX
             }
         }
 
-        /// <summary>
-        /// The line position at the current reader position.
-        /// </summary>
         public int LinePosition
         {
             get
@@ -528,15 +515,14 @@ namespace SDMX
                 throw new ObjectDisposedException("DataReader");
         }
 
-        public IEnumerator<KeyValuePair<string, object>> GetEnumerator()
+        public virtual IEnumerator<KeyValuePair<string, object>> GetEnumerator()
         {
-            foreach (var item in _record)
-                yield return item;
+            return _record.GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return GetEnumerator();
+            return _record.GetEnumerator();
         }
 
         string BuildGroupKey(Group group, Dictionary<string, KeyValuePair<string, object>> values)
@@ -839,27 +825,32 @@ namespace SDMX
             Dispose(false);
         }
 
-        public void Dispose(bool disposing)
+        public virtual void Dispose(bool disposing)
         {
             if (_disposed)
                 return;
 
             if (disposing)
             {
-                if (_table != null) _table.Clear();
-
-
-                _obsValues.Clear();
-                _seriesValues.Clear();
-                _groups.Clear();
-                _record.Clear();
-                _keys.Clear();
+                CleanUpResources();
                 ((IDisposable)XmlReader).Dispose();
             }
 
-            _table = null;
-
             _disposed = true;
+        }
+
+        internal void CleanUpResources()
+        {
+            if (_table != null)
+            {
+                _table.Clear();
+                _table = null;
+            }
+            _obsValues.Clear();
+            _seriesValues.Clear();
+            _groups.Clear();
+            _record.Clear();
+            _keys.Clear();
         }
 
         #endregion        

@@ -1,0 +1,194 @@
+<message:MessageGroup 
+  xmlns="http://www.SDMX.org/resources/SDMXML/schemas/v2_0/generic" 
+  xmlns:common="http://www.SDMX.org/resources/SDMXML/schemas/v2_0/common" 
+  xsi:schemaLocation="http://www.SDMX.org/resources/SDMXML/schemas/v2_0/generic http://www.sdmx.org/docs/2_0/SDMXGenericData.xsd http://www.SDMX.org/resources/SDMXML/schemas/v2_0/message http://www.sdmx.org/docs/2_0/SDMXMessage.xsd" 
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+  xmlns:message="http://www.SDMX.org/resources/SDMXML/schemas/v2_0/message"
+  xmlns:bisc="urn:sdmx:org.sdmx.infomodel.keyfamily.KeyFamily=BIS:EXT_DEBT:compact">
+	<Header xmlns="http://www.SDMX.org/resources/SDMXML/schemas/v2_0/message">
+		<ID>none</ID>
+		<Test>false</Test>
+		<Truncated>false</Truncated>
+		<Prepared>2013-02-22T15:15:21</Prepared>
+		<Sender id="OECD">
+			<Name xml:lang="en">Organisation for Economic Co-operation and Development</Name>
+			<Name xml:lang="fr">Organisation de coopération et de développement économiques</Name>
+		</Sender>
+	</Header>
+  <DataSet>
+    <KeyFamilyRef>BIS_JOINT_DEBT</KeyFamilyRef>
+    <Group type="SiblingGroup">
+      <GroupKey>
+        <Value concept="JD_TYPE" value="P"/>
+        <Value concept="JD_CATEGORY" value="A"/>
+        <Value concept="VIS_CTY" value="MX"/>
+      </GroupKey>
+      <Attributes>
+        <Value concept="AVAILABILITY" value="A"/>
+        <Value concept="DECIMALS" value="2"/>
+        <Value concept="BIS_UNIT" value="USD"/>
+        <Value concept="UNIT_MULT" value="5"/>
+      </Attributes>
+      <Series>
+        <SeriesKey>
+          <Value concept="FREQ" value="M"/>
+          <Value concept="JD_TYPE" value="P"/>
+          <Value concept="JD_CATEGORY" value="A"/>
+          <Value concept="VIS_CTY" value="MX"/>
+        </SeriesKey>
+        <Attributes>
+          <Value concept="COLLECTION" value="B"/>
+          <Value concept="TIME_FORMAT" value="P1M"/>
+        </Attributes>
+        <Obs>
+          <Time>2000-01</Time>
+          <ObsValue  value="3.14"/>
+          <Attributes>
+            <Value concept="OBS_STATUS" value="A"/>
+          </Attributes>
+        </Obs>
+
+        <Obs>
+          <Time>2000-02</Time>
+          <ObsValue  value="3.14"/>
+          <Attributes>
+            <Value concept="OBS_STATUS" value="A"/>
+          </Attributes>
+        </Obs>
+        <Obs>
+          <Time>2000-03</Time>
+          <ObsValue  value="4.29"/>
+          <Attributes>
+            <Value concept="OBS_STATUS" value="A"/>
+          </Attributes>
+        </Obs>
+        <Obs>
+          <Time>2000-04</Time>
+          <ObsValue  value="6.04"/>
+          <Attributes>
+            <Value concept="OBS_STATUS" value="A"/>
+          </Attributes>
+        </Obs>
+        <Obs>
+          <Time>2000-05</Time>
+          <ObsValue  value="5.18"/>
+          <Attributes>
+            <Value concept="OBS_STATUS" value="A"/>
+          </Attributes>
+        </Obs>
+        <Obs>
+          <Time>2000-06</Time>
+          <ObsValue  value="5.07"/>
+          <Attributes>
+            <Value concept="OBS_STATUS" value="A"/>
+          </Attributes>
+        </Obs>
+        <Obs>
+          <Time>2000-07</Time>
+          <ObsValue  value="3.13"/>
+          <Attributes>
+            <Value concept="OBS_STATUS" value="A"/>
+          </Attributes>
+        </Obs>
+        <Obs>
+          <Time>2000-08</Time>
+          <ObsValue  value="1.17"/>
+          <Attributes>
+            <Value concept="OBS_STATUS" value="A"/>
+          </Attributes>
+        </Obs>
+        <Obs>
+          <Time>2000-09</Time>
+          <ObsValue  value="1.14"/>
+          <Attributes>
+            <Value concept="OBS_STATUS" value="A"/>
+          </Attributes>
+        </Obs>
+        <Obs>
+          <Time>2000-10</Time>
+          <ObsValue  value="3.04"/>
+          <Attributes>
+            <Value concept="OBS_STATUS" value="A"/>
+          </Attributes>
+        </Obs>
+        <Obs>
+          <Time>2000-11</Time>
+          <ObsValue  value="1.14"/>
+          <Attributes>
+            <Value concept="OBS_STATUS" value="A"/>
+          </Attributes>
+        </Obs>
+        <Obs>
+          <Time>2000-12</Time>
+          <ObsValue  value="3.24"/>
+          <Attributes>
+            <Value concept="OBS_STATUS" value="A"/>
+          </Attributes>
+        </Obs>
+
+      </Series>
+      <Series>
+        <SeriesKey>
+          <Value concept="FREQ" value="A"/>
+          <Value concept="JD_TYPE" value="P"/>
+          <Value concept="JD_CATEGORY" value="A"/>
+          <Value concept="VIS_CTY" value="MX"/>
+        </SeriesKey>
+        <Attributes>
+          <Value concept="COLLECTION" value="B"/>
+          <Value concept="TIME_FORMAT" value="P1Y"/>
+        </Attributes>
+        <Obs>
+          <Time>2000-01</Time>
+          <ObsValue  value="3.14"/>
+          <Attributes>
+            <Value concept="OBS_STATUS" value="A"/>
+          </Attributes>
+        </Obs>
+      </Series>
+
+
+    </Group>
+  </DataSet>
+  <bisc:DataSet>
+    <bisc:SiblingGroup  VIS_CTY="MX" JD_TYPE="P" JD_CATEGORY="A" AVAILABILITY="A" DECIMALS="2" BIS_UNIT="USD" UNIT_MULT="5"/>
+    <bisc:SiblingGroup VIS_CTY="MX" JD_TYPE="P" JD_CATEGORY="B" AVAILABILITY="A" DECIMALS="2" BIS_UNIT="USD" UNIT_MULT="5"/>
+    <bisc:Series FREQ="M" COLLECTION="B" TIME_FORMAT="P1M" VIS_CTY="MX" JD_TYPE="P" JD_CATEGORY="A" >
+      <!-- TIME_PERIOD is renamed to TIME because that is the the name of the time dimension in the StructureSample.xml
+            and if the scheme is regenarated from the StructureToCompact.xsl it would be TIME and not TimePeriod-->
+      <bisc:Obs TIME="2000-01" OBS_VALUE="3.14" OBS_STATUS="A"/>
+      <bisc:Obs TIME="2001-02" OBS_VALUE="2.29" OBS_STATUS="A"/>
+      <bisc:Obs TIME="2000-03" OBS_VALUE="3.14" OBS_STATUS="A"/>
+      <bisc:Obs TIME="2000-04" OBS_VALUE="5.24" OBS_STATUS="A"/>
+      <bisc:Obs TIME="2000-05" OBS_VALUE="3.14" OBS_STATUS="A"/>
+      <bisc:Obs TIME="2000-06" OBS_VALUE="3.78" OBS_STATUS="A"/>
+      <bisc:Obs TIME="2000-07" OBS_VALUE="3.65" OBS_STATUS="A"/>
+      <bisc:Obs TIME="2000-08" OBS_VALUE="2.37" OBS_STATUS="A"/>
+      <bisc:Obs TIME="2000-09" OBS_VALUE="3.14" OBS_STATUS="A"/>
+      <bisc:Obs TIME="2000-10" OBS_VALUE="3.17" OBS_STATUS="A"/>
+      <bisc:Obs TIME="2000-11" OBS_VALUE="3.34" OBS_STATUS="A"/>
+      <bisc:Obs TIME="2000-12" OBS_VALUE="1.21" OBS_STATUS="A"/>
+    </bisc:Series>
+    <bisc:Series FREQ="A" COLLECTION="B" TIME_FORMAT="P1Y" VIS_CTY="MX" JD_TYPE="P" JD_CATEGORY="A">
+      <bisc:Obs TIME="2000-01" OBS_VALUE="3.14" OBS_STATUS="A"/>
+    </bisc:Series>
+    <bisc:Series FREQ="M" COLLECTION="B" TIME_FORMAT="P1M" VIS_CTY="MX" JD_TYPE="P" JD_CATEGORY="B">
+      <bisc:Obs TIME="2000-01" OBS_VALUE="5.14" OBS_STATUS="A"/>
+      <bisc:Obs TIME="2001-02" OBS_VALUE="3.29" OBS_STATUS="A"/>
+      <bisc:Obs TIME="2000-03" OBS_VALUE="6.14" OBS_STATUS="A"/>
+      <bisc:Obs TIME="2000-04" OBS_VALUE="2.24" OBS_STATUS="A"/>
+      <bisc:Obs TIME="2000-05" OBS_VALUE="3.14" OBS_STATUS="A"/>
+      <bisc:Obs TIME="2000-06" OBS_VALUE="7.78" OBS_STATUS="A"/>
+      <bisc:Obs TIME="2000-07" OBS_VALUE="3.65" OBS_STATUS="A"/>
+      <bisc:Obs TIME="2000-08" OBS_VALUE="5.37" OBS_STATUS="A"/>
+      <bisc:Obs TIME="2000-09" OBS_VALUE="3.14" OBS_STATUS="A"/>
+      <bisc:Obs TIME="2000-10" OBS_VALUE="1.17" OBS_STATUS="A"/>
+      <bisc:Obs TIME="2000-11" OBS_VALUE="4.34" OBS_STATUS="A"/>
+      <bisc:Obs TIME="2000-12" OBS_VALUE="1.21" OBS_STATUS="A"/>
+    </bisc:Series>
+    <bisc:Series FREQ="A" COLLECTION="B" TIME_FORMAT="P1Y" VIS_CTY="MX" JD_TYPE="P" JD_CATEGORY="B" >
+      <bisc:Obs TIME="2000-01" OBS_VALUE="4.14" OBS_STATUS="A"/>
+    </bisc:Series>
+  </bisc:DataSet>
+  
+</message:MessageGroup>

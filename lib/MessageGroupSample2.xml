@@ -1,0 +1,228 @@
+<message:MessageGroup xmlns="http://www.SDMX.org/resources/SDMXML/schemas/v2_0/generic" xmlns:common="http://www.SDMX.org/resources/SDMXML/schemas/v2_0/common" xsi:schemaLocation="http://www.SDMX.org/resources/SDMXML/schemas/v2_0/generic http://www.sdmx.org/docs/2_0/SDMXGenericData.xsd http://www.SDMX.org/resources/SDMXML/schemas/v2_0/message http://www.sdmx.org/docs/2_0/SDMXMessage.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:message="http://www.SDMX.org/resources/SDMXML/schemas/v2_0/message">
+	<Header xmlns="http://www.SDMX.org/resources/SDMXML/schemas/v2_0/message">
+		<ID>none</ID>
+		<Test>false</Test>
+		<Truncated>false</Truncated>
+		<Prepared>2013-02-22T15:15:21</Prepared>
+		<Sender id="OECD">
+			<Name xml:lang="en">Organisation for Economic Co-operation and Development</Name>
+			<Name xml:lang="fr">Organisation de coopération et de développement économiques</Name>
+		</Sender>
+	</Header>
+	<DataSet keyFamilyURI="http://uis-srv-stat1t/RestSDMX/sdmx.svc/GetKeyFamily/ST_EDUC/OECD/?resolveRef=true">
+		<KeyFamilyRef>ST_EDUC</KeyFamilyRef>
+		<Series>
+			<SeriesKey>
+				<Value concept="INDICATOR" value="NEFSF" />
+				<Value concept="COUNTRY" value="DZA" />
+			</SeriesKey>
+			<Attributes>
+				<Value concept="TIME_FORMAT" value="P1Y" />
+			</Attributes>
+			<Obs>
+				<Time>2010</Time>
+				<ObsValue value="96.37" />
+			</Obs>
+		</Series>
+		<Series>
+			<SeriesKey>
+				<Value concept="INDICATOR" value="NEFSF" />
+				<Value concept="COUNTRY" value="JOR" />
+			</SeriesKey>
+			<Attributes>
+				<Value concept="TIME_FORMAT" value="P1Y" />
+			</Attributes>
+			<Obs>
+				<Time>2010</Time>
+				<ObsValue value="90.67" />
+			</Obs>
+		</Series>
+		<Series>
+			<SeriesKey>
+				<Value concept="INDICATOR" value="NEFSF" />
+				<Value concept="COUNTRY" value="LBN" />
+			</SeriesKey>
+			<Attributes>
+				<Value concept="TIME_FORMAT" value="P1Y" />
+			</Attributes>
+			<Obs>
+				<Time>2010</Time>
+				<ObsValue value="92.94" />
+			</Obs>
+		</Series>
+		<Series>
+			<SeriesKey>
+				<Value concept="INDICATOR" value="NEFSF" />
+				<Value concept="COUNTRY" value="MRT" />
+			</SeriesKey>
+			<Attributes>
+				<Value concept="TIME_FORMAT" value="P1Y" />
+			</Attributes>
+			<Obs>
+				<Time>2010</Time>
+				<ObsValue value="76" />
+			</Obs>
+		</Series>
+		<Series>
+			<SeriesKey>
+				<Value concept="INDICATOR" value="NEFSF" />
+				<Value concept="COUNTRY" value="MAR" />
+			</SeriesKey>
+			<Attributes>
+				<Value concept="TIME_FORMAT" value="P1Y" />
+			</Attributes>
+			<Obs>
+				<Time>2010</Time>
+				<ObsValue value="93.29" />
+			</Obs>
+		</Series>
+		<Series>
+			<SeriesKey>
+				<Value concept="INDICATOR" value="NEFSF" />
+				<Value concept="COUNTRY" value="PSE" />
+			</SeriesKey>
+			<Attributes>
+				<Value concept="TIME_FORMAT" value="P1Y" />
+			</Attributes>
+			<Obs>
+				<Time>2010</Time>
+				<ObsValue value="88.49" />
+			</Obs>
+		</Series>
+		<Series>
+			<SeriesKey>
+				<Value concept="INDICATOR" value="NEFSF" />
+				<Value concept="COUNTRY" value="QAT" />
+			</SeriesKey>
+			<Attributes>
+				<Value concept="TIME_FORMAT" value="P1Y" />
+			</Attributes>
+			<Obs>
+				<Time>2010</Time>
+				<ObsValue value="96.58" />
+			</Obs>
+		</Series>
+		<Series>
+			<SeriesKey>
+				<Value concept="INDICATOR" value="NEFSF" />
+				<Value concept="COUNTRY" value="YEM" />
+			</SeriesKey>
+			<Attributes>
+				<Value concept="TIME_FORMAT" value="P1Y" />
+			</Attributes>
+			<Obs>
+				<Time>2010</Time>
+				<ObsValue value="70.49" />
+			</Obs>
+		</Series>
+		<Annotations />
+	</DataSet>
+  <DataSet keyFamilyURI="http://uis-srv-stat1t/RestSDMX/sdmx.svc/GetKeyFamily/ST_EDUC/OECD/?resolveRef=true">
+		<KeyFamilyRef>ST_EDUC</KeyFamilyRef>
+		<Series>
+			<SeriesKey>
+				<Value concept="INDICATOR" value="NEFSF" />
+				<Value concept="COUNTRY" value="DZA" />
+			</SeriesKey>
+			<Attributes>
+				<Value concept="TIME_FORMAT" value="P1Y" />
+			</Attributes>
+			<Obs>
+				<Time>2010</Time>
+				<ObsValue value="96.37" />
+			</Obs>
+		</Series>
+		<Series>
+			<SeriesKey>
+				<Value concept="INDICATOR" value="NEFSF" />
+				<Value concept="COUNTRY" value="JOR" />
+			</SeriesKey>
+			<Attributes>
+				<Value concept="TIME_FORMAT" value="P1Y" />
+			</Attributes>
+			<Obs>
+				<Time>2010</Time>
+				<ObsValue value="90.67" />
+			</Obs>
+		</Series>
+		<Series>
+			<SeriesKey>
+				<Value concept="INDICATOR" value="NEFSF" />
+				<Value concept="COUNTRY" value="LBN" />
+			</SeriesKey>
+			<Attributes>
+				<Value concept="TIME_FORMAT" value="P1Y" />
+			</Attributes>
+			<Obs>
+				<Time>2010</Time>
+				<ObsValue value="92.94" />
+			</Obs>
+		</Series>
+		<Series>
+			<SeriesKey>
+				<Value concept="INDICATOR" value="NEFSF" />
+				<Value concept="COUNTRY" value="MRT" />
+			</SeriesKey>
+			<Attributes>
+				<Value concept="TIME_FORMAT" value="P1Y" />
+			</Attributes>
+			<Obs>
+				<Time>2010</Time>
+				<ObsValue value="76" />
+			</Obs>
+		</Series>
+		<Series>
+			<SeriesKey>
+				<Value concept="INDICATOR" value="NEFSF" />
+				<Value concept="COUNTRY" value="MAR" />
+			</SeriesKey>
+			<Attributes>
+				<Value concept="TIME_FORMAT" value="P1Y" />
+			</Attributes>
+			<Obs>
+				<Time>2010</Time>
+				<ObsValue value="93.29" />
+			</Obs>
+		</Series>
+		<Series>
+			<SeriesKey>
+				<Value concept="INDICATOR" value="NEFSF" />
+				<Value concept="COUNTRY" value="PSE" />
+			</SeriesKey>
+			<Attributes>
+				<Value concept="TIME_FORMAT" value="P1Y" />
+			</Attributes>
+			<Obs>
+				<Time>2010</Time>
+				<ObsValue value="88.49" />
+			</Obs>
+		</Series>
+		<Series>
+			<SeriesKey>
+				<Value concept="INDICATOR" value="NEFSF" />
+				<Value concept="COUNTRY" value="QAT" />
+			</SeriesKey>
+			<Attributes>
+				<Value concept="TIME_FORMAT" value="P1Y" />
+			</Attributes>
+			<Obs>
+				<Time>2010</Time>
+				<ObsValue value="96.58" />
+			</Obs>
+		</Series>
+		<Series>
+			<SeriesKey>
+				<Value concept="INDICATOR" value="NEFSF" />
+				<Value concept="COUNTRY" value="YEM" />
+			</SeriesKey>
+			<Attributes>
+				<Value concept="TIME_FORMAT" value="P1Y" />
+			</Attributes>
+			<Obs>
+				<Time>2010</Time>
+				<ObsValue value="70.49" />
+			</Obs>
+		</Series>
+		<Annotations />
+	</DataSet>
+</message:MessageGroup>

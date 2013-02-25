@@ -14,7 +14,7 @@ namespace SDMX
         {
             CheckDisposed();
 
-            while (XmlReader.Read())
+            while (XmlReader.Read() && !(XmlReader.LocalName == "DataSet" && !XmlReader.IsStartElement()))
             {
                 if (XmlReader.LocalName == "Group" && XmlReader.IsStartElement())
                 {                    

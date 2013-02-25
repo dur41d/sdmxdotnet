@@ -1,11 +1,11 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 
 namespace SDMX
 {
-    public partial class DataReader
+    public partial class MessageGroupReader
     {
         void IDataReader.Close()
         {
@@ -14,12 +14,12 @@ namespace SDMX
 
         int IDataReader.Depth
         {
-            get { return 0; }
+            get { return ((IDataReader)_reader).Depth; }
         }
 
         DataTable IDataReader.GetSchemaTable()
         {
-            return GetTable().Clone();
+            return ((IDataReader)_reader).GetSchemaTable();
         }
 
         bool IDataReader.IsClosed
@@ -39,7 +39,7 @@ namespace SDMX
 
         int IDataReader.RecordsAffected
         {
-            get { return -1; }
+            get { return ((IDataReader)_reader).RecordsAffected; }
         }
 
         void IDisposable.Dispose()
@@ -49,32 +49,32 @@ namespace SDMX
 
         int IDataRecord.FieldCount
         {
-            get { return GetTable().Columns.Count; }
+            get { return ((IDataReader)_reader).FieldCount; }
         }
 
         bool IDataRecord.GetBoolean(int i)
         {
-            return (bool)_record[GetTable().Columns[i].ColumnName];
+            return ((IDataReader)_reader).GetBoolean(i);
         }
 
         byte IDataRecord.GetByte(int i)
         {
-            return (byte)_record[GetTable().Columns[i].ColumnName];
+            return ((IDataReader)_reader).GetByte(i);
         }
 
         long IDataRecord.GetBytes(int i, long fieldOffset, byte[] buffer, int bufferoffset, int length)
         {
-            throw new NotImplementedException();
+            return ((IDataReader)_reader).GetBytes(i, fieldOffset, buffer, bufferoffset, length);
         }
 
         char IDataRecord.GetChar(int i)
         {
-            return (char)_record[GetTable().Columns[i].ColumnName];
+            return ((IDataReader)_reader).GetChar(i);
         }
 
         long IDataRecord.GetChars(int i, long fieldoffset, char[] buffer, int bufferoffset, int length)
         {
-            throw new NotImplementedException();
+            return ((IDataReader)_reader).GetChars(i, fieldoffset, buffer, bufferoffset, length);
         }
 
         IDataReader IDataRecord.GetData(int i)
@@ -84,111 +84,92 @@ namespace SDMX
 
         string IDataRecord.GetDataTypeName(int i)
         {
-            return GetTable().Columns[i].DataType.Name;
+            return ((IDataReader)_reader).GetDataTypeName(i);
         }
 
         DateTime IDataRecord.GetDateTime(int i)
         {
-            return (DateTime)_record[GetTable().Columns[i].ColumnName];
+            return ((IDataReader)_reader).GetDateTime(i);
         }
 
         decimal IDataRecord.GetDecimal(int i)
         {
-            return (decimal)_record[GetTable().Columns[i].ColumnName];
+            return ((IDataReader)_reader).GetDecimal(i);
         }
 
         double IDataRecord.GetDouble(int i)
         {
-            return (double)_record[GetTable().Columns[i].ColumnName];
+            return ((IDataReader)_reader).GetDouble(i);
         }
 
         Type IDataRecord.GetFieldType(int i)
         {
-            return GetTable().Columns[i].DataType;
+            return ((IDataReader)_reader).GetFieldType(i);
         }
 
         float IDataRecord.GetFloat(int i)
         {
-            return (float)_record[GetTable().Columns[i].ColumnName];
+            return ((IDataReader)_reader).GetFloat(i);
         }
 
         Guid IDataRecord.GetGuid(int i)
         {
-            return (Guid)_record[GetTable().Columns[i].ColumnName];
+            return ((IDataReader)_reader).GetGuid(i);
         }
 
         short IDataRecord.GetInt16(int i)
         {
-            return (short)_record[GetTable().Columns[i].ColumnName];
+            return ((IDataReader)_reader).GetInt16(i);
         }
 
         int IDataRecord.GetInt32(int i)
         {
-            return (int)_record[GetTable().Columns[i].ColumnName];
+            return ((IDataReader)_reader).GetInt32(i);
         }
 
         long IDataRecord.GetInt64(int i)
         {
-            return (long)_record[GetTable().Columns[i].ColumnName];
+            return ((IDataReader)_reader).GetInt64(i);
         }
 
         string IDataRecord.GetName(int i)
         {
-            return GetTable().Columns[i].ColumnName;
+            return ((IDataReader)_reader).GetName(i);
         }
 
         int IDataRecord.GetOrdinal(string name)
         {
-            return GetTable().Columns[name].Ordinal;
+            return ((IDataReader)_reader).GetOrdinal(name);
         }
 
         string IDataRecord.GetString(int i)
         {
-            return (string)_record[GetTable().Columns[i].ColumnName];
+            return ((IDataReader)_reader).GetString(i);
         }
 
         object IDataRecord.GetValue(int i)
         {
-            string name = GetTable().Columns[i].ColumnName;
-            try
-            {
-                return _record[name];
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-                return null;
-            }
+            return ((IDataReader)_reader).GetValue(i);
         }
 
         int IDataRecord.GetValues(object[] values)
         {
-            int count = values.Length < _record.Count ? values.Length : _record.Count;
-
-            int counter = 0;
-            for (int i = 0; i < count; i++)
-            {
-                string name = GetTable().Columns[i].ColumnName;
-                values[i] = _record[name];
-                counter++;
-            }
-
-            return counter;
+            return ((IDataReader)_reader).GetValues(values);
         }
 
         bool IDataRecord.IsDBNull(int i)
         {
-            return _record[GetTable().Columns[i].ColumnName] == DBNull.Value;
+            return ((IDataReader)_reader).IsDBNull(i);
         }
 
         object IDataRecord.this[string name]
         {
-            get { return this[name]; }
+            get { return ((IDataReader)_reader)[name]; }
         }
 
         object IDataRecord.this[int i]
         {
-            get { return this[GetTable().Columns[i].ColumnName]; }
+            get { return ((IDataReader)_reader)[i]; }
         }
     }
 }
