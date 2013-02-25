@@ -6,7 +6,7 @@ using NUnit.Framework;
 namespace SDMX.Tests
 {
     [TestFixture]   
-    [Ignore]
+    //[Ignore]
     public class BIAccelerator
     {
         /// <summary>
@@ -14,7 +14,7 @@ namespace SDMX.Tests
         /// Read the dsd and fix in memory and read the file successfully
         /// </summary>
         [Test]        
-        public void Fix_dsd_add_time_format()
+        public void Fix_dsd()
         {
             string dsdPath = @"C:\Temp\ei_bsin_m.sdmx\ei_bsin_m.dsd.xml";
             string dataPath = @"C:\Temp\ei_bsin_m.sdmx\ei_bsin_m.sdmx.xml";
@@ -29,12 +29,15 @@ namespace SDMX.Tests
             copy.SetAttributeValue("id", "TIME_FORMAT");
             concept.AddAfterSelf(copy);
 
+            // Remove TextFormat="String"
+            var textFormat = dsdDoc.Descendants().Where(i => i.Name.LocalName == "TextFormat" && i.Attribute("textType").Value == "String").First();
+            textFormat.Remove();
+
             
             StructureMessage dsd = null;
             using (var reader = dsdDoc.CreateReader())
             {
-                // add Console.WriteLine action to avoid throwing excpetions
-                // Note: no need to remove the TextFormat="String" because the library ignores it
+                // add Console.WriteLine action to avoid throwing excpetions                
                 dsd = StructureMessage.Read(reader, v => Console.WriteLine(v.Message));
             }
 
