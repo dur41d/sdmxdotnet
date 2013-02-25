@@ -1,10 +1,10 @@
 cd src\Common
-msbuild
+msbuild /p:Configuration=Release
 cd ..\..\src\OXM
-msbuild
+msbuild /p:Configuration=Release
 cd ..\..\src\SDMX
-msbuild
+msbuild /p:Configuration=Release
 cd ..\..
 
 mkdir build
-lib\ilmerge  /target:library /internalize /log:output.txt /out:build\SDMX.dll src\SDMX\bin\Debug\SDMX.dll src\SDMX\bin\Debug\OXM.dll src\SDMX\bin\Debug\Common.dll
+lib\ilmerge  /target:library /internalize /log:output.txt /out:build\SDMX.dll src\SDMX\bin\Release\SDMX.dll src\SDMX\bin\Release\OXM.dll src\SDMX\bin\Release\Common.dll

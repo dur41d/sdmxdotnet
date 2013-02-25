@@ -6,9 +6,9 @@ using OXM;
 using Common;
 using System.Xml.Linq;
 
-namespace SDMX.Parsers
+namespace SDMX
 {
-    internal static class Namespaces
+    public static class Namespaces
     {
         public static readonly XNamespace Message = "http://www.SDMX.org/resources/SDMXML/schemas/v2_0/message";
         public static readonly XNamespace Common = "http://www.SDMX.org/resources/SDMXML/schemas/v2_0/common";

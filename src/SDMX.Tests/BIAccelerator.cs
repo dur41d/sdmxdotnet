@@ -1,16 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using NUnit.Framework;
 using System.Xml.Linq;
-using System.Xml;
+using NUnit.Framework;
 
 namespace SDMX.Tests
 {
     [TestFixture]   
     [Ignore]
-    public class ReadFiles
+    public class BIAccelerator
     {
         /// <summary>
         /// Issue# 1&2
@@ -203,7 +200,34 @@ namespace SDMX.Tests
             }
         }
 
-        void WriteErrors(DataReader reader)
+        [Test]
+        public void WebService()
+        {
+            string dataPath = Utility.GetPath("lib\\MessageGroupSample3.xml");
+
+            string dsdPath = Utility.GetPath("lib\\StructureSample.xml");
+            var dsd = StructureMessage.Load(dsdPath);
+            var keyFamily = dsd.KeyFamilies[0];
+
+            int counter = 0;
+            using (var reader = new MessageGroupReader(dataPath, keyFamily))
+            {
+                var header = reader.ReadHeader();
+
+                Assert.IsNotNull(header);
+
+                while (reader.Read())
+                {
+                    Assert.AreEqual(17, reader.Count());
+                    WriteRecord(reader);
+                    counter++;
+                }
+            }
+
+            Assert.AreEqual(13, counter);
+        }
+
+        void WriteErrors(ISDMXDataReader reader)
         {
             foreach (var error in reader.Errors)
             {
@@ -211,5 +235,13 @@ namespace SDMX.Tests
             }
         }
 
+        void WriteRecord(ISDMXDataReader reader)
+        {
+            foreach (var item in reader)
+            {
+                Console.Write("{0}={1},", item.Key, item.Value);
+            }
+            Console.WriteLine();
+        }
     }
 }

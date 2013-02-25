@@ -61,6 +61,9 @@
     <Compile Include="Data\Error.cs" />
     <Compile Include="Data\GenericDataWriter.cs" />
     <Compile Include="Data\GenerictDataReader.cs" />
+    <Compile Include="Data\ISDMXDataReader.cs" />
+    <Compile Include="Data\MessageGroupReader.cs" />
+    <Compile Include="Data\MessageGroupReader.IDataReader.cs" />
     <Compile Include="Data\ValuePair.cs" />
     <Compile Include="Data\ValueTypes\Biannum.cs" />
     <Compile Include="Data\ValueTypes\Biannual.cs" />
