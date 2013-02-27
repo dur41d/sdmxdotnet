@@ -1,16 +1,14 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Data;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Xml;
 using Common;
 using SDMX.Parsers;
-using System.Reflection;
-using System.Collections;
-using System.Text;
-using System.Collections.ObjectModel;
-using OXM;
 
 namespace SDMX
 {
@@ -527,39 +525,84 @@ namespace SDMX
 
         string BuildGroupKey(Group group, Dictionary<string, KeyValuePair<string, object>> values)
         {
-            var groupKey = new Dictionary<string, KeyValuePair<string, object>>();
-            foreach (var id in group.Dimensions.Where(d => d != null).Select(d => d.Concept.Id))
+            var builder = GetStringBuilder();
+            builder.Append("id=");
+            builder.Append(group.Id);
+            builder.Append(',');
+
+            foreach (Dimension dim in group.Dimensions)
             {
-                groupKey.Add(id, values[id]);
+                builder.Append(dim.Concept.Id);
+                builder.Append('=');
+                builder.Append(values[dim.Concept.Id].Key);
+                builder.Append(',');
             }
-            return string.Format("id={0},{1}", group.Id, RecordToString(groupKey));
+            builder.Length -= 1;
+            return builder.ToString();
         }
 
         string BuildKey(Dictionary<string, KeyValuePair<string, object>> values)
         {
-            var key = new Dictionary<string, KeyValuePair<string, object>>();
-            foreach (var id in KeyFamily.Dimensions.Select(d => d.Concept.Id))
+            var builder = GetStringBuilder();
+            foreach (Dimension dim in KeyFamily.Dimensions)
             {
-                KeyValuePair<string, object> value = new KeyValuePair<string, object>();
-                if (values.TryGetValue(id, out value))
+                KeyValuePair<string, object> value;
+                if (values.TryGetValue(dim.Concept.Id, out value))
                 {
-                    key.Add(id, value);
+                    builder.Append(dim.Concept.Id);
+                    builder.Append('=');
+                    builder.Append(value.Key);
+                    builder.Append(',');
                 }
                 else
                 {
                     return null;
                 }
             }
-            string name = KeyFamily.TimeDimension.Concept.Id;
-            key.Add(name, values[name]);
-            return RecordToString(key);
+            if (KeyFamily.TimeDimension != null)
+            {
+                builder.Append(KeyFamily.TimeDimension.Concept.Id);
+                builder.Append('=');
+                builder.Append(values[KeyFamily.TimeDimension.Concept.Id].Key);
+                builder.Append(',');
+            }
+            if (builder.Length > 0)
+            {
+                builder.Length -= 1;
+            }
+
+            return builder.ToString();
         }
 
         string RecordToString(Dictionary<string, KeyValuePair<string, object>> record)
         {
-            var list = new List<string>();
-            record.ForEach(i => list.Add(string.Format("{0}={1}", i.Key, i.Value.Key)));
-            return string.Join(",", list.ToArray());
+            var builder = GetStringBuilder();
+            foreach (var pair in record)
+            {
+                builder.Append(pair.Key);
+                builder.Append('=');
+                builder.Append(pair.Value.Key);
+                builder.Append(',');
+            }
+            if (builder.Length > 0)
+            {
+                builder.Length -= 1;
+            }
+            return builder.ToString();
+        }
+
+        StringBuilder _stringBuilder;
+        StringBuilder GetStringBuilder()
+        {
+            if (_stringBuilder == null)
+            {
+                _stringBuilder = new StringBuilder(200);
+            }
+            else
+            {
+                _stringBuilder.Remove(0, _stringBuilder.Length);
+            }
+            return _stringBuilder;
         }
 
         void BuildTable()
@@ -599,22 +642,6 @@ namespace SDMX
             _table.Columns.Add(col(_IsValidColumnName, typeof(bool), false));
             _table.Columns.Add(col(_ErrorStringColumnName, typeof(string), true));
         }
-
-        //object Cast(string source, string destination, object castAction, object oldValue)
-        //{
-        //    try
-        //    {
-        //        return ((Delegate)castAction).DynamicInvoke(oldValue);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        if (ex is TargetInvocationException && ex.InnerException != null)
-        //            ex = ex.InnerException;
-
-        //        string message = string.Format("Exception at position ({5},{6}) occured in the cast action 'Map(\"{0}\",\"{1}\", castAction)' when casting value '{2}' of type '{3}' (see inner exception for details): {4}", source, destination, oldValue, oldValue.GetType(), ex.Message, LineNumber, LinePosition);
-        //        throw new SDMXException(message, ex);
-        //    }
-        //}
 
         void AddError(Error error, bool isSeries)
         {
