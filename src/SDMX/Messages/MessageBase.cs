@@ -62,7 +62,7 @@ namespace SDMX
             Contract.AssertNotNull(reader, "reader");
             var map = factory[typeof(T)]() as RootElementMap<T>;
 
-            return map.ReadXml(reader, validationAction);
+            return map.ReadXml(reader, ValidationMessage.CastDelegate(validationAction));
         }
 
         public static T Load(string fileName)
