@@ -497,13 +497,13 @@ namespace SDMX
         {
             CheckDisposed();
 
-            while (XmlReader.Read() && !XmlReader.IsStartElement() && XmlReader.LocalName != "DataSet")
+            while (XmlReader.Read() && XmlReader.LocalName != "Header" && XmlReader.LocalName != "DataSet")
                 continue;
 
             if (XmlReader.LocalName == "Header")
             {
                 var map = new OXM.FragmentMap<Header>(Namespaces.Message + "Header", new HeaderMap());
-                return map.ReadXml(XmlReader, validationAction);
+                return map.ReadXml(XmlReader, ValidationMessage.CastDelegate(validationAction));
             }
 
             return null;

@@ -114,6 +114,7 @@
     <Compile Include="ISimpleTypeConverter.cs" />
     <Compile Include="ContentMap.cs" />
     <Compile Include="SimpleTypeConverter.cs" />
+    <Compile Include="ValidationMessage.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Common\Common.csproj">

@@ -215,6 +215,7 @@
     <Compile Include="Structure\TextFormats\YearTextFormat.cs" />
     <Compile Include="Structure\TimeDimension.cs" />
     <Compile Include="Data\ValueTypes\TimePeriod.cs" />
+    <Compile Include="ValidationMessage.cs" />
     <Compile Include="VersionableArtefact.cs" />
   </ItemGroup>
   <ItemGroup>

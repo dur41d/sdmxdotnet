@@ -99,7 +99,7 @@ namespace SDMX
             if (XmlReader.LocalName == "Header")
             {
                 var map = new OXM.FragmentMap<Header>(Namespaces.Message + "Header", new HeaderMap());
-                return map.ReadXml(XmlReader, validationAction);
+                return map.ReadXml(XmlReader, ValidationMessage.CastDelegate(validationAction));
             }
 
             return null;
