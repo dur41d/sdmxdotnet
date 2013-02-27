@@ -8,3 +8,6 @@ glob:src/SDMX.suo
 glob:bin
 glob:*.exe
 glob:*.csproj.user
+syntax: glob
+output.txt
+build/SDMX.zip
