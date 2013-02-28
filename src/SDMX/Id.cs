@@ -24,6 +24,7 @@ namespace SDMX
 
         public static bool TryParse(string id, out Id result)
         {
+            id = id.Trim();
             result = null;
             if (!ids.TryGetValue(id, out result))
             {
