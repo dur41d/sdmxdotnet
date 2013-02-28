@@ -76,6 +76,14 @@ namespace SDMX
             }
         }
 
+        public object this[string name]
+        {
+            get
+            {
+                return _reader[name];
+            }
+        }
+
         /// <summary>
         /// Read the head of a Data Message. This should be done first before calling the Read method.
         /// </summary>
