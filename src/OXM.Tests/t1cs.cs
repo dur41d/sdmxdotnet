@@ -4,9 +4,107 @@ using System.Linq;
 using System.Text;
 using NUnit.Framework;
 using System.Xml.Linq;
+using System.Xml;
 
 namespace OXM.Tests
 {
+
+
+    public abstract class IOCommand
+    {
+    }
+
+    public class ExcelExportCommand : IOCommand
+    {
+    }
+
+    public class SdmxImportCommand : IOCommand
+    {
+    }
+
+    public class Batch
+    {
+        public string Name { get; set; }
+        public List<IOCommand> Commands { get; private set; }
+
+        public Batch()
+        {
+            Commands = new List<IOCommand>();
+        }
+    }
+
+    public class BatchProxy
+    { 
+        public string Name { get; set; }
+        public List<ExcelExportCommand> ExcelExportCommands { get; private set; }
+        public List<SdmxImportCommand> SdmxImportCommands { get; private set; }
+
+        public BatchProxy()
+        {
+            ExcelExportCommands = new List<ExcelExportCommand>();
+        }
+    }
+
+    public class ExcelExportCommandMap : ClassMap<ExcelExportCommand>
+    {
+        public ExcelExportCommandMap()
+        { 
+            
+        }
+
+        protected override ExcelExportCommand Return()
+        {
+            return new ExcelExportCommand();
+        }
+    }
+
+    public class SdmxImportCommandMap : ClassMap<SdmxImportCommand>
+    {
+        public SdmxImportCommandMap()
+        {
+
+        }
+
+        protected override SdmxImportCommand Return()
+        {
+            return new SdmxImportCommand();
+        }
+    }
+
+    public class BatchMap : RootElementMap<Batch>
+    {
+        Batch _batch = new Batch();
+
+        public BatchMap()
+        {
+            Map(o => o.Name).ToAttribute("name", false)
+                .Set(v => _batch.Name = v)
+                .Converter(new StringConverter());
+
+            MapCollection(m => m.Commands.OfType<ExcelExportCommand>())
+                    .ToElement("ExcelExportCommand", false)
+                    .Set(cmd => _batch.Commands.Add(cmd))
+                    .ClassMap(() => new ExcelExportCommandMap());
+
+            MapCollection(m => m.Commands.OfType<SdmxImportCommand>())
+                    .ToElement("SdmxImportCommand", false)
+                    .Set(cmd => _batch.Commands.Add(cmd))
+                    .ClassMap(() => new SdmxImportCommandMap());
+
+        }
+
+        protected override Batch Return()
+        {
+            return _batch;
+        }
+
+        public override XName Name
+        {
+            get { return "Batch"; }
+        }
+    }
+
+     
     public class t1
     {
         public List<string> t2 { get; private set; }
@@ -75,6 +173,23 @@ namespace OXM.Tests
 
             Assert.AreEqual(3, _t1.t2.Count);
             Assert.AreEqual(2, _t1.t3.Count);
+        }
+
+        [Test]
+        public void BatchMap()
+        {
+            var batch = new Batch();
+            batch.Commands.Add(new SdmxImportCommand());
+            batch.Commands.Add(new SdmxImportCommand());
+            batch.Commands.Add(new ExcelExportCommand());
+
+            var batchMap = new BatchMap();
+
+            using (var writer = XmlWriter.Create(Console.Out, new XmlWriterSettings() { Indent = true }))
+            {
+                batchMap.WriteXml(writer, batch);
+            }
+
         }
     }
 }

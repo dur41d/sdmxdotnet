@@ -41,7 +41,7 @@ namespace SDMX.Tests
             }
 
             string compactSchema = Utility.GetPath("lib\\BIS_JOINT_DEBT_Compact.xsd");
-            Assert.IsTrue(Utility.IsValidMessage(XDocument.Load(dataPath), Utility.GetComapctSchema(dsdPath, targetNameSpace)));
+            Assert.IsTrue(MessageValidator.ValidateXml(dataPath, Utility.GetComapctSchema(dsdPath, targetNameSpace)));
         }
 
         [Test]
@@ -62,7 +62,8 @@ namespace SDMX.Tests
                 }
             }
 
-            Assert.IsTrue(MessageValidator.ValidateXml(path, s => Debug.WriteLine(s), s => Debug.WriteLine(s)));
+            Action<string, System.Xml.Schema.XmlSchemaException> action = (m, e) => Console.WriteLine(m + e.LineNumber);
+            Assert.IsTrue(MessageValidator.ValidateXml(path, action, action));
         }
 
 
@@ -238,11 +239,12 @@ namespace SDMX.Tests
 
         string GetData(DataReader reader)
         {
-            var list = new SortedSet<string>();
+            var list = new List<string>();
             foreach (var item in reader)
             {
                 list.Add(string.Format("{0}={1}", item.Key, item.Value));
             }
+            list.Sort();
             return string.Join(",", list.ToArray());
         }
 

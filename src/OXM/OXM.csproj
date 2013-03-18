@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>OXM</RootNamespace>
     <AssemblyName>OXM</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
@@ -52,15 +52,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.Core">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="System.Xml.Linq">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="System.Data.DataSetExtensions">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
@@ -120,6 +111,14 @@
     <ProjectReference Include="..\Common\Common.csproj">
       <Project>{EB9211B5-E5FB-4467-B60E-6E84C3D9810C}</Project>
       <Name>Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\System.Linq\System.Linq.csproj">
+      <Project>{6336407F-E704-4AD3-96E6-CC04B70EE0D2}</Project>
+      <Name>System.Linq</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\System.Xml.Linq\System.Xml.Linq.csproj">
+      <Project>{D36D43F5-A3C6-44CD-8CF8-62CC4A5C4A0E}</Project>
+      <Name>System.Xml.Linq</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

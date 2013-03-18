@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>SDMX.Tests</RootNamespace>
     <AssemblyName>SDMX.Tests</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
@@ -59,13 +59,7 @@
       <HintPath>..\..\lib\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Core">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
     <Reference Include="System.Data" />
-    <Reference Include="System.Xml.Linq">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="xmldiffpatch, Version=1.0.8.28, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
       <SpecificVersion>False</SpecificVersion>
@@ -107,6 +101,14 @@
     <ProjectReference Include="..\SDMX\SDMX.csproj">
       <Project>{8729DEDD-51EA-41DB-BF49-89297BB56D54}</Project>
       <Name>SDMX</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\System.Linq\System.Linq.csproj">
+      <Project>{6336407F-E704-4AD3-96E6-CC04B70EE0D2}</Project>
+      <Name>System.Linq</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\System.Xml.Linq\System.Xml.Linq.csproj">
+      <Project>{D36D43F5-A3C6-44CD-8CF8-62CC4A5C4A0E}</Project>
+      <Name>System.Xml.Linq</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
