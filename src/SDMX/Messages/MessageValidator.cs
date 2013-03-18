@@ -27,47 +27,47 @@ namespace SDMX
             return ValidateXml(reader, null, null, null);
         }
 
-        public static bool ValidateXml(string fileName, string customSchema)
+        public static bool ValidateXml(string fileName, XmlReader customSchema)
         {
             return ValidateXml(XmlReader.Create(fileName), customSchema, null, null);
         }
 
-        public static bool ValidateXml(Stream stream, string customSchema)
+        public static bool ValidateXml(Stream stream, XmlReader customSchema)
         {
             return ValidateXml(XmlReader.Create(stream), customSchema, null, null);
         }
 
-        public static bool ValidateXml(XmlReader reader, string customSchema)
+        public static bool ValidateXml(XmlReader reader, XmlReader customSchema)
         {
             return ValidateXml(reader, customSchema, null, null);
         }
 
-        public static bool ValidateXml(string fileName, string customSchema, Action<string> warning, Action<string> error)
+        public static bool ValidateXml(string fileName, XmlReader customSchema, Action<string, XmlSchemaException> warning, Action<string, XmlSchemaException> error)
         {
             return ValidateXml(XmlReader.Create(fileName), customSchema, warning, error);
         }
 
-        public static bool ValidateXml(Stream stream, string customSchema, Action<string> warning, Action<string> error)
+        public static bool ValidateXml(Stream stream, XmlReader customSchema, Action<string, XmlSchemaException> warning, Action<string, XmlSchemaException> error)
         {
             return ValidateXml(XmlReader.Create(stream), customSchema, warning, error);
         }
 
-        public static bool ValidateXml(string fileName, Action<string> warning, Action<string> error)
+        public static bool ValidateXml(string fileName, Action<string, XmlSchemaException> warning, Action<string, XmlSchemaException> error)
         {
             return ValidateXml(XmlReader.Create(fileName), null, warning, error);
         }
         
-        public static bool ValidateXml(Stream stream, Action<string> warning, Action<string> error)
+        public static bool ValidateXml(Stream stream, Action<string, XmlSchemaException> warning, Action<string, XmlSchemaException> error)
         {
             return ValidateXml(XmlReader.Create(stream), null, warning, error);
         }
 
-        public static bool ValidateXml(XmlReader reader, Action<string> warning, Action<string> error)
+        public static bool ValidateXml(XmlReader reader, Action<string, XmlSchemaException> warning, Action<string, XmlSchemaException> error)
         {
             return ValidateXml(reader, null, warning, error);
         }
 
-        public static bool ValidateXml(XmlReader reader, string customSchema, Action<string> warning, Action<string> error)
+        public static bool ValidateXml(XmlReader reader, XmlReader customSchema, Action<string, XmlSchemaException> warning, Action<string, XmlSchemaException> error)
         {
             bool isValid = true;
 
@@ -75,20 +75,23 @@ namespace SDMX
 
             if (customSchema != null)
             {
-                schemas.Add(null, XmlReader.Create(customSchema));
+                schemas.Add(null, customSchema);
             }
 
             ValidationEventHandler handler = (s, args) =>
             {
                 isValid = false;
                 if (warning != null && args.Severity == XmlSeverityType.Warning)
-                    warning(args.Message);
+                    warning(args.Message, args.Exception);
                 else if (error != null)
-                    error(args.Message);
+                    error(args.Message, args.Exception);
             };
 
             var settings = new XmlReaderSettings();
             settings.ValidationType = ValidationType.Schema;
+            settings.ValidationFlags |= XmlSchemaValidationFlags.ReportValidationWarnings;
+            settings.ValidationFlags |= XmlSchemaValidationFlags.ProcessInlineSchema;
+            //settings.ValidationFlags |= XmlSchemaValidationFlags.ProcessSchemaLocation;
             settings.Schemas.Add(schemas);
             settings.ValidationEventHandler += handler;
 

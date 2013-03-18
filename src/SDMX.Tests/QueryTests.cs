@@ -2,6 +2,8 @@ using NUnit.Framework;
 using System;
 using SDMX.Parsers;
 using System.Xml.Linq;
+using System.Text;
+using System.Xml;
 
 namespace SDMX.Tests
 {
@@ -36,14 +38,20 @@ namespace SDMX.Tests
 
             var message = QueryMessage.Load(samplePath);
 
-            var doc = new XDocument();
-            using (var writer = doc.CreateWriter())
-            {
-                message.Write(writer);
-            }
+            
+            var sb = new StringBuilder();
+            var settings = new XmlWriterSettings() { Indent = true };                        
+            message.Write(sb);
+            var doc = XDocument.Parse(sb.ToString());
+
+           
+
+            //Assert.IsTrue(Utility.IsValidMessage(doc));
+
+            Action<string, System.Xml.Schema.XmlSchemaException> action = (m, e) => Console.WriteLine(m + e.LineNumber);
 
             using (var reader = doc.CreateReader())
-                Assert.IsTrue(MessageValidator.ValidateXml(reader));
+                Assert.IsTrue(MessageValidator.ValidateXml(reader, null, action, action));
             //Console.Write(doc.ToString());
             //doc.Save(Utility.GetPath("lib\\QuerySample2.xml"));
         }

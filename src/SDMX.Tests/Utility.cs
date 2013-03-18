@@ -10,43 +10,61 @@ namespace SDMX.Tests
 {
     internal static class Utility
     {
-        internal static bool IsValidMessage(XDocument doc)
-        {
-            return IsValidMessage(doc, null);
-        }
+        //internal static bool IsValidMessage(XDocument doc)
+        //{
+        //    return IsValidMessage(doc, null);
+        //}
 
-        internal static bool IsValidMessage(XDocument doc, XDocument schema)
-        {
-            var schemas = new XmlSchemaSet();
+        //internal static bool IsValidMessage(XDocument doc, XDocument schema)
+        //{
+        //    var schemas = new XmlSchemaSet();
 
-            schemas.Add("http://www.SDMX.org/resources/SDMXML/schemas/v2_0/message",
-                GetPath("lib\\SDMXMessage.xsd"));
+        //    schemas.Add("http://www.SDMX.org/resources/SDMXML/schemas/v2_0/message",
+        //        GetPath("lib\\SDMXMessage.xsd"));
 
 
-            if (schema != null)
-            {
-                using (var reader = schema.CreateReader())
-                {
-                    schemas.Add(null, reader);
-                }
-            }
+        //    if (schema != null)
+        //    {
+        //        using (var reader = schema.CreateReader())
+        //        {
+        //            schemas.Add(null, reader);
+        //        }
+        //    }
 
-            bool isValid = true;
+        //    bool isValid = true;
 
-            doc.Validate(schemas, (s, args) =>
-            {
-                isValid = false;
-                if (args.Severity == XmlSeverityType.Warning)
+        //    Validate(doc, schemas, (s, args) =>
+        //    {
+        //        isValid = false;
+        //        if (args.Severity == XmlSeverityType.Warning)
 
-                    Console.WriteLine("\tWarning: " + args.Message);
-                else
-                    Console.WriteLine("\tError: " + args.Message);
-            });
+        //            Console.WriteLine("\tWarning: " + args.Message);
+        //        else
+        //            Console.WriteLine("\tError: " + args.Message);
+        //    });
 
-            return isValid;
-        }
+        //    return isValid;
+        //}
 
-        public static XDocument GetComapctSchema(string dsdPath, string targetNamespace)
+        //public static void Validate(XDocument doc, XmlSchemaSet schemas, ValidationEventHandler handler)
+        //{
+
+        //    // configure the xmlreader validation to use inline schema.
+        //    XmlReaderSettings config = new XmlReaderSettings();
+        //    config.ValidationType = ValidationType.Schema;
+        //    config.ValidationFlags |= XmlSchemaValidationFlags.ReportValidationWarnings;
+        //    config.ValidationFlags |= XmlSchemaValidationFlags.ProcessInlineSchema;
+        //    config.ValidationFlags |= XmlSchemaValidationFlags.ProcessSchemaLocation;
+        //    config.Schemas = schemas;
+        //    config.ValidationEventHandler += handler;
+
+        //    using (var reader = doc.CreateReader())
+        //    {                
+        //        while (reader.Read());
+        //    }
+        //}
+
+        public static XmlReader GetComapctSchema(string dsdPath, string targetNamespace)
         {
             var dsd = XDocument.Load(dsdPath);
             var transform = new XslCompiledTransform(true);
@@ -60,7 +78,7 @@ namespace SDMX.Tests
             {
                 transform.Transform(dsd.CreateReader(), param, writer);
             }
-            return schemaDoc;
+            return schemaDoc.CreateReader();
         }
 
         // Display any warnings or errors.

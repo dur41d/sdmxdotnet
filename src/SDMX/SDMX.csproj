@@ -10,12 +10,13 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>SDMX</RootNamespace>
     <AssemblyName>SDMX</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <OldToolsVersion>3.5</OldToolsVersion>
     <UpgradeBackupLocation />
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -36,15 +37,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.Core">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="System.Xml.Linq">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="System.Data.DataSetExtensions">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
@@ -226,6 +218,14 @@
     <ProjectReference Include="..\OXM\OXM.csproj">
       <Project>{8441ED91-9F2B-4E43-8023-73883DA1FEA2}</Project>
       <Name>OXM</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\System.Linq\System.Linq.csproj">
+      <Project>{6336407F-E704-4AD3-96E6-CC04B70EE0D2}</Project>
+      <Name>System.Linq</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\System.Xml.Linq\System.Xml.Linq.csproj">
+      <Project>{D36D43F5-A3C6-44CD-8CF8-62CC4A5C4A0E}</Project>
+      <Name>System.Xml.Linq</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

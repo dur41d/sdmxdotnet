@@ -1,0 +1,83 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{D36D43F5-A3C6-44CD-8CF8-62CC4A5C4A0E}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>System.Xml.Linq</RootNamespace>
+    <AssemblyName>System.Xml.Linq</AssemblyName>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Extensions.cs" />
+    <Compile Include="LoadOptions.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ReaderOptions.cs" />
+    <Compile Include="SaveOptions.cs" />
+    <Compile Include="XAttribute.cs" />
+    <Compile Include="XCData.cs" />
+    <Compile Include="XComment.cs" />
+    <Compile Include="XContainer.cs" />
+    <Compile Include="XDeclaration.cs" />
+    <Compile Include="XDocument.cs" />
+    <Compile Include="XDocumentType.cs" />
+    <Compile Include="XElement.cs" />
+    <Compile Include="XIterators.cs" />
+    <Compile Include="XName.cs" />
+    <Compile Include="XNamespace.cs" />
+    <Compile Include="XNode.cs" />
+    <Compile Include="XNodeDocumentOrderComparer.cs" />
+    <Compile Include="XNodeEqualityComparer.cs" />
+    <Compile Include="XNodeNavigator.cs" />
+    <Compile Include="XNodeReader.cs" />
+    <Compile Include="XNodeWriter.cs" />
+    <Compile Include="XObject.cs" />
+    <Compile Include="XObjectChange.cs" />
+    <Compile Include="XObjectChangeEventArgs.cs" />
+    <Compile Include="XProcessingInstruction.cs" />
+    <Compile Include="XStreamingElement.cs" />
+    <Compile Include="XText.cs" />
+    <Compile Include="XUtil.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\System.Linq\System.Linq.csproj">
+      <Project>{6336407F-E704-4AD3-96E6-CC04B70EE0D2}</Project>
+      <Name>System.Linq</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

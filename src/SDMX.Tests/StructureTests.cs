@@ -36,8 +36,8 @@ namespace SDMX.Tests
             var list2 = new List<TimeSpan>();
             for (int i = 0; i < bigLoopCount; i++)
             {
-                var stopWatch = new System.Diagnostics.Stopwatch();
-                stopWatch.Start();
+                //var stopWatch = new System.Diagnostics.Stopwatch();
+                //stopWatch.Start();
 
                 for (int j = 0; j < smallLoopCount; j++)
                 {
@@ -48,19 +48,19 @@ namespace SDMX.Tests
                     }
                 }
 
-                stopWatch.Stop();
-                long ticks = stopWatch.ElapsedTicks;
-                stopWatch.Restart();
+                //stopWatch.Stop();
+                //long ticks = stopWatch.ElapsedTicks;
+                //stopWatch.Restart();
                 for (int k = 0; k < smallLoopCount; k++)
                 {
                     var message = StructureMessage.Load(dsdPath);
                 }
 
-                stopWatch.Stop();
-                Console.Write((decimal)stopWatch.ElapsedTicks / ticks);
-                list.Add((decimal)stopWatch.ElapsedTicks / ticks);
-                list2.Add(stopWatch.Elapsed);
-                Console.WriteLine(" : {0}", stopWatch.Elapsed);
+                //stopWatch.Stop();
+                //Console.Write((decimal)stopWatch.ElapsedTicks / ticks);
+                //list.Add((decimal)stopWatch.ElapsedTicks / ticks);
+                //list2.Add(stopWatch.Elapsed);
+                //Console.WriteLine(" : {0}", stopWatch.Elapsed);
             }
 
             Console.WriteLine("Average: {0}", list.Average());
@@ -86,10 +86,11 @@ namespace SDMX.Tests
             //message.Save(@"c:\temp\StructureSample2.xml");
 
             var doc = new XDocument();
-            using (var writer = doc.CreateWriter())
-                message.Write(writer);
-            using (var reader = doc.CreateReader())
-                Assert.IsTrue(MessageValidator.ValidateXml(reader));
+            var sb = new StringBuilder();
+            //using (var writer = doc.CreateWriter())
+                message.Write(sb);
+            using (var reader = XmlReader.Create(new StringReader(sb.ToString())))
+                Assert.IsTrue(MessageValidator.ValidateXml(reader, (m,e) => Console.WriteLine(m), (m,e) => Console.WriteLine(m)));
         }
 
         [Test]
@@ -160,17 +161,18 @@ namespace SDMX.Tests
             string dsdPath = Utility.GetPath("lib\\StructureSample.xml");
             var message = StructureMessage.Load(dsdPath);
 
-            var doc = new XDocument();
-            using (var writer = doc.CreateWriter())
-                message.Write(writer);
+            var sb = new StringBuilder();
+            message.Write(sb);
 
             // Console.Write(doc);
 
-            using (var reader = doc.CreateReader())
-                Assert.IsTrue(MessageValidator.ValidateXml(reader, w => Console.WriteLine(w), e => Console.WriteLine(e)));
+            Action<string, System.Xml.Schema.XmlSchemaException> action = (m, e) => Console.WriteLine(m + e.LineNumber);
+
+            using (var reader = XmlReader.Create(new StringReader(sb.ToString())))
+                Assert.IsTrue(MessageValidator.ValidateXml(reader, action, action));
 
             StructureMessage message2 = null;
-            using (var reader = doc.CreateReader())
+            using (var reader = XmlReader.Create(new StringReader(sb.ToString())))
                 message2 = StructureMessage.Read(reader);
         }
      
