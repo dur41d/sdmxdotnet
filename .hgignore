@@ -11,3 +11,4 @@ glob:*.csproj.user
 syntax: glob
 output.txt
 build/SDMX.zip
+build.force
