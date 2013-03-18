@@ -24,11 +24,13 @@ namespace SDMX
 
         public static bool TryParse(string id, out Id result)
         {
-            id = id.Trim();
+            if (id != null)
+                id = id.Trim();
+
             result = null;
             if (!ids.TryGetValue(id, out result))
             {
-                if (regex.IsMatch(id))
+                if (!string.IsNullOrEmpty(id) && regex.IsMatch(id))
                 {
                     result = new Id(id);
                     ids.Add(id, result);
