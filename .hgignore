@@ -1,5 +1,3 @@
-glob:*.pdb
-glob:*.dll
 glob:*.orig
 glob:*.cache
 glob:*.FileListAbsolute.txt
@@ -12,3 +10,6 @@ syntax: glob
 output.txt
 build/SDMX.zip
 build.force
+syntax: regexp
+^src/.*\.dll$
+^src/.*\.pdb$
