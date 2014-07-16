@@ -470,5 +470,32 @@ namespace SDMX.Tests
 
             TestRead(doc, 25);
         }
+
+        [Test]
+        public void test_quest_b()
+        {            
+            string dataPath = "C:\\Work\\Edu_meter_sid_2014\\UIS_ED_B_2014_AFG_Clean.xml";
+
+            var dsd = StructureMessage.Load(@"C:\Work\Edu_meter_sid_2014\UOE_FINANCE+ESTAT+1.0.xml");
+            var keyFamily = dsd.KeyFamilies[0];
+
+            int counter = 0;
+            using (var reader = DataReader.Create(dataPath, keyFamily))
+            {
+                reader.ThrowExceptionIfNotValid = false;
+                while (reader.Read())
+                {
+                    if (!reader.IsValid)
+                    {
+                        //Assert.AreEqual(1, reader.Errors.Count);
+                        //Assert.IsTrue(reader.Errors[0] is ValidationError);
+                        //Debug.WriteLine(reader.Errors[0].Message);
+                        counter++;
+                    }
+                }
+            }
+
+            Assert.AreEqual(0, counter);
+        }
     }
 }

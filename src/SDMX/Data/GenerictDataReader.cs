@@ -16,13 +16,28 @@ namespace SDMX
 
             while (XmlReader.Read() && !(XmlReader.LocalName == "DataSet" && !XmlReader.IsStartElement()))
             {
+                if (XmlReader.LocalName == "DataSet" && XmlReader.IsStartElement())
+                {
+                    // read until <Group> or <Series> or </DataSet> end element
+                    while (XmlReader.Read() && !(XmlReader.LocalName == "Group") && !(XmlReader.LocalName == "Series") && !(XmlReader.LocalName == "DataSet" && !XmlReader.IsStartElement()))
+                    {
+                        if (IsValueElement())
+                        {
+                            ReadValue((n, v) => SetDataSet(n, v), _datasetErrors);
+                        }
+                    }
+
+                    ValidateDataSet();
+                }
+
+
                 if (XmlReader.LocalName == "Group" && XmlReader.IsStartElement())
                 {                    
                     string groupId = XmlReader.GetAttribute("type");
                     Group group = null;                                        
                     if (IsNullOrEmpty(groupId))
                     {
-                        AddValidationError(false, "Group is missing 'type' attribute.");
+                        AddValidationError(_obsErrors, "Group is missing 'type' attribute.");
                     }
                     else
                     {
@@ -30,7 +45,7 @@ namespace SDMX
 
                         if (group == null)
                         {
-                            AddValidationError(false, "Keyfamily does not contain group with id: {0}.", groupId);
+                            AddValidationError(_obsErrors, "Keyfamily does not contain group with id: {0}.", groupId);
                         }
                     }
 
@@ -39,7 +54,7 @@ namespace SDMX
                     {
                         if (group != null && IsValueElement())
                         {
-                            ReadValue((n, v) => SetGroup(group, n, v), false);
+                            ReadValue((n, v) => SetGroup(group, n, v), _obsErrors);
                         }
                     }
 
@@ -59,7 +74,7 @@ namespace SDMX
                     {
                         if (IsValueElement())
                         {
-                            ReadValue((n, v) => SetSeries(n, v), true);
+                            ReadValue((n, v) => SetSeries(n, v), _seriesErrors);
                         }
                     }
 
@@ -93,7 +108,7 @@ namespace SDMX
                         }
                         else if (IsValueElement())
                         {
-                            ReadValue((n, v) => SetObs(n, v), false);
+                            ReadValue((n, v) => SetObs(n, v), _obsErrors);
                         }
                     }
 
@@ -113,7 +128,7 @@ namespace SDMX
             return XmlReader.LocalName == "Value" && XmlReader.IsStartElement();
         }
 
-        void ReadValue(Action<string, string> set, bool isSeries)
+        void ReadValue(Action<string, string> set, List<Error> errorList)
         {
             string concept = XmlReader.GetAttribute("concept");
             string value = XmlReader.GetAttribute("value");
@@ -121,13 +136,13 @@ namespace SDMX
             bool error = false;
             if (IsNullOrEmpty(concept))
             {
-                AddValidationError("The Value element is missing 'concept' attribute.", isSeries);
+                AddValidationError("The Value element is missing 'concept' attribute.", errorList);
                 error = true;
             }
 
             if (IsNullOrEmpty(value))
             {
-                AddValidationError("Value element is missing 'value' attribute.", isSeries);
+                AddValidationError("Value element is missing 'value' attribute.", errorList);
                 error = true;
             }
 
