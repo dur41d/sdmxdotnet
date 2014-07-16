@@ -64,8 +64,10 @@ namespace SDMX
         }
 
         List<Error> _errors = new List<Error>();
-        List<Error> _seriesErrors = new List<Error>();
-        List<Error> _obsErrors = new List<Error>();
+        protected List<Error> _datasetErrors = new List<Error>();
+        protected List<Error> _seriesErrors = new List<Error>();
+        protected List<Error> _obsErrors = new List<Error>();
+        Dictionary<string, KeyValuePair<string, object>> _datasetValues = new Dictionary<string, KeyValuePair<string, object>>();
         Dictionary<string, KeyValuePair<string, object>> _groupValues = new Dictionary<string, KeyValuePair<string, object>>();
         Dictionary<string, Dictionary<string, KeyValuePair<string, object>>> _groups = new Dictionary<string, Dictionary<string, KeyValuePair<string, object>>>();
         Dictionary<string, object> _record = new Dictionary<string, object>();
@@ -73,6 +75,7 @@ namespace SDMX
         Dictionary<string, KeyValuePair<string, object>> _seriesValues = new Dictionary<string, KeyValuePair<string, object>>();
         Dictionary<string, KeyValuePair<string, object>> _obsValues = new Dictionary<string, KeyValuePair<string, object>>();
 
+        Dictionary<string, Component> _datasetComponenets = null;
         Dictionary<string, Dictionary<string, Component>> _groupComponents = new Dictionary<string, Dictionary<string, Component>>();
         Dictionary<string, Component> _seriesComponenets = null;
         Dictionary<string, Component> _obsComponenets = null;
@@ -128,18 +131,40 @@ namespace SDMX
             _groupValues = new Dictionary<string, KeyValuePair<string, object>>();
         }
 
+
+        protected void SetDataSet(string name, string value)
+        {
+            if (_datasetValues.ContainsKey(name))
+            {
+                AddValidationError(_datasetErrors, "Duplicate '{0}' in the dataset.", name);
+                return;
+            }
+
+            var comp = FindDataSetComponent(name);
+
+            object obj;
+            if (TryParse(_datasetErrors, name, value, comp, out obj))
+            {
+                _datasetValues.Add(name, KeyVal(value, obj));
+            }
+            else
+            {
+                _datasetValues.Add(name, KeyVal(value, null));
+            }
+        }
+
         protected void SetGroup(Group group, string name, string value)
         {
             if (_groupValues.ContainsKey(name))
             {
-                AddValidationError(false, "Duplicate '{0}' in the same group.");
+                AddValidationError(_obsErrors, "Duplicate '{0}' in the same group.");
                 return;
             }
 
             var comp = FindGroupComponent(group, name);
                         
             object obj;
-            if (TryParse(false, name, value, comp, out obj))
+            if (TryParse(_obsErrors, name, value, comp, out obj))
             {
                 _groupValues.Add(name, KeyVal(value, obj));
             }
@@ -158,14 +183,14 @@ namespace SDMX
         {
             if (_seriesValues.ContainsKey(name))
             {
-                AddValidationError(true, "Duplicate '{0}' in the same series.", name);
+                AddValidationError(_seriesErrors, "Duplicate '{0}' in the same series.", name);
                 return;
             }
 
             var comp = FindSeriesComponent(name);
 
             object obj;
-            if (TryParse(true, name, value, comp, out obj))
+            if (TryParse(_seriesErrors, name, value, comp, out obj))
             {
                 _seriesValues.Add(name, KeyVal(value, obj));
             }
@@ -179,20 +204,20 @@ namespace SDMX
         {
             if (_seriesValues.ContainsKey(name))
             {
-                AddValidationError(false, "Duplicate '{0}' in the series of the observation.", name);
+                AddValidationError(_obsErrors, "Duplicate '{0}' in the series of the observation.", name);
                 return;
             }
 
             if (_obsValues.ContainsKey(name))
             {
-                AddValidationError(false, "Duplicate '{0}' in the same observation.", name);
+                AddValidationError(_obsErrors, "Duplicate '{0}' in the same observation.", name);
                 return;
             }
 
             var comp = FindObsComponent(name);
 
             object obj;
-            if (TryParse(false, name, value, comp, out obj))
+            if (TryParse(_obsErrors, name, value, comp, out obj))
             {
                 _obsValues.Add(name, KeyVal(value, obj));
             }
@@ -204,8 +229,8 @@ namespace SDMX
 
         protected void ValidateGroup(Group group)
         {
-            bool valid = ValidateDimensions(group.Dimensions, _groupValues, true, true);
-            ValidateAttributes(GroupAttributes(group), _groupValues, true);
+            bool valid = ValidateDimensions(group.Dimensions, _groupValues, true, _obsErrors);
+            ValidateAttributes(GroupAttributes(group), _groupValues, _obsErrors);
 
             if (!valid)
                 return;
@@ -221,16 +246,21 @@ namespace SDMX
             {
                 if (!IsDictEqual(existing, _groupValues))
                 {
-                    AddValidationError(false, "2 Occurances for group (id={0}) that have the same key but differnt values. Value1: ({1}) Value2: ({2}).",
+                    AddValidationError(_obsErrors, "2 Occurances for group (id={0}) that have the same key but differnt values. Value1: ({1}) Value2: ({2}).",
                         group.Id, RecordToString(existing), RecordToString(_groupValues));
                 }
             }
         }
 
+        protected void ValidateDataSet()
+        {            
+            ValidateAttributes(DataSetAttributes(), _datasetValues, _datasetErrors);
+        }
+
         protected void ValidateSeries()
         {
-            ValidateDimensions(KeyFamily.Dimensions, _seriesValues, true, true);
-            ValidateAttributes(SeriesAttributes(), _seriesValues, true);
+            ValidateDimensions(KeyFamily.Dimensions, _seriesValues, true, _seriesErrors);
+            ValidateAttributes(SeriesAttributes(), _seriesValues, _seriesErrors);
         }
 
 
@@ -238,41 +268,41 @@ namespace SDMX
         {
             if (KeyFamily.TimeDimension != null)
             {
-                ValidateDimension(_obsValues, KeyFamily.TimeDimension.Concept.Id, true, false);
+                ValidateDimension(_obsValues, KeyFamily.TimeDimension.Concept.Id, true, _obsErrors);
             }
 
             if (KeyFamily.PrimaryMeasure != null)
             {
-                ValidateDimension(_obsValues, KeyFamily.PrimaryMeasure.Concept.Id, true, false);
+                ValidateDimension(_obsValues, KeyFamily.PrimaryMeasure.Concept.Id, true, _obsErrors);
             }
 
-            ValidateAttributes(ObsAttributes(), _obsValues, false);
+            ValidateAttributes(ObsAttributes(), _obsValues, _obsErrors);
         }
 
-        private bool TryParse(bool isSeries, string name, string value, Component comp, out object obj)
+        private bool TryParse(List<Error> errorList, string name, string value, Component comp, out object obj)
         {
             obj = null;
             if (comp == null)
             {
-                AddValidationError(isSeries, "Invalid tag '{0}'.", name);
+                AddValidationError(errorList, "Invalid tag '{0}'.", name);
                 return false;
             }
 
             string startTime = null;
             if (!comp.TryParse(value, startTime, out obj))
             {
-                AddParseError(string.Format("Cannot parse value '{1}' for '{0}'.", name, value), isSeries, name, value);
+                AddParseError(string.Format("Cannot parse value '{1}' for '{0}'.", name, value), errorList, name, value);
                 return false;
             }
 
             return true ;
         }
-        bool ValidateDimensions(IEnumerable<Dimension> dimensions, Dictionary<string, KeyValuePair<string, object>> values, bool logErrors, bool isSeries)
+        bool ValidateDimensions(IEnumerable<Dimension> dimensions, Dictionary<string, KeyValuePair<string, object>> values, bool logErrors, List<Error> errorList)
         {
             bool valid = true;            
             foreach (var id in dimensions.Where(d => d != null).Select(d => d.Concept.Id))
             {
-                if (!ValidateDimension(values, id, logErrors, isSeries))
+                if (!ValidateDimension(values, id, logErrors, errorList))
                 {
                     valid = false;
                 }
@@ -281,13 +311,13 @@ namespace SDMX
             return valid;
         }
 
-        bool ValidateDimension(Dictionary<string, KeyValuePair<string, object>> values, string id, bool logErrors, bool isSeries)
+        bool ValidateDimension(Dictionary<string, KeyValuePair<string, object>> values, string id, bool logErrors, List<Error> errorList)
         {
             if (!values.ContainsKey(id))
             {
                 if (logErrors)
                 {
-                    AddMandatoryComponentMissingError(string.Format("Value for dimension '{0}' is missing.", id), isSeries, id);
+                    AddMandatoryComponentMissingError(string.Format("Value for dimension '{0}' is missing.", id), errorList, id);
                 }
                 
                 return false;
@@ -296,7 +326,7 @@ namespace SDMX
             return true;
         }
 
-        void ValidateAttributes(IEnumerable<Attribute> attributes, Dictionary<string, KeyValuePair<string, object>> values, bool isSeries)
+        void ValidateAttributes(IEnumerable<Attribute> attributes, Dictionary<string, KeyValuePair<string, object>> values, List<Error> errorList)
         {
             foreach (var attr in attributes)
             {
@@ -305,7 +335,7 @@ namespace SDMX
                 {
                     if (attr.AssignmentStatus != AssignmentStatus.Conditional)
                     {
-                        AddMandatoryComponentMissingError(string.Format("Value for mandatory attribute '{0}' is missing.", id), isSeries, id);
+                        AddMandatoryComponentMissingError(string.Format("Value for mandatory attribute '{0}' is missing.", id), errorList, id);
                     }
                 }
             }
@@ -316,7 +346,8 @@ namespace SDMX
             _record.Clear();
             _tempRecord.Clear();            
 
-            // add values for series, obs and each group
+            // add values for dataset, series, obs and each group
+            _datasetValues.ForEach(i => _tempRecord.Add(i.Key, i.Value));
             _seriesValues.ForEach(i => _tempRecord.Add(i.Key, i.Value));
             _obsValues.ForEach(i => _tempRecord.Add(i.Key, i.Value));
 
@@ -327,7 +358,7 @@ namespace SDMX
                 {
                     if (_keys.ContainsKey(key))
                     {
-                        AddDuplicateKeyError(string.Format("Duplicate key found: {0}", key), false, key);
+                        AddDuplicateKeyError(string.Format("Duplicate key found: {0}", key), _obsErrors, key);
                     }
                     else
                     {
@@ -338,7 +369,7 @@ namespace SDMX
 
             foreach (var group in KeyFamily.Groups)
             {
-                bool valid = ValidateDimensions(group.Dimensions, _tempRecord, false, false);
+                bool valid = ValidateDimensions(group.Dimensions, _tempRecord, false, _obsErrors);
 
                 if (!valid)
                 {
@@ -371,6 +402,10 @@ namespace SDMX
             }
 
             _errors.Clear();
+            foreach (var error in _datasetErrors)
+            {
+                _errors.Add(error);
+            }
             foreach (var error in _seriesErrors)
             {
                 _errors.Add(error);
@@ -643,7 +678,7 @@ namespace SDMX
             _table.Columns.Add(col(_ErrorStringColumnName, typeof(string), true));
         }
 
-        void AddError(Error error, bool isSeries)
+        void AddError(Error error, List<Error> errorList)
         {
             if (ThrowExceptionIfNotValid)
             {
@@ -651,36 +686,33 @@ namespace SDMX
             }
             else
             {
-                if (isSeries)
-                    _seriesErrors.Add(error);
-                else
-                    _obsErrors.Add(error);
+                errorList.Add(error);
             }
         }
-     
-        protected void AddValidationError(string message, bool isSeries)
+
+        protected void AddValidationError(string message, List<Error> errorList)
         {
-            AddError(new ValidationError(LineNumber, LinePosition, string.Format("Validation error at ({0},{1}): {2}", LineNumber, LinePosition, message)), isSeries);
+            AddError(new ValidationError(LineNumber, LinePosition, string.Format("Validation error at ({0},{1}): {2}", LineNumber, LinePosition, message)), errorList);
         }
 
-        protected void AddValidationError(bool isSeries, string format, params object[] args)
+        protected void AddValidationError(List<Error> errorList, string format, params object[] args)
         {
-            AddValidationError(string.Format(format, args), isSeries);
+            AddValidationError(string.Format(format, args), errorList);
         }
 
-        protected void AddParseError(string message, bool isSeries, string name, string value)
+        protected void AddParseError(string message, List<Error> errorList, string name, string value)
         {
-            AddError(new ParseError(name, value, LineNumber, LinePosition, string.Format("Parse error at ({0},{1}): {2}", LineNumber, LinePosition, message)), isSeries);
+            AddError(new ParseError(name, value, LineNumber, LinePosition, string.Format("Parse error at ({0},{1}): {2}", LineNumber, LinePosition, message)), errorList);
         }
 
-        protected void AddDuplicateKeyError(string message, bool isSeries, string key)
+        protected void AddDuplicateKeyError(string message, List<Error> errorList, string key)
         {
-            AddError(new DuplicateKeyError(key, LineNumber, LinePosition, string.Format("Duplicate key error at ({0},{1}): {2}", LineNumber, LinePosition, message)), isSeries);
+            AddError(new DuplicateKeyError(key, LineNumber, LinePosition, string.Format("Duplicate key error at ({0},{1}): {2}", LineNumber, LinePosition, message)), errorList);
         }
 
-        protected void AddMandatoryComponentMissingError(string message, bool isSeries, string id)
+        protected void AddMandatoryComponentMissingError(string message, List<Error> errorList, string id)
         {
-            AddError(new MandatoryComponentMissing(id, string.Format("Mandatory component missing error at ({0},{1}): {2}", LineNumber, LinePosition, message)), isSeries);
+            AddError(new MandatoryComponentMissing(id, string.Format("Mandatory component missing error at ({0},{1}): {2}", LineNumber, LinePosition, message)), errorList);
         }
 
         protected bool IsNullOrEmpty(string s)
@@ -730,6 +762,18 @@ namespace SDMX
             return comp;
         }
 
+        Component FindDataSetComponent(string name)
+        {
+            if (_datasetComponenets == null)
+            {
+                _datasetComponenets = BuildDataSetComponents();
+            }
+
+            Component comp = null;
+            _datasetComponenets.TryGetValue(name, out comp);
+            return comp;
+        }
+
         Component FindSeriesComponent(string name)
         {
             if (_seriesComponenets == null)
@@ -773,6 +817,11 @@ namespace SDMX
             return list;
         }
 
+        IEnumerable<Attribute> DataSetAttributes()
+        {
+            return KeyFamily.Attributes.Where(i => i.AttachementLevel == AttachmentLevel.DataSet);
+        }
+
         IEnumerable<Attribute> GroupAttributes(Group group)
         {
             return KeyFamily.Attributes.Where(i => i.AttachementLevel == AttachmentLevel.Group && i.AttachmentGroups.Contains(group.Id));
@@ -793,6 +842,13 @@ namespace SDMX
             var result = new Dictionary<string, Component>();
             AddCompoenents(result, group.Dimensions);
             AddCompoenents(result, GroupAttributes(group));
+            return result;
+        }
+
+        Dictionary<string, Component> BuildDataSetComponents()
+        {
+            var result = new Dictionary<string, Component>();            
+            AddCompoenents(result, DataSetAttributes());
             return result;
         }
 

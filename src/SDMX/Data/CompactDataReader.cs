@@ -26,17 +26,27 @@ namespace SDMX
                     NewGroupValues();
                     while (XmlReader.MoveToNextAttribute())
                     {
-                        ReadValue((n, v) => SetGroup(group, n, v), false);
+                        ReadValue((n, v) => SetGroup(group, n, v), _obsErrors);
                     }
 
                     ValidateGroup(group);
+                }
+                else if (XmlReader.LocalName == "DataSet")
+                {
+                    ClearSeries();
+                    while (XmlReader.MoveToNextAttribute())
+                    {
+                        ReadValue((n, v) => SetDataSet(n, v), _datasetErrors);
+                    }
+
+                    ValidateDataSet();
                 }
                 else if (XmlReader.LocalName == "Series")
                 {
                     ClearSeries();
                     while (XmlReader.MoveToNextAttribute())
                     {
-                        ReadValue((n, v) => SetSeries(n, v), true);
+                        ReadValue((n, v) => SetSeries(n, v), _seriesErrors);
                     }
 
                     ValidateSeries();
@@ -47,7 +57,7 @@ namespace SDMX
 
                     while (XmlReader.MoveToNextAttribute())
                     {
-                        ReadValue((n, v) => SetObs(n, v), false);
+                        ReadValue((n, v) => SetObs(n, v), _obsErrors);
                     }
 
                     ValidateObs();
@@ -60,7 +70,7 @@ namespace SDMX
             return false;
         }
 
-        void ReadValue(Action<string, string> set, bool isSeries)
+        void ReadValue(Action<string, string> set, List<Error> errorList)
         {
             string name = XmlReader.LocalName;
             string value = XmlReader.Value;
@@ -68,7 +78,7 @@ namespace SDMX
             bool error = false;
             if (IsNullOrEmpty(value))
             {
-                AddValidationError(isSeries, "Value for attribute '{0}' is missing.", name);
+                AddValidationError(errorList, "Value for attribute '{0}' is missing.", name);
                 error = true;
             }
 

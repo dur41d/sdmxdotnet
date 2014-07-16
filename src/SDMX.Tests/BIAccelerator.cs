@@ -6,7 +6,7 @@ using NUnit.Framework;
 namespace SDMX.Tests
 {
     [TestFixture]   
-    //[Ignore]
+    [Ignore]
     public class BIAccelerator
     {
         /// <summary>
