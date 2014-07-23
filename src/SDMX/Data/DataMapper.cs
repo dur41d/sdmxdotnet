@@ -73,12 +73,12 @@ namespace SDMX
                 var mapValue = new KeyValuePair<string, object>();
                 string name = item.Key;
                 object value = item.Value.Value;
-                if (_maps.TryGetValue(item.Key, out mapValue))
+                if (_maps.TryGetValue(name, out mapValue))
                 {
                     name = mapValue.Key;
-                    if (value != null && mapValue.Value != null)
+                    if (mapValue.Value != null)
                     {
-                        value = Cast(item.Key, mapValue.Key, mapValue.Value, value);
+                        value = Cast(item.Key, mapValue.Key, mapValue.Value, item.Value.Key);
                     }
                 }
 

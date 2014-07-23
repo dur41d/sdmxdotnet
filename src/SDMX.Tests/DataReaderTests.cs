@@ -473,23 +473,22 @@ namespace SDMX.Tests
 
         [Test]
         public void test_quest_b()
-        {            
-            string dataPath = "C:\\Work\\Edu_meter_sid_2014\\UIS_ED_B_2014_AFG_Clean.xml";
+        {
+            string dataPath = "C:\\Work\\Edu_meter_sid_2014\\UIS_ED_A_2014_AT_import222.xml";
 
-            var dsd = StructureMessage.Load(@"C:\Work\Edu_meter_sid_2014\UOE_FINANCE+ESTAT+1.0.xml");
+            var dsd = StructureMessage.Load(@"C:\Work\Edu_meter_sid_2014\UOE.xml");
             var keyFamily = dsd.KeyFamilies[0];
-
+            var validator = new DataValidator(keyFamily);
             int counter = 0;
             using (var reader = DataReader.Create(dataPath, keyFamily))
             {
+                reader.Map("OBS_STATUS", "OBS_STATUS", i => i == null ? i : ((string)i).ToUpper());
                 reader.ThrowExceptionIfNotValid = false;
+                
                 while (reader.Read())
                 {
-                    if (!reader.IsValid)
+                    if (validator.Validate(reader).Count() > 0)
                     {
-                        //Assert.AreEqual(1, reader.Errors.Count);
-                        //Assert.IsTrue(reader.Errors[0] is ValidationError);
-                        //Debug.WriteLine(reader.Errors[0].Message);
                         counter++;
                     }
                 }
