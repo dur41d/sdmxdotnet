@@ -12,7 +12,6 @@ using System.IO;
 
 namespace SDMX.Tests
 {
-
     [TestFixture]
     public class DataWriterTests
     {
