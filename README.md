@@ -1,6 +1,6 @@
 # What is SDMX.NET?
 
-SDMX is a large and complex standard which makes creating SDMX-capable applications a difficult and error-prone activity. Using an SDMX specific library, which is an accurate implementation of the standard, will enable developers to create robust and production ready SDMX applications. SDMX.NET is that library.‬
+[SDMX](http://sdmx.org) is a large and complex standard which makes creating SDMX-capable applications a difficult and error-prone activity. Using an SDMX specific library, which is an accurate implementation of the standard, will enable developers to create robust and production ready SDMX applications. SDMX.NET is that library.‬
 
 * Completely open source.
 * Produce and consume SDMX from any data source (like Excel or Database).
@@ -11,7 +11,7 @@ SDMX is a large and complex standard which makes creating SDMX-capable applicati
 
 ## Examples
 
-To give an idea of what the framework can accomplish, here is a code sample in C# for inserting an SDMX file into the database. It is important to note that the library ensures that the resulting dataset is 100% valid based on the key family definition. 
+To give an idea of what the library can accomplish, here is a code sample in C# for inserting an SDMX file into the database. It is important to note that the library ensures that the resulting dataset is 100% valid based on the key family definition. 
 
 ``` C#
 // load the structure definition 
