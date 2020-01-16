@@ -415,12 +415,17 @@ namespace SDMX
                 _errors.Add(error);
             }
 
-            ErrorString = GetErrorString(_errors);
+            ErrorString = GetErrorString(_errors, _tempRecord);
 
             _mapper.MapRecord(_record, _tempRecord);
 
             _record[_ErrorStringColumnName] = ErrorString;
-            _record[_IsValidColumnName] = IsValid;
+            _record[_IsValidColumnName] = IsValid;                       
+
+            if (ThrowExceptionIfNotValid && _errors.Count > 0)
+            {   
+                throw new SDMXValidationException(ErrorString, _errors); ;
+            }
         }
 
         DataTable GetTable()
@@ -680,14 +685,7 @@ namespace SDMX
 
         void AddError(Error error, List<Error> errorList)
         {
-            if (ThrowExceptionIfNotValid)
-            {
-                throw SDMXValidationException.Create(new List<Error> { error } , error.Message);
-            }
-            else
-            {
-                errorList.Add(error);
-            }
+            errorList.Add(error);
         }
 
         protected void AddValidationError(string message, List<Error> errorList)
@@ -720,12 +718,18 @@ namespace SDMX
             return s == null || s.Trim() == "";
         }
 
-        string GetErrorString(List<Error> errors)
+        string GetErrorString(List<Error> errors, Dictionary<string, KeyValuePair<string, object>> tempRecord)
         {
             if (errors.Count == 0) return null;
 
             var builder = new StringBuilder();
             errors.ForEach(i => builder.AppendLine(i.Message));
+
+            var recordValues = tempRecord.Where(i => i.Value.Key != null);
+            if (recordValues.Count() > 0) 
+            {
+                builder.AppendFormat("Record: {0}", string.Join(", ", recordValues.Select(i => string.Format("{0}={1}", i.Key, i.Value.Key)).ToArray()));
+            }
 
             return builder.ToString();
         }

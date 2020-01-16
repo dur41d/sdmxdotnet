@@ -9,6 +9,9 @@ namespace SDMX
     {
         public SDMXValidationException() { }
         public SDMXValidationException(string message) : base(message) { }
+        public SDMXValidationException(string message, IEnumerable<Error> errors) : base(message) {
+            this.Errors = errors;
+        }
         public SDMXValidationException(string message, Exception inner) : base(message, inner) { }
         protected SDMXValidationException(
           System.Runtime.Serialization.SerializationInfo info,
